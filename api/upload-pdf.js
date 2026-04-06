@@ -12,6 +12,37 @@ export const config = {
   },
 };
 
+// Helper function to search Airtable with retry
+async function findAirtableRecord(email, airtableBaseId, airtableTableId, airtableToken, retries = 3) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    console.log(`🔍 Attempt ${attempt}: Finding Airtable record for: ${email}`);
+    
+    const searchUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}?filterByFormula={Email}="${email}"&maxRecords=1`;
+
+    const searchResponse = await fetch(searchUrl, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${airtableToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    const searchData = await searchResponse.json();
+
+    if (searchData.records && searchData.records.length > 0) {
+      return searchData.records[0];
+    }
+
+    // Wait before retry (2 seconds, 4 seconds, 6 seconds)
+    if (attempt < retries) {
+      console.log(`⏳ Record not found, waiting ${attempt * 2} seconds before retry...`);
+      await new Promise(resolve => setTimeout(resolve, attempt * 2000));
+    }
+  }
+  
+  return null;
+}
+
 export default async function handler(req, res) {
   // Set CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -48,27 +79,15 @@ export default async function handler(req, res) {
 
     console.log('✅ PDF uploaded to Vercel Blob:', blob.url);
 
-    // Step 3: Find Airtable record by email
-    console.log('🔍 Finding Airtable record for:', email);
-    
+    // Step 3: Find Airtable record by email (with retry)
     const airtableBaseId = process.env.AIRTABLE_BASE_ID;
     const airtableTableId = process.env.AIRTABLE_TABLE_ID;
     const airtableToken = process.env.AIRTABLE_API_TOKEN;
 
-    const searchUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}?filterByFormula={Email}="${email}"&maxRecords=1`;
+    const record = await findAirtableRecord(email, airtableBaseId, airtableTableId, airtableToken);
 
-    const searchResponse = await fetch(searchUrl, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${airtableToken}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    const searchData = await searchResponse.json();
-
-    if (searchData.records && searchData.records.length > 0) {
-      const recordId = searchData.records[0].id;
+    if (record) {
+      const recordId = record.id;
       console.log('✅ Found Airtable record:', recordId);
 
       // Step 4: Update Airtable record with PDF attachment
@@ -111,12 +130,12 @@ export default async function handler(req, res) {
         });
       }
     } else {
-      console.log('⚠️ No Airtable record found for email:', email);
+      console.log('⚠️ No Airtable record found for email after retries:', email);
       return res.status(200).json({
         success: true,
         message: 'PDF uploaded but no Airtable record found for this email',
         pdfUrl: blob.url,
-        note: 'The Zapier record may not have synced yet',
+        note: 'The Zapier record may not have synced yet. You can manually attach the PDF using the URL above.',
       });
     }
   } catch (error) {
