@@ -1239,7 +1239,7 @@
         <div id="step-5" class="step-content">
             <div class="step-header" style="text-align: center;">
                 <h2 style="color: #ff8120; font-size: 32px; margin-bottom: 5px;">Your Wealth Architecture Blueprint</h2>
-                <p class="hint">AI-Powered Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
+                <p class="hint">Success Formula Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
                 <p style="font-size: 12px; color: #888; margin-top: 8px;">Prepared by June Yoon | Wealth Architecture Strategist</p>
             </div>
             
@@ -1289,10 +1289,10 @@
             <!-- AI-Powered Analysis Section -->
             <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 30px; margin: 25px 0; color: #fff;">
                 <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🤖</div>
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">💡</div>
                     <div>
-                        <h3 style="margin: 0; font-size: 18px;">AI-Powered Wealth Analysis</h3>
-                        <p style="margin: 0; font-size: 12px; color: #888;">Personalized insights generated in real-time</p>
+                        <h3 style="margin: 0; font-size: 18px;">Success Formula Wealth Analysis</h3>
+                        <p style="margin: 0; font-size: 12px; color: #888;">Personalized insights for your wealth journey</p>
                     </div>
                 </div>
                 <div id="aiAnalysisContainer" style="min-height: 150px;">
@@ -1309,8 +1309,10 @@
                 <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
                     <span style="color: #ff8120;">🎯</span> Recommended Asset Allocation
                 </h3>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
-                    <canvas id="allocationChart" height="200"></canvas>
+                <div style="display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center;">
+                    <div style="width: 180px; height: 180px; margin: 0 auto;">
+                        <canvas id="allocationChart"></canvas>
+                    </div>
                     <div id="allocationBreakdown"></div>
                 </div>
             </div>
@@ -1869,7 +1871,12 @@
                     labels: Object.keys(allocation),
                     datasets: [{ data: Object.values(allocation), backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }]
                 },
-                options: { responsive: true, plugins: { legend: { display: false } }, cutout: '60%' }
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: true,
+                    plugins: { legend: { display: false } }, 
+                    cutout: '55%'
+                }
             });
             
             let breakdownHtml = '';
@@ -1990,65 +1997,339 @@ June Yoon`;
             const pageWidth = doc.internal.pageSize.getWidth();
             const pageHeight = doc.internal.pageSize.getHeight();
             const margin = 20;
+            const contentWidth = pageWidth - (margin * 2);
             
-            // Header
-            doc.setFillColor(255, 129, 32);
-            doc.rect(0, 0, pageWidth, 40, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(22);
-            doc.setFont('helvetica', 'bold');
-            doc.text('WEALTH ARCHITECTURE BLUEPRINT', pageWidth / 2, 18, { align: 'center' });
-            doc.setFontSize(11);
-            doc.setFont('helvetica', 'normal');
-            doc.text(`Personalized for ${reportData.name}`, pageWidth / 2, 28, { align: 'center' });
-            doc.text('June Yoon | Success Resources', pageWidth / 2, 35, { align: 'center' });
+            // Helper functions
+            const addHeader = () => {
+                doc.setFillColor(255, 129, 32);
+                doc.rect(0, 0, pageWidth, 35, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(18);
+                doc.setFont('helvetica', 'bold');
+                doc.text('WEALTH ARCHITECTURE BLUEPRINT', pageWidth / 2, 15, { align: 'center' });
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Personalized for ${reportData.name} | Prepared by June Yoon`, pageWidth / 2, 25, { align: 'center' });
+                doc.text('Success Resources | Wealth Architecture Strategist', pageWidth / 2, 31, { align: 'center' });
+            };
+            
+            const addFooter = (pageNum, totalPages) => {
+                doc.setFillColor(40, 40, 40);
+                doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.text('© 2024 Success Resources | June Yoon Wealth Architecture', margin, pageHeight - 6);
+                doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: 'right' });
+            };
+            
+            const addSectionTitle = (title, yPos) => {
+                doc.setFillColor(255, 129, 32);
+                doc.rect(margin, yPos, 4, 8, 'F');
+                doc.setTextColor(26, 26, 26);
+                doc.setFontSize(14);
+                doc.setFont('helvetica', 'bold');
+                doc.text(title, margin + 8, yPos + 6);
+                return yPos + 15;
+            };
+            
+            const wrapText = (text, maxWidth, fontSize) => {
+                doc.setFontSize(fontSize);
+                return doc.splitTextToSize(text, maxWidth);
+            };
+            
+            // ==================== PAGE 1 ====================
+            addHeader();
+            let yPos = 50;
             
             // Score Section
-            let yPos = 55;
-            doc.setFillColor(249, 249, 249);
-            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 35, 3, 3, 'F');
+            doc.setFillColor(255, 248, 240);
+            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'F');
+            doc.setDrawColor(255, 129, 32);
+            doc.setLineWidth(0.5);
+            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'S');
+            
             doc.setTextColor(255, 129, 32);
-            doc.setFontSize(32);
+            doc.setFontSize(36);
             doc.setFont('helvetica', 'bold');
-            doc.text(String(reportData.wealthScore), pageWidth / 2, yPos + 18, { align: 'center' });
-            doc.setTextColor(102, 102, 102);
-            doc.setFontSize(10);
-            doc.text(getScoreLabel(reportData.wealthScore).toUpperCase(), pageWidth / 2, yPos + 28, { align: 'center' });
+            doc.text(String(reportData.wealthScore), margin + 30, yPos + 26);
             
-            yPos += 45;
-            
-            // Summary
             doc.setTextColor(26, 26, 26);
+            doc.setFontSize(11);
+            doc.text('WEALTH POSITION SCORE', margin + 55, yPos + 18);
             doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
-            doc.text('Financial Summary', margin, yPos);
-            yPos += 10;
+            doc.setTextColor(255, 129, 32);
+            doc.text(getScoreLabel(reportData.wealthScore), margin + 55, yPos + 28);
             
-            const data = [
-                ['Monthly Surplus:', reportData.symbol + reportData.surplus.toLocaleString()],
-                ['Liquid Assets:', reportData.symbol + reportData.liquid.toLocaleString()],
-                ['Annual Capacity:', reportData.symbol + reportData.annualSurplus.toLocaleString()],
-                ['5-Year Projection:', reportData.symbol + Math.round(reportData.projection5yr).toLocaleString()]
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(100, 100, 100);
+            doc.text('Based on your income, surplus capacity, and liquid assets', margin + 55, yPos + 36);
+            
+            yPos += 50;
+            
+            // Financial Summary Section
+            yPos = addSectionTitle('Your Financial Snapshot', yPos);
+            
+            const summaryData = [
+                ['Annual Income Range', reportData.income || 'Not specified'],
+                ['Monthly Surplus', reportData.symbol + reportData.surplus.toLocaleString()],
+                ['Liquid Assets', reportData.symbol + reportData.liquid.toLocaleString()],
+                ['Annual Investment Capacity', reportData.symbol + reportData.annualSurplus.toLocaleString()],
+                ['5-Year Wealth Projection (8%)', reportData.symbol + Math.round(reportData.projection5yr).toLocaleString()],
+                ['Investment Timeline', reportData.timeline || 'Not specified'],
+                ['Professional Status', reportData.status || 'Not specified']
             ];
             
-            doc.setFontSize(11);
-            data.forEach(([label, value]) => {
+            doc.setFontSize(10);
+            summaryData.forEach(([label, value], i) => {
+                const rowY = yPos + (i * 8);
+                if (i % 2 === 0) {
+                    doc.setFillColor(249, 249, 249);
+                    doc.rect(margin, rowY - 4, contentWidth, 8, 'F');
+                }
                 doc.setFont('helvetica', 'normal');
-                doc.setTextColor(100);
-                doc.text(label, margin, yPos);
+                doc.setTextColor(80, 80, 80);
+                doc.text(label, margin + 3, rowY);
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(255, 129, 32);
-                doc.text(value, margin + 50, yPos);
-                yPos += 8;
+                doc.text(value, margin + contentWidth - 3, rowY, { align: 'right' });
             });
             
-            // Footer
-            doc.setFillColor(26, 26, 26);
-            doc.rect(0, pageHeight - 20, pageWidth, 20, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(8);
-            doc.text('© 2024 Success Resources | June Yoon Wealth Architecture', pageWidth / 2, pageHeight - 10, { align: 'center' });
+            yPos += (summaryData.length * 8) + 10;
             
+            // Primary Concerns
+            yPos = addSectionTitle('Primary Wealth Concerns', yPos);
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(60, 60, 60);
+            const concerns = reportData.concern || 'General wealth building';
+            const concernLines = wrapText(concerns, contentWidth, 10);
+            doc.text(concernLines, margin, yPos);
+            yPos += (concernLines.length * 5) + 10;
+            
+            // Wealth Projection Table
+            yPos = addSectionTitle('Wealth Growth Projections', yPos);
+            
+            const projectionYears = [1, 3, 5, 7, 10];
+            const projections = projectionYears.map(y => ({
+                year: y,
+                conservative: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.06)),
+                moderate: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.08)),
+                aggressive: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.12))
+            }));
+            
+            // Table header
+            doc.setFillColor(255, 129, 32);
+            doc.rect(margin, yPos, contentWidth, 8, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Year', margin + 5, yPos + 5.5);
+            doc.text('Conservative (6%)', margin + 35, yPos + 5.5);
+            doc.text('Moderate (8%)', margin + 85, yPos + 5.5);
+            doc.text('Aggressive (12%)', margin + 130, yPos + 5.5);
+            yPos += 8;
+            
+            doc.setTextColor(60, 60, 60);
+            doc.setFont('helvetica', 'normal');
+            projections.forEach((p, i) => {
+                if (i % 2 === 0) {
+                    doc.setFillColor(249, 249, 249);
+                    doc.rect(margin, yPos, contentWidth, 7, 'F');
+                }
+                doc.text(`Year ${p.year}`, margin + 5, yPos + 5);
+                doc.text(reportData.symbol + p.conservative.toLocaleString(), margin + 35, yPos + 5);
+                doc.setTextColor(255, 129, 32);
+                doc.setFont('helvetica', 'bold');
+                doc.text(reportData.symbol + p.moderate.toLocaleString(), margin + 85, yPos + 5);
+                doc.setTextColor(60, 60, 60);
+                doc.setFont('helvetica', 'normal');
+                doc.text(reportData.symbol + p.aggressive.toLocaleString(), margin + 130, yPos + 5);
+                yPos += 7;
+            });
+            
+            addFooter(1, 3);
+            
+            // ==================== PAGE 2 ====================
+            doc.addPage();
+            addHeader();
+            yPos = 50;
+            
+            // Asset Allocation Recommendations
+            yPos = addSectionTitle('Recommended Asset Allocation Strategy', yPos);
+            
+            let allocation = {};
+            if (reportData.concern && reportData.concern.includes('Tax')) {
+                allocation = { 'Tax-Advantaged Accounts': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business Investments': 15, 'Alternative Assets': 10, 'Cash Reserve': 5 };
+            } else if (reportData.concern && (reportData.concern.includes('Legacy') || reportData.concern.includes('Retirement'))) {
+                allocation = { 'Diversified Stocks': 30, 'Real Estate': 25, 'Bonds & Fixed Income': 20, 'Private Equity': 15, 'Cash & Liquidity': 10 };
+            } else if (reportData.concern && reportData.concern.includes('Protection')) {
+                allocation = { 'Diversified ETFs': 25, 'Real Estate': 20, 'Government Bonds': 20, 'Gold & Commodities': 15, 'Insurance Products': 10, 'Emergency Fund': 10 };
+            } else {
+                allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternative Investments': 15, 'Cash Reserve': 10 };
+            }
+            
+            doc.setFontSize(10);
+            Object.entries(allocation).forEach(([asset, percent], i) => {
+                const barWidth = (percent / 100) * (contentWidth - 60);
+                doc.setFillColor(255, 200, 160);
+                doc.rect(margin, yPos, contentWidth, 10, 'F');
+                doc.setFillColor(255, 129, 32);
+                doc.rect(margin, yPos, barWidth, 10, 'F');
+                doc.setTextColor(26, 26, 26);
+                doc.setFont('helvetica', 'normal');
+                doc.text(asset, margin + barWidth + 5, yPos + 7);
+                doc.setFont('helvetica', 'bold');
+                doc.text(`${percent}%`, margin + contentWidth - 3, yPos + 7, { align: 'right' });
+                yPos += 12;
+            });
+            
+            yPos += 10;
+            
+            // Millionaire Mind Principles
+            yPos = addSectionTitle('Your Millionaire Mind Blueprint', yPos);
+            
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'italic');
+            doc.setTextColor(100, 100, 100);
+            doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin, yPos);
+            yPos += 10;
+            
+            const principles = [
+                {
+                    title: "Wealth File #1: Rich people believe 'I create my life.'",
+                    insight: "Take 100% responsibility for your financial outcomes. Your wealth is a direct reflection of your thoughts, habits, and actions.",
+                    action: "Review your 'money blueprint' — the subconscious programming about money you inherited from your upbringing."
+                },
+                {
+                    title: "Wealth File #2: Rich people play the money game to win.",
+                    insight: "The goal is financial freedom, not just paying bills. Set a specific wealth target and reverse-engineer the path.",
+                    action: "Define your 'Financial Freedom Number' — the passive income needed to cover your lifestyle."
+                },
+                {
+                    title: "Wealth File #3: Rich people are committed to being rich.",
+                    insight: "Wanting to be rich is not enough. You must be 100% committed with no backup plan.",
+                    action: "Write down exactly why you MUST become wealthy. Make it non-negotiable."
+                }
+            ];
+            
+            principles.forEach((p, i) => {
+                doc.setFillColor(255, 248, 240);
+                doc.roundedRect(margin, yPos, contentWidth, 28, 2, 2, 'F');
+                doc.setDrawColor(255, 129, 32);
+                doc.setLineWidth(0.3);
+                doc.line(margin, yPos, margin, yPos + 28);
+                
+                doc.setTextColor(255, 129, 32);
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'bold');
+                doc.text(p.title, margin + 4, yPos + 6);
+                
+                doc.setTextColor(60, 60, 60);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                const insightLines = wrapText(p.insight, contentWidth - 8, 9);
+                doc.text(insightLines, margin + 4, yPos + 12);
+                
+                doc.setTextColor(255, 129, 32);
+                doc.setFont('helvetica', 'bold');
+                doc.text('ACTION: ', margin + 4, yPos + 24);
+                doc.setTextColor(60, 60, 60);
+                doc.setFont('helvetica', 'normal');
+                doc.text(p.action, margin + 22, yPos + 24);
+                
+                yPos += 32;
+            });
+            
+            addFooter(2, 3);
+            
+            // ==================== PAGE 3 ====================
+            doc.addPage();
+            addHeader();
+            yPos = 50;
+            
+            // 90-Day Action Plan
+            yPos = addSectionTitle('Your 90-Day Wealth Action Plan', yPos);
+            
+            const actionSteps = [
+                { week: "Week 1-2", title: "Foundation Audit", description: "Review current financial position. Ensure 6 months of expenses in emergency fund. Audit all insurance coverage (life, disability, umbrella).", priority: "HIGH" },
+                { week: "Week 3-4", title: "Tax Structure Review", description: "Schedule consultation with tax strategist. Explore entity optimization (LLC, S-Corp). Maximize retirement account contributions.", priority: "HIGH" },
+                { week: "Week 5-6", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Establish automatic investment transfers. Research diversified portfolio options aligned with your timeline.", priority: "MEDIUM" },
+                { week: "Week 7-8", title: "Income Optimization", description: "Identify opportunities to increase active income. Explore passive income streams. Review business/career growth strategies.", priority: "MEDIUM" },
+                { week: "Week 9-10", title: "Asset Protection", description: "Review legal structures for asset protection. Consider trusts for estate planning. Evaluate geographic diversification options.", priority: "MEDIUM" },
+                { week: "Week 11-12", title: "Wealth Momentum", description: "Implement diversified portfolio strategy. Set up quarterly wealth review schedule. Document your wealth building system.", priority: "HIGH" }
+            ];
+            
+            actionSteps.forEach((step, i) => {
+                const priorityColor = step.priority === 'HIGH' ? [239, 68, 68] : [245, 158, 11];
+                
+                doc.setFillColor(255, 129, 32);
+                doc.roundedRect(margin, yPos, 22, 12, 2, 2, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'bold');
+                const weekLines = wrapText(step.week, 20, 8);
+                doc.text(weekLines, margin + 11, yPos + 5, { align: 'center' });
+                
+                doc.setFillColor(...priorityColor);
+                doc.roundedRect(margin + 25, yPos, 18, 5, 1, 1, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(6);
+                doc.text(step.priority, margin + 34, yPos + 3.5, { align: 'center' });
+                
+                doc.setTextColor(26, 26, 26);
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text(step.title, margin + 46, yPos + 4);
+                
+                doc.setTextColor(80, 80, 80);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                const descLines = wrapText(step.description, contentWidth - 50, 9);
+                doc.text(descLines, margin + 46, yPos + 10);
+                
+                yPos += 18 + (descLines.length > 1 ? 4 : 0);
+            });
+            
+            yPos += 10;
+            
+            // Success Formula Analysis Summary
+            yPos = addSectionTitle('Success Formula Wealth Analysis', yPos);
+            
+            const analysisText = `Dear ${reportData.name.split(' ')[0]},
+
+Based on your Wealth Architecture Assessment, you've achieved a Wealth Position Score of ${reportData.wealthScore}/100, placing you in the "${getScoreLabel(reportData.wealthScore)}" category. With ${reportData.symbol}${reportData.surplus.toLocaleString()} monthly surplus and ${reportData.symbol}${reportData.liquid.toLocaleString()} in liquid assets, you have a solid foundation for accelerated wealth building.
+
+Your primary focus on ${reportData.concern || 'wealth building'} shows strategic thinking. By consistently deploying your surplus with disciplined investing, your projected wealth can reach ${reportData.symbol}${Math.round(reportData.projection5yr).toLocaleString()} within 5 years.
+
+Remember: "Your income can grow only to the extent that you do." — T. Harv Eker
+
+To your wealth,
+June Yoon | Wealth Architecture Strategist`;
+            
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(60, 60, 60);
+            const analysisLines = wrapText(analysisText, contentWidth, 10);
+            doc.text(analysisLines, margin, yPos);
+            
+            yPos += (analysisLines.length * 4.5) + 15;
+            
+            // Call to Action Box
+            doc.setFillColor(255, 129, 32);
+            doc.roundedRect(margin, yPos, contentWidth, 25, 3, 3, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(12);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Ready to Accelerate Your Wealth Journey?', pageWidth / 2, yPos + 10, { align: 'center' });
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.text('Book your complimentary 45-minute Strategy Call with June Yoon', pageWidth / 2, yPos + 18, { align: 'center' });
+            
+            addFooter(3, 3);
+            
+            // Save the PDF
             doc.save(`Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`);
         }
         
