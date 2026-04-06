@@ -2,16 +2,11 @@
   "name": "wealth-analyzer",
   "version": "1.0.0",
   "description": "Wealth Architecture Analyzer by June Yoon",
-  "type": "module",           // ← Added for ES imports
-  "scripts": {
-    "dev": "vercel dev",
-    "build": "vercel build",
-    "start": "vercel start"
-  },
+  "type": "module",
   "dependencies": {
-    "@vercel/blob": "^0.27.0"  // ← Updated to latest version
+    "@vercel/blob": "^0.27.0"
   },
   "engines": {
-    "node": ">=18"             // ← Added Node.js version requirement
+    "node": ">=18"
   }
 }
