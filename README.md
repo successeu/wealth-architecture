@@ -1,59 +1,110 @@
 # Wealth Architecture Analyzer
 
-🎯 **Premium lead magnet for high-income professionals**
+A lead capture form with AI-powered wealth analysis, PDF report generation, and automatic Airtable integration.
 
-A professional financial coaching tool that generates personalized wealth architecture reports for 6-7 figure earners.
+## 🔐 Security Features
 
-## Features
+- All API tokens stored securely in Vercel Environment Variables
+- No sensitive credentials exposed in client-side code
+- Serverless API route handles all third-party integrations
 
-✨ **Smart Lead Magnet**
-- 4-step qualification form
-- Real-time currency conversion
-- Dynamic personal recommendations
-- Active Campaign integration
+## 📁 Project Structure
 
-🎨 **Premium Design**
-- June Yoon branded (orange/red theme)
-- Responsive & mobile-friendly
-- Professional animations
-- LinkedIn-aligned branding
-
-📊 **Comprehensive Reports**
-- Executive summary
-- Financial position analysis
-- Income generation strategies (3 per status)
-- Capital deployment blueprint
-- Tax optimization opportunities
-- 90-day action plan
-- Wealth projections
-- Risk assessment
-- Peer benchmarking
-
-🔌 **Integrations**
-- Vercel Blob for PDF storage
-- Zapier webhook to Active Campaign
-- Automatic contact sync
-
-## Quick Start
-
-### Local Development
-```bash
-git clone https://github.com/YOUR-USERNAME/wealth-architecture-analyzer.git
-cd wealth-architecture-analyzer
-npm install
-npm run dev
+```
+wealth-analyzer/
+├── index.html          # Main form & report UI
+├── api/
+│   └── upload-pdf.js   # Serverless function for PDF upload & Airtable
+├── package.json        # Dependencies
+├── vercel.json         # Vercel configuration
+└── .env.example        # Example environment variables
 ```
 
-Visit `http://localhost:3000`
+## 🚀 Setup Instructions
 
-### Deployment
+### Step 1: Deploy to Vercel
 
-**Vercel (Recommended)**
-```bash
-npm install -g vercel
-vercel
+1. Push this folder to your GitHub repository
+2. Import the project in Vercel Dashboard
+3. Deploy
+
+### Step 2: Set Environment Variables
+
+Go to **Vercel Dashboard** → **Your Project** → **Settings** → **Environment Variables**
+
+Add these variables:
+
+| Variable | Description | How to Get |
+|----------|-------------|------------|
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob storage token | Vercel Dashboard → Storage → Create Blob Store |
+| `AIRTABLE_API_TOKEN` | Airtable Personal Access Token | [airtable.com/create/tokens](https://airtable.com/create/tokens) |
+| `AIRTABLE_BASE_ID` | Your Airtable Base ID | From base URL: `airtable.com/appXXXXX/...` |
+| `AIRTABLE_TABLE_ID` | Your Airtable Table ID | From table URL: `airtable.com/appXXX/tblYYYYY/...` |
+
+### Step 3: Create Airtable Fields
+
+Your Airtable table should have these fields:
+
+| Field Name | Type |
+|------------|------|
+| First Name | Single line text |
+| Last Name | Single line text |
+| Email | Email |
+| Phone | Single line text |
+| Country | Single line text |
+| Currency | Single line text |
+| Income Level | Single line text |
+| Monthly Surplus | Number |
+| Liquid Assets | Number |
+| Professional Status | Single line text |
+| Primary Concern | Long text |
+| Timeline | Single line text |
+| Wealth Score | Number |
+| Score Label | Single line text |
+| PDF Report | Attachment |
+| Created At | Date |
+
+### Step 4: Redeploy
+
+After adding environment variables, trigger a new deployment for changes to take effect.
+
+## 🔄 How It Works
+
+```
+User submits form
+       ↓
+Zapier webhook → Creates Airtable record
+       ↓
+User clicks "Download PDF"
+       ↓
+PDF generates in browser
+       ↓
+/api/upload-pdf serverless function:
+  1. Uploads PDF to Vercel Blob
+  2. Finds Airtable record by email
+  3. Attaches PDF URL to record
+       ↓
+User downloads PDF locally
 ```
 
-## 🔐 Environment Variables
+## 📝 Zapier Webhook Data
 
-Create a `.env.local` file:
+The form sends these fields to Zapier:
+
+- First Name, Last Name, Email, Phone
+- Country, Currency, Income Level
+- Monthly Surplus, Liquid Assets
+- Professional Status, Primary Concern
+- Timeline, Wealth Score, Score Label
+- Created At
+
+## 🛡️ Security Notes
+
+- Never commit `.env` files with real tokens
+- Rotate API tokens if accidentally exposed
+- Use Vercel's environment variable encryption
+- The serverless function runs on Vercel's secure infrastructure
+
+## 📞 Support
+
+For questions, contact June Yoon at Success Resources.
