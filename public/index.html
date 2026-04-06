@@ -1659,11 +1659,175 @@
             // Send to Zapier webhook
             sendToZapier(formData);
             
-            // Generate report after delay
+            // Generate report after delay (longer delay to let Zapier create Airtable record)
             setTimeout(function() {
                 showStep(5);
                 generateAllContent(firstName + ' ' + lastName, surplus, liquid, income, currency, status, concern, timeline);
-            }, 2500);
+                
+                // Auto-generate and upload PDF to Airtable after report loads
+                setTimeout(function() {
+                    autoGenerateAndUploadPDF();
+                }, 2000); // Additional 2 second delay for Airtable record to be created
+            }, 3000); // 3 seconds for Zapier to process
+        }
+        
+        // Auto-generate PDF and upload to Airtable (no user click required)
+        async function autoGenerateAndUploadPDF() {
+            console.log('🤖 Auto-generating PDF for Airtable...');
+            
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
+            const contentWidth = pageWidth - (margin * 2);
+            
+            // Helper functions
+            const addHeader = () => {
+                doc.setFillColor(255, 129, 32);
+                doc.rect(0, 0, pageWidth, 35, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(18);
+                doc.setFont('helvetica', 'bold');
+                doc.text('WEALTH ARCHITECTURE BLUEPRINT', pageWidth / 2, 15, { align: 'center' });
+                doc.setFontSize(10);
+                doc.setFont('helvetica', 'normal');
+                doc.text(`Personalized for ${reportData.name} | Prepared by June Yoon`, pageWidth / 2, 25, { align: 'center' });
+                doc.text('Success Resources | Wealth Architecture Strategist', pageWidth / 2, 31, { align: 'center' });
+            };
+            
+            const addFooter = (pageNum, totalPages) => {
+                doc.setFillColor(40, 40, 40);
+                doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.text('© 2024 Success Resources | June Yoon Wealth Architecture', margin, pageHeight - 6);
+                doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: 'right' });
+            };
+            
+            const wrapText = (text, maxWidth, fontSize) => {
+                doc.setFontSize(fontSize);
+                return doc.splitTextToSize(text, maxWidth);
+            };
+            
+            // Page 1
+            addHeader();
+            let yPos = 50;
+            
+            doc.setFillColor(255, 248, 240);
+            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'F');
+            doc.setDrawColor(255, 129, 32);
+            doc.setLineWidth(0.5);
+            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'S');
+            
+            doc.setTextColor(255, 129, 32);
+            doc.setFontSize(36);
+            doc.setFont('helvetica', 'bold');
+            doc.text(String(reportData.wealthScore), margin + 30, yPos + 26);
+            
+            doc.setTextColor(26, 26, 26);
+            doc.setFontSize(11);
+            doc.text('WEALTH POSITION SCORE', margin + 55, yPos + 18);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.setTextColor(255, 129, 32);
+            doc.text(getScoreLabel(reportData.wealthScore), margin + 55, yPos + 28);
+            
+            yPos += 50;
+            
+            // Financial Summary
+            doc.setTextColor(26, 26, 26);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Financial Summary', margin, yPos);
+            yPos += 10;
+            
+            const summaryData = [
+                ['Monthly Surplus', reportData.symbol + reportData.surplus.toLocaleString()],
+                ['Liquid Assets', reportData.symbol + reportData.liquid.toLocaleString()],
+                ['Annual Capacity', reportData.symbol + reportData.annualSurplus.toLocaleString()],
+                ['5-Year Projection', reportData.symbol + Math.round(reportData.projection5yr).toLocaleString()]
+            ];
+            
+            doc.setFontSize(10);
+            summaryData.forEach(([label, value], i) => {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(80);
+                doc.text(label + ':', margin, yPos);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(255, 129, 32);
+                doc.text(value, margin + 50, yPos);
+                yPos += 8;
+            });
+            
+            addFooter(1, 1);
+            
+            // Generate blob and upload
+            const pdfBlob = doc.output('blob');
+            const fileName = `Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`;
+            
+            // Upload to Airtable
+            try {
+                const email = document.getElementById('email').value;
+                console.log('📤 Auto-uploading PDF to Airtable for:', email);
+                
+                const reader = new FileReader();
+                reader.onloadend = async function() {
+                    const base64Data = reader.result.split(',')[1];
+                    
+                    const response = await fetch('/api/upload-pdf', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            pdfBase64: base64Data,
+                            fileName: fileName,
+                            email: email
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    console.log('📋 Auto-upload API Response:', result);
+                    
+                    if (result.success && result.recordId) {
+                        console.log('✅ PDF auto-uploaded and attached to Airtable!');
+                    } else if (result.success) {
+                        console.log('✅ PDF uploaded to Vercel Blob:', result.pdfUrl);
+                        console.log('⚠️ Airtable record not found yet - will retry...');
+                        // Retry after 5 more seconds
+                        setTimeout(() => retryAirtableUpload(base64Data, fileName, email), 5000);
+                    }
+                };
+                reader.readAsDataURL(pdfBlob);
+            } catch (error) {
+                console.error('❌ Auto-upload error:', error);
+            }
+        }
+        
+        // Retry function for Airtable upload
+        async function retryAirtableUpload(base64Data, fileName, email) {
+            console.log('🔄 Retrying Airtable upload...');
+            try {
+                const response = await fetch('/api/upload-pdf', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pdfBase64: base64Data,
+                        fileName: fileName,
+                        email: email
+                    })
+                });
+                
+                const result = await response.json();
+                console.log('📋 Retry API Response:', result);
+                
+                if (result.success && result.recordId) {
+                    console.log('✅ PDF attached to Airtable on retry!');
+                } else {
+                    console.log('⚠️ Still no Airtable record. PDF URL:', result.pdfUrl);
+                }
+            } catch (error) {
+                console.error('❌ Retry error:', error);
+            }
         }
         
         function getCountryName(code) {
