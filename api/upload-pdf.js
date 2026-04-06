@@ -101,12 +101,7 @@ export default async function handler(req, res) {
         },
         body: JSON.stringify({
           fields: {
-            'PDF Report': [
-              {
-                url: blob.url,
-                filename: fileName,
-              },
-            ],
+            'PDF Report': blob.url,
           },
         }),
       });
