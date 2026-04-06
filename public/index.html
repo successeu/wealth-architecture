@@ -34,9 +34,7 @@
             font-weight: 600;
         }
         
-        .sr-logo span {
-            color: #dc5a32;
-        }
+        .sr-logo span { color: #dc5a32; }
         
         .progress-bar {
             width: 100%;
@@ -95,9 +93,7 @@
             color: #ffffff;
         }
         
-        .hero-content h1 span {
-            color: #dc5a32;
-        }
+        .hero-content h1 span { color: #dc5a32; }
         
         .hero-content .subtitle {
             font-size: 18px;
@@ -141,19 +137,16 @@
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .step-header {
-            margin-bottom: 35px;
-        }
+        .step-header { margin-bottom: 35px; }
         
         .step-number {
-            display: inline-block;
+            display: inline-flex;
             background: rgba(220, 90, 50, 0.15);
             border: 1.5px solid rgba(220, 90, 50, 0.3);
             color: #dc5a32;
             width: 50px;
             height: 50px;
             border-radius: 12px;
-            display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
@@ -174,9 +167,7 @@
             font-weight: 400;
         }
         
-        .form-group {
-            margin: 30px 0;
-        }
+        .form-group { margin: 30px 0; }
         
         label {
             display: block;
@@ -214,9 +205,9 @@
             box-shadow: 0 0 0 3px rgba(220, 90, 50, 0.15);
         }
         
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
+        input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        
+        select option { background: #1a1a1a; color: #fff; }
         
         .option-group {
             display: grid;
@@ -225,9 +216,7 @@
             margin: 15px 0;
         }
         
-        .option-item {
-            position: relative;
-        }
+        .option-item { position: relative; }
         
         .option-item input[type="radio"],
         .option-item input[type="checkbox"] {
@@ -266,9 +255,7 @@
             background: transparent;
         }
         
-        .option-item input[type="checkbox"] + label:before {
-            border-radius: 4px;
-        }
+        .option-item input[type="checkbox"] + label:before { border-radius: 4px; }
         
         .option-item input[type="radio"]:checked + label:before,
         .option-item input[type="checkbox"]:checked + label:before {
@@ -337,9 +324,7 @@
             padding-bottom: 15px;
         }
         
-        .summary-item:last-child {
-            border-bottom: none;
-        }
+        .summary-item:last-child { border-bottom: none; }
         
         .summary-label {
             color: #888;
@@ -408,9 +393,7 @@
             margin: 40px auto;
         }
         
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
         
         .loading-text {
             text-align: center;
@@ -425,17 +408,11 @@
                 gap: 30px;
                 padding: 30px;
             }
-            .profile-circle {
-                width: 200px;
-                height: 200px;
-            }
-            .profile-image {
-                width: 190px;
-                height: 190px;
-            }
-            .hero-content h1 {
-                font-size: 32px;
-            }
+            .profile-circle { width: 200px; height: 200px; }
+            .profile-image { width: 190px; height: 190px; }
+            .hero-content h1 { font-size: 32px; }
+            .summary-row { grid-template-columns: 1fr; }
+            .button-group { flex-direction: column; }
         }
     </style>
 </head>
@@ -486,25 +463,32 @@
                 </label>
                 <select id="country" onchange="updateCurrencyOptions()" required>
                     <option value="">Select your country...</option>
-                    <option value="US">🇺🇸 United States</option>
-                    <option value="CA">🇨🇦 Canada</option>
-                    <option value="GB">🇬🇧 United Kingdom</option>
-                    <option value="AU">🇦🇺 Australia</option>
-                    <option value="SG">🇸🇬 Singapore</option>
-                    <option value="HK">🇭🇰 Hong Kong</option>
-                    <option value="AE">🇦🇪 United Arab Emirates</option>
-                    <option value="CH">🇨🇭 Switzerland</option>
-                    <option value="DE">🇩🇪 Germany</option>
-                    <option value="FR">🇫🇷 France</option>
-                    <option value="NL">🇳🇱 Netherlands</option>
-                    <option value="JP">🇯🇵 Japan</option>
-                    <option value="IN">🇮🇳 India</option>
-                    <option value="BR">🇧🇷 Brazil</option>
-                    <option value="MX">🇲🇽 Mexico</option>
-                    <option value="NZ">🇳🇿 New Zealand</option>
-                    <option value="IE">🇮🇪 Ireland</option>
-                    <option value="SE">🇸🇪 Sweden</option>
-                    <option value="MY">🇲🇾 Malaysia</option>
+                    <option value="US" data-currency="USD" data-symbol="$">🇺🇸 United States</option>
+                    <option value="CA" data-currency="CAD" data-symbol="C$">🇨🇦 Canada</option>
+                    <option value="GB" data-currency="GBP" data-symbol="£">🇬🇧 United Kingdom</option>
+                    <option value="AU" data-currency="AUD" data-symbol="A$">🇦🇺 Australia</option>
+                    <option value="SG" data-currency="SGD" data-symbol="S$">🇸🇬 Singapore</option>
+                    <option value="HK" data-currency="HKD" data-symbol="HK$">🇭🇰 Hong Kong</option>
+                    <option value="AE" data-currency="AED" data-symbol="AED">🇦🇪 United Arab Emirates</option>
+                    <option value="CH" data-currency="CHF" data-symbol="CHF">🇨🇭 Switzerland</option>
+                    <option value="DE" data-currency="EUR" data-symbol="€">🇩🇪 Germany</option>
+                    <option value="FR" data-currency="EUR" data-symbol="€">🇫🇷 France</option>
+                    <option value="NL" data-currency="EUR" data-symbol="€">🇳🇱 Netherlands</option>
+                    <option value="JP" data-currency="JPY" data-symbol="¥">🇯🇵 Japan</option>
+                    <option value="IN" data-currency="INR" data-symbol="₹">🇮🇳 India</option>
+                    <option value="BR" data-currency="BRL" data-symbol="R$">🇧🇷 Brazil</option>
+                    <option value="MX" data-currency="MXN" data-symbol="$">🇲🇽 Mexico</option>
+                    <option value="NZ" data-currency="NZD" data-symbol="NZ$">🇳🇿 New Zealand</option>
+                    <option value="IE" data-currency="EUR" data-symbol="€">🇮🇪 Ireland</option>
+                    <option value="SE" data-currency="SEK" data-symbol="kr">🇸🇪 Sweden</option>
+                    <option value="MY" data-currency="MYR" data-symbol="RM" selected>🇲🇾 Malaysia</option>
+                    <option value="ID" data-currency="IDR" data-symbol="Rp">🇮🇩 Indonesia</option>
+                    <option value="TH" data-currency="THB" data-symbol="฿">🇹🇭 Thailand</option>
+                    <option value="PH" data-currency="PHP" data-symbol="₱">🇵🇭 Philippines</option>
+                    <option value="VN" data-currency="VND" data-symbol="₫">🇻🇳 Vietnam</option>
+                    <option value="KR" data-currency="KRW" data-symbol="₩">🇰🇷 South Korea</option>
+                    <option value="TW" data-currency="TWD" data-symbol="NT$">🇹🇼 Taiwan</option>
+                    <option value="CN" data-currency="CNY" data-symbol="¥">🇨🇳 China</option>
                 </select>
             </div>
             
@@ -514,22 +498,29 @@
                 </label>
                 <select id="currency" required>
                     <option value="">Select your currency...</option>
-                    <option value="USD">USD - US Dollar</option>
-                    <option value="CAD">CAD - Canadian Dollar</option>
-                    <option value="GBP">GBP - British Pound</option>
-                    <option value="AUD">AUD - Australian Dollar</option>
-                    <option value="SGD">SGD - Singapore Dollar</option>
-                    <option value="HKD">HKD - Hong Kong Dollar</option>
+                    <option value="USD">USD - US Dollar ($)</option>
+                    <option value="CAD">CAD - Canadian Dollar (C$)</option>
+                    <option value="GBP">GBP - British Pound (£)</option>
+                    <option value="AUD">AUD - Australian Dollar (A$)</option>
+                    <option value="SGD">SGD - Singapore Dollar (S$)</option>
+                    <option value="HKD">HKD - Hong Kong Dollar (HK$)</option>
                     <option value="AED">AED - UAE Dirham</option>
                     <option value="CHF">CHF - Swiss Franc</option>
-                    <option value="EUR">EUR - Euro</option>
-                    <option value="JPY">JPY - Japanese Yen</option>
-                    <option value="INR">INR - Indian Rupee</option>
-                    <option value="BRL">BRL - Brazilian Real</option>
-                    <option value="MXN">MXN - Mexican Peso</option>
-                    <option value="NZD">NZD - New Zealand Dollar</option>
-                    <option value="SEK">SEK - Swedish Krona</option>
-                    <option value="MYR">MYR - Malaysian Ringgit</option>
+                    <option value="EUR">EUR - Euro (€)</option>
+                    <option value="JPY">JPY - Japanese Yen (¥)</option>
+                    <option value="INR">INR - Indian Rupee (₹)</option>
+                    <option value="BRL">BRL - Brazilian Real (R$)</option>
+                    <option value="MXN">MXN - Mexican Peso ($)</option>
+                    <option value="NZD">NZD - New Zealand Dollar (NZ$)</option>
+                    <option value="SEK">SEK - Swedish Krona (kr)</option>
+                    <option value="MYR" selected>MYR - Malaysian Ringgit (RM)</option>
+                    <option value="IDR">IDR - Indonesian Rupiah (Rp)</option>
+                    <option value="THB">THB - Thai Baht (฿)</option>
+                    <option value="PHP">PHP - Philippine Peso (₱)</option>
+                    <option value="VND">VND - Vietnamese Dong (₫)</option>
+                    <option value="KRW">KRW - Korean Won (₩)</option>
+                    <option value="TWD">TWD - Taiwan Dollar (NT$)</option>
+                    <option value="CNY">CNY - Chinese Yuan (¥)</option>
                 </select>
             </div>
             
@@ -552,10 +543,10 @@
                 </label>
                 <select id="incomeLevel" required>
                     <option value="">Select your range...</option>
-                    <option value="100-250">$100K – $250K</option>
-                    <option value="250-500">$250K – $500K</option>
-                    <option value="500-1m">$500K – $1M</option>
-                    <option value="1m+">$1M+</option>
+                    <option value="100-250K">100K – 250K</option>
+                    <option value="250-500K">250K – 500K</option>
+                    <option value="500K-1M">500K – 1M</option>
+                    <option value="1M+">1M+</option>
                 </select>
             </div>
             
@@ -595,14 +586,14 @@
             
             <div class="form-group">
                 <label>Monthly discretionary surplus (after all expenses)
-                    <span class="label-subtitle">→ This determines your wealth-building velocity & investment capacity. Higher surplus = faster multiplication</span>
+                    <span class="label-subtitle">→ This determines your wealth-building velocity & investment capacity</span>
                 </label>
                 <input type="number" id="monthlySurplus" placeholder="e.g., 5000" min="0" step="100" required>
             </div>
             
             <div class="form-group">
                 <label>Current liquid net worth (cash, stocks, etc.)
-                    <span class="label-subtitle">→ Your starting capital base. Compounds exponentially—critical for wealth projections</span>
+                    <span class="label-subtitle">→ Your starting capital base for wealth projections</span>
                 </label>
                 <input type="number" id="liquidWealth" placeholder="e.g., 150000" min="0" step="1000" required>
             </div>
@@ -654,9 +645,16 @@
             
             <div class="form-group">
                 <label>Email Address
-                    <span class="label-subtitle">→ We'll send your full report + your personalized wealth strategy (June will contact you to discuss)</span>
+                    <span class="label-subtitle">→ We'll send your full report + personalized wealth strategy</span>
                 </label>
                 <input type="email" id="email" placeholder="Your professional email" required>
+            </div>
+            
+            <div class="form-group">
+                <label>Phone Number (Optional)
+                    <span class="label-subtitle">→ For priority follow-up on your strategy session</span>
+                </label>
+                <input type="tel" id="phone" placeholder="+60 12 345 6789">
             </div>
             
             <div class="form-group">
@@ -665,7 +663,7 @@
                 </label>
                 <div class="option-group">
                     <div class="option-item">
-                        <input type="radio" id="time-12m" name="timeline" value="12 months" required>
+                        <input type="radio" id="time-12m" name="timeline" value="1 year" required>
                         <label for="time-12m">12 months (immediate focus—capital needs deployment now)</label>
                     </div>
                     <div class="option-item">
@@ -691,7 +689,7 @@
                 <h2 style="margin-bottom: 10px;">Building Your Wealth Architecture Masterclass</h2>
                 <p class="hint" style="margin-bottom: 30px;">Analyzing your financial position...</p>
                 <div class="loader"></div>
-                <p class="loading-text">Calculating wealth position • Tax optimization opportunities • Growth potential analysis • Your personalized strategy</p>
+                <p class="loading-text">Calculating wealth position • Tax optimization opportunities • Growth potential analysis</p>
             </div>
         </div>
 
@@ -699,7 +697,7 @@
         <div id="step-5" class="step-content">
             <div class="step-header">
                 <h2 style="color: #dc5a32; font-size: 28px; margin-bottom: 5px;">Your Wealth Architecture Masterclass</h2>
-                <p class="hint">Personalized insights & strategy from June Yoon for <span id="resultName" style="color: #dc5a32;"></span></p>
+                <p class="hint">Personalized insights for <span id="resultName" style="color: #dc5a32;"></span></p>
             </div>
             
             <div class="wealth-summary">
@@ -709,109 +707,62 @@
                 </div>
                 <div class="summary-row">
                     <div class="summary-item">
-                        <div class="summary-label">Annual Income</div>
-                        <div class="summary-value" id="displayAnnualIncome">-</div>
-                    </div>
-                    <div class="summary-item">
                         <div class="summary-label">Monthly Surplus</div>
                         <div class="summary-value" id="displaySurplus">-</div>
                     </div>
-                </div>
-                <div class="summary-row">
                     <div class="summary-item">
                         <div class="summary-label">Liquid Wealth</div>
                         <div class="summary-value" id="displayLiquid">-</div>
                     </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Financial Health Score</div>
-                        <div class="summary-value" id="scoreLabel2">-</div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 15px; font-size: 18px;">Executive Summary</h3>
-                <div id="executiveSummary" style="color: #d0d0d0; line-height: 1.8;"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 15px; font-size: 18px;">Your Financial Position</h3>
-                <div id="positionAnalysis" style="color: #d0d0d0; line-height: 1.8;"></div>
-            </div>
-            
-            <div class="wealth-summary" style="border-left: 4px solid #dc5a32;">
-                <h3 style="color: #dc5a32; margin-bottom: 20px; font-size: 18px;">🔥 Income Generation Strategy</h3>
-                <div id="incomeGenerationContent"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">💰 Capital Deployment Blueprint</h3>
-                <div id="capitalDeploymentContent"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">📊 Tax Optimization Opportunities</h3>
-                <div id="taxOptimizationContent"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">⚡ Your 90-Day Action Blueprint</h3>
-                <div id="actionPlanContent"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">📈 Wealth Multiplication Projections</h3>
-                <div class="summary-row">
-                    <div class="summary-item">
-                        <div class="summary-label">90-Day Target</div>
-                        <div class="summary-value" id="projection90">-</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">12-Month Target</div>
-                        <div class="summary-value" id="projection12m">-</div>
-                    </div>
                 </div>
                 <div class="summary-row">
                     <div class="summary-item">
-                        <div class="summary-label">5-Year Vision</div>
-                        <div class="summary-value" id="projection5yr">-</div>
+                        <div class="summary-label">Annual Potential</div>
+                        <div class="summary-value" id="displayAnnual">-</div>
                     </div>
                     <div class="summary-item">
-                        <div class="summary-label">Income Growth Path</div>
-                        <div class="summary-value" id="incomeGrowth">-</div>
+                        <div class="summary-label">5-Year Projection</div>
+                        <div class="summary-value" id="display5Year">-</div>
                     </div>
                 </div>
             </div>
             
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">🛡️ Risk Assessment & Wealth Protection</h3>
-                <div id="riskContent"></div>
-            </div>
-            
-            <div class="wealth-summary">
-                <h3 style="color: #ffffff; margin-bottom: 20px; font-size: 18px;">📊 Your Position vs. High-Income Peers</h3>
-                <div id="benchmarkContent"></div>
-            </div>
+            <div id="insightsContainer"></div>
             
             <div class="cta-box">
-                <h3>Your Next Step: The Wealth Strategy Masterclass Call</h3>
+                <h3>Your Next Step: The Wealth Strategy Call</h3>
                 <p>This report identifies your opportunities. The call maps your personalized 90-day action plan with specific income generation tactics, tax strategies, and capital deployment recommendations.</p>
-                <p style="color: #dc5a32; font-weight: 600; margin-bottom: 15px;">What You'll Get:</p>
-                <ul style="text-align: left; color: #d0d0d0; font-size: 14px; margin: 0 auto 20px; width: fit-content; line-height: 2;">
-                    <li>✓ 2-3 specific income generation opportunities for your situation</li>
-                    <li>✓ Exact tax strategies saving you $8K-$150K+ annually</li>
-                    <li>✓ Capital deployment roadmap (monthly allocation)</li>
-                    <li>✓ 90-day action checklist with exact next steps</li>
-                </ul>
-                <button class="btn-primary" style="width: auto; padding: 14px 40px; font-size: 14px;" onclick="scheduleCall()">Schedule Your Strategy Masterclass Call</button>
-                <p style="font-size: 12px; color: #666; margin-top: 15px;">Investment: Free • Duration: 45 minutes • Outcome: Personalized wealth multiplication strategy</p>
+                <button class="btn-primary" style="width: auto; padding: 14px 40px; font-size: 14px;" onclick="scheduleCall()">Schedule Your Strategy Call</button>
+                <p style="font-size: 12px; color: #666; margin-top: 15px;">Investment: Free • Duration: 45 minutes</p>
             </div>
         </div>
     </div>
 
     <script>
+        // ============================================
+        // CONFIGURATION
+        // ============================================
+        const CONFIG = {
+            ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/3435365/un7xapb/',
+            CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint'
+        };
+        
+        const CURRENCY_SYMBOLS = {
+            'USD': '$', 'CAD': 'C$', 'GBP': '£', 'AUD': 'A$', 'SGD': 'S$',
+            'HKD': 'HK$', 'AED': 'AED', 'CHF': 'CHF', 'EUR': '€', 'JPY': '¥',
+            'INR': '₹', 'BRL': 'R$', 'MXN': '$', 'NZD': 'NZ$', 'SEK': 'kr',
+            'MYR': 'RM', 'IDR': 'Rp', 'THB': '฿', 'PHP': '₱', 'VND': '₫',
+            'KRW': '₩', 'TWD': 'NT$', 'CNY': '¥'
+        };
+        
         let currentStep = 0;
         const totalSteps = 6;
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+            updateCurrencyOptions();
+        });
         
         function updateProgress() {
             const progress = ((currentStep + 1) / totalSteps) * 100;
@@ -821,14 +772,10 @@
         function showStep(step) {
             if (step < 0 || step >= totalSteps) return;
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById(`step-${step}`).classList.add('active');
+            document.getElementById('step-' + step).classList.add('active');
             
             const heroSection = document.getElementById('heroSection');
-            if (step === 0) {
-                heroSection.style.display = 'block';
-            } else {
-                heroSection.style.display = 'none';
-            }
+            heroSection.style.display = step === 0 ? 'block' : 'none';
             
             currentStep = step;
             updateProgress();
@@ -844,15 +791,15 @@
         }
         
         function updateCurrencyOptions() {
-            const country = document.getElementById('country').value;
-            const currencyMap = {
-                'US': 'USD', 'CA': 'CAD', 'GB': 'GBP', 'AU': 'AUD', 'SG': 'SGD',
-                'HK': 'HKD', 'AE': 'AED', 'CH': 'CHF', 'DE': 'EUR', 'FR': 'EUR',
-                'NL': 'EUR', 'JP': 'JPY', 'IN': 'INR', 'BR': 'BRL', 'MX': 'MXN',
-                'NZ': 'NZD', 'IE': 'EUR', 'SE': 'SEK', 'MY': 'MYR'
-            };
-            if (currencyMap[country]) {
-                document.getElementById('currency').value = currencyMap[country];
+            const countrySelect = document.getElementById('country');
+            const currencySelect = document.getElementById('currency');
+            const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+            
+            if (selectedOption && selectedOption.value) {
+                const currency = selectedOption.getAttribute('data-currency');
+                if (currency) {
+                    currencySelect.value = currency;
+                }
             }
         }
         
@@ -862,198 +809,132 @@
             const income = document.getElementById('incomeLevel').value;
             const surplus = parseFloat(document.getElementById('monthlySurplus').value) || 0;
             const liquid = parseFloat(document.getElementById('liquidWealth').value) || 0;
-            const firstName = document.getElementById('firstName').value.trim() || 'Achiever';
+            const firstName = document.getElementById('firstName').value.trim();
             const email = document.getElementById('email').value.trim();
+            const phone = document.getElementById('phone').value.trim();
             
-            if (!country || !currency || !income || !surplus || !liquid || !firstName || !email) {
-                alert('Please complete all fields');
+            if (!firstName || !email) {
+                alert('Please enter your name and email');
                 return;
             }
             
+            // Show loading
             showStep(4);
             
             const status = document.querySelector('input[name="status"]:checked')?.value || '';
             const concern = document.querySelector('input[name="concern"]:checked')?.value || '';
             const timeline = document.querySelector('input[name="timeline"]:checked')?.value || '';
             
+            // Prepare data for Airtable (via Zapier)
             const formData = {
-                country, currency, firstName, email,
-                incomeLevel: income, monthlySurplus: surplus, liquidWealth: liquid,
-                status, primaryConcern: concern, timeline,
-                submittedAt: new Date().toISOString()
+                'First Name': firstName,
+                'Email': email,
+                'Phone': phone,
+                'Country': getCountryName(country),
+                'Currency': currency,
+                'Income Level': income,
+                'Monthly Surplus': surplus,
+                'Liquid Assets': liquid,
+                'Professional Status': status,
+                'Primary Concern': concern,
+                'Timeline': timeline,
+                'Wealth Score': calculateWealthScore(surplus, liquid),
+                'Created At': new Date().toISOString()
             };
             
-            sendToActiveCampaign(formData);
+            // Send to Zapier webhook
+            sendToZapier(formData);
             
-            setTimeout(() => {
-                try {
-                    showStep(5);
-                    generateAllContent(firstName, surplus, liquid, income, currency, status, concern, timeline, country);
-                } catch(error) {
-                    console.error('Report error:', error);
-                    alert('Report generated partially. Check console.');
-                }
-            }, 2000);
+            // Generate report after delay
+            setTimeout(function() {
+                showStep(5);
+                generateAllContent(firstName, surplus, liquid, income, currency, status, concern, timeline);
+            }, 2500);
+        }
+        
+        function getCountryName(code) {
+            const countrySelect = document.getElementById('country');
+            const option = countrySelect.querySelector('option[value="' + code + '"]');
+            return option ? option.textContent.replace(/^[^\s]+\s/, '') : code;
         }
         
         function calculateWealthScore(surplus, liquid) {
-            try {
-                const baseScore = Math.min((surplus / 100) + (liquid / 10000), 100);
-                return Math.round(baseScore);
-            } catch(e) {
-                return 65;
-            }
+            let score = 0;
+            score += Math.min(surplus / 200, 40);
+            score += Math.min(liquid / 5000, 40);
+            score += 20;
+            return Math.round(Math.min(score, 100));
         }
         
-        function sendToActiveCampaign(data) {
-            try {
-                const payload = {
-                    email: data.email, firstName: data.firstName,
-                    country: data.country, currency: data.currency,
-                    incomeLevel: data.incomeLevel, monthlySurplus: data.monthlySurplus,
-                    liquidWealth: data.liquidWealth, employmentStatus: data.status,
-                    primaryConcern: data.primaryConcern, wealthTimeline: data.timeline,
-                    leadSource: 'Wealth Architecture Masterclass', presenter: 'June Yoon',
-                    submittedAt: data.submittedAt
-                };
-                
-                fetch('https://hooks.zapier.com/hooks/catch/3435365/un7xapb/', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                }).catch(err => {
-                    console.log('AC sync note:', err.message);
-                });
-            } catch(e) {
-                console.log('AC sync skipped');
-            }
+        // ============================================
+        // FIXED: Removed mode: 'no-cors' to allow 
+        // JSON body to be sent properly to Zapier
+        // ============================================
+        function sendToZapier(data) {
+            fetch(CONFIG.ZAPIER_WEBHOOK, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            }).then(function(response) {
+                console.log('✅ Data sent to Zapier successfully', response);
+            }).catch(function(err) {
+                console.error('❌ Zapier error:', err);
+            });
         }
         
-        function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline, country) {
-            try {
-                const incomeRanges = { '100-250': 150000, '250-500': 375000, '500-1m': 750000, '1m+': 1500000 };
-                const annualIncome = incomeRanges[income] || 150000;
-                const wealthScore = calculateWealthScore(surplus, liquid);
-                const annualSurplus = surplus * 12;
-                const savingsRate = (annualSurplus / annualIncome * 100).toFixed(1);
-                
-                const els = {
-                    resultName: document.getElementById('resultName'),
-                    displayAnnualIncome: document.getElementById('displayAnnualIncome'),
-                    displaySurplus: document.getElementById('displaySurplus'),
-                    displayLiquid: document.getElementById('displayLiquid'),
-                    scoreValue: document.getElementById('scoreValue'),
-                    scoreLabel2: document.getElementById('scoreLabel2'),
-                    executiveSummary: document.getElementById('executiveSummary'),
-                    positionAnalysis: document.getElementById('positionAnalysis'),
-                    incomeGenerationContent: document.getElementById('incomeGenerationContent'),
-                    capitalDeploymentContent: document.getElementById('capitalDeploymentContent'),
-                    taxOptimizationContent: document.getElementById('taxOptimizationContent'),
-                    actionPlanContent: document.getElementById('actionPlanContent'),
-                    projection90: document.getElementById('projection90'),
-                    projection12m: document.getElementById('projection12m'),
-                    projection5yr: document.getElementById('projection5yr'),
-                    incomeGrowth: document.getElementById('incomeGrowth'),
-                    riskContent: document.getElementById('riskContent'),
-                    benchmarkContent: document.getElementById('benchmarkContent')
-                };
-                
-                if (els.resultName) els.resultName.textContent = name;
-                if (els.displayAnnualIncome) els.displayAnnualIncome.textContent = `${currency} ${Math.round(annualIncome).toLocaleString()}`;
-                if (els.displaySurplus) els.displaySurplus.textContent = `${currency} ${Math.round(surplus).toLocaleString()}`;
-                if (els.displayLiquid) els.displayLiquid.textContent = `${currency} ${Math.round(liquid).toLocaleString()}`;
-                if (els.scoreValue) els.scoreValue.textContent = wealthScore;
-                if (els.scoreLabel2) els.scoreLabel2.textContent = wealthScore >= 75 ? 'Excellent' : wealthScore >= 50 ? 'Good' : 'Building';
-                
-                if (els.executiveSummary) {
-                    let summary = `<strong>Dear ${name},</strong><br><br>`;
-                    if (status === 'Business Owner') {
-                        summary += `You're operating at ${currency} ${Math.round(annualIncome).toLocaleString()} annual income as an entrepreneur. Most business owners leave ${currency} ${Math.round(annualIncome * 0.20).toLocaleString()}-${Math.round(annualIncome * 0.30).toLocaleString()} on the table annually through suboptimal structures.`;
-                    } else if (status === 'Professional') {
-                        summary += `As a high-earning consultant earning ${currency} ${Math.round(annualIncome).toLocaleString()}, your path to 7-figures is: (1) Productize your expertise, (2) Implement tax structures, (3) Build alternative income streams.`;
-                    } else {
-                        summary += `Your W-2 income of ${currency} ${Math.round(annualIncome).toLocaleString()} is stable. Your wealth strategy: (1) Launch side income, (2) Tax-optimized investing, (3) Build scalable assets.`;
-                    }
-                    summary += `<br><br>With strategic deployment, your ${currency} ${Math.round(annualSurplus).toLocaleString()} annual surplus becomes ${currency} ${Math.round(annualSurplus * 5 * 1.25).toLocaleString()} in 5 years.`;
-                    els.executiveSummary.innerHTML = summary;
-                }
-                
-                if (els.positionAnalysis) {
-                    const liquidMonths = liquid / (annualIncome / 12);
-                    let analysis = `<strong>Cash Flow:</strong> You're capturing ${savingsRate}% of income—excellent.<br><br><strong>Financial Cushion:</strong> ${liquidMonths.toFixed(1)} months of expenses. ${liquidMonths >= 6 ? '✓ Well-positioned for investment.' : '⚠ Build to 6-12 months before aggressive investing.'}`;
-                    els.positionAnalysis.innerHTML = analysis;
-                }
-                
-                if (els.incomeGenerationContent) {
-                    let content = '';
-                    if (status === 'Business Owner') {
-                        content = `<div class="insight-card"><h4>Strategy 1: Scale Core Business</h4><p>Goal: +20-50% revenue in 12 months = ${currency} ${Math.round(annualIncome * 0.25).toLocaleString()} additional income.</p></div><div class="insight-card"><h4>Strategy 2: Adjacent Revenue Stream</h4><p>Goal: ${currency} ${Math.round(annualIncome * 0.20).toLocaleString()} additional income through group programs, courses, licensing.</p></div><div class="insight-card"><h4>Strategy 3: Entity Optimization</h4><p>Goal: Save ${currency} ${Math.round(annualIncome * 0.20).toLocaleString()} annually in taxes.</p></div>`;
-                    } else if (status === 'Professional') {
-                        content = `<div class="insight-card"><h4>Strategy 1: Productize Expertise</h4><p>Transform hourly work into scalable service = ${currency} ${Math.round(annualIncome * 0.35).toLocaleString()} additional income.</p></div><div class="insight-card"><h4>Strategy 2: Passive Income</h4><p>Build ${currency} ${Math.round(annualSurplus * 0.40).toLocaleString()} annual passive income through products, courses, partnerships.</p></div><div class="insight-card"><h4>Strategy 3: Tax Structure</h4><p>Save ${currency} ${Math.round(annualIncome * 0.15).toLocaleString()} annually through smart entity structure.</p></div>`;
-                    } else {
-                        content = `<div class="insight-card"><h4>Strategy 1: Launch Side Income</h4><p>Generate ${currency} ${Math.round(annualSurplus).toLocaleString()}-${Math.round(annualSurplus * 2).toLocaleString()} additional annual income.</p></div><div class="insight-card"><h4>Strategy 2: Career Optimization</h4><p>Increase W-2 by 15-30% in 24 months = ${currency} ${Math.round(annualIncome * 0.20).toLocaleString()} additional.</p></div><div class="insight-card"><h4>Strategy 3: Tax Advantages</h4><p>Save ${currency} ${Math.round(annualIncome * 0.12).toLocaleString()} annually.</p></div>`;
-                    }
-                    els.incomeGenerationContent.innerHTML = content;
-                }
-                
-                if (els.capitalDeploymentContent) {
-                    let content = `<div class="insight-card"><h4>Monthly Allocation: ${currency} ${Math.round(surplus).toLocaleString()}</h4><div style="background:rgba(220,90,50,0.05);padding:15px;border-radius:8px;"><div style="display:flex;justify-content:space-between;margin:8px 0;"><span>60% - Investments</span><span style="color:#dc5a32;font-weight:600;">${currency} ${Math.round(surplus*0.6).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin:8px 0;"><span>20% - Income Growth</span><span style="color:#dc5a32;font-weight:600;">${currency} ${Math.round(surplus*0.2).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin:8px 0;"><span>15% - Tax Structures</span><span style="color:#dc5a32;font-weight:600;">${currency} ${Math.round(surplus*0.15).toLocaleString()}</span></div><div style="display:flex;justify-content:space-between;margin:8px 0;"><span>5% - Experimentation</span><span style="color:#dc5a32;font-weight:600;">${currency} ${Math.round(surplus*0.05).toLocaleString()}</span></div></div></div>`;
-                    els.capitalDeploymentContent.innerHTML = content;
-                }
-                
-                if (els.taxOptimizationContent) {
-                    const taxSavings = status === 'Business Owner' ? annualIncome * 0.20 : annualIncome * 0.12;
-                    let content = `<div class="insight-card"><h4>Tax Opportunity</h4><p>You're likely overpaying by <strong>${currency} ${Math.round(taxSavings).toLocaleString()}-${Math.round(taxSavings * 1.3).toLocaleString()} annually.</strong></p></div>`;
-                    if (status === 'Business Owner') {
-                        content += `<div class="insight-card"><h4>Action: S-Corp Evaluation</h4><p>Estimated savings: ${currency} ${Math.round(annualIncome * 0.12).toLocaleString()}/year.</p></div>`;
-                    } else {
-                        content += `<div class="insight-card"><h4>Action: Retirement Maximization</h4><p>Estimated savings: ${currency} ${Math.round(annualIncome * 0.08).toLocaleString()}/year.</p></div>`;
-                    }
-                    els.taxOptimizationContent.innerHTML = content;
-                }
-                
-                if (els.actionPlanContent) {
-                    let content = `<div class="insight-card"><h4>Days 1-7: Setup</h4><p>☐ Tax strategy session ☐ Entity review ☐ Max retirement ☐ Research opportunities</p></div><div class="insight-card"><h4>Days 8-30: Launch</h4><p>☐ Identify income opportunities ☐ Create offering ☐ Setup tracking ☐ Begin marketing</p></div><div class="insight-card"><h4>Days 31-90: Execute</h4><p>☐ Launch income stream ☐ Deploy capital ☐ Track metrics ☐ Quarterly review</p></div>`;
-                    els.actionPlanContent.innerHTML = content;
-                }
-                
-                if (els.projection90) {
-                    const proj90 = liquid + (surplus * 3);
-                    const proj12m = liquid + (surplus * 12) + (annualIncome * 0.10);
-                    const proj5yr = liquid + (annualSurplus * 60 * 1.08) + (annualIncome * 0.50);
-                    els.projection90.textContent = `${currency} ${Math.round(proj90).toLocaleString()}`;
-                    if (els.projection12m) els.projection12m.textContent = `${currency} ${Math.round(proj12m).toLocaleString()}`;
-                    if (els.projection5yr) els.projection5yr.textContent = `${currency} ${Math.round(proj5yr).toLocaleString()}`;
-                    if (els.incomeGrowth) els.incomeGrowth.textContent = `${Math.round(annualIncome).toLocaleString()} → ${Math.round(annualIncome * 1.25).toLocaleString()} (Y1)`;
-                }
-                
-                if (els.riskContent) {
-                    let content = `<div class="insight-card"><h4>Key Risks</h4><p>• Single income source<br>• Tax inefficiency<br>• Asset protection gaps<br>• Wealth plateau without income growth</p></div><div class="insight-card"><h4>90-Day Priorities</h4><p>1. <strong>Entity Structure</strong> (HIGH)<br>2. <strong>Income Diversification</strong> (CRITICAL)<br>3. <strong>Tax Optimization</strong> (HIGH)</p></div>`;
-                    els.riskContent.innerHTML = content;
-                }
-                
-                if (els.benchmarkContent) {
-                    let content = `<div class="insight-card"><h4>Savings Rate: ${savingsRate}%</h4><p>Top 5% exceed 20%. You're in the ${savingsRate >= 20 ? 'elite range' : 'strong position'}.</p></div><div class="insight-card"><h4>Your Advantage</h4><p>2-3 strategic income streams could 2-3x your wealth velocity within 24 months.</p></div>`;
-                    els.benchmarkContent.innerHTML = content;
-                }
-                
-            } catch(error) {
-                console.error('Report error:', error);
+        function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
+            const symbol = CURRENCY_SYMBOLS[currency] || currency;
+            const annualSurplus = surplus * 12;
+            const projection5yr = liquid + (annualSurplus * 5 * 1.08);
+            const wealthScore = calculateWealthScore(surplus, liquid);
+            
+            // Update display values
+            document.getElementById('resultName').textContent = name;
+            document.getElementById('scoreValue').textContent = wealthScore;
+            document.getElementById('scoreLabel').textContent = getScoreLabel(wealthScore);
+            document.getElementById('displaySurplus').textContent = symbol + surplus.toLocaleString();
+            document.getElementById('displayLiquid').textContent = symbol + liquid.toLocaleString();
+            document.getElementById('displayAnnual').textContent = symbol + annualSurplus.toLocaleString();
+            document.getElementById('display5Year').textContent = symbol + Math.round(projection5yr).toLocaleString();
+            
+            // Generate insights
+            let html = '';
+            
+            if (concern === 'Tax Optimization') {
+                html += '<div class="insight-card"><h4>💰 Tax Efficiency Opportunity</h4><p>With ' + symbol + annualSurplus.toLocaleString() + ' annual surplus, strategic tax structures could save ' + (status === 'Business Owner' ? '15-25%' : '8-15%') + ' annually. Consider entity optimization and strategic deferrals.</p></div>';
             }
+            
+            if (concern === 'Capital Deployment') {
+                html += '<div class="insight-card"><h4>📊 Deployment Strategy</h4><p>Your ' + symbol + surplus.toLocaleString() + ' monthly capacity positions you for institutional investment opportunities. Recommend: diversified portfolio + alternate assets.</p></div>';
+            }
+            
+            if (concern === 'Wealth Protection') {
+                html += '<div class="insight-card"><h4>🛡️ Wealth Architecture</h4><p>Assets of ' + symbol + liquid.toLocaleString() + ' require multi-layer protection strategy. Review: entity structure, insurance layers, asset diversification.</p></div>';
+            }
+            
+            if (concern === 'Legacy Planning') {
+                html += '<div class="insight-card"><h4>🏛️ Generational Wealth</h4><p>Building legacy wealth requires strategic structures beyond personal investing. Consider trusts, family entities, and succession planning.</p></div>';
+            }
+            
+            html += '<div class="insight-card"><h4>⏱️ Your ' + timeline + ' Wealth Projection</h4><p>Deploying your monthly surplus strategically with 8% compounded growth projects wealth of ' + symbol + Math.round(projection5yr).toLocaleString() + ' within 5 years.</p></div>';
+            
+            html += '<div class="insight-card"><h4>🎯 The Wealth Multiplier Principle</h4><p><strong>Key Insight:</strong> Your wealth velocity is determined by income level, capital deployment strategy, and compounding timeframe. Elite builders use systematic structures + alternative assets to multiply results 2-3x faster.</p></div>';
+            
+            document.getElementById('insightsContainer').innerHTML = html;
+        }
+        
+        function getScoreLabel(score) {
+            if (score >= 85) return 'Elite Wealth Builder';
+            if (score >= 70) return 'Strong Wealth Position';
+            if (score >= 50) return 'Building Momentum';
+            return 'Emerging Accumulator';
         }
         
         function scheduleCall() {
             const email = document.getElementById('email').value;
-            if (!email) {
-                alert('Please enter your email first');
-                return;
-            }
-            window.open(`https://calendly.com/your-scheduler?email=${encodeURIComponent(email)}`, '_blank');
+            const name = document.getElementById('firstName').value;
+            window.open(CONFIG.CALENDLY_URL + '?email=' + encodeURIComponent(email) + '&name=' + encodeURIComponent(name), '_blank');
         }
-        
-        window.addEventListener('DOMContentLoaded', () => {
-            updateProgress();
-        });
     </script>
 </body>
 </html>
