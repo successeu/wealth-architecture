@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -1377,7 +1376,9 @@
         // ============================================
         const CONFIG = {
             ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/3435365/u72kcri/',
-            CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint'
+            CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint',
+            // API tokens are now stored securely in Vercel Environment Variables
+            // PDF upload is handled by /api/upload-pdf serverless function
         };
         
         const CURRENCY_SYMBOLS = {
@@ -1651,6 +1652,7 @@
                 'Primary Concern': concern,
                 'Timeline': timeline,
                 'Wealth Score': calculateWealthScore(surplus, liquid),
+                'Score Label': getScoreLabelForZapier(calculateWealthScore(surplus, liquid)),
                 'Created At': new Date().toISOString()
             };
             
@@ -1676,6 +1678,13 @@
             score += Math.min(liquid / 5000, 40);
             score += 20;
             return Math.round(Math.min(score, 100));
+        }
+        
+        function getScoreLabelForZapier(score) {
+            if (score >= 85) return 'Elite Wealth Builder';
+            if (score >= 70) return 'Strong Wealth Position';
+            if (score >= 50) return 'Building Momentum';
+            return 'Emerging Accumulator';
         }
         
         // ============================================
@@ -2330,8 +2339,58 @@ June Yoon | Wealth Architecture Strategist`;
             
             addFooter(3, 3);
             
-            // Save the PDF
-            doc.save(`Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`);
+            // Generate PDF blob for Airtable upload
+            const pdfBlob = doc.output('blob');
+            const fileName = `Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`;
+            
+            // Save locally for user
+            doc.save(fileName);
+            
+            // Upload to Airtable
+            uploadPDFToAirtable(pdfBlob, fileName);
+        }
+        
+        async function uploadPDFToAirtable(pdfBlob, fileName) {
+            try {
+                const email = document.getElementById('email').value;
+                
+                console.log('📤 Uploading PDF via secure API...');
+                
+                // Convert blob to base64
+                const reader = new FileReader();
+                reader.onloadend = async function() {
+                    const base64Data = reader.result.split(',')[1];
+                    
+                    // Call secure API route (tokens stored in Vercel Environment Variables)
+                    const response = await fetch('/api/upload-pdf', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            pdfBase64: base64Data,
+                            fileName: fileName,
+                            email: email
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        console.log('✅ PDF uploaded successfully:', result.pdfUrl);
+                        if (result.recordId) {
+                            console.log('✅ Attached to Airtable record:', result.recordId);
+                        }
+                    } else {
+                        console.error('❌ Upload failed:', result.error);
+                    }
+                };
+                reader.readAsDataURL(pdfBlob);
+                
+            } catch (error) {
+                console.error('❌ Upload error:', error);
+            }
+        }
         }
         
         function getScoreLabel(score) {
