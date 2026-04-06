@@ -2375,11 +2375,14 @@ June Yoon | Wealth Architecture Strategist`;
                     });
                     
                     const result = await response.json();
+                    console.log('📋 API Response:', result);
                     
                     if (result.success) {
                         console.log('✅ PDF uploaded successfully:', result.pdfUrl);
                         if (result.recordId) {
                             console.log('✅ Attached to Airtable record:', result.recordId);
+                        } else {
+                            console.log('⚠️ PDF uploaded but not attached to Airtable:', result.message);
                         }
                     } else {
                         console.error('❌ Upload failed:', result.error);
