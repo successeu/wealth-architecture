@@ -1,6 +1,41 @@
 // api/airtable.js
 // Vercel Serverless Function - Secure Airtable Proxy
-// For wealth-architecture table
+
+export default async function handler(req, res) {
+  
+  // ┌─────────────────────────────────────────────────────────────┐
+  // │  CORS CONFIGURATION - MUST BE FIRST                        │
+  // │  Add your allowed origins here                             │
+  // └─────────────────────────────────────────────────────────────┘
+  
+  const allowedOrigins = [
+    'https://wealth-architecture.vercel.app',
+    'https://wealth-architecture-qnpg6fbe3-sreu.vercel.app'
+  ];
+
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  // Handle preflight OPTIONS request
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
+  // ┌─────────────────────────────────────────────────────────────┐
+  // │  REST OF YOUR CODE GOES BELOW                              │
+  // └─────────────────────────────────────────────────────────────┘
+
+  // Only allow POST requests
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
+  // ... rest of the function continues here
+}
 
 export default async function handler(req, res) {
   // CORS headers - restricted to allowed origins
