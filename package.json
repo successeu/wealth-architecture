@@ -2,11 +2,11 @@
   "name": "wealth-architecture-analyzer",
   "version": "2.0.0",
   "description": "Premium lead magnet for high-income earners - personalized wealth architecture reports",
-  "main": "api/server.js",
+  "main": "api/airtable.js",
   "scripts": {
-    "dev": "vercel dev",
+    "dev": "echo \"Use vercel dev for local development.\"",
     "build": "echo Build complete",
-    "start": "node api/server.js"
+    "start": "vercel dev"
   },
   "keywords": [
     "wealth",
@@ -17,11 +17,11 @@
     "blueprint",
     "success-resources"
   ],
-  "author": "Your Name",
+  "author": "June Yoon",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/YOUR-USERNAME/wealth-architecture-analyzer.git"
+    "url": "https://github.com/successeu/wealth-architecture.git"
   },
   "dependencies": {
     "express": "^4.18.2",
