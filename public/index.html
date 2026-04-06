@@ -743,7 +743,9 @@
         // CONFIGURATION
         // ============================================
         const CONFIG = {
-            ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/3435365/un7xapb/',
+            AIRTABLE_BASE_ID: 'appTPbyctYeQFvd0N',
+            AIRTABLE_TABLE_NAME: 'wealth-architecture',
+            AIRTABLE_API_KEY: 'patIddR9AZrbef4X1.817b68af81c06871de0805e19485f49d0075eae049e061bb49711849233c016f',
             CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint'
         };
         
@@ -842,8 +844,8 @@
                 'Created At': new Date().toISOString()
             };
             
-            // Send to Zapier webhook
-            sendToZapier(formData);
+            // Send directly to Airtable
+            sendToAirtable(formData);
             
             // Generate report after delay
             setTimeout(function() {
@@ -867,18 +869,49 @@
         }
         
         // ============================================
-        // FIXED: Removed mode: 'no-cors' to allow 
-        // JSON body to be sent properly to Zapier
+        // DIRECT AIRTABLE API INTEGRATION
         // ============================================
-        function sendToZapier(data) {
-            fetch(CONFIG.ZAPIER_WEBHOOK, {
+        function sendToAirtable(data) {
+            const url = `https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/${encodeURIComponent(CONFIG.AIRTABLE_TABLE_NAME)}`;
+            
+            // Map form data to Airtable field names
+            const airtableRecord = {
+                fields: {
+                    'First Name': data['First Name'],
+                    'Email': data['Email'],
+                    'Phone': data['Phone'] || '',
+                    'Country': data['Country'],
+                    'Currency': data['Currency'],
+                    'Income Level': data['Income Level'],
+                    'Monthly Surplus': data['Monthly Surplus'],
+                    'Liquid Assets': data['Liquid Assets'],
+                    'Professional Status': data['Professional Status'],
+                    'Primary Concern': data['Primary Concern'],
+                    'Timeline': data['Timeline'],
+                    'Wealth Score': data['Wealth Score'],
+                    'Created At': data['Created At']
+                }
+            };
+            
+            fetch(url, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
-            }).then(function(response) {
-                console.log('✅ Data sent to Zapier successfully', response);
-            }).catch(function(err) {
-                console.error('❌ Zapier error:', err);
+                headers: {
+                    'Authorization': `Bearer ${CONFIG.AIRTABLE_API_KEY}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(airtableRecord)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw err; });
+                }
+                return response.json();
+            })
+            .then(result => {
+                console.log('✅ Lead saved to Airtable:', result.id);
+            })
+            .catch(err => {
+                console.error('❌ Airtable error:', err);
             });
         }
         
