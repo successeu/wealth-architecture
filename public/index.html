@@ -11,8 +11,8 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', sans-serif;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d1f0d 50%, #1a1a1a 100%);
-            color: #ffffff;
+            background: #f9f9f9;
+            color: #1a1a1a;
             min-height: 100vh;
             padding: 20px;
         }
@@ -25,32 +25,119 @@
             align-items: center;
             padding: 20px 0;
             margin-bottom: 30px;
-            border-bottom: 1px solid rgba(220, 90, 50, 0.2);
+            border-bottom: 1px solid rgba(255, 129, 32, 0.3);
+        }
+        
+        .sr-header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .sr-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid #ff8120;
+            object-fit: cover;
+            object-position: center top;
         }
         
         .sr-logo {
             font-size: 13px;
-            color: #888;
+            color: #555;
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 600;
         }
         
-        .sr-logo span { color: #dc5a32; }
+        .sr-logo span { color: #ff8120; }
         
-        .progress-bar {
-            width: 100%;
-            height: 4px;
-            background: rgba(220, 90, 50, 0.1);
-            border-radius: 2px;
-            margin-bottom: 40px;
+        .step-indicators {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 50px;
+            padding: 0 20px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: center;
+        }
+        
+        .step-dot {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid rgba(255, 129, 32, 0.3);
+            background: #ffffff;
+            color: #999;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        
+        .step-line {
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, rgba(255, 129, 32, 0.2) 0%, rgba(255, 129, 32, 0.2) 100%);
+            position: relative;
             overflow: hidden;
         }
         
-        .progress-fill {
+        .step-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
             height: 100%;
-            background: linear-gradient(90deg, #dc5a32 0%, #ff7a4a 100%);
-            transition: width 0.4s ease;
+            background: linear-gradient(90deg, #ff8120 0%, #ffb366 100%);
+            transition: width 0.5s ease;
+        }
+        
+        .step-line.filled::after {
+            width: 100%;
+        }
+        
+        .step-dot.active {
+            background: linear-gradient(135deg, #ff8120 0%, #ffb366 50%, #ff8120 100%);
+            border: 2px solid rgba(255, 200, 150, 0.6);
+            color: #fff;
+            box-shadow: 0 0 25px rgba(255, 129, 32, 0.5), 
+                        0 0 50px rgba(255, 129, 32, 0.2),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            transform: scale(1.1);
+        }
+        
+        .step-dot.completed {
+            background: linear-gradient(135deg, #ff8120 0%, #e06b10 100%);
+            border: 2px solid #ff8120;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(255, 129, 32, 0.3);
+        }
+        
+        .step-dot.completed::after {
+            content: '✓';
+            font-size: 18px;
+            font-weight: 300;
+        }
+        
+        .step-dot.completed span {
+            display: none;
+        }
+        
+        .step-dot:hover:not(.active):not(.completed) {
+            border-color: rgba(255, 129, 32, 0.5);
+            color: #666;
         }
         
         .hero-section {
@@ -60,20 +147,21 @@
             align-items: center;
             margin-bottom: 50px;
             padding: 40px;
-            background: linear-gradient(135deg, rgba(220, 90, 50, 0.08) 0%, rgba(220, 90, 50, 0.03) 100%);
-            border: 1px solid rgba(220, 90, 50, 0.15);
+            background: #ffffff;
+            border: 1px solid rgba(255, 129, 32, 0.2);
             border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
         
         .profile-circle {
             width: 280px;
             height: 280px;
-            background: linear-gradient(135deg, #dc5a32 0%, #ff7a4a 100%);
+            background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 20px 60px rgba(220, 90, 50, 0.3);
+            box-shadow: 0 20px 60px rgba(255, 129, 32, 0.3);
         }
         
         .profile-image {
@@ -82,7 +170,7 @@
             background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 270 270"><rect fill="%23333" width="270" height="270"/><text x="50%" y="50%" font-size="14" text-anchor="middle" dominant-baseline="middle" fill="%23666">[Your Photo]</text></svg>');
             background-size: cover;
             border-radius: 50%;
-            border: 4px solid #1a1a1a;
+            border: 4px solid #ffffff;
             object-fit: cover;
         }
         
@@ -92,14 +180,14 @@
             line-height: 1.2;
             margin-bottom: 16px;
             letter-spacing: -1px;
-            color: #ffffff;
+            color: #1a1a1a;
         }
         
-        .hero-content h1 span { color: #dc5a32; }
+        .hero-content h1 span { color: #ff8120; }
         
         .hero-content .subtitle {
             font-size: 18px;
-            color: #d0d0d0;
+            color: #555;
             line-height: 1.6;
             margin-bottom: 24px;
             font-weight: 400;
@@ -110,7 +198,7 @@
             flex-direction: column;
             gap: 8px;
             padding-top: 24px;
-            border-top: 1px solid rgba(220, 90, 50, 0.2);
+            border-top: 1px solid rgba(255, 129, 32, 0.2);
             font-size: 13px;
             color: #888;
         }
@@ -123,13 +211,18 @@
         }
         
         .hero-cred span {
-            color: #dc5a32;
+            color: #ff8120;
             font-weight: 600;
         }
         
         .step-content {
             display: none;
             animation: slideIn 0.4s ease-out;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
         }
         
         .step-content.active { display: block; }
@@ -143,9 +236,9 @@
         
         .step-number {
             display: inline-flex;
-            background: rgba(220, 90, 50, 0.15);
-            border: 1.5px solid rgba(220, 90, 50, 0.3);
-            color: #dc5a32;
+            background: rgba(255, 129, 32, 0.1);
+            border: 1.5px solid rgba(255, 129, 32, 0.3);
+            color: #ff8120;
             width: 50px;
             height: 50px;
             border-radius: 12px;
@@ -160,11 +253,11 @@
             font-size: 32px;
             font-weight: 700;
             margin-bottom: 10px;
-            color: #ffffff;
+            color: #1a1a1a;
         }
         
         .step-header .hint {
-            color: #888;
+            color: #666;
             font-size: 14px;
             font-weight: 400;
         }
@@ -173,7 +266,7 @@
         
         label {
             display: block;
-            color: #ffffff;
+            color: #1a1a1a;
             margin-bottom: 12px;
             font-weight: 600;
             font-size: 15px;
@@ -182,7 +275,7 @@
         
         .label-subtitle {
             display: block;
-            color: #888;
+            color: #666;
             font-size: 13px;
             font-weight: 400;
             margin-top: 4px;
@@ -191,10 +284,10 @@
         input, select, textarea {
             width: 100%;
             padding: 16px 18px;
-            border: 1.5px solid rgba(220, 90, 50, 0.2);
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
             border-radius: 10px;
-            background: rgba(255, 255, 255, 0.03);
-            color: #ffffff;
+            background: #ffffff;
+            color: #1a1a1a;
             font-size: 15px;
             transition: all 0.3s;
             font-family: inherit;
@@ -202,14 +295,14 @@
         
         input:focus, select:focus, textarea:focus {
             outline: none;
-            border-color: #dc5a32;
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 0 0 3px rgba(220, 90, 50, 0.15);
+            border-color: #ff8120;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255, 129, 32, 0.15);
         }
         
-        input::placeholder { color: rgba(255, 255, 255, 0.4); }
+        input::placeholder { color: #999; }
         
-        select option { background: #1a1a1a; color: #fff; }
+        select option { background: #ffffff; color: #1a1a1a; }
         
         .option-group {
             display: grid;
@@ -232,18 +325,25 @@
             align-items: center;
             margin: 0;
             padding: 16px 18px;
-            background: rgba(220, 90, 50, 0.05);
-            border: 1.5px solid rgba(220, 90, 50, 0.15);
+            background: #ffffff;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
             border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s;
             font-weight: 500;
+            color: #333;
+        }
+        
+        .option-item label:hover {
+            border-color: rgba(255, 129, 32, 0.4);
+            box-shadow: 0 2px 8px rgba(255, 129, 32, 0.1);
         }
         
         .option-item input[type="radio"]:checked + label,
         .option-item input[type="checkbox"]:checked + label {
-            background: rgba(220, 90, 50, 0.15);
-            border-color: #dc5a32;
+            background: rgba(255, 129, 32, 0.08);
+            border-color: #ff8120;
+            color: #1a1a1a;
         }
         
         .option-item label:before {
@@ -251,7 +351,7 @@
             display: inline-block;
             width: 18px;
             height: 18px;
-            border: 2px solid #dc5a32;
+            border: 2px solid #ff8120;
             border-radius: 50%;
             margin-right: 12px;
             background: transparent;
@@ -261,8 +361,56 @@
         
         .option-item input[type="radio"]:checked + label:before,
         .option-item input[type="checkbox"]:checked + label:before {
-            background: #dc5a32;
-            box-shadow: inset 0 0 0 2px #1a1a1a;
+            background: #ff8120;
+            box-shadow: inset 0 0 0 2px #ffffff;
+        }
+        
+        /* Currency Prefix Input Layout */
+        .currency-input-group {
+            display: flex;
+            align-items: stretch;
+            gap: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1.5px solid rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            transition: all 0.3s;
+        }
+        
+        .currency-input-group:focus-within {
+            border-color: #ff8120;
+            box-shadow: 0 0 0 3px rgba(255, 129, 32, 0.15);
+        }
+        
+        .currency-prefix {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 18px;
+            background: linear-gradient(135deg, rgba(255, 129, 32, 0.12) 0%, rgba(255, 129, 32, 0.06) 100%);
+            border-right: 1.5px solid rgba(0, 0, 0, 0.1);
+            min-width: 70px;
+        }
+        
+        .currency-prefix span {
+            color: #ff8120;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .currency-input-group input,
+        .currency-input-group select {
+            flex: 1;
+            border: none !important;
+            border-radius: 0 !important;
+            background: transparent !important;
+            margin: 0 !important;
+        }
+        
+        .currency-input-group input:focus,
+        .currency-input-group select:focus {
+            box-shadow: none !important;
         }
         
         .button-group {
@@ -285,33 +433,34 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #dc5a32 0%, #ff7a4a 100%);
+            background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%);
             color: #ffffff;
-            box-shadow: 0 10px 30px rgba(220, 90, 50, 0.3);
+            box-shadow: 0 10px 30px rgba(255, 129, 32, 0.3);
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 15px 40px rgba(220, 90, 50, 0.4);
+            box-shadow: 0 15px 40px rgba(255, 129, 32, 0.4);
         }
         
         .btn-secondary {
-            background: rgba(220, 90, 50, 0.1);
-            color: #dc5a32;
-            border: 1.5px solid rgba(220, 90, 50, 0.3);
+            background: #ffffff;
+            color: #ff8120;
+            border: 1.5px solid rgba(255, 129, 32, 0.4);
         }
         
         .btn-secondary:hover {
-            background: rgba(220, 90, 50, 0.15);
-            border-color: #dc5a32;
+            background: rgba(255, 129, 32, 0.05);
+            border-color: #ff8120;
         }
         
         .wealth-summary {
-            background: linear-gradient(135deg, rgba(220, 90, 50, 0.1) 0%, rgba(220, 90, 50, 0.05) 100%);
-            border: 1.5px solid rgba(220, 90, 50, 0.2);
+            background: #ffffff;
+            border: 1.5px solid rgba(255, 129, 32, 0.2);
             border-radius: 12px;
             padding: 35px;
             margin: 30px 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
         
         .summary-row {
@@ -322,14 +471,14 @@
         }
         
         .summary-item {
-            border-bottom: 1px solid rgba(220, 90, 50, 0.15);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
             padding-bottom: 15px;
         }
         
         .summary-item:last-child { border-bottom: none; }
         
         .summary-label {
-            color: #888;
+            color: #666;
             font-size: 13px;
             text-transform: uppercase;
             letter-spacing: 0.8px;
@@ -337,21 +486,22 @@
         }
         
         .summary-value {
-            color: #dc5a32;
+            color: #ff8120;
             font-size: 24px;
             font-weight: 700;
         }
         
         .insight-card {
-            background: rgba(220, 90, 50, 0.08);
-            border-left: 3px solid #dc5a32;
+            background: #ffffff;
+            border-left: 3px solid #ff8120;
             padding: 20px;
             border-radius: 8px;
             margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
         }
         
         .insight-card h4 {
-            color: #dc5a32;
+            color: #ff8120;
             margin-bottom: 10px;
             font-size: 15px;
             text-transform: uppercase;
@@ -359,7 +509,7 @@
         }
         
         .insight-card p {
-            color: #c0c0c0;
+            color: #555;
             font-size: 14px;
             line-height: 1.6;
         }
@@ -368,19 +518,20 @@
             text-align: center;
             margin-top: 40px;
             padding: 40px 30px;
-            background: linear-gradient(135deg, rgba(220, 90, 50, 0.1) 0%, rgba(220, 90, 50, 0.05) 100%);
+            background: #ffffff;
             border-radius: 12px;
-            border: 1.5px solid rgba(220, 90, 50, 0.2);
+            border: 1.5px solid rgba(255, 129, 32, 0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.06);
         }
         
         .cta-box h3 {
-            color: #ffffff;
+            color: #1a1a1a;
             margin-bottom: 15px;
             font-size: 20px;
         }
         
         .cta-box p {
-            color: #b0b0d0;
+            color: #666;
             margin-bottom: 20px;
             font-size: 15px;
         }
@@ -388,8 +539,8 @@
         .loader {
             width: 50px;
             height: 50px;
-            border: 3px solid rgba(220, 90, 50, 0.2);
-            border-top-color: #dc5a32;
+            border: 3px solid rgba(255, 129, 32, 0.2);
+            border-top-color: #ff8120;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
             margin: 40px auto;
@@ -399,7 +550,7 @@
         
         .loading-text {
             text-align: center;
-            color: #888;
+            color: #666;
             margin-top: 20px;
             font-size: 14px;
         }
@@ -415,38 +566,53 @@
             .hero-content h1 { font-size: 32px; }
             .summary-row { grid-template-columns: 1fr; }
             .button-group { flex-direction: column; }
+            .step-dot { width: 36px; height: 36px; font-size: 13px; }
+            .step-line { width: 30px; }
+            .step-indicators { padding: 0 10px; }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="sr-header">
-            <div class="sr-logo">
-                <span>Success Resources</span> | Premium Financial Training
+            <div class="sr-header-left">
+                <div class="sr-logo">
+                    <span>Success Resources</span> | Premium Financial Training
+                </div>
             </div>
-            <div style="font-size: 13px; color: #888;">Presented by June Yoon</div>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <div style="font-size: 13px; color: #555;">Presented by June Yoon</div>
+                <img src="data:image/png;base64,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" alt="June Yoon" class="sr-avatar">
+            </div>
         </div>
         
-        <div class="progress-bar">
-            <div class="progress-fill" id="progressFill"></div>
+        <div class="step-indicators" id="stepIndicators">
+            <div class="step-item">
+                <div class="step-dot active" id="dot-1"><span>1</span></div>
+                <div class="step-line" id="line-1"></div>
+            </div>
+            <div class="step-item">
+                <div class="step-dot" id="dot-2"><span>2</span></div>
+                <div class="step-line" id="line-2"></div>
+            </div>
+            <div class="step-item">
+                <div class="step-dot" id="dot-3"><span>3</span></div>
+                <div class="step-line" id="line-3"></div>
+            </div>
+            <div class="step-item">
+                <div class="step-dot" id="dot-4"><span>4</span></div>
+                <div class="step-line" id="line-4"></div>
+            </div>
+            <div class="step-item">
+                <div class="step-dot" id="dot-5"><span>5</span></div>
+            </div>
         </div>
         
         <div id="heroSection" style="margin-bottom: 50px;">
-            <div class="hero-section">
-                <div class="hero-image">
-                    <div class="profile-circle">
-                        <div class="profile-image"></div>
-                    </div>
-                </div>
-                <div class="hero-content">
+            <div class="hero-section" style="grid-template-columns: 1fr;">
+                <div class="hero-content" style="text-align: center;">
                     <h1>Master Your <span>Wealth Mindset.</span><br>Scale Your <span>Financial Success.</span></h1>
                     <p class="subtitle">You've built an impressive income. Now let's architect the wealth systems that multiply it. Discover the 3 wealth blueprints separating 6-figure earners from 7-figure wealth builders.</p>
-                    <div class="hero-cred">
-                        <strong>June Yoon</strong>
-                        <span>✓ Wealth Architecture Strategist</span>
-                        <span>✓ 500+ High-Income Professionals Coached</span>
-                        <span>✓ Success Resources | Premier Financial Training</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -465,32 +631,204 @@
                 </label>
                 <select id="country" onchange="updateCurrencyOptions()" required>
                     <option value="">Select your country...</option>
-                    <option value="US" data-currency="USD" data-symbol="$">🇺🇸 United States</option>
-                    <option value="CA" data-currency="CAD" data-symbol="C$">🇨🇦 Canada</option>
-                    <option value="GB" data-currency="GBP" data-symbol="£">🇬🇧 United Kingdom</option>
+                    <option value="AF" data-currency="AFN" data-symbol="؋">🇦🇫 Afghanistan</option>
+                    <option value="AL" data-currency="ALL" data-symbol="L">🇦🇱 Albania</option>
+                    <option value="DZ" data-currency="DZD" data-symbol="د.ج">🇩🇿 Algeria</option>
+                    <option value="AD" data-currency="EUR" data-symbol="€">🇦🇩 Andorra</option>
+                    <option value="AO" data-currency="AOA" data-symbol="Kz">🇦🇴 Angola</option>
+                    <option value="AG" data-currency="XCD" data-symbol="$">🇦🇬 Antigua and Barbuda</option>
+                    <option value="AR" data-currency="ARS" data-symbol="$">🇦🇷 Argentina</option>
+                    <option value="AM" data-currency="AMD" data-symbol="֏">🇦🇲 Armenia</option>
                     <option value="AU" data-currency="AUD" data-symbol="A$">🇦🇺 Australia</option>
-                    <option value="SG" data-currency="SGD" data-symbol="S$">🇸🇬 Singapore</option>
-                    <option value="HK" data-currency="HKD" data-symbol="HK$">🇭🇰 Hong Kong</option>
-                    <option value="AE" data-currency="AED" data-symbol="AED">🇦🇪 United Arab Emirates</option>
-                    <option value="CH" data-currency="CHF" data-symbol="CHF">🇨🇭 Switzerland</option>
-                    <option value="DE" data-currency="EUR" data-symbol="€">🇩🇪 Germany</option>
-                    <option value="FR" data-currency="EUR" data-symbol="€">🇫🇷 France</option>
-                    <option value="NL" data-currency="EUR" data-symbol="€">🇳🇱 Netherlands</option>
-                    <option value="JP" data-currency="JPY" data-symbol="¥">🇯🇵 Japan</option>
-                    <option value="IN" data-currency="INR" data-symbol="₹">🇮🇳 India</option>
+                    <option value="AT" data-currency="EUR" data-symbol="€">🇦🇹 Austria</option>
+                    <option value="AZ" data-currency="AZN" data-symbol="₼">🇦🇿 Azerbaijan</option>
+                    <option value="BS" data-currency="BSD" data-symbol="B$">🇧🇸 Bahamas</option>
+                    <option value="BH" data-currency="BHD" data-symbol=".د.ب">🇧🇭 Bahrain</option>
+                    <option value="BD" data-currency="BDT" data-symbol="৳">🇧🇩 Bangladesh</option>
+                    <option value="BB" data-currency="BBD" data-symbol="Bds$">🇧🇧 Barbados</option>
+                    <option value="BY" data-currency="BYN" data-symbol="Br">🇧🇾 Belarus</option>
+                    <option value="BE" data-currency="EUR" data-symbol="€">🇧🇪 Belgium</option>
+                    <option value="BZ" data-currency="BZD" data-symbol="BZ$">🇧🇿 Belize</option>
+                    <option value="BJ" data-currency="XOF" data-symbol="CFA">🇧🇯 Benin</option>
+                    <option value="BT" data-currency="BTN" data-symbol="Nu.">🇧🇹 Bhutan</option>
+                    <option value="BO" data-currency="BOB" data-symbol="Bs.">🇧🇴 Bolivia</option>
+                    <option value="BA" data-currency="BAM" data-symbol="KM">🇧🇦 Bosnia and Herzegovina</option>
+                    <option value="BW" data-currency="BWP" data-symbol="P">🇧🇼 Botswana</option>
                     <option value="BR" data-currency="BRL" data-symbol="R$">🇧🇷 Brazil</option>
-                    <option value="MX" data-currency="MXN" data-symbol="$">🇲🇽 Mexico</option>
-                    <option value="NZ" data-currency="NZD" data-symbol="NZ$">🇳🇿 New Zealand</option>
-                    <option value="IE" data-currency="EUR" data-symbol="€">🇮🇪 Ireland</option>
-                    <option value="SE" data-currency="SEK" data-symbol="kr">🇸🇪 Sweden</option>
-                    <option value="MY" data-currency="MYR" data-symbol="RM" selected>🇲🇾 Malaysia</option>
-                    <option value="ID" data-currency="IDR" data-symbol="Rp">🇮🇩 Indonesia</option>
-                    <option value="TH" data-currency="THB" data-symbol="฿">🇹🇭 Thailand</option>
-                    <option value="PH" data-currency="PHP" data-symbol="₱">🇵🇭 Philippines</option>
-                    <option value="VN" data-currency="VND" data-symbol="₫">🇻🇳 Vietnam</option>
-                    <option value="KR" data-currency="KRW" data-symbol="₩">🇰🇷 South Korea</option>
-                    <option value="TW" data-currency="TWD" data-symbol="NT$">🇹🇼 Taiwan</option>
+                    <option value="BN" data-currency="BND" data-symbol="B$">🇧🇳 Brunei</option>
+                    <option value="BG" data-currency="BGN" data-symbol="лв">🇧🇬 Bulgaria</option>
+                    <option value="BF" data-currency="XOF" data-symbol="CFA">🇧🇫 Burkina Faso</option>
+                    <option value="KH" data-currency="KHR" data-symbol="៛">🇰🇭 Cambodia</option>
+                    <option value="CM" data-currency="XAF" data-symbol="FCFA">🇨🇲 Cameroon</option>
+                    <option value="CA" data-currency="CAD" data-symbol="C$">🇨🇦 Canada</option>
+                    <option value="CV" data-currency="CVE" data-symbol="$">🇨🇻 Cape Verde</option>
+                    <option value="CF" data-currency="XAF" data-symbol="FCFA">🇨🇫 Central African Republic</option>
+                    <option value="TD" data-currency="XAF" data-symbol="FCFA">🇹🇩 Chad</option>
+                    <option value="CL" data-currency="CLP" data-symbol="$">🇨🇱 Chile</option>
                     <option value="CN" data-currency="CNY" data-symbol="¥">🇨🇳 China</option>
+                    <option value="CO" data-currency="COP" data-symbol="$">🇨🇴 Colombia</option>
+                    <option value="KM" data-currency="KMF" data-symbol="CF">🇰🇲 Comoros</option>
+                    <option value="CG" data-currency="XAF" data-symbol="FCFA">🇨🇬 Congo</option>
+                    <option value="CD" data-currency="CDF" data-symbol="FC">🇨🇩 Congo (DRC)</option>
+                    <option value="CR" data-currency="CRC" data-symbol="₡">🇨🇷 Costa Rica</option>
+                    <option value="CI" data-currency="XOF" data-symbol="CFA">🇨🇮 Côte d'Ivoire</option>
+                    <option value="HR" data-currency="EUR" data-symbol="€">🇭🇷 Croatia</option>
+                    <option value="CU" data-currency="CUP" data-symbol="₱">🇨🇺 Cuba</option>
+                    <option value="CY" data-currency="EUR" data-symbol="€">🇨🇾 Cyprus</option>
+                    <option value="CZ" data-currency="CZK" data-symbol="Kč">🇨🇿 Czech Republic</option>
+                    <option value="DK" data-currency="DKK" data-symbol="kr">🇩🇰 Denmark</option>
+                    <option value="DJ" data-currency="DJF" data-symbol="Fdj">🇩🇯 Djibouti</option>
+                    <option value="DM" data-currency="XCD" data-symbol="$">🇩🇲 Dominica</option>
+                    <option value="DO" data-currency="DOP" data-symbol="RD$">🇩🇴 Dominican Republic</option>
+                    <option value="EC" data-currency="USD" data-symbol="$">🇪🇨 Ecuador</option>
+                    <option value="EG" data-currency="EGP" data-symbol="£">🇪🇬 Egypt</option>
+                    <option value="SV" data-currency="USD" data-symbol="$">🇸🇻 El Salvador</option>
+                    <option value="GQ" data-currency="XAF" data-symbol="FCFA">🇬🇶 Equatorial Guinea</option>
+                    <option value="ER" data-currency="ERN" data-symbol="Nfk">🇪🇷 Eritrea</option>
+                    <option value="EE" data-currency="EUR" data-symbol="€">🇪🇪 Estonia</option>
+                    <option value="SZ" data-currency="SZL" data-symbol="E">🇸🇿 Eswatini</option>
+                    <option value="ET" data-currency="ETB" data-symbol="Br">🇪🇹 Ethiopia</option>
+                    <option value="FJ" data-currency="FJD" data-symbol="FJ$">🇫🇯 Fiji</option>
+                    <option value="FI" data-currency="EUR" data-symbol="€">🇫🇮 Finland</option>
+                    <option value="FR" data-currency="EUR" data-symbol="€">🇫🇷 France</option>
+                    <option value="GA" data-currency="XAF" data-symbol="FCFA">🇬🇦 Gabon</option>
+                    <option value="GM" data-currency="GMD" data-symbol="D">🇬🇲 Gambia</option>
+                    <option value="GE" data-currency="GEL" data-symbol="₾">🇬🇪 Georgia</option>
+                    <option value="DE" data-currency="EUR" data-symbol="€">🇩🇪 Germany</option>
+                    <option value="GH" data-currency="GHS" data-symbol="₵">🇬🇭 Ghana</option>
+                    <option value="GR" data-currency="EUR" data-symbol="€">🇬🇷 Greece</option>
+                    <option value="GD" data-currency="XCD" data-symbol="$">🇬🇩 Grenada</option>
+                    <option value="GT" data-currency="GTQ" data-symbol="Q">🇬🇹 Guatemala</option>
+                    <option value="GN" data-currency="GNF" data-symbol="FG">🇬🇳 Guinea</option>
+                    <option value="GW" data-currency="XOF" data-symbol="CFA">🇬🇼 Guinea-Bissau</option>
+                    <option value="GY" data-currency="GYD" data-symbol="G$">🇬🇾 Guyana</option>
+                    <option value="HT" data-currency="HTG" data-symbol="G">🇭🇹 Haiti</option>
+                    <option value="HN" data-currency="HNL" data-symbol="L">🇭🇳 Honduras</option>
+                    <option value="HK" data-currency="HKD" data-symbol="HK$">🇭🇰 Hong Kong</option>
+                    <option value="HU" data-currency="HUF" data-symbol="Ft">🇭🇺 Hungary</option>
+                    <option value="IS" data-currency="ISK" data-symbol="kr">🇮🇸 Iceland</option>
+                    <option value="IN" data-currency="INR" data-symbol="₹">🇮🇳 India</option>
+                    <option value="ID" data-currency="IDR" data-symbol="Rp">🇮🇩 Indonesia</option>
+                    <option value="IR" data-currency="IRR" data-symbol="﷼">🇮🇷 Iran</option>
+                    <option value="IQ" data-currency="IQD" data-symbol="ع.د">🇮🇶 Iraq</option>
+                    <option value="IE" data-currency="EUR" data-symbol="€">🇮🇪 Ireland</option>
+                    <option value="IL" data-currency="ILS" data-symbol="₪">🇮🇱 Israel</option>
+                    <option value="IT" data-currency="EUR" data-symbol="€">🇮🇹 Italy</option>
+                    <option value="JM" data-currency="JMD" data-symbol="J$">🇯🇲 Jamaica</option>
+                    <option value="JP" data-currency="JPY" data-symbol="¥">🇯🇵 Japan</option>
+                    <option value="JO" data-currency="JOD" data-symbol="د.ا">🇯🇴 Jordan</option>
+                    <option value="KZ" data-currency="KZT" data-symbol="₸">🇰🇿 Kazakhstan</option>
+                    <option value="KE" data-currency="KES" data-symbol="KSh">🇰🇪 Kenya</option>
+                    <option value="KI" data-currency="AUD" data-symbol="A$">🇰🇮 Kiribati</option>
+                    <option value="KW" data-currency="KWD" data-symbol="د.ك">🇰🇼 Kuwait</option>
+                    <option value="KG" data-currency="KGS" data-symbol="лв">🇰🇬 Kyrgyzstan</option>
+                    <option value="LA" data-currency="LAK" data-symbol="₭">🇱🇦 Laos</option>
+                    <option value="LV" data-currency="EUR" data-symbol="€">🇱🇻 Latvia</option>
+                    <option value="LB" data-currency="LBP" data-symbol="ل.ل">🇱🇧 Lebanon</option>
+                    <option value="LS" data-currency="LSL" data-symbol="M">🇱🇸 Lesotho</option>
+                    <option value="LR" data-currency="LRD" data-symbol="L$">🇱🇷 Liberia</option>
+                    <option value="LY" data-currency="LYD" data-symbol="ل.د">🇱🇾 Libya</option>
+                    <option value="LI" data-currency="CHF" data-symbol="CHF">🇱🇮 Liechtenstein</option>
+                    <option value="LT" data-currency="EUR" data-symbol="€">🇱🇹 Lithuania</option>
+                    <option value="LU" data-currency="EUR" data-symbol="€">🇱🇺 Luxembourg</option>
+                    <option value="MO" data-currency="MOP" data-symbol="MOP$">🇲🇴 Macau</option>
+                    <option value="MK" data-currency="MKD" data-symbol="ден">🇲🇰 North Macedonia</option>
+                    <option value="MG" data-currency="MGA" data-symbol="Ar">🇲🇬 Madagascar</option>
+                    <option value="MW" data-currency="MWK" data-symbol="MK">🇲🇼 Malawi</option>
+                    <option value="MY" data-currency="MYR" data-symbol="RM" selected>🇲🇾 Malaysia</option>
+                    <option value="MV" data-currency="MVR" data-symbol="Rf">🇲🇻 Maldives</option>
+                    <option value="ML" data-currency="XOF" data-symbol="CFA">🇲🇱 Mali</option>
+                    <option value="MT" data-currency="EUR" data-symbol="€">🇲🇹 Malta</option>
+                    <option value="MH" data-currency="USD" data-symbol="$">🇲🇭 Marshall Islands</option>
+                    <option value="MR" data-currency="MRU" data-symbol="UM">🇲🇷 Mauritania</option>
+                    <option value="MU" data-currency="MUR" data-symbol="₨">🇲🇺 Mauritius</option>
+                    <option value="MX" data-currency="MXN" data-symbol="$">🇲🇽 Mexico</option>
+                    <option value="FM" data-currency="USD" data-symbol="$">🇫🇲 Micronesia</option>
+                    <option value="MD" data-currency="MDL" data-symbol="L">🇲🇩 Moldova</option>
+                    <option value="MC" data-currency="EUR" data-symbol="€">🇲🇨 Monaco</option>
+                    <option value="MN" data-currency="MNT" data-symbol="₮">🇲🇳 Mongolia</option>
+                    <option value="ME" data-currency="EUR" data-symbol="€">🇲🇪 Montenegro</option>
+                    <option value="MA" data-currency="MAD" data-symbol="د.م.">🇲🇦 Morocco</option>
+                    <option value="MZ" data-currency="MZN" data-symbol="MT">🇲🇿 Mozambique</option>
+                    <option value="MM" data-currency="MMK" data-symbol="K">🇲🇲 Myanmar</option>
+                    <option value="NA" data-currency="NAD" data-symbol="N$">🇳🇦 Namibia</option>
+                    <option value="NR" data-currency="AUD" data-symbol="A$">🇳🇷 Nauru</option>
+                    <option value="NP" data-currency="NPR" data-symbol="₨">🇳🇵 Nepal</option>
+                    <option value="NL" data-currency="EUR" data-symbol="€">🇳🇱 Netherlands</option>
+                    <option value="NZ" data-currency="NZD" data-symbol="NZ$">🇳🇿 New Zealand</option>
+                    <option value="NI" data-currency="NIO" data-symbol="C$">🇳🇮 Nicaragua</option>
+                    <option value="NE" data-currency="XOF" data-symbol="CFA">🇳🇪 Niger</option>
+                    <option value="NG" data-currency="NGN" data-symbol="₦">🇳🇬 Nigeria</option>
+                    <option value="KP" data-currency="KPW" data-symbol="₩">🇰🇵 North Korea</option>
+                    <option value="NO" data-currency="NOK" data-symbol="kr">🇳🇴 Norway</option>
+                    <option value="OM" data-currency="OMR" data-symbol="ر.ع.">🇴🇲 Oman</option>
+                    <option value="PK" data-currency="PKR" data-symbol="₨">🇵🇰 Pakistan</option>
+                    <option value="PW" data-currency="USD" data-symbol="$">🇵🇼 Palau</option>
+                    <option value="PS" data-currency="ILS" data-symbol="₪">🇵🇸 Palestine</option>
+                    <option value="PA" data-currency="PAB" data-symbol="B/.">🇵🇦 Panama</option>
+                    <option value="PG" data-currency="PGK" data-symbol="K">🇵🇬 Papua New Guinea</option>
+                    <option value="PY" data-currency="PYG" data-symbol="₲">🇵🇾 Paraguay</option>
+                    <option value="PE" data-currency="PEN" data-symbol="S/">🇵🇪 Peru</option>
+                    <option value="PH" data-currency="PHP" data-symbol="₱">🇵🇭 Philippines</option>
+                    <option value="PL" data-currency="PLN" data-symbol="zł">🇵🇱 Poland</option>
+                    <option value="PT" data-currency="EUR" data-symbol="€">🇵🇹 Portugal</option>
+                    <option value="PR" data-currency="USD" data-symbol="$">🇵🇷 Puerto Rico</option>
+                    <option value="QA" data-currency="QAR" data-symbol="ر.ق">🇶🇦 Qatar</option>
+                    <option value="RO" data-currency="RON" data-symbol="lei">🇷🇴 Romania</option>
+                    <option value="RU" data-currency="RUB" data-symbol="₽">🇷🇺 Russia</option>
+                    <option value="RW" data-currency="RWF" data-symbol="FRw">🇷🇼 Rwanda</option>
+                    <option value="KN" data-currency="XCD" data-symbol="$">🇰🇳 Saint Kitts and Nevis</option>
+                    <option value="LC" data-currency="XCD" data-symbol="$">🇱🇨 Saint Lucia</option>
+                    <option value="VC" data-currency="XCD" data-symbol="$">🇻🇨 Saint Vincent</option>
+                    <option value="WS" data-currency="WST" data-symbol="WS$">🇼🇸 Samoa</option>
+                    <option value="SM" data-currency="EUR" data-symbol="€">🇸🇲 San Marino</option>
+                    <option value="ST" data-currency="STN" data-symbol="Db">🇸🇹 São Tomé and Príncipe</option>
+                    <option value="SA" data-currency="SAR" data-symbol="ر.س">🇸🇦 Saudi Arabia</option>
+                    <option value="SN" data-currency="XOF" data-symbol="CFA">🇸🇳 Senegal</option>
+                    <option value="RS" data-currency="RSD" data-symbol="дин.">🇷🇸 Serbia</option>
+                    <option value="SC" data-currency="SCR" data-symbol="₨">🇸🇨 Seychelles</option>
+                    <option value="SL" data-currency="SLL" data-symbol="Le">🇸🇱 Sierra Leone</option>
+                    <option value="SG" data-currency="SGD" data-symbol="S$">🇸🇬 Singapore</option>
+                    <option value="SK" data-currency="EUR" data-symbol="€">🇸🇰 Slovakia</option>
+                    <option value="SI" data-currency="EUR" data-symbol="€">🇸🇮 Slovenia</option>
+                    <option value="SB" data-currency="SBD" data-symbol="SI$">🇸🇧 Solomon Islands</option>
+                    <option value="SO" data-currency="SOS" data-symbol="S">🇸🇴 Somalia</option>
+                    <option value="ZA" data-currency="ZAR" data-symbol="R">🇿🇦 South Africa</option>
+                    <option value="KR" data-currency="KRW" data-symbol="₩">🇰🇷 South Korea</option>
+                    <option value="SS" data-currency="SSP" data-symbol="£">🇸🇸 South Sudan</option>
+                    <option value="ES" data-currency="EUR" data-symbol="€">🇪🇸 Spain</option>
+                    <option value="LK" data-currency="LKR" data-symbol="₨">🇱🇰 Sri Lanka</option>
+                    <option value="SD" data-currency="SDG" data-symbol="ج.س.">🇸🇩 Sudan</option>
+                    <option value="SR" data-currency="SRD" data-symbol="$">🇸🇷 Suriname</option>
+                    <option value="SE" data-currency="SEK" data-symbol="kr">🇸🇪 Sweden</option>
+                    <option value="CH" data-currency="CHF" data-symbol="CHF">🇨🇭 Switzerland</option>
+                    <option value="SY" data-currency="SYP" data-symbol="£">🇸🇾 Syria</option>
+                    <option value="TW" data-currency="TWD" data-symbol="NT$">🇹🇼 Taiwan</option>
+                    <option value="TJ" data-currency="TJS" data-symbol="SM">🇹🇯 Tajikistan</option>
+                    <option value="TZ" data-currency="TZS" data-symbol="TSh">🇹🇿 Tanzania</option>
+                    <option value="TH" data-currency="THB" data-symbol="฿">🇹🇭 Thailand</option>
+                    <option value="TL" data-currency="USD" data-symbol="$">🇹🇱 Timor-Leste</option>
+                    <option value="TG" data-currency="XOF" data-symbol="CFA">🇹🇬 Togo</option>
+                    <option value="TO" data-currency="TOP" data-symbol="T$">🇹🇴 Tonga</option>
+                    <option value="TT" data-currency="TTD" data-symbol="TT$">🇹🇹 Trinidad and Tobago</option>
+                    <option value="TN" data-currency="TND" data-symbol="د.ت">🇹🇳 Tunisia</option>
+                    <option value="TR" data-currency="TRY" data-symbol="₺">🇹🇷 Turkey</option>
+                    <option value="TM" data-currency="TMT" data-symbol="m">🇹🇲 Turkmenistan</option>
+                    <option value="TV" data-currency="AUD" data-symbol="A$">🇹🇻 Tuvalu</option>
+                    <option value="UG" data-currency="UGX" data-symbol="USh">🇺🇬 Uganda</option>
+                    <option value="UA" data-currency="UAH" data-symbol="₴">🇺🇦 Ukraine</option>
+                    <option value="AE" data-currency="AED" data-symbol="AED">🇦🇪 United Arab Emirates</option>
+                    <option value="GB" data-currency="GBP" data-symbol="£">🇬🇧 United Kingdom</option>
+                    <option value="US" data-currency="USD" data-symbol="$">🇺🇸 United States</option>
+                    <option value="UY" data-currency="UYU" data-symbol="$U">🇺🇾 Uruguay</option>
+                    <option value="UZ" data-currency="UZS" data-symbol="soʻm">🇺🇿 Uzbekistan</option>
+                    <option value="VU" data-currency="VUV" data-symbol="VT">🇻🇺 Vanuatu</option>
+                    <option value="VA" data-currency="EUR" data-symbol="€">🇻🇦 Vatican City</option>
+                    <option value="VE" data-currency="VES" data-symbol="Bs.">🇻🇪 Venezuela</option>
+                    <option value="VN" data-currency="VND" data-symbol="₫">🇻🇳 Vietnam</option>
+                    <option value="YE" data-currency="YER" data-symbol="﷼">🇾🇪 Yemen</option>
+                    <option value="ZM" data-currency="ZMW" data-symbol="ZK">🇿🇲 Zambia</option>
+                    <option value="ZW" data-currency="ZWL" data-symbol="Z$">🇿🇼 Zimbabwe</option>
                 </select>
             </div>
             
@@ -500,29 +838,151 @@
                 </label>
                 <select id="currency" required>
                     <option value="">Select your currency...</option>
-                    <option value="USD">USD - US Dollar ($)</option>
-                    <option value="CAD">CAD - Canadian Dollar (C$)</option>
-                    <option value="GBP">GBP - British Pound (£)</option>
+                    <option value="AED">AED - UAE Dirham (AED)</option>
+                    <option value="AFN">AFN - Afghan Afghani (؋)</option>
+                    <option value="ALL">ALL - Albanian Lek (L)</option>
+                    <option value="AMD">AMD - Armenian Dram (֏)</option>
+                    <option value="AOA">AOA - Angolan Kwanza (Kz)</option>
+                    <option value="ARS">ARS - Argentine Peso ($)</option>
                     <option value="AUD">AUD - Australian Dollar (A$)</option>
-                    <option value="SGD">SGD - Singapore Dollar (S$)</option>
-                    <option value="HKD">HKD - Hong Kong Dollar (HK$)</option>
-                    <option value="AED">AED - UAE Dirham</option>
-                    <option value="CHF">CHF - Swiss Franc</option>
-                    <option value="EUR">EUR - Euro (€)</option>
-                    <option value="JPY">JPY - Japanese Yen (¥)</option>
-                    <option value="INR">INR - Indian Rupee (₹)</option>
+                    <option value="AZN">AZN - Azerbaijani Manat (₼)</option>
+                    <option value="BAM">BAM - Bosnia Mark (KM)</option>
+                    <option value="BBD">BBD - Barbadian Dollar (Bds$)</option>
+                    <option value="BDT">BDT - Bangladeshi Taka (৳)</option>
+                    <option value="BGN">BGN - Bulgarian Lev (лв)</option>
+                    <option value="BHD">BHD - Bahraini Dinar (.د.ب)</option>
+                    <option value="BND">BND - Brunei Dollar (B$)</option>
+                    <option value="BOB">BOB - Bolivian Boliviano (Bs.)</option>
                     <option value="BRL">BRL - Brazilian Real (R$)</option>
-                    <option value="MXN">MXN - Mexican Peso ($)</option>
-                    <option value="NZD">NZD - New Zealand Dollar (NZ$)</option>
-                    <option value="SEK">SEK - Swedish Krona (kr)</option>
-                    <option value="MYR" selected>MYR - Malaysian Ringgit (RM)</option>
-                    <option value="IDR">IDR - Indonesian Rupiah (Rp)</option>
-                    <option value="THB">THB - Thai Baht (฿)</option>
-                    <option value="PHP">PHP - Philippine Peso (₱)</option>
-                    <option value="VND">VND - Vietnamese Dong (₫)</option>
-                    <option value="KRW">KRW - Korean Won (₩)</option>
-                    <option value="TWD">TWD - Taiwan Dollar (NT$)</option>
+                    <option value="BSD">BSD - Bahamian Dollar (B$)</option>
+                    <option value="BTN">BTN - Bhutanese Ngultrum (Nu.)</option>
+                    <option value="BWP">BWP - Botswana Pula (P)</option>
+                    <option value="BYN">BYN - Belarusian Ruble (Br)</option>
+                    <option value="BZD">BZD - Belize Dollar (BZ$)</option>
+                    <option value="CAD">CAD - Canadian Dollar (C$)</option>
+                    <option value="CDF">CDF - Congolese Franc (FC)</option>
+                    <option value="CHF">CHF - Swiss Franc (CHF)</option>
+                    <option value="CLP">CLP - Chilean Peso ($)</option>
                     <option value="CNY">CNY - Chinese Yuan (¥)</option>
+                    <option value="COP">COP - Colombian Peso ($)</option>
+                    <option value="CRC">CRC - Costa Rican Colón (₡)</option>
+                    <option value="CUP">CUP - Cuban Peso (₱)</option>
+                    <option value="CVE">CVE - Cape Verdean Escudo ($)</option>
+                    <option value="CZK">CZK - Czech Koruna (Kč)</option>
+                    <option value="DJF">DJF - Djiboutian Franc (Fdj)</option>
+                    <option value="DKK">DKK - Danish Krone (kr)</option>
+                    <option value="DOP">DOP - Dominican Peso (RD$)</option>
+                    <option value="DZD">DZD - Algerian Dinar (د.ج)</option>
+                    <option value="EGP">EGP - Egyptian Pound (£)</option>
+                    <option value="ERN">ERN - Eritrean Nakfa (Nfk)</option>
+                    <option value="ETB">ETB - Ethiopian Birr (Br)</option>
+                    <option value="EUR">EUR - Euro (€)</option>
+                    <option value="FJD">FJD - Fijian Dollar (FJ$)</option>
+                    <option value="GBP">GBP - British Pound (£)</option>
+                    <option value="GEL">GEL - Georgian Lari (₾)</option>
+                    <option value="GHS">GHS - Ghanaian Cedi (₵)</option>
+                    <option value="GMD">GMD - Gambian Dalasi (D)</option>
+                    <option value="GNF">GNF - Guinean Franc (FG)</option>
+                    <option value="GTQ">GTQ - Guatemalan Quetzal (Q)</option>
+                    <option value="GYD">GYD - Guyanese Dollar (G$)</option>
+                    <option value="HKD">HKD - Hong Kong Dollar (HK$)</option>
+                    <option value="HNL">HNL - Honduran Lempira (L)</option>
+                    <option value="HTG">HTG - Haitian Gourde (G)</option>
+                    <option value="HUF">HUF - Hungarian Forint (Ft)</option>
+                    <option value="IDR">IDR - Indonesian Rupiah (Rp)</option>
+                    <option value="ILS">ILS - Israeli Shekel (₪)</option>
+                    <option value="INR">INR - Indian Rupee (₹)</option>
+                    <option value="IQD">IQD - Iraqi Dinar (ع.د)</option>
+                    <option value="IRR">IRR - Iranian Rial (﷼)</option>
+                    <option value="ISK">ISK - Icelandic Króna (kr)</option>
+                    <option value="JMD">JMD - Jamaican Dollar (J$)</option>
+                    <option value="JOD">JOD - Jordanian Dinar (د.ا)</option>
+                    <option value="JPY">JPY - Japanese Yen (¥)</option>
+                    <option value="KES">KES - Kenyan Shilling (KSh)</option>
+                    <option value="KGS">KGS - Kyrgyzstani Som (лв)</option>
+                    <option value="KHR">KHR - Cambodian Riel (៛)</option>
+                    <option value="KMF">KMF - Comorian Franc (CF)</option>
+                    <option value="KPW">KPW - North Korean Won (₩)</option>
+                    <option value="KRW">KRW - South Korean Won (₩)</option>
+                    <option value="KWD">KWD - Kuwaiti Dinar (د.ك)</option>
+                    <option value="KZT">KZT - Kazakhstani Tenge (₸)</option>
+                    <option value="LAK">LAK - Lao Kip (₭)</option>
+                    <option value="LBP">LBP - Lebanese Pound (ل.ل)</option>
+                    <option value="LKR">LKR - Sri Lankan Rupee (₨)</option>
+                    <option value="LRD">LRD - Liberian Dollar (L$)</option>
+                    <option value="LSL">LSL - Lesotho Loti (M)</option>
+                    <option value="LYD">LYD - Libyan Dinar (ل.د)</option>
+                    <option value="MAD">MAD - Moroccan Dirham (د.م.)</option>
+                    <option value="MDL">MDL - Moldovan Leu (L)</option>
+                    <option value="MGA">MGA - Malagasy Ariary (Ar)</option>
+                    <option value="MKD">MKD - Macedonian Denar (ден)</option>
+                    <option value="MMK">MMK - Myanmar Kyat (K)</option>
+                    <option value="MNT">MNT - Mongolian Tugrik (₮)</option>
+                    <option value="MOP">MOP - Macanese Pataca (MOP$)</option>
+                    <option value="MRU">MRU - Mauritanian Ouguiya (UM)</option>
+                    <option value="MUR">MUR - Mauritian Rupee (₨)</option>
+                    <option value="MVR">MVR - Maldivian Rufiyaa (Rf)</option>
+                    <option value="MWK">MWK - Malawian Kwacha (MK)</option>
+                    <option value="MXN">MXN - Mexican Peso ($)</option>
+                    <option value="MYR" selected>MYR - Malaysian Ringgit (RM)</option>
+                    <option value="MZN">MZN - Mozambican Metical (MT)</option>
+                    <option value="NAD">NAD - Namibian Dollar (N$)</option>
+                    <option value="NGN">NGN - Nigerian Naira (₦)</option>
+                    <option value="NIO">NIO - Nicaraguan Córdoba (C$)</option>
+                    <option value="NOK">NOK - Norwegian Krone (kr)</option>
+                    <option value="NPR">NPR - Nepalese Rupee (₨)</option>
+                    <option value="NZD">NZD - New Zealand Dollar (NZ$)</option>
+                    <option value="OMR">OMR - Omani Rial (ر.ع.)</option>
+                    <option value="PAB">PAB - Panamanian Balboa (B/.)</option>
+                    <option value="PEN">PEN - Peruvian Sol (S/)</option>
+                    <option value="PGK">PGK - Papua New Guinean Kina (K)</option>
+                    <option value="PHP">PHP - Philippine Peso (₱)</option>
+                    <option value="PKR">PKR - Pakistani Rupee (₨)</option>
+                    <option value="PLN">PLN - Polish Złoty (zł)</option>
+                    <option value="PYG">PYG - Paraguayan Guaraní (₲)</option>
+                    <option value="QAR">QAR - Qatari Riyal (ر.ق)</option>
+                    <option value="RON">RON - Romanian Leu (lei)</option>
+                    <option value="RSD">RSD - Serbian Dinar (дин.)</option>
+                    <option value="RUB">RUB - Russian Ruble (₽)</option>
+                    <option value="RWF">RWF - Rwandan Franc (FRw)</option>
+                    <option value="SAR">SAR - Saudi Riyal (ر.س)</option>
+                    <option value="SBD">SBD - Solomon Islands Dollar (SI$)</option>
+                    <option value="SCR">SCR - Seychellois Rupee (₨)</option>
+                    <option value="SDG">SDG - Sudanese Pound (ج.س.)</option>
+                    <option value="SEK">SEK - Swedish Krona (kr)</option>
+                    <option value="SGD">SGD - Singapore Dollar (S$)</option>
+                    <option value="SLL">SLL - Sierra Leonean Leone (Le)</option>
+                    <option value="SOS">SOS - Somali Shilling (S)</option>
+                    <option value="SRD">SRD - Surinamese Dollar ($)</option>
+                    <option value="SSP">SSP - South Sudanese Pound (£)</option>
+                    <option value="STN">STN - São Tomé Dobra (Db)</option>
+                    <option value="SYP">SYP - Syrian Pound (£)</option>
+                    <option value="SZL">SZL - Swazi Lilangeni (E)</option>
+                    <option value="THB">THB - Thai Baht (฿)</option>
+                    <option value="TJS">TJS - Tajikistani Somoni (SM)</option>
+                    <option value="TMT">TMT - Turkmenistani Manat (m)</option>
+                    <option value="TND">TND - Tunisian Dinar (د.ت)</option>
+                    <option value="TOP">TOP - Tongan Paʻanga (T$)</option>
+                    <option value="TRY">TRY - Turkish Lira (₺)</option>
+                    <option value="TTD">TTD - Trinidad Dollar (TT$)</option>
+                    <option value="TWD">TWD - Taiwan Dollar (NT$)</option>
+                    <option value="TZS">TZS - Tanzanian Shilling (TSh)</option>
+                    <option value="UAH">UAH - Ukrainian Hryvnia (₴)</option>
+                    <option value="UGX">UGX - Ugandan Shilling (USh)</option>
+                    <option value="USD">USD - US Dollar ($)</option>
+                    <option value="UYU">UYU - Uruguayan Peso ($U)</option>
+                    <option value="UZS">UZS - Uzbekistani Som (soʻm)</option>
+                    <option value="VES">VES - Venezuelan Bolívar (Bs.)</option>
+                    <option value="VND">VND - Vietnamese Dong (₫)</option>
+                    <option value="VUV">VUV - Vanuatu Vatu (VT)</option>
+                    <option value="WST">WST - Samoan Tala (WS$)</option>
+                    <option value="XAF">XAF - Central African CFA (FCFA)</option>
+                    <option value="XCD">XCD - East Caribbean Dollar ($)</option>
+                    <option value="XOF">XOF - West African CFA (CFA)</option>
+                    <option value="YER">YER - Yemeni Rial (﷼)</option>
+                    <option value="ZAR">ZAR - South African Rand (R)</option>
+                    <option value="ZMW">ZMW - Zambian Kwacha (ZK)</option>
+                    <option value="ZWL">ZWL - Zimbabwean Dollar (Z$)</option>
                 </select>
             </div>
             
@@ -543,32 +1003,57 @@
                 <label>Approximate annual income (before tax)
                     <span class="label-subtitle">→ Determines your wealth acceleration capacity & investment tier eligibility</span>
                 </label>
-                <select id="incomeLevel" required>
-                    <option value="">Select your range...</option>
-                    <option value="100-250K">100K – 250K</option>
-                    <option value="250-500K">250K – 500K</option>
-                    <option value="500K-1M">500K – 1M</option>
-                    <option value="1M+">1M+</option>
-                </select>
+                <div class="currency-input-group">
+                    <div class="currency-prefix">
+                        <span id="incomeCurrencyPrefix">RM</span>
+                    </div>
+                    <select id="incomeLevel" required>
+                        <option value="">Select your range...</option>
+                        <option value="Under 50K">Under 50K</option>
+                        <option value="50-100K">50K – 100K</option>
+                        <option value="100-150K">100K – 150K</option>
+                        <option value="150-250K">150K – 250K</option>
+                        <option value="250-500K">250K – 500K</option>
+                        <option value="500K-1M">500K – 1M</option>
+                        <option value="1M-2M">1M – 2M</option>
+                        <option value="2M-5M">2M – 5M</option>
+                        <option value="5M+">5M+</option>
+                    </select>
+                </div>
             </div>
             
             <div class="form-group">
-                <label>Are you currently...?
+                <label>Are you currently...? <span style="font-weight: 400; color: #888;">(Select all that apply)</span>
                     <span class="label-subtitle">→ Your structure determines tax strategies, deductions, & entity optimization opportunities</span>
                 </label>
                 <div class="option-group">
                     <div class="option-item">
-                        <input type="radio" id="opt-employed" name="status" value="Employed" required>
-                        <label for="opt-employed">W-2 Employed / Corporate Executive</label>
+                        <input type="checkbox" id="opt-employed" name="status" value="Employed">
+                        <label for="opt-employed">Employed / Corporate Executive</label>
                     </div>
                     <div class="option-item">
-                        <input type="radio" id="opt-business" name="status" value="Business Owner">
+                        <input type="checkbox" id="opt-business" name="status" value="Business Owner">
                         <label for="opt-business">Business Owner / Entrepreneur</label>
                     </div>
                     <div class="option-item">
-                        <input type="radio" id="opt-freelance" name="status" value="Professional">
+                        <input type="checkbox" id="opt-freelance" name="status" value="Professional">
                         <label for="opt-freelance">Professional / Consultant / Freelancer</label>
                     </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="opt-investor" name="status" value="Investor">
+                        <label for="opt-investor">Investor / Trader</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="opt-retired" name="status" value="Retired">
+                        <label for="opt-retired">Retired / Semi-Retired</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="opt-other" name="status" value="Other" onchange="toggleOtherInput()">
+                        <label for="opt-other">Other</label>
+                    </div>
+                </div>
+                <div id="otherStatusContainer" style="display: none; margin-top: 15px;">
+                    <input type="text" id="otherStatus" placeholder="Please specify your situation..." style="width: 100%;">
                 </div>
             </div>
             
@@ -590,36 +1075,79 @@
                 <label>Monthly discretionary surplus (after all expenses)
                     <span class="label-subtitle">→ This determines your wealth-building velocity & investment capacity</span>
                 </label>
-                <input type="number" id="monthlySurplus" placeholder="e.g., 5000" min="0" step="100" required>
+                <div class="currency-input-group">
+                    <div class="currency-prefix">
+                        <span id="surplusCurrencyPrefix">RM</span>
+                    </div>
+                    <input type="number" id="monthlySurplus" placeholder="e.g., 5000" min="0" step="100" required>
+                </div>
             </div>
             
             <div class="form-group">
                 <label>Current liquid net worth (cash, stocks, etc.)
                     <span class="label-subtitle">→ Your starting capital base for wealth projections</span>
                 </label>
-                <input type="number" id="liquidWealth" placeholder="e.g., 150000" min="0" step="1000" required>
+                <div class="currency-input-group">
+                    <div class="currency-prefix">
+                        <span id="wealthCurrencyPrefix">RM</span>
+                    </div>
+                    <input type="number" id="liquidWealth" placeholder="e.g., 150000" min="0" step="1000" required>
+                </div>
             </div>
             
             <div class="form-group">
-                <label>What's your primary wealth concern right now?
-                    <span class="label-subtitle">→ Helps us prioritize the #1 lever to pull in your situation</span>
+                <label>What are your primary wealth concerns right now? <span style="font-weight: 400; color: #888;">(Select all that apply)</span>
+                    <span class="label-subtitle">→ Helps us prioritize the key levers to pull in your situation</span>
                 </label>
                 <div class="option-group">
                     <div class="option-item">
-                        <input type="radio" id="concern-tax" name="concern" value="Tax Optimization" required>
+                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization">
                         <label for="concern-tax">Tax inefficiency (paying too much to government)</label>
                     </div>
                     <div class="option-item">
-                        <input type="radio" id="concern-deploy" name="concern" value="Capital Deployment">
+                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment">
                         <label for="concern-deploy">Where to deploy my surplus (investment confusion)</label>
                     </div>
                     <div class="option-item">
-                        <input type="radio" id="concern-protect" name="concern" value="Wealth Protection">
+                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection">
                         <label for="concern-protect">Protecting & diversifying wealth (risk management)</label>
                     </div>
                     <div class="option-item">
-                        <input type="radio" id="concern-legacy" name="concern" value="Legacy Planning">
+                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning">
                         <label for="concern-legacy">Building generational wealth (family succession)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management">
+                        <label for="concern-cashflow">Cash flow optimization (income vs expenses)</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy">
+                        <label for="concern-debt">Debt management & leverage strategy</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning">
+                        <label for="concern-retirement">Retirement planning & financial independence</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth">
+                        <label for="concern-business">Business growth & exit strategy</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate">
+                        <label for="concern-realestate">Real estate investment & property portfolio</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput()">
+                        <label for="concern-other">Other</label>
+                    </div>
+                </div>
+                <div id="otherConcernContainer" style="display: none; margin-top: 15px;">
+                    <input type="text" id="otherConcern" placeholder="Please describe your concern...">
+                </div>
+                <div class="option-group" style="margin-top: 15px;">
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-private" name="concern" value="Prefer not to say">
+                        <label for="concern-private">I prefer to keep this private for now</label>
                     </div>
                 </div>
             </div>
@@ -646,6 +1174,13 @@
             </div>
             
             <div class="form-group">
+                <label>Last Name
+                    <span class="label-subtitle">→ For your personalized wealth documentation</span>
+                </label>
+                <input type="text" id="lastName" placeholder="E.g., Smith" required>
+            </div>
+            
+            <div class="form-group">
                 <label>Email Address
                     <span class="label-subtitle">→ We'll send your full report + personalized wealth strategy</span>
                 </label>
@@ -656,7 +1191,12 @@
                 <label>Phone Number (Optional)
                     <span class="label-subtitle">→ For priority follow-up on your strategy session</span>
                 </label>
-                <input type="tel" id="phone" placeholder="+60 12 345 6789">
+                <div class="currency-input-group">
+                    <div class="currency-prefix" style="min-width: 90px;">
+                        <span id="phoneCountryCode">+60</span>
+                    </div>
+                    <input type="tel" id="phone" placeholder="12 345 6789">
+                </div>
             </div>
             
             <div class="form-group">
@@ -695,17 +1235,25 @@
             </div>
         </div>
 
-        <!-- STEP 6: RESULTS -->
+        <!-- STEP 6: RESULTS - PREMIUM AI-POWERED REPORT -->
         <div id="step-5" class="step-content">
-            <div class="step-header">
-                <h2 style="color: #dc5a32; font-size: 28px; margin-bottom: 5px;">Your Wealth Architecture Masterclass</h2>
-                <p class="hint">Personalized insights for <span id="resultName" style="color: #dc5a32;"></span></p>
+            <div class="step-header" style="text-align: center;">
+                <h2 style="color: #ff8120; font-size: 32px; margin-bottom: 5px;">Your Wealth Architecture Blueprint</h2>
+                <p class="hint">AI-Powered Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
+                <p style="font-size: 12px; color: #888; margin-top: 8px;">Prepared by June Yoon | Wealth Architecture Strategist</p>
             </div>
             
-            <div class="wealth-summary">
+            <!-- Wealth Score Section -->
+            <div class="wealth-summary" style="background: linear-gradient(135deg, #fff 0%, #fff9f5 100%);">
                 <div style="text-align: center; margin-bottom: 25px;">
-                    <div style="font-size: 48px; font-weight: 700; color: #dc5a32; margin-bottom: 8px;" id="scoreValue">-</div>
-                    <div style="color: #888; font-size: 14px; text-transform: uppercase; letter-spacing: 0.8px;" id="scoreLabel">Wealth Position</div>
+                    <div style="font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Your Wealth Position Score</div>
+                    <div style="position: relative; display: inline-block;">
+                        <canvas id="scoreGauge" width="200" height="120"></canvas>
+                        <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); text-align: center;">
+                            <div style="font-size: 42px; font-weight: 700; color: #ff8120;" id="scoreValue">-</div>
+                            <div style="color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;" id="scoreLabel">Calculating...</div>
+                        </div>
+                    </div>
                 </div>
                 <div class="summary-row">
                     <div class="summary-item">
@@ -713,32 +1261,112 @@
                         <div class="summary-value" id="displaySurplus">-</div>
                     </div>
                     <div class="summary-item">
-                        <div class="summary-label">Liquid Wealth</div>
+                        <div class="summary-label">Liquid Assets</div>
                         <div class="summary-value" id="displayLiquid">-</div>
                     </div>
                 </div>
                 <div class="summary-row">
                     <div class="summary-item">
-                        <div class="summary-label">Annual Potential</div>
+                        <div class="summary-label">Annual Investment Capacity</div>
                         <div class="summary-value" id="displayAnnual">-</div>
                     </div>
                     <div class="summary-item">
-                        <div class="summary-label">5-Year Projection</div>
+                        <div class="summary-label">5-Year Wealth Projection</div>
                         <div class="summary-value" id="display5Year">-</div>
                     </div>
                 </div>
             </div>
             
-            <div id="insightsContainer"></div>
+            <!-- Wealth Projection Chart -->
+            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
+                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #ff8120;">📈</span> Your Wealth Growth Trajectory
+                </h3>
+                <canvas id="wealthProjectionChart" height="250"></canvas>
+                <p style="font-size: 12px; color: #888; margin-top: 15px; text-align: center;">*Projections based on 8% conservative growth rate with consistent monthly contributions</p>
+            </div>
             
-            <div class="cta-box">
-                <h3>Your Next Step: The Wealth Strategy Call</h3>
-                <p>This report identifies your opportunities. The call maps your personalized 90-day action plan with specific income generation tactics, tax strategies, and capital deployment recommendations.</p>
-                <button class="btn-primary" style="width: auto; padding: 14px 40px; font-size: 14px;" onclick="scheduleCall()">Schedule Your Strategy Call</button>
-                <p style="font-size: 12px; color: #666; margin-top: 15px;">Investment: Free • Duration: 45 minutes</p>
+            <!-- AI-Powered Analysis Section -->
+            <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 30px; margin: 25px 0; color: #fff;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
+                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">🤖</div>
+                    <div>
+                        <h3 style="margin: 0; font-size: 18px;">AI-Powered Wealth Analysis</h3>
+                        <p style="margin: 0; font-size: 12px; color: #888;">Personalized insights generated in real-time</p>
+                    </div>
+                </div>
+                <div id="aiAnalysisContainer" style="min-height: 150px;">
+                    <div id="aiLoadingIndicator" style="text-align: center; padding: 40px;">
+                        <div class="loader" style="margin: 0 auto 15px;"></div>
+                        <p style="color: #888; font-size: 14px;">Generating your personalized wealth strategy...</p>
+                    </div>
+                    <div id="aiAnalysisContent" style="display: none; line-height: 1.8; font-size: 15px;"></div>
+                </div>
+            </div>
+            
+            <!-- Asset Allocation Recommendation -->
+            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
+                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #ff8120;">🎯</span> Recommended Asset Allocation
+                </h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
+                    <canvas id="allocationChart" height="200"></canvas>
+                    <div id="allocationBreakdown"></div>
+                </div>
+            </div>
+            
+            <!-- Millionaire Mind Principles -->
+            <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.2); border-radius: 12px; padding: 25px; margin: 25px 0;">
+                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #ff8120;">💎</span> Your Millionaire Mind Blueprint
+                </h3>
+                <p style="font-size: 13px; color: #666; margin-bottom: 20px; font-style: italic;">"Your income can grow only to the extent that you do." — T. Harv Eker</p>
+                <div id="mindsetPrinciples"></div>
+            </div>
+            
+            <!-- Personalized Action Steps -->
+            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
+                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
+                    <span style="color: #ff8120;">✅</span> Your 90-Day Action Plan
+                </h3>
+                <div id="actionStepsContainer"></div>
+            </div>
+            
+            <!-- Download & CTA Section -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+                <div class="cta-box" style="margin: 0; text-align: center;">
+                    <h3 style="font-size: 18px; margin-bottom: 10px;">📄 Download Your Report</h3>
+                    <p style="font-size: 14px; margin-bottom: 20px;">Get your complete Wealth Architecture Blueprint as a beautifully formatted PDF.</p>
+                    <button class="btn-secondary" style="width: 100%;" onclick="generatePDF()">
+                        <span style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            📥 Download PDF Report
+                        </span>
+                    </button>
+                </div>
+                <div class="cta-box" style="margin: 0; text-align: center; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border: none;">
+                    <h3 style="font-size: 18px; margin-bottom: 10px; color: #fff;">🎯 Book Your Strategy Call</h3>
+                    <p style="font-size: 14px; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Turn this blueprint into action with June Yoon's personalized guidance.</p>
+                    <button class="btn-primary" style="width: 100%; background: #fff; color: #ff8120;" onclick="scheduleCall()">
+                        <span style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            📞 Schedule Free 45-Min Call
+                        </span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div style="text-align: center; padding: 30px 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 30px;">
+                <p style="font-size: 12px; color: #888;">© 2024 Success Resources | June Yoon Wealth Architecture</p>
+                <p style="font-size: 11px; color: #aaa; margin-top: 5px;">This report is for educational purposes. Please consult licensed financial advisors for personalized advice.</p>
             </div>
         </div>
     </div>
+    
+    <!-- Chart.js Library -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- jsPDF for PDF Generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <script>
         // ============================================
@@ -750,11 +1378,78 @@
         };
         
         const CURRENCY_SYMBOLS = {
-            'USD': '$', 'CAD': 'C$', 'GBP': '£', 'AUD': 'A$', 'SGD': 'S$',
-            'HKD': 'HK$', 'AED': 'AED', 'CHF': 'CHF', 'EUR': '€', 'JPY': '¥',
-            'INR': '₹', 'BRL': 'R$', 'MXN': '$', 'NZD': 'NZ$', 'SEK': 'kr',
-            'MYR': 'RM', 'IDR': 'Rp', 'THB': '฿', 'PHP': '₱', 'VND': '₫',
-            'KRW': '₩', 'TWD': 'NT$', 'CNY': '¥'
+            'AED': 'AED', 'AFN': '؋', 'ALL': 'L', 'AMD': '֏', 'AOA': 'Kz',
+            'ARS': '$', 'AUD': 'A$', 'AZN': '₼', 'BAM': 'KM', 'BBD': 'Bds$',
+            'BDT': '৳', 'BGN': 'лв', 'BHD': '.د.ب', 'BND': 'B$', 'BOB': 'Bs.',
+            'BRL': 'R$', 'BSD': 'B$', 'BTN': 'Nu.', 'BWP': 'P', 'BYN': 'Br',
+            'BZD': 'BZ$', 'CAD': 'C$', 'CDF': 'FC', 'CHF': 'CHF', 'CLP': '$',
+            'CNY': '¥', 'COP': '$', 'CRC': '₡', 'CUP': '₱', 'CVE': '$',
+            'CZK': 'Kč', 'DJF': 'Fdj', 'DKK': 'kr', 'DOP': 'RD$', 'DZD': 'د.ج',
+            'EGP': '£', 'ERN': 'Nfk', 'ETB': 'Br', 'EUR': '€', 'FJD': 'FJ$',
+            'GBP': '£', 'GEL': '₾', 'GHS': '₵', 'GMD': 'D', 'GNF': 'FG',
+            'GTQ': 'Q', 'GYD': 'G$', 'HKD': 'HK$', 'HNL': 'L', 'HTG': 'G',
+            'HUF': 'Ft', 'IDR': 'Rp', 'ILS': '₪', 'INR': '₹', 'IQD': 'ع.د',
+            'IRR': '﷼', 'ISK': 'kr', 'JMD': 'J$', 'JOD': 'د.ا', 'JPY': '¥',
+            'KES': 'KSh', 'KGS': 'лв', 'KHR': '៛', 'KMF': 'CF', 'KPW': '₩',
+            'KRW': '₩', 'KWD': 'د.ك', 'KZT': '₸', 'LAK': '₭', 'LBP': 'ل.ل',
+            'LKR': '₨', 'LRD': 'L$', 'LSL': 'M', 'LYD': 'ل.د', 'MAD': 'د.م.',
+            'MDL': 'L', 'MGA': 'Ar', 'MKD': 'ден', 'MMK': 'K', 'MNT': '₮',
+            'MOP': 'MOP$', 'MRU': 'UM', 'MUR': '₨', 'MVR': 'Rf', 'MWK': 'MK',
+            'MXN': '$', 'MYR': 'RM', 'MZN': 'MT', 'NAD': 'N$', 'NGN': '₦',
+            'NIO': 'C$', 'NOK': 'kr', 'NPR': '₨', 'NZD': 'NZ$', 'OMR': 'ر.ع.',
+            'PAB': 'B/.', 'PEN': 'S/', 'PGK': 'K', 'PHP': '₱', 'PKR': '₨',
+            'PLN': 'zł', 'PYG': '₲', 'QAR': 'ر.ق', 'RON': 'lei', 'RSD': 'дин.',
+            'RUB': '₽', 'RWF': 'FRw', 'SAR': 'ر.س', 'SBD': 'SI$', 'SCR': '₨',
+            'SDG': 'ج.س.', 'SEK': 'kr', 'SGD': 'S$', 'SLL': 'Le', 'SOS': 'S',
+            'SRD': '$', 'SSP': '£', 'STN': 'Db', 'SYP': '£', 'SZL': 'E',
+            'THB': '฿', 'TJS': 'SM', 'TMT': 'm', 'TND': 'د.ت', 'TOP': 'T$',
+            'TRY': '₺', 'TTD': 'TT$', 'TWD': 'NT$', 'TZS': 'TSh', 'UAH': '₴',
+            'UGX': 'USh', 'USD': '$', 'UYU': '$U', 'UZS': 'soʻm', 'VES': 'Bs.',
+            'VND': '₫', 'VUV': 'VT', 'WST': 'WS$', 'XAF': 'FCFA', 'XCD': '$',
+            'XOF': 'CFA', 'YER': '﷼', 'ZAR': 'R', 'ZMW': 'ZK', 'ZWL': 'Z$'
+        };
+        
+        const COUNTRY_PHONE_CODES = {
+            'AF': '+93', 'AL': '+355', 'DZ': '+213', 'AD': '+376', 'AO': '+244',
+            'AG': '+1-268', 'AR': '+54', 'AM': '+374', 'AU': '+61', 'AT': '+43',
+            'AZ': '+994', 'BS': '+1-242', 'BH': '+973', 'BD': '+880', 'BB': '+1-246',
+            'BY': '+375', 'BE': '+32', 'BZ': '+501', 'BJ': '+229', 'BT': '+975',
+            'BO': '+591', 'BA': '+387', 'BW': '+267', 'BR': '+55', 'BN': '+673',
+            'BG': '+359', 'BF': '+226', 'KH': '+855', 'CM': '+237', 'CA': '+1',
+            'CV': '+238', 'CF': '+236', 'TD': '+235', 'CL': '+56', 'CN': '+86',
+            'CO': '+57', 'KM': '+269', 'CG': '+242', 'CD': '+243', 'CR': '+506',
+            'CI': '+225', 'HR': '+385', 'CU': '+53', 'CY': '+357', 'CZ': '+420',
+            'DK': '+45', 'DJ': '+253', 'DM': '+1-767', 'DO': '+1-809', 'EC': '+593',
+            'EG': '+20', 'SV': '+503', 'GQ': '+240', 'ER': '+291', 'EE': '+372',
+            'SZ': '+268', 'ET': '+251', 'FJ': '+679', 'FI': '+358', 'FR': '+33',
+            'GA': '+241', 'GM': '+220', 'GE': '+995', 'DE': '+49', 'GH': '+233',
+            'GR': '+30', 'GD': '+1-473', 'GT': '+502', 'GN': '+224', 'GW': '+245',
+            'GY': '+592', 'HT': '+509', 'HN': '+504', 'HK': '+852', 'HU': '+36',
+            'IS': '+354', 'IN': '+91', 'ID': '+62', 'IR': '+98', 'IQ': '+964',
+            'IE': '+353', 'IL': '+972', 'IT': '+39', 'JM': '+1-876', 'JP': '+81',
+            'JO': '+962', 'KZ': '+7', 'KE': '+254', 'KI': '+686', 'KW': '+965',
+            'KG': '+996', 'LA': '+856', 'LV': '+371', 'LB': '+961', 'LS': '+266',
+            'LR': '+231', 'LY': '+218', 'LI': '+423', 'LT': '+370', 'LU': '+352',
+            'MO': '+853', 'MK': '+389', 'MG': '+261', 'MW': '+265', 'MY': '+60',
+            'MV': '+960', 'ML': '+223', 'MT': '+356', 'MH': '+692', 'MR': '+222',
+            'MU': '+230', 'MX': '+52', 'FM': '+691', 'MD': '+373', 'MC': '+377',
+            'MN': '+976', 'ME': '+382', 'MA': '+212', 'MZ': '+258', 'MM': '+95',
+            'NA': '+264', 'NR': '+674', 'NP': '+977', 'NL': '+31', 'NZ': '+64',
+            'NI': '+505', 'NE': '+227', 'NG': '+234', 'KP': '+850', 'NO': '+47',
+            'OM': '+968', 'PK': '+92', 'PW': '+680', 'PS': '+970', 'PA': '+507',
+            'PG': '+675', 'PY': '+595', 'PE': '+51', 'PH': '+63', 'PL': '+48',
+            'PT': '+351', 'PR': '+1-787', 'QA': '+974', 'RO': '+40', 'RU': '+7',
+            'RW': '+250', 'KN': '+1-869', 'LC': '+1-758', 'VC': '+1-784', 'WS': '+685',
+            'SM': '+378', 'ST': '+239', 'SA': '+966', 'SN': '+221', 'RS': '+381',
+            'SC': '+248', 'SL': '+232', 'SG': '+65', 'SK': '+421', 'SI': '+386',
+            'SB': '+677', 'SO': '+252', 'ZA': '+27', 'KR': '+82', 'SS': '+211',
+            'ES': '+34', 'LK': '+94', 'SD': '+249', 'SR': '+597', 'SE': '+46',
+            'CH': '+41', 'SY': '+963', 'TW': '+886', 'TJ': '+992', 'TZ': '+255',
+            'TH': '+66', 'TL': '+670', 'TG': '+228', 'TO': '+676', 'TT': '+1-868',
+            'TN': '+216', 'TR': '+90', 'TM': '+993', 'TV': '+688', 'UG': '+256',
+            'UA': '+380', 'AE': '+971', 'GB': '+44', 'US': '+1', 'UY': '+598',
+            'UZ': '+998', 'VU': '+678', 'VA': '+379', 'VE': '+58', 'VN': '+84',
+            'YE': '+967', 'ZM': '+260', 'ZW': '+263'
         };
         
         let currentStep = 0;
@@ -764,11 +1459,55 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateProgress();
             updateCurrencyOptions();
+            
+            // Initialize currency prefixes with default currency
+            const currencySelect = document.getElementById('currency');
+            if (currencySelect && currencySelect.value) {
+                updateCurrencyPrefixes(currencySelect.value);
+            }
         });
         
         function updateProgress() {
-            const progress = ((currentStep + 1) / totalSteps) * 100;
-            document.getElementById('progressFill').style.width = progress + '%';
+            // Update step indicators
+            for (let i = 1; i <= 5; i++) {
+                const dot = document.getElementById('dot-' + i);
+                const line = document.getElementById('line-' + i);
+                if (!dot) continue;
+                
+                dot.classList.remove('active', 'completed');
+                if (line) line.classList.remove('filled');
+                
+                if (i < currentStep + 1) {
+                    dot.classList.add('completed');
+                    if (line) line.classList.add('filled');
+                } else if (i === currentStep + 1) {
+                    dot.classList.add('active');
+                }
+            }
+        }
+        
+        function toggleOtherInput() {
+            const otherCheckbox = document.getElementById('opt-other');
+            const otherContainer = document.getElementById('otherStatusContainer');
+            if (otherCheckbox.checked) {
+                otherContainer.style.display = 'block';
+                document.getElementById('otherStatus').focus();
+            } else {
+                otherContainer.style.display = 'none';
+                document.getElementById('otherStatus').value = '';
+            }
+        }
+        
+        function toggleOtherConcernInput() {
+            const otherCheckbox = document.getElementById('concern-other');
+            const otherContainer = document.getElementById('otherConcernContainer');
+            if (otherCheckbox.checked) {
+                otherContainer.style.display = 'block';
+                document.getElementById('otherConcern').focus();
+            } else {
+                otherContainer.style.display = 'none';
+                document.getElementById('otherConcern').value = '';
+            }
         }
         
         function showStep(step) {
@@ -799,11 +1538,47 @@
             
             if (selectedOption && selectedOption.value) {
                 const currency = selectedOption.getAttribute('data-currency');
+                const countryCode = selectedOption.value;
+                
                 if (currency) {
                     currencySelect.value = currency;
+                    updateCurrencyPrefixes(currency);
+                }
+                
+                // Update phone country code
+                const phoneCode = COUNTRY_PHONE_CODES[countryCode] || '+1';
+                const phoneCodeEl = document.getElementById('phoneCountryCode');
+                if (phoneCodeEl) {
+                    phoneCodeEl.textContent = phoneCode;
                 }
             }
         }
+        
+        function updateCurrencyPrefixes(currencyCode) {
+            const symbol = CURRENCY_SYMBOLS[currencyCode] || currencyCode;
+            
+            // Update all currency prefix elements
+            const prefixElements = [
+                'incomeCurrencyPrefix',
+                'surplusCurrencyPrefix',
+                'wealthCurrencyPrefix'
+            ];
+            
+            prefixElements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.textContent = symbol;
+            });
+        }
+        
+        // Also update prefixes when currency dropdown is changed directly
+        document.addEventListener('DOMContentLoaded', function() {
+            const currencySelect = document.getElementById('currency');
+            if (currencySelect) {
+                currencySelect.addEventListener('change', function() {
+                    updateCurrencyPrefixes(this.value);
+                });
+            }
+        });
         
         function generateReport() {
             const country = document.getElementById('country').value;
@@ -812,24 +1587,56 @@
             const surplus = parseFloat(document.getElementById('monthlySurplus').value) || 0;
             const liquid = parseFloat(document.getElementById('liquidWealth').value) || 0;
             const firstName = document.getElementById('firstName').value.trim();
+            const lastName = document.getElementById('lastName').value.trim();
             const email = document.getElementById('email').value.trim();
-            const phone = document.getElementById('phone').value.trim();
+            const phoneNumber = document.getElementById('phone').value.trim();
+            const phoneCode = document.getElementById('phoneCountryCode').textContent;
+            const phone = phoneNumber ? phoneCode + ' ' + phoneNumber : '';
             
-            if (!firstName || !email) {
-                alert('Please enter your name and email');
+            if (!firstName || !lastName || !email) {
+                alert('Please enter your first name, last name, and email');
                 return;
             }
             
             // Show loading
             showStep(4);
             
-            const status = document.querySelector('input[name="status"]:checked')?.value || '';
-            const concern = document.querySelector('input[name="concern"]:checked')?.value || '';
+            // Collect all checked status checkboxes
+            const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
+            let statusValues = [];
+            statusCheckboxes.forEach(cb => {
+                if (cb.value === 'Other') {
+                    const otherText = document.getElementById('otherStatus').value.trim();
+                    if (otherText) {
+                        statusValues.push('Other: ' + otherText);
+                    }
+                } else {
+                    statusValues.push(cb.value);
+                }
+            });
+            const status = statusValues.join(', ') || '';
+            
+            // Collect all checked concern checkboxes
+            const concernCheckboxes = document.querySelectorAll('input[name="concern"]:checked');
+            let concernValues = [];
+            concernCheckboxes.forEach(cb => {
+                if (cb.value === 'Other') {
+                    const otherText = document.getElementById('otherConcern').value.trim();
+                    if (otherText) {
+                        concernValues.push('Other: ' + otherText);
+                    }
+                } else {
+                    concernValues.push(cb.value);
+                }
+            });
+            const concern = concernValues.join(', ') || '';
+            
             const timeline = document.querySelector('input[name="timeline"]:checked')?.value || '';
             
             // Prepare data for Airtable (via Zapier)
             const formData = {
                 'First Name': firstName,
+                'Last Name': lastName,
                 'Email': email,
                 'Phone': phone,
                 'Country': getCountryName(country),
@@ -850,7 +1657,7 @@
             // Generate report after delay
             setTimeout(function() {
                 showStep(5);
-                generateAllContent(firstName, surplus, liquid, income, currency, status, concern, timeline);
+                generateAllContent(firstName + ' ' + lastName, surplus, liquid, income, currency, status, concern, timeline);
             }, 2500);
         }
         
@@ -892,11 +1699,17 @@
             });
         }
         
+        // Store report data globally for PDF generation
+        let reportData = {};
+        
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
             const annualSurplus = surplus * 12;
-            const projection5yr = liquid + (annualSurplus * 5 * 1.08);
+            const projection5yr = calculateCompoundGrowth(liquid, surplus, 5, 0.08);
             const wealthScore = calculateWealthScore(surplus, liquid);
+            
+            // Store for PDF
+            reportData = { name, surplus, liquid, income, currency, symbol, status, concern, timeline, annualSurplus, projection5yr, wealthScore };
             
             // Update display values
             document.getElementById('resultName').textContent = name;
@@ -907,30 +1720,336 @@
             document.getElementById('displayAnnual').textContent = symbol + annualSurplus.toLocaleString();
             document.getElementById('display5Year').textContent = symbol + Math.round(projection5yr).toLocaleString();
             
-            // Generate insights
+            // Draw score gauge
+            drawScoreGauge(wealthScore);
+            
+            // Draw wealth projection chart
+            drawWealthProjectionChart(liquid, surplus, symbol);
+            
+            // Draw allocation chart
+            drawAllocationChart(income, concern, status);
+            
+            // Generate Millionaire Mind principles
+            generateMindsetPrinciples(wealthScore, concern, status);
+            
+            // Generate action steps
+            generateActionSteps(concern, status, timeline, income);
+            
+            // Generate AI-powered analysis
+            generateAIAnalysis(name, surplus, liquid, income, currency, status, concern, timeline, wealthScore, symbol);
+        }
+        
+        function calculateCompoundGrowth(principal, monthlyAdd, years, rate) {
+            let total = principal;
+            const monthlyRate = rate / 12;
+            for (let i = 0; i < years * 12; i++) {
+                total = total * (1 + monthlyRate) + monthlyAdd;
+            }
+            return total;
+        }
+        
+        function drawScoreGauge(score) {
+            const canvas = document.getElementById('scoreGauge');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const centerX = 100;
+            const centerY = 100;
+            const radius = 80;
+            
+            ctx.clearRect(0, 0, 200, 120);
+            
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, 0, false);
+            ctx.lineWidth = 15;
+            ctx.strokeStyle = '#f0f0f0';
+            ctx.stroke();
+            
+            const scoreAngle = Math.PI + (Math.PI * (score / 100));
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, Math.PI, scoreAngle, false);
+            ctx.lineWidth = 15;
+            const gradient = ctx.createLinearGradient(0, 0, 200, 0);
+            gradient.addColorStop(0, '#ff8120');
+            gradient.addColorStop(1, '#ff9a4a');
+            ctx.strokeStyle = gradient;
+            ctx.lineCap = 'round';
+            ctx.stroke();
+        }
+        
+        function drawWealthProjectionChart(liquid, surplus, symbol) {
+            const ctx = document.getElementById('wealthProjectionChart');
+            if (!ctx) return;
+            
+            const years = [0, 1, 2, 3, 4, 5, 7, 10];
+            const conservativeData = years.map(y => calculateCompoundGrowth(liquid, surplus, y, 0.06));
+            const moderateData = years.map(y => calculateCompoundGrowth(liquid, surplus, y, 0.08));
+            const aggressiveData = years.map(y => calculateCompoundGrowth(liquid, surplus, y, 0.12));
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: years.map(y => y === 0 ? 'Now' : `Year ${y}`),
+                    datasets: [
+                        {
+                            label: 'Conservative (6%)',
+                            data: conservativeData,
+                            borderColor: '#94a3b8',
+                            backgroundColor: 'rgba(148, 163, 184, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        },
+                        {
+                            label: 'Moderate (8%)',
+                            data: moderateData,
+                            borderColor: '#ff8120',
+                            backgroundColor: 'rgba(255, 129, 32, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        },
+                        {
+                            label: 'Aggressive (12%)',
+                            data: aggressiveData,
+                            borderColor: '#22c55e',
+                            backgroundColor: 'rgba(34, 197, 94, 0.1)',
+                            tension: 0.4,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { position: 'bottom' },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + symbol + Math.round(context.raw).toLocaleString();
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) {
+                                    if (value >= 1000000) return symbol + (value/1000000).toFixed(1) + 'M';
+                                    if (value >= 1000) return symbol + (value/1000).toFixed(0) + 'K';
+                                    return symbol + value;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function drawAllocationChart(income, concern, status) {
+            const ctx = document.getElementById('allocationChart');
+            if (!ctx) return;
+            
+            let allocation = {};
+            const isHighIncome = income.includes('500K') || income.includes('1M') || income.includes('2M') || income.includes('5M');
+            
+            if (concern.includes('Tax')) {
+                allocation = { 'Tax-Advantaged': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business': 15, 'Alternatives': 10, 'Cash': 5 };
+            } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
+                allocation = { 'Stocks': 30, 'Real Estate': 25, 'Bonds': 20, 'Private Equity': 15, 'Cash': 10 };
+            } else if (concern.includes('Protection')) {
+                allocation = { 'ETFs': 25, 'Real Estate': 20, 'Bonds': 20, 'Gold': 15, 'Insurance': 10, 'Emergency': 10 };
+            } else {
+                allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternatives': 15, 'Cash': 10 };
+            }
+            
+            const colors = ['#ff8120', '#ff9a4a', '#ffb366', '#ffc999', '#ffddb3', '#fff0e0'];
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(allocation),
+                    datasets: [{ data: Object.values(allocation), backgroundColor: colors, borderWidth: 2, borderColor: '#fff' }]
+                },
+                options: { responsive: true, plugins: { legend: { display: false } }, cutout: '60%' }
+            });
+            
+            let breakdownHtml = '';
+            Object.entries(allocation).forEach(([key, value], index) => {
+                breakdownHtml += `<div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <div style="width: 12px; height: 12px; border-radius: 3px; background: ${colors[index]};"></div>
+                    <div style="flex: 1; font-size: 14px; color: #333;">${key}</div>
+                    <div style="font-weight: 600; color: #ff8120;">${value}%</div>
+                </div>`;
+            });
+            document.getElementById('allocationBreakdown').innerHTML = breakdownHtml;
+        }
+        
+        function generateMindsetPrinciples(score, concern, status) {
+            const principles = [
+                { title: "Wealth File #1: Rich people believe 'I create my life.'", insight: "Take 100% responsibility for your financial outcomes.", action: "Review your 'money blueprint' from childhood." },
+                { title: "Wealth File #2: Rich people play the money game to win.", insight: "The goal is financial freedom, not just paying bills.", action: "Define your 'Financial Freedom Number'." },
+                { title: "Wealth File #3: Rich people are committed to being rich.", insight: "Wanting to be rich is not enough. You must be 100% committed.", action: "Write down exactly why you MUST become wealthy." }
+            ];
+            
             let html = '';
+            principles.forEach(p => {
+                html += `<div style="background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 15px; border-left: 4px solid #ff8120;">
+                    <h4 style="color: #1a1a1a; font-size: 15px; margin-bottom: 10px;">${p.title}</h4>
+                    <p style="color: #555; font-size: 14px; line-height: 1.6; margin-bottom: 10px;">${p.insight}</p>
+                    <div style="background: #fff9f5; padding: 12px; border-radius: 6px;">
+                        <span style="color: #ff8120; font-weight: 600; font-size: 12px;">ACTION:</span>
+                        <span style="color: #333; font-size: 13px;"> ${p.action}</span>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('mindsetPrinciples').innerHTML = html;
+        }
+        
+        function generateActionSteps(concern, status, timeline, income) {
+            const steps = [
+                { week: "Week 1-2", title: "Foundation Audit", description: "Review current financial position, emergency fund status, and insurance coverage.", priority: "high" },
+                { week: "Week 3-4", title: "Tax Structure Review", description: "Consult with tax strategist about entity optimization and retirement account maximization.", priority: "high" },
+                { week: "Week 5-8", title: "Investment Setup", description: "Open/optimize brokerage accounts, establish automatic investment transfers.", priority: "medium" },
+                { week: "Week 9-12", title: "Wealth Architecture", description: "Implement diversified portfolio strategy aligned with your goals and timeline.", priority: "medium" }
+            ];
             
-            if (concern === 'Tax Optimization') {
-                html += '<div class="insight-card"><h4>💰 Tax Efficiency Opportunity</h4><p>With ' + symbol + annualSurplus.toLocaleString() + ' annual surplus, strategic tax structures could save ' + (status === 'Business Owner' ? '15-25%' : '8-15%') + ' annually. Consider entity optimization and strategic deferrals.</p></div>';
+            let html = '';
+            steps.forEach(step => {
+                const priorityColor = step.priority === 'high' ? '#ef4444' : '#f59e0b';
+                html += `<div style="display: flex; gap: 20px; margin-bottom: 20px; padding-bottom: 20px; border-bottom: 1px solid #f0f0f0;">
+                    <div style="flex-shrink: 0; width: 80px; text-align: center;">
+                        <div style="background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); color: #fff; padding: 8px; border-radius: 8px; font-size: 12px; font-weight: 600;">${step.week}</div>
+                    </div>
+                    <div style="flex: 1;">
+                        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+                            <h4 style="margin: 0; font-size: 15px; color: #1a1a1a;">${step.title}</h4>
+                            <span style="background: ${priorityColor}; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 10px;">${step.priority.toUpperCase()}</span>
+                        </div>
+                        <p style="margin: 0; font-size: 14px; color: #666; line-height: 1.5;">${step.description}</p>
+                    </div>
+                </div>`;
+            });
+            document.getElementById('actionStepsContainer').innerHTML = html;
+        }
+        
+        async function generateAIAnalysis(name, surplus, liquid, income, currency, status, concern, timeline, wealthScore, symbol) {
+            const loadingEl = document.getElementById('aiLoadingIndicator');
+            const contentEl = document.getElementById('aiAnalysisContent');
+            
+            const prompt = `You are June Yoon, a Wealth Architecture Strategist. Generate a personalized wealth analysis (250-350 words) for:
+
+CLIENT: ${name}
+- Monthly Surplus: ${symbol}${surplus.toLocaleString()}
+- Liquid Assets: ${symbol}${liquid.toLocaleString()}
+- Income: ${income}
+- Status: ${status || 'Professional'}
+- Concerns: ${concern || 'Wealth building'}
+- Timeline: ${timeline}
+- Score: ${wealthScore}/100
+
+Include: 1) Warm greeting acknowledging their position, 2) 2-3 specific strategies, 3) One T. Harv Eker insight, 4) Powerful closing. No bullets or headers - flowing paragraphs only.`;
+
+            try {
+                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 800, messages: [{ role: 'user', content: prompt }] })
+                });
+                const data = await response.json();
+                const text = data.content?.[0]?.text || generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol);
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+                contentEl.innerHTML = `<p style="white-space: pre-line;">${text}</p>`;
+            } catch (e) {
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+                contentEl.innerHTML = `<p style="white-space: pre-line;">${generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol)}</p>`;
             }
+        }
+        
+        function generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol) {
+            const firstName = name.split(' ')[0];
+            return `Dear ${firstName},
+
+Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/100, you're in the "${getScoreLabel(wealthScore)}" category—a solid foundation for accelerated wealth building.
+
+Your ${symbol}${surplus.toLocaleString()} monthly surplus and ${symbol}${liquid.toLocaleString()} in liquid assets position you well for strategic growth. The key now is optimizing where this capital flows and ensuring every dollar works as hard as possible.
+
+I recommend focusing on three key areas: First, maximize tax-advantaged accounts before investing in taxable accounts. Second, establish a diversified portfolio aligned with your timeline. Third, build multiple income streams through strategic real estate or business investments.
+
+As T. Harv Eker teaches: "Your income can grow only to the extent that you do." Your wealth journey isn't just about strategies—it's about expanding your capacity to create and multiply value.
+
+I look forward to mapping your personalized 90-day action plan in our strategy call.
+
+To your wealth,
+June Yoon`;
+        }
+        
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const pageWidth = doc.internal.pageSize.getWidth();
+            const pageHeight = doc.internal.pageSize.getHeight();
+            const margin = 20;
             
-            if (concern === 'Capital Deployment') {
-                html += '<div class="insight-card"><h4>📊 Deployment Strategy</h4><p>Your ' + symbol + surplus.toLocaleString() + ' monthly capacity positions you for institutional investment opportunities. Recommend: diversified portfolio + alternate assets.</p></div>';
-            }
+            // Header
+            doc.setFillColor(255, 129, 32);
+            doc.rect(0, 0, pageWidth, 40, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(22);
+            doc.setFont('helvetica', 'bold');
+            doc.text('WEALTH ARCHITECTURE BLUEPRINT', pageWidth / 2, 18, { align: 'center' });
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'normal');
+            doc.text(`Personalized for ${reportData.name}`, pageWidth / 2, 28, { align: 'center' });
+            doc.text('June Yoon | Success Resources', pageWidth / 2, 35, { align: 'center' });
             
-            if (concern === 'Wealth Protection') {
-                html += '<div class="insight-card"><h4>🛡️ Wealth Architecture</h4><p>Assets of ' + symbol + liquid.toLocaleString() + ' require multi-layer protection strategy. Review: entity structure, insurance layers, asset diversification.</p></div>';
-            }
+            // Score Section
+            let yPos = 55;
+            doc.setFillColor(249, 249, 249);
+            doc.roundedRect(margin, yPos, pageWidth - (margin * 2), 35, 3, 3, 'F');
+            doc.setTextColor(255, 129, 32);
+            doc.setFontSize(32);
+            doc.setFont('helvetica', 'bold');
+            doc.text(String(reportData.wealthScore), pageWidth / 2, yPos + 18, { align: 'center' });
+            doc.setTextColor(102, 102, 102);
+            doc.setFontSize(10);
+            doc.text(getScoreLabel(reportData.wealthScore).toUpperCase(), pageWidth / 2, yPos + 28, { align: 'center' });
             
-            if (concern === 'Legacy Planning') {
-                html += '<div class="insight-card"><h4>🏛️ Generational Wealth</h4><p>Building legacy wealth requires strategic structures beyond personal investing. Consider trusts, family entities, and succession planning.</p></div>';
-            }
+            yPos += 45;
             
-            html += '<div class="insight-card"><h4>⏱️ Your ' + timeline + ' Wealth Projection</h4><p>Deploying your monthly surplus strategically with 8% compounded growth projects wealth of ' + symbol + Math.round(projection5yr).toLocaleString() + ' within 5 years.</p></div>';
+            // Summary
+            doc.setTextColor(26, 26, 26);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Financial Summary', margin, yPos);
+            yPos += 10;
             
-            html += '<div class="insight-card"><h4>🎯 The Wealth Multiplier Principle</h4><p><strong>Key Insight:</strong> Your wealth velocity is determined by income level, capital deployment strategy, and compounding timeframe. Elite builders use systematic structures + alternative assets to multiply results 2-3x faster.</p></div>';
+            const data = [
+                ['Monthly Surplus:', reportData.symbol + reportData.surplus.toLocaleString()],
+                ['Liquid Assets:', reportData.symbol + reportData.liquid.toLocaleString()],
+                ['Annual Capacity:', reportData.symbol + reportData.annualSurplus.toLocaleString()],
+                ['5-Year Projection:', reportData.symbol + Math.round(reportData.projection5yr).toLocaleString()]
+            ];
             
-            document.getElementById('insightsContainer').innerHTML = html;
+            doc.setFontSize(11);
+            data.forEach(([label, value]) => {
+                doc.setFont('helvetica', 'normal');
+                doc.setTextColor(100);
+                doc.text(label, margin, yPos);
+                doc.setFont('helvetica', 'bold');
+                doc.setTextColor(255, 129, 32);
+                doc.text(value, margin + 50, yPos);
+                yPos += 8;
+            });
+            
+            // Footer
+            doc.setFillColor(26, 26, 26);
+            doc.rect(0, pageHeight - 20, pageWidth, 20, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(8);
+            doc.text('© 2024 Success Resources | June Yoon Wealth Architecture', pageWidth / 2, pageHeight - 10, { align: 'center' });
+            
+            doc.save(`Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`);
         }
         
         function getScoreLabel(score) {
@@ -942,8 +2061,9 @@
         
         function scheduleCall() {
             const email = document.getElementById('email').value;
-            const name = document.getElementById('firstName').value;
-            window.open(CONFIG.CALENDLY_URL + '?email=' + encodeURIComponent(email) + '&name=' + encodeURIComponent(name), '_blank');
+            const firstName = document.getElementById('firstName').value;
+            const lastName = document.getElementById('lastName').value;
+            window.open(CONFIG.CALENDLY_URL + '?email=' + encodeURIComponent(email) + '&name=' + encodeURIComponent(firstName + ' ' + lastName), '_blank');
         }
     </script>
 </body>
