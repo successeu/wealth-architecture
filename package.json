@@ -1,6 +1,6 @@
 {
   "name": "wealth-architecture-analyzer",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Premium lead magnet for high-income earners - personalized wealth architecture reports",
   "main": "api/server.js",
   "scripts": {
