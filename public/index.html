@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wealth Architecture Masterclass | June Yoon | Success Resources</title>
+    <meta name="description" content="Discover the 3 wealth blueprints separating 6-figure earners from 7-figure wealth builders. Free masterclass with June Yoon.">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💰</text></svg>">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -743,9 +745,8 @@
         // CONFIGURATION
         // ============================================
         const CONFIG = {
-            AIRTABLE_BASE_ID: 'appTPbyctYeQFvd0N',
-            AIRTABLE_TABLE_NAME: 'wealth-architecture',
-            AIRTABLE_API_KEY: 'patIddR9AZrbef4X1.817b68af81c06871de0805e19485f49d0075eae049e061bb49711849233c016f',
+            // Replace with your Vercel project URL after deployment
+            API_ENDPOINT: '/api/airtable',
             CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint'
         };
         
@@ -869,37 +870,16 @@
         }
         
         // ============================================
-        // DIRECT AIRTABLE API INTEGRATION
+        // SECURE AIRTABLE PROXY (via Vercel)
+        // API key is stored server-side, never exposed
         // ============================================
         function sendToAirtable(data) {
-            const url = `https://api.airtable.com/v0/${CONFIG.AIRTABLE_BASE_ID}/${encodeURIComponent(CONFIG.AIRTABLE_TABLE_NAME)}`;
-            
-            // Map form data to Airtable field names
-            const airtableRecord = {
-                fields: {
-                    'First Name': data['First Name'],
-                    'Email': data['Email'],
-                    'Phone': data['Phone'] || '',
-                    'Country': data['Country'],
-                    'Currency': data['Currency'],
-                    'Income Level': data['Income Level'],
-                    'Monthly Surplus': data['Monthly Surplus'],
-                    'Liquid Assets': data['Liquid Assets'],
-                    'Professional Status': data['Professional Status'],
-                    'Primary Concern': data['Primary Concern'],
-                    'Timeline': data['Timeline'],
-                    'Wealth Score': data['Wealth Score'],
-                    'Created At': data['Created At']
-                }
-            };
-            
-            fetch(url, {
+            fetch(CONFIG.API_ENDPOINT, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${CONFIG.AIRTABLE_API_KEY}`,
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(airtableRecord)
+                body: JSON.stringify(data)
             })
             .then(response => {
                 if (!response.ok) {
@@ -911,7 +891,7 @@
                 console.log('✅ Lead saved to Airtable:', result.id);
             })
             .catch(err => {
-                console.error('❌ Airtable error:', err);
+                console.error('❌ Error saving lead:', err);
             });
         }
         
