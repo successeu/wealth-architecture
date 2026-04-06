@@ -17,7 +17,12 @@ async function findAirtableRecord(email, airtableBaseId, airtableTableId, airtab
   for (let attempt = 1; attempt <= retries; attempt++) {
     console.log(`🔍 Attempt ${attempt}: Finding Airtable record for: ${email}`);
     
-    const searchUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}?filterByFormula={Email}="${email}"&maxRecords=1`;
+    // Encode the email properly for the filter formula
+    const encodedEmail = encodeURIComponent(email);
+    const filterFormula = encodeURIComponent(`{Email}="${email}"`);
+    const searchUrl = `https://api.airtable.com/v0/${airtableBaseId}/${airtableTableId}?filterByFormula=${filterFormula}&maxRecords=1`;
+    
+    console.log(`🔗 Search URL: ${searchUrl}`);
 
     const searchResponse = await fetch(searchUrl, {
       method: 'GET',
@@ -28,9 +33,14 @@ async function findAirtableRecord(email, airtableBaseId, airtableTableId, airtab
     });
 
     const searchData = await searchResponse.json();
+    console.log(`📋 Airtable search response:`, JSON.stringify(searchData));
 
     if (searchData.records && searchData.records.length > 0) {
       return searchData.records[0];
+    }
+
+    if (searchData.error) {
+      console.error(`❌ Airtable API error:`, searchData.error);
     }
 
     // Wait before retry (2 seconds, 4 seconds, 6 seconds)
