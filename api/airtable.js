@@ -4,11 +4,16 @@
 
 export default async function handler(req, res) {
   // CORS headers - restricted to allowed origins
-  const allowedOrigins = [
-    'https://wealth-architecture-qnpg6fbe3-sreu.vercel.app',
-    'https://your-production-domain.com', // Replace with your actual production domain
-    'http://localhost:3000' // For local development - remove in production
-  ];
+ const allowedOrigins = [
+  // Production domain (when you have a custom domain)
+  'https://wealth-architecture.vercel.app',
+  
+  // Vercel preview deployments (the URL you shared earlier)
+  'https://wealth-architecture-qnpg6fbe3-sreu.vercel.app',
+  
+  // Local development (remove in production)
+  'http://localhost:3000'
+];
   
   const origin = req.headers.origin;
   if (allowedOrigins.includes(origin)) {
