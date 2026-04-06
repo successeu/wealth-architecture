@@ -1,9 +1,19 @@
 // api/airtable.js
 // Vercel Serverless Function - Secure Airtable Proxy
+// For wealth-architecture table
 
 export default async function handler(req, res) {
-  // CORS headers - must be set first
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  // CORS headers - restricted to allowed origins
+  const allowedOrigins = [
+    'https://wealth-architecture-qnpg6fbe3-sreu.vercel.app',
+    'https://your-production-domain.com', // Replace with your actual production domain
+    'http://localhost:3000' // For local development - remove in production
+  ];
+  
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -29,40 +39,96 @@ export default async function handler(req, res) {
       hasBaseId: !!AIRTABLE_BASE_ID,
       hasTableName: !!AIRTABLE_TABLE_NAME
     });
-    return res.status(500).json({ error: 'Server configuration error - missing environment variables' });
+    return res.status(500).json({ error: 'Server configuration error' });
   }
+
+  // Valid options for Single Select fields (must match Airtable exactly)
+  const VALID_OPTIONS = {
+    incomeLevel: ['50K-100K', '100K-150K', '150K-250K', '250K-500K', '500K+'],
+    professionalStatus: ['Business Owner', 'Executive/C-Suite', 'Senior Professional', 'Investor', 'Other'],
+    primaryConcern: ['Tax Optimization', 'Capital Deployment', 'Wealth Protection', 'Income Growth', 'Retirement Planning'],
+    timeline: ['1 year', '3 years', '5+ years']
+  };
 
   try {
     // Get data from request body
     const data = req.body;
 
     // Validate required fields
-    if (!data['First Name'] || !data['Email']) {
-      return res.status(400).json({ error: 'Name and email are required' });
+    if (!data['First Name'] || !data['First Name'].trim()) {
+      return res.status(400).json({ error: 'First Name is required' });
+    }
+
+    if (!data['Email'] || !data['Email'].trim()) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data['Email'].trim())) {
+      return res.status(400).json({ error: 'Invalid email format' });
     }
 
     // Build Airtable API URL
     const airtableUrl = `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE_NAME)}`;
 
-    // Build the record to send to Airtable
+    // Build the record with required fields
     const airtableRecord = {
       fields: {
-        'First Name': data['First Name'] || '',
-        'Email': data['Email'] || '',
-        'Phone': data['Phone'] || '',
-        'Country': data['Country'] || '',
-        'Currency': data['Currency'] || '',
-        'Income Level': data['Income Level'] || '',
-        'Monthly Surplus': Number(data['Monthly Surplus']) || 0,
-        'Liquid Assets': Number(data['Liquid Assets']) || 0,
-        'Professional Status': data['Professional Status'] || '',
-        'Primary Concern': data['Primary Concern'] || '',
-        'Timeline': data['Timeline'] || '',
-        'Wealth Score': Number(data['Wealth Score']) || 0
+        'First Name': data['First Name'].trim(),
+        'Email': data['Email'].trim().toLowerCase(),
+        'Created At': new Date().toISOString().split('T')[0] // Format: YYYY-MM-DD
       }
     };
 
-    console.log('Sending to Airtable:', JSON.stringify(airtableRecord));
+    // Add optional text fields (only if provided and not empty)
+    if (data['Phone'] && data['Phone'].trim()) {
+      airtableRecord.fields['Phone'] = data['Phone'].trim();
+    }
+
+    if (data['Country'] && data['Country'].trim()) {
+      airtableRecord.fields['Country'] = data['Country'].trim();
+    }
+
+    if (data['Currency'] && data['Currency'].trim()) {
+      airtableRecord.fields['Currency'] = data['Currency'].trim().toUpperCase();
+    }
+
+    // Add number fields (only if valid positive numbers)
+    const monthlySurplus = parseInt(data['Monthly Surplus'], 10);
+    if (!isNaN(monthlySurplus) && monthlySurplus > 0) {
+      airtableRecord.fields['Monthly Surplus'] = monthlySurplus;
+    }
+
+    const liquidAssets = parseInt(data['Liquid Assets'], 10);
+    if (!isNaN(liquidAssets) && liquidAssets > 0) {
+      airtableRecord.fields['Liquid Assets'] = liquidAssets;
+    }
+
+    const wealthScore = parseInt(data['Wealth Score'], 10);
+    if (!isNaN(wealthScore) && wealthScore >= 0 && wealthScore <= 100) {
+      airtableRecord.fields['Wealth Score'] = wealthScore;
+    }
+
+    // Add Single Select fields (only if valid option)
+    if (data['Income Level'] && VALID_OPTIONS.incomeLevel.includes(data['Income Level'])) {
+      airtableRecord.fields['Income Level'] = data['Income Level'];
+    }
+
+    if (data['Professional Status'] && VALID_OPTIONS.professionalStatus.includes(data['Professional Status'])) {
+      airtableRecord.fields['Professional Status'] = data['Professional Status'];
+    }
+
+    if (data['Primary Concern'] && VALID_OPTIONS.primaryConcern.includes(data['Primary Concern'])) {
+      airtableRecord.fields['Primary Concern'] = data['Primary Concern'];
+    }
+
+    if (data['Timeline'] && VALID_OPTIONS.timeline.includes(data['Timeline'])) {
+      airtableRecord.fields['Timeline'] = data['Timeline'];
+    }
+
+    // Log without sensitive data
+    console.log('Creating record for:', data['Email'].substring(0, 3) + '***');
 
     // Send to Airtable
     const response = await fetch(airtableUrl, {
@@ -79,22 +145,38 @@ export default async function handler(req, res) {
       const errorData = await response.json();
       console.error('Airtable API error:', {
         status: response.status,
-        error: errorData
+        type: errorData.error?.type,
+        message: errorData.error?.message
       });
+      
+      // Return user-friendly error messages
+      if (response.status === 422) {
+        return res.status(400).json({ 
+          error: 'Invalid data format. Please check your inputs.' 
+        });
+      }
+      if (response.status === 401 || response.status === 403) {
+        return res.status(500).json({ error: 'Server authentication error' });
+      }
+      
       return res.status(response.status).json({
-        error: 'Failed to save to Airtable',
-        status: response.status,
-        details: errorData
+        error: 'Failed to save data. Please try again.'
       });
     }
 
     // Success
     const result = await response.json();
-    console.log('Successfully saved to Airtable:', result.id);
-    return res.status(200).json({ success: true, id: result.id });
+    console.log('Successfully created record:', result.id);
+    
+    return res.status(200).json({ 
+      success: true, 
+      message: 'Data saved successfully'
+    });
 
   } catch (error) {
     console.error('Server error:', error.message);
-    return res.status(500).json({ error: 'Internal server error', message: error.message });
+    return res.status(500).json({ 
+      error: 'An unexpected error occurred. Please try again.' 
+    });
   }
 }
