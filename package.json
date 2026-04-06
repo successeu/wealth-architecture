@@ -1,6 +1,10 @@
-{
-  "name": "wealth-architecture",
-  "version": "1.0.0",
-  "description": "Wealth Architecture Lead Magnet Form",
-  "private": true
-}
+	
+name	"wealth-analyzer"
+version	"1.0.0"
+description	"Wealth Architecture Analyzer by June Yoon"
+scripts	
+dev	"vercel dev"
+build	"vercel build"
+start	"vercel start"
+dependencies	
+@vercel/blob	"^0.23.0"
