@@ -870,15 +870,22 @@
         
         // ============================================
         // ZAPIER WEBHOOK INTEGRATION
+        // Using no-cors mode to avoid CORS issues
         // ============================================
         function sendToZapier(data) {
+            // Create form data to avoid CORS preflight
+            const formData = new FormData();
+            Object.keys(data).forEach(key => {
+                formData.append(key, data[key]);
+            });
+            
             fetch(CONFIG.ZAPIER_WEBHOOK, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                mode: 'no-cors',
+                body: formData
             })
-            .then(function(response) {
-                console.log('✅ Data sent to Zapier successfully');
+            .then(function() {
+                console.log('✅ Data sent to Zapier');
             })
             .catch(function(err) {
                 console.error('❌ Zapier error:', err);
