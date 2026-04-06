@@ -745,8 +745,7 @@
         // CONFIGURATION
         // ============================================
         const CONFIG = {
-            // Replace with your Vercel project URL after deployment
-            API_ENDPOINT: '/api/airtable',
+            ZAPIER_WEBHOOK: 'https://hooks.zapier.com/hooks/catch/3435365/u72kcri/',
             CALENDLY_URL: 'https://calendly.com/june-yoon/your-90-day-wealth-blueprint'
         };
         
@@ -845,8 +844,8 @@
                 'Created At': new Date().toISOString()
             };
             
-            // Send directly to Airtable
-            sendToAirtable(formData);
+            // Send to Zapier webhook
+            sendToZapier(formData);
             
             // Generate report after delay
             setTimeout(function() {
@@ -870,28 +869,19 @@
         }
         
         // ============================================
-        // SECURE AIRTABLE PROXY (via Vercel)
-        // API key is stored server-side, never exposed
+        // ZAPIER WEBHOOK INTEGRATION
         // ============================================
-        function sendToAirtable(data) {
-            fetch(CONFIG.API_ENDPOINT, {
+        function sendToZapier(data) {
+            fetch(CONFIG.ZAPIER_WEBHOOK, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data)
             })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(err => { throw err; });
-                }
-                return response.json();
+            .then(function(response) {
+                console.log('✅ Data sent to Zapier successfully');
             })
-            .then(result => {
-                console.log('✅ Lead saved to Airtable:', result.id);
-            })
-            .catch(err => {
-                console.error('❌ Error saving lead:', err);
+            .catch(function(err) {
+                console.error('❌ Zapier error:', err);
             });
         }
         
