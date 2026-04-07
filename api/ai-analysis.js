@@ -118,8 +118,17 @@ Write the analysis now. Do not include a subject line or greeting header - start
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error('❌ Anthropic API error:', errorData);
+      const errorText = await response.text();
+      console.error('❌ Anthropic API error status:', response.status);
+      console.error('❌ Anthropic API error body:', errorText);
+      
+      let errorData;
+      try {
+        errorData = JSON.parse(errorText);
+      } catch {
+        errorData = { message: errorText };
+      }
+      
       return res.status(response.status).json({ 
         error: 'AI analysis failed', 
         details: errorData 
