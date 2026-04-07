@@ -92,7 +92,15 @@ export default async function handler(req, res) {
     // Step 3: Find Airtable record by email (with retry)
     const airtableBaseId = process.env.AIRTABLE_BASE_ID;
     const airtableTableId = process.env.AIRTABLE_TABLE_ID;
-    const airtableToken = process.env.AIRTABLE_API_TOKEN;
+    const airtableToken = process.env.AIRTABLE_API_TOKEN || process.env.AIRTABLE_API_KEY;
+    
+    // Debug: Log environment variables (without exposing full token)
+    console.log('🔑 Airtable config:', {
+      baseId: airtableBaseId,
+      tableId: airtableTableId,
+      tokenExists: !!airtableToken,
+      tokenPrefix: airtableToken ? airtableToken.substring(0, 10) + '...' : 'MISSING'
+    });
 
     const record = await findAirtableRecord(email, airtableBaseId, airtableTableId, airtableToken);
 
