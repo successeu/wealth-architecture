@@ -570,6 +570,88 @@
             .step-line { width: 30px; }
             .step-indicators { padding: 0 10px; }
         }
+        
+        /* Searchable Dropdown Styles */
+        .searchable-dropdown {
+            position: relative;
+            width: 100%;
+        }
+        
+        .searchable-dropdown .dropdown-search {
+            width: 100%;
+            padding: 18px 20px;
+            font-size: 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            background: #fff;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .searchable-dropdown .dropdown-search:focus {
+            border-color: #ff8120;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(255, 129, 32, 0.1);
+        }
+        
+        .searchable-dropdown .dropdown-search::placeholder {
+            color: #999;
+        }
+        
+        .searchable-dropdown .dropdown-list {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            max-height: 300px;
+            overflow-y: auto;
+            background: #fff;
+            border: 2px solid #ff8120;
+            border-top: none;
+            border-radius: 0 0 12px 12px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        
+        .searchable-dropdown.open .dropdown-list {
+            display: block;
+        }
+        
+        .searchable-dropdown.open .dropdown-search {
+            border-radius: 12px 12px 0 0;
+            border-color: #ff8120;
+        }
+        
+        .searchable-dropdown .dropdown-item {
+            padding: 14px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .searchable-dropdown .dropdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .searchable-dropdown .dropdown-item:hover,
+        .searchable-dropdown .dropdown-item.highlighted {
+            background: #fff5eb;
+            color: #ff8120;
+        }
+        
+        .searchable-dropdown .dropdown-item.selected {
+            background: #ff8120;
+            color: #fff;
+        }
+        
+        .searchable-dropdown .no-results {
+            padding: 14px 20px;
+            color: #999;
+            font-style: italic;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -1582,7 +1664,191 @@
                     updateCurrencyPrefixes(this.value);
                 });
             }
+            
+            // Initialize searchable dropdowns for country and currency
+            initSearchableDropdown('country', 'Select your country...', function(value) {
+                updateCurrencyOptions();
+            });
+            initSearchableDropdown('currency', 'Select currency...', function(value) {
+                updateCurrencyPrefixes(value);
+            });
         });
+        
+        // Searchable Dropdown Component
+        function initSearchableDropdown(selectId, placeholder, onChangeCallback) {
+            const select = document.getElementById(selectId);
+            if (!select) return;
+            
+            // Create wrapper
+            const wrapper = document.createElement('div');
+            wrapper.className = 'searchable-dropdown';
+            wrapper.id = selectId + '-searchable';
+            
+            // Create search input
+            const searchInput = document.createElement('input');
+            searchInput.type = 'text';
+            searchInput.className = 'dropdown-search';
+            searchInput.placeholder = placeholder;
+            searchInput.autocomplete = 'off';
+            
+            // Create dropdown list
+            const dropdownList = document.createElement('div');
+            dropdownList.className = 'dropdown-list';
+            
+            // Get all options from original select
+            const options = Array.from(select.options).slice(1); // Skip first "Select..." option
+            let highlightedIndex = -1;
+            
+            // Populate dropdown list
+            function populateList(filter = '') {
+                dropdownList.innerHTML = '';
+                highlightedIndex = -1;
+                
+                const filteredOptions = options.filter(opt => {
+                    const text = opt.textContent.toLowerCase();
+                    const value = opt.value.toLowerCase();
+                    const searchTerm = filter.toLowerCase().trim();
+                    
+                    // Search in text (removing emoji prefix) and value
+                    const textWithoutEmoji = text.replace(/^[^\w\s]+\s*/, '').trim();
+                    return textWithoutEmoji.includes(searchTerm) || 
+                           text.includes(searchTerm) || 
+                           value.includes(searchTerm);
+                });
+                
+                if (filteredOptions.length === 0) {
+                    const noResults = document.createElement('div');
+                    noResults.className = 'no-results';
+                    noResults.textContent = 'No results found';
+                    dropdownList.appendChild(noResults);
+                    return;
+                }
+                
+                filteredOptions.forEach((opt, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'dropdown-item';
+                    item.textContent = opt.textContent;
+                    item.dataset.value = opt.value;
+                    item.dataset.index = index;
+                    
+                    // Copy data attributes
+                    if (opt.dataset.currency) item.dataset.currency = opt.dataset.currency;
+                    if (opt.dataset.symbol) item.dataset.symbol = opt.dataset.symbol;
+                    
+                    if (opt.value === select.value) {
+                        item.classList.add('selected');
+                    }
+                    
+                    item.addEventListener('click', function() {
+                        selectOption(opt.value, opt.textContent);
+                    });
+                    
+                    dropdownList.appendChild(item);
+                });
+            }
+            
+            // Select an option
+            function selectOption(value, text) {
+                select.value = value;
+                searchInput.value = text;
+                wrapper.classList.remove('open');
+                
+                // Update selected styling
+                dropdownList.querySelectorAll('.dropdown-item').forEach(item => {
+                    item.classList.remove('selected');
+                    if (item.dataset.value === value) {
+                        item.classList.add('selected');
+                    }
+                });
+                
+                // Trigger change event on original select
+                const event = new Event('change', { bubbles: true });
+                select.dispatchEvent(event);
+                
+                // Call callback if provided
+                if (onChangeCallback) {
+                    onChangeCallback(value);
+                }
+            }
+            
+            // Handle keyboard navigation
+            function updateHighlight(newIndex) {
+                const items = dropdownList.querySelectorAll('.dropdown-item');
+                if (items.length === 0) return;
+                
+                // Remove current highlight
+                items.forEach(item => item.classList.remove('highlighted'));
+                
+                // Clamp index
+                if (newIndex < 0) newIndex = items.length - 1;
+                if (newIndex >= items.length) newIndex = 0;
+                
+                highlightedIndex = newIndex;
+                items[highlightedIndex].classList.add('highlighted');
+                items[highlightedIndex].scrollIntoView({ block: 'nearest' });
+            }
+            
+            // Event listeners
+            searchInput.addEventListener('focus', function() {
+                wrapper.classList.add('open');
+                this.select(); // Select all text so user can type to replace
+                populateList(''); // Show all options initially
+            });
+            
+            searchInput.addEventListener('input', function() {
+                // Remove any emoji/flag characters from search term for better matching
+                const cleanSearch = this.value.replace(/[\u{1F1E0}-\u{1F1FF}]|[\u{1F300}-\u{1F9FF}]/gu, '').trim();
+                populateList(cleanSearch);
+                wrapper.classList.add('open');
+            });
+            
+            searchInput.addEventListener('keydown', function(e) {
+                const items = dropdownList.querySelectorAll('.dropdown-item');
+                
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    wrapper.classList.add('open');
+                    updateHighlight(highlightedIndex + 1);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    updateHighlight(highlightedIndex - 1);
+                } else if (e.key === 'Enter') {
+                    e.preventDefault();
+                    if (highlightedIndex >= 0 && items[highlightedIndex]) {
+                        const item = items[highlightedIndex];
+                        selectOption(item.dataset.value, item.textContent);
+                    } else if (items.length === 1) {
+                        selectOption(items[0].dataset.value, items[0].textContent);
+                    }
+                } else if (e.key === 'Escape') {
+                    wrapper.classList.remove('open');
+                    searchInput.blur();
+                }
+            });
+            
+            // Close dropdown when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!wrapper.contains(e.target)) {
+                    wrapper.classList.remove('open');
+                }
+            });
+            
+            // Insert wrapper
+            select.parentNode.insertBefore(wrapper, select);
+            wrapper.appendChild(searchInput);
+            wrapper.appendChild(dropdownList);
+            
+            // Hide original select
+            select.style.display = 'none';
+            
+            // Set initial value if select has one
+            if (select.value && select.selectedIndex > 0) {
+                searchInput.value = select.options[select.selectedIndex].textContent;
+            }
+            
+            // Populate initial list
+            populateList();
+        }
         
         async function generateReport() {
             const country = document.getElementById('country').value;
