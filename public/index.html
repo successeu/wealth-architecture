@@ -1627,7 +1627,15 @@
                 const countryCode = selectedOption.value;
                 
                 if (currency) {
+                    // Update the hidden select value
                     currencySelect.value = currency;
+                    
+                    // Also update the searchable dropdown's visible input
+                    const currencySearchInput = document.querySelector('#currency-searchable .dropdown-search');
+                    if (currencySearchInput && currencySelect.selectedIndex > 0) {
+                        currencySearchInput.value = currencySelect.options[currencySelect.selectedIndex].textContent;
+                    }
+                    
                     updateCurrencyPrefixes(currency);
                 }
                 
@@ -2430,6 +2438,48 @@ June Yoon`;
             const margin = 20;
             const contentWidth = pageWidth - (margin * 2);
             
+            // Show loading indicator
+            const downloadBtn = document.querySelector('.btn-primary[onclick="generatePDF()"]');
+            const originalText = downloadBtn ? downloadBtn.innerHTML : '';
+            if (downloadBtn) {
+                downloadBtn.innerHTML = '⏳ Generating Premium PDF...';
+                downloadBtn.disabled = true;
+            }
+            
+            // Fetch AI Analysis for PDF
+            let aiAnalysis = '';
+            try {
+                console.log('🤖 Fetching AI analysis for PDF...');
+                const response = await fetch('/api/ai-analysis', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: reportData.name,
+                        wealthScore: reportData.wealthScore,
+                        scoreLabel: getScoreLabel(reportData.wealthScore),
+                        surplus: reportData.surplus,
+                        liquid: reportData.liquid,
+                        income: reportData.income,
+                        currency: reportData.symbol,
+                        status: reportData.status || 'Professional',
+                        concern: reportData.concern || 'Wealth building',
+                        timeline: reportData.timeline
+                    })
+                });
+                const data = await response.json();
+                if (data.success && data.analysis) {
+                    aiAnalysis = data.analysis;
+                    console.log('✅ AI analysis received for PDF');
+                }
+            } catch (e) {
+                console.log('⚠️ Using fallback analysis for PDF');
+            }
+            
+            // Use fallback if AI analysis failed
+            if (!aiAnalysis) {
+                aiAnalysis = generateFallbackAnalysis(reportData.name, reportData.surplus, reportData.liquid, reportData.wealthScore, reportData.symbol);
+            }
+            
             // Helper functions
             const addHeader = () => {
                 doc.setFillColor(255, 129, 32);
@@ -2449,7 +2499,7 @@ June Yoon`;
                 doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(8);
-                doc.text('© 2024 Success Resources | June Yoon Wealth Architecture', margin, pageHeight - 6);
+                doc.text('© 2024 Success Resources | June Yoon Wealth Architecture | Confidential', margin, pageHeight - 6);
                 doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: 'right' });
             };
             
@@ -2468,52 +2518,110 @@ June Yoon`;
                 return doc.splitTextToSize(text, maxWidth);
             };
             
-            // ==================== PAGE 1 ====================
-            addHeader();
-            let yPos = 50;
+            const drawMiniChart = (x, y, width, height, data, color) => {
+                const maxVal = Math.max(...data);
+                const barWidth = width / data.length - 2;
+                data.forEach((val, i) => {
+                    const barHeight = (val / maxVal) * height;
+                    doc.setFillColor(...color);
+                    doc.rect(x + (i * (barWidth + 2)), y + height - barHeight, barWidth, barHeight, 'F');
+                });
+            };
             
-            // Score Section
+            // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
+            addHeader();
+            let yPos = 45;
+            
+            // Premium Badge
+            doc.setFillColor(40, 40, 40);
+            doc.roundedRect(pageWidth - margin - 45, 40, 45, 8, 2, 2, 'F');
+            doc.setTextColor(255, 215, 0);
+            doc.setFontSize(7);
+            doc.setFont('helvetica', 'bold');
+            doc.text('★ PREMIUM REPORT', pageWidth - margin - 22.5, 45, { align: 'center' });
+            
+            yPos = 55;
+            
+            // Score Section with Visual Gauge
             doc.setFillColor(255, 248, 240);
-            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'F');
+            doc.roundedRect(margin, yPos, contentWidth, 45, 3, 3, 'F');
             doc.setDrawColor(255, 129, 32);
             doc.setLineWidth(0.5);
-            doc.roundedRect(margin, yPos, contentWidth, 40, 3, 3, 'S');
+            doc.roundedRect(margin, yPos, contentWidth, 45, 3, 3, 'S');
             
-            doc.setTextColor(255, 129, 32);
-            doc.setFontSize(36);
+            // Score Circle
+            const scoreX = margin + 30;
+            const scoreY = yPos + 22;
+            doc.setFillColor(255, 129, 32);
+            doc.circle(scoreX, scoreY, 18, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(24);
             doc.setFont('helvetica', 'bold');
-            doc.text(String(reportData.wealthScore), margin + 30, yPos + 26);
+            doc.text(String(reportData.wealthScore), scoreX, scoreY + 3, { align: 'center' });
+            doc.setFontSize(8);
+            doc.text('/100', scoreX, scoreY + 10, { align: 'center' });
             
+            // Score Details
             doc.setTextColor(26, 26, 26);
             doc.setFontSize(11);
-            doc.text('WEALTH POSITION SCORE', margin + 55, yPos + 18);
-            doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
+            doc.text('WEALTH POSITION SCORE', margin + 55, yPos + 15);
+            doc.setFontSize(16);
             doc.setTextColor(255, 129, 32);
-            doc.text(getScoreLabel(reportData.wealthScore), margin + 55, yPos + 28);
+            doc.text(getScoreLabel(reportData.wealthScore), margin + 55, yPos + 26);
             
             doc.setFontSize(9);
             doc.setFont('helvetica', 'normal');
             doc.setTextColor(100, 100, 100);
-            doc.text('Based on your income, surplus capacity, and liquid assets', margin + 55, yPos + 36);
+            doc.text('Based on income, surplus capacity, liquid assets & wealth concerns', margin + 55, yPos + 34);
             
-            yPos += 50;
+            // Score Bar Visual
+            const barY = yPos + 40;
+            doc.setFillColor(230, 230, 230);
+            doc.rect(margin + 55, barY, 100, 3, 'F');
+            doc.setFillColor(255, 129, 32);
+            doc.rect(margin + 55, barY, reportData.wealthScore, 3, 'F');
             
-            // Financial Summary Section
-            yPos = addSectionTitle('Your Financial Snapshot', yPos);
+            yPos += 55;
             
-            const summaryData = [
+            // Key Metrics Row
+            yPos = addSectionTitle('Key Financial Metrics', yPos);
+            
+            const metrics = [
+                { label: 'Monthly Surplus', value: reportData.symbol + reportData.surplus.toLocaleString(), color: [76, 175, 80] },
+                { label: 'Liquid Assets', value: reportData.symbol + reportData.liquid.toLocaleString(), color: [33, 150, 243] },
+                { label: 'Annual Capacity', value: reportData.symbol + reportData.annualSurplus.toLocaleString(), color: [156, 39, 176] },
+                { label: '5-Year Projection', value: reportData.symbol + Math.round(reportData.projection5yr).toLocaleString(), color: [255, 129, 32] }
+            ];
+            
+            const metricWidth = (contentWidth - 15) / 4;
+            metrics.forEach((m, i) => {
+                const mx = margin + (i * (metricWidth + 5));
+                doc.setFillColor(...m.color);
+                doc.roundedRect(mx, yPos, metricWidth, 25, 2, 2, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(8);
+                doc.setFont('helvetica', 'normal');
+                doc.text(m.label, mx + metricWidth/2, yPos + 8, { align: 'center' });
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text(m.value, mx + metricWidth/2, yPos + 18, { align: 'center' });
+            });
+            
+            yPos += 35;
+            
+            // Financial Profile
+            yPos = addSectionTitle('Your Financial Profile', yPos);
+            
+            const profileData = [
                 ['Annual Income Range', reportData.income || 'Not specified'],
-                ['Monthly Surplus', reportData.symbol + reportData.surplus.toLocaleString()],
-                ['Liquid Assets', reportData.symbol + reportData.liquid.toLocaleString()],
-                ['Annual Investment Capacity', reportData.symbol + reportData.annualSurplus.toLocaleString()],
-                ['5-Year Wealth Projection (8%)', reportData.symbol + Math.round(reportData.projection5yr).toLocaleString()],
+                ['Professional Status', reportData.status || 'Not specified'],
                 ['Investment Timeline', reportData.timeline || 'Not specified'],
-                ['Professional Status', reportData.status || 'Not specified']
+                ['Primary Concerns', reportData.concern || 'General wealth building']
             ];
             
             doc.setFontSize(10);
-            summaryData.forEach(([label, value], i) => {
+            profileData.forEach(([label, value], i) => {
                 const rowY = yPos + (i * 8);
                 if (i % 2 === 0) {
                     doc.setFillColor(249, 249, 249);
@@ -2524,22 +2632,13 @@ June Yoon`;
                 doc.text(label, margin + 3, rowY);
                 doc.setFont('helvetica', 'bold');
                 doc.setTextColor(255, 129, 32);
-                doc.text(value, margin + contentWidth - 3, rowY, { align: 'right' });
+                const valueLines = wrapText(value, contentWidth / 2, 10);
+                doc.text(valueLines[0], margin + contentWidth - 3, rowY, { align: 'right' });
             });
             
-            yPos += (summaryData.length * 8) + 10;
+            yPos += (profileData.length * 8) + 10;
             
-            // Primary Concerns
-            yPos = addSectionTitle('Primary Wealth Concerns', yPos);
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(60, 60, 60);
-            const concerns = reportData.concern || 'General wealth building';
-            const concernLines = wrapText(concerns, contentWidth, 10);
-            doc.text(concernLines, margin, yPos);
-            yPos += (concernLines.length * 5) + 10;
-            
-            // Wealth Projection Table
+            // Wealth Projection Chart
             yPos = addSectionTitle('Wealth Growth Projections', yPos);
             
             const projectionYears = [1, 3, 5, 7, 10];
@@ -2580,9 +2679,59 @@ June Yoon`;
                 yPos += 7;
             });
             
-            addFooter(1, 3);
+            addFooter(1, 4);
             
-            // ==================== PAGE 2 ====================
+            // ==================== PAGE 2: AI PERSONALIZED ANALYSIS ====================
+            doc.addPage();
+            addHeader();
+            yPos = 50;
+            
+            // AI Analysis Section
+            doc.setFillColor(255, 248, 240);
+            doc.roundedRect(margin, yPos, contentWidth, 15, 3, 3, 'F');
+            doc.setTextColor(255, 129, 32);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('💡 Personalized Wealth Analysis', margin + 5, yPos + 10);
+            doc.setFontSize(8);
+            doc.setFont('helvetica', 'italic');
+            doc.setTextColor(100, 100, 100);
+            doc.text('AI-Powered Insights Tailored to Your Profile', margin + contentWidth - 5, yPos + 10, { align: 'right' });
+            yPos += 22;
+            
+            // AI Analysis Content
+            doc.setFontSize(10);
+            doc.setFont('helvetica', 'normal');
+            doc.setTextColor(50, 50, 50);
+            const analysisLines = wrapText(aiAnalysis, contentWidth, 10);
+            
+            // Calculate how many lines fit on this page
+            const maxLinesPage2 = 38;
+            const linesToPrint = analysisLines.slice(0, maxLinesPage2);
+            const remainingLines = analysisLines.slice(maxLinesPage2);
+            
+            linesToPrint.forEach((line, i) => {
+                doc.text(line, margin, yPos + (i * 5));
+            });
+            
+            yPos += (linesToPrint.length * 5) + 15;
+            
+            // If there's room, add a highlight box
+            if (yPos < pageHeight - 80) {
+                doc.setFillColor(255, 129, 32);
+                doc.roundedRect(margin, yPos, contentWidth, 30, 3, 3, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(11);
+                doc.setFont('helvetica', 'bold');
+                doc.text('Key Insight', margin + 10, yPos + 12);
+                doc.setFontSize(9);
+                doc.setFont('helvetica', 'normal');
+                doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin + 10, yPos + 22);
+            }
+            
+            addFooter(2, 4);
+            
+            // ==================== PAGE 3: STRATEGY & ALLOCATION ====================
             doc.addPage();
             addHeader();
             yPos = 50;
@@ -2591,32 +2740,52 @@ June Yoon`;
             yPos = addSectionTitle('Recommended Asset Allocation Strategy', yPos);
             
             let allocation = {};
+            let allocationRationale = '';
+            
             if (reportData.concern && reportData.concern.includes('Tax')) {
                 allocation = { 'Tax-Advantaged Accounts': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business Investments': 15, 'Alternative Assets': 10, 'Cash Reserve': 5 };
+                allocationRationale = 'This allocation prioritizes tax efficiency through maximizing tax-advantaged vehicles while maintaining diversification.';
             } else if (reportData.concern && (reportData.concern.includes('Legacy') || reportData.concern.includes('Retirement'))) {
                 allocation = { 'Diversified Stocks': 30, 'Real Estate': 25, 'Bonds & Fixed Income': 20, 'Private Equity': 15, 'Cash & Liquidity': 10 };
+                allocationRationale = 'This allocation balances growth with stability, ideal for long-term wealth preservation and intergenerational transfer.';
             } else if (reportData.concern && reportData.concern.includes('Protection')) {
                 allocation = { 'Diversified ETFs': 25, 'Real Estate': 20, 'Government Bonds': 20, 'Gold & Commodities': 15, 'Insurance Products': 10, 'Emergency Fund': 10 };
+                allocationRationale = 'This defensive allocation emphasizes capital preservation with inflation hedges and guaranteed returns.';
+            } else if (reportData.concern && reportData.concern.includes('Capital')) {
+                allocation = { 'Growth Stocks': 35, 'Real Estate': 20, 'Index Funds': 20, 'Venture/PE': 15, 'Crypto/Alts': 5, 'Cash': 5 };
+                allocationRationale = 'This aggressive allocation maximizes growth potential for capital deployment with calculated risk exposure.';
             } else {
                 allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternative Investments': 15, 'Cash Reserve': 10 };
+                allocationRationale = 'This balanced allocation provides diversified exposure across asset classes for steady wealth accumulation.';
             }
             
+            // Allocation bars with percentages
             doc.setFontSize(10);
             Object.entries(allocation).forEach(([asset, percent], i) => {
                 const barWidth = (percent / 100) * (contentWidth - 60);
                 doc.setFillColor(255, 200, 160);
-                doc.rect(margin, yPos, contentWidth, 10, 'F');
+                doc.rect(margin, yPos, contentWidth - 30, 10, 'F');
                 doc.setFillColor(255, 129, 32);
                 doc.rect(margin, yPos, barWidth, 10, 'F');
                 doc.setTextColor(26, 26, 26);
                 doc.setFont('helvetica', 'normal');
-                doc.text(asset, margin + barWidth + 5, yPos + 7);
+                doc.text(asset, margin + barWidth + 5 > margin + 80 ? margin + 5 : margin + barWidth + 5, yPos + 7);
                 doc.setFont('helvetica', 'bold');
-                doc.text(`${percent}%`, margin + contentWidth - 3, yPos + 7, { align: 'right' });
+                doc.text(`${percent}%`, margin + contentWidth - 33, yPos + 7, { align: 'right' });
                 yPos += 12;
             });
             
-            yPos += 10;
+            // Rationale
+            yPos += 5;
+            doc.setFillColor(245, 245, 245);
+            doc.roundedRect(margin, yPos, contentWidth, 15, 2, 2, 'F');
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'italic');
+            doc.setTextColor(80, 80, 80);
+            const rationaleLines = wrapText(allocationRationale, contentWidth - 10, 9);
+            doc.text(rationaleLines, margin + 5, yPos + 6);
+            
+            yPos += 25;
             
             // Millionaire Mind Principles
             yPos = addSectionTitle('Your Millionaire Mind Blueprint', yPos);
@@ -2624,145 +2793,179 @@ June Yoon`;
             doc.setFontSize(9);
             doc.setFont('helvetica', 'italic');
             doc.setTextColor(100, 100, 100);
-            doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin, yPos);
+            doc.text('"Thoughts lead to feelings. Feelings lead to actions. Actions lead to results." — T. Harv Eker', margin, yPos);
             yPos += 10;
             
-            const principles = [
-                {
-                    title: "Wealth File #1: Rich people believe 'I create my life.'",
-                    insight: "Take 100% responsibility for your financial outcomes. Your wealth is a direct reflection of your thoughts, habits, and actions.",
-                    action: "Review your 'money blueprint' — the subconscious programming about money you inherited from your upbringing."
-                },
-                {
-                    title: "Wealth File #2: Rich people play the money game to win.",
-                    insight: "The goal is financial freedom, not just paying bills. Set a specific wealth target and reverse-engineer the path.",
-                    action: "Define your 'Financial Freedom Number' — the passive income needed to cover your lifestyle."
-                },
-                {
-                    title: "Wealth File #3: Rich people are committed to being rich.",
-                    insight: "Wanting to be rich is not enough. You must be 100% committed with no backup plan.",
-                    action: "Write down exactly why you MUST become wealthy. Make it non-negotiable."
-                }
-            ];
+            // Select relevant principles based on score
+            let principles = [];
+            if (reportData.wealthScore < 40) {
+                principles = [
+                    { title: "Wealth File #1: Rich people believe 'I create my life.'", insight: "Take 100% responsibility for your financial outcomes. Your wealth is a direct reflection of your thoughts, habits, and actions.", action: "Track every dollar for 30 days. Awareness is the first step to transformation." },
+                    { title: "Wealth File #4: Rich people think big.", insight: "Your income can only grow to the extent of your vision. Small thinking leads to small results.", action: "Write down your 10-year wealth vision. Make it specific and compelling." },
+                    { title: "Wealth File #17: Rich people constantly learn and grow.", insight: "Your level of success rarely exceeds your level of personal development.", action: "Commit to reading 1 wealth book monthly and attending 2 seminars yearly." }
+                ];
+            } else if (reportData.wealthScore < 70) {
+                principles = [
+                    { title: "Wealth File #2: Rich people play to win.", insight: "The goal isn't just security—it's financial freedom. Playing not to lose keeps you stuck.", action: "Define your 'Freedom Number'—passive income needed to cover lifestyle expenses." },
+                    { title: "Wealth File #6: Rich people admire successful people.", insight: "Instead of resenting wealth, study and model those who have achieved it.", action: "Find a mentor or join a mastermind of people at your next wealth level." },
+                    { title: "Wealth File #11: Rich people choose results over time.", insight: "Trading time for money has a ceiling. Results-based income has unlimited potential.", action: "Identify one income stream you can shift from hourly to results-based." }
+                ];
+            } else {
+                principles = [
+                    { title: "Wealth File #13: Rich people focus on net worth.", insight: "Working income is a trap. Net worth—assets minus liabilities—is true wealth.", action: "Calculate your net worth monthly. Set quarterly growth targets." },
+                    { title: "Wealth File #14: Rich people manage money well.", insight: "It's not about how much you make, but how much you keep and grow.", action: "Implement the Jars system: 10% FFA, 10% Education, 10% Long-term savings." },
+                    { title: "Wealth File #15: Rich people make money work for them.", insight: "The rich acquire assets that generate income. The poor acquire liabilities that drain it.", action: "Ensure every surplus dollar goes into income-generating assets." }
+                ];
+            }
             
             principles.forEach((p, i) => {
                 doc.setFillColor(255, 248, 240);
-                doc.roundedRect(margin, yPos, contentWidth, 28, 2, 2, 'F');
+                doc.roundedRect(margin, yPos, contentWidth, 25, 2, 2, 'F');
                 doc.setDrawColor(255, 129, 32);
-                doc.setLineWidth(0.3);
-                doc.line(margin, yPos, margin, yPos + 28);
+                doc.setLineWidth(0.5);
+                doc.line(margin, yPos, margin, yPos + 25);
                 
                 doc.setTextColor(255, 129, 32);
-                doc.setFontSize(10);
+                doc.setFontSize(9);
                 doc.setFont('helvetica', 'bold');
                 doc.text(p.title, margin + 4, yPos + 6);
                 
                 doc.setTextColor(60, 60, 60);
-                doc.setFontSize(9);
+                doc.setFontSize(8);
                 doc.setFont('helvetica', 'normal');
-                const insightLines = wrapText(p.insight, contentWidth - 8, 9);
+                const insightLines = wrapText(p.insight, contentWidth - 10, 8);
                 doc.text(insightLines, margin + 4, yPos + 12);
                 
                 doc.setTextColor(255, 129, 32);
                 doc.setFont('helvetica', 'bold');
-                doc.text('ACTION: ', margin + 4, yPos + 24);
+                doc.text('→ ', margin + 4, yPos + 21);
                 doc.setTextColor(60, 60, 60);
                 doc.setFont('helvetica', 'normal');
-                doc.text(p.action, margin + 22, yPos + 24);
+                doc.text(p.action, margin + 10, yPos + 21);
                 
-                yPos += 32;
+                yPos += 28;
             });
             
-            addFooter(2, 3);
+            addFooter(3, 4);
             
-            // ==================== PAGE 3 ====================
+            // ==================== PAGE 4: 90-DAY ACTION PLAN ====================
             doc.addPage();
             addHeader();
             yPos = 50;
             
-            // 90-Day Action Plan
-            yPos = addSectionTitle('Your 90-Day Wealth Action Plan', yPos);
+            // 90-Day Action Plan Header
+            doc.setFillColor(255, 129, 32);
+            doc.roundedRect(margin, yPos, contentWidth, 15, 3, 3, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(14);
+            doc.setFont('helvetica', 'bold');
+            doc.text('🎯 Your Personalized 90-Day Wealth Action Plan', margin + 5, yPos + 10);
+            yPos += 22;
             
-            const actionSteps = [
-                { week: "Week 1-2", title: "Foundation Audit", description: "Review current financial position. Ensure 6 months of expenses in emergency fund. Audit all insurance coverage (life, disability, umbrella).", priority: "HIGH" },
-                { week: "Week 3-4", title: "Tax Structure Review", description: "Schedule consultation with tax strategist. Explore entity optimization (LLC, S-Corp). Maximize retirement account contributions.", priority: "HIGH" },
-                { week: "Week 5-6", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Establish automatic investment transfers. Research diversified portfolio options aligned with your timeline.", priority: "MEDIUM" },
-                { week: "Week 7-8", title: "Income Optimization", description: "Identify opportunities to increase active income. Explore passive income streams. Review business/career growth strategies.", priority: "MEDIUM" },
-                { week: "Week 9-10", title: "Asset Protection", description: "Review legal structures for asset protection. Consider trusts for estate planning. Evaluate geographic diversification options.", priority: "MEDIUM" },
-                { week: "Week 11-12", title: "Wealth Momentum", description: "Implement diversified portfolio strategy. Set up quarterly wealth review schedule. Document your wealth building system.", priority: "HIGH" }
-            ];
+            // Generate personalized action steps based on concerns
+            let actionSteps = [];
+            const concernsLower = (reportData.concern || '').toLowerCase();
+            
+            if (concernsLower.includes('tax')) {
+                actionSteps = [
+                    { week: "Week 1-2", title: "Tax Structure Audit", description: `Review current tax position. With ${reportData.symbol}${reportData.annualSurplus.toLocaleString()} annual capacity, explore entity optimization (LLC, S-Corp, trust structures).`, priority: "HIGH" },
+                    { week: "Week 3-4", title: "Retirement Maximization", description: "Max out 401(k)/IRA contributions. Explore backdoor Roth strategies. Calculate tax savings from increased deferrals.", priority: "HIGH" },
+                    { week: "Week 5-6", title: "Tax-Loss Harvesting Setup", description: "Review portfolio for tax-loss harvesting opportunities. Set up systematic rebalancing strategy.", priority: "MEDIUM" },
+                    { week: "Week 7-8", title: "Real Estate Tax Benefits", description: "Explore real estate investments for depreciation benefits. Consider Opportunity Zone investments.", priority: "MEDIUM" },
+                    { week: "Week 9-10", title: "Charitable Strategy", description: "Set up Donor Advised Fund if charitable giving is planned. Explore appreciated stock donations.", priority: "MEDIUM" },
+                    { week: "Week 11-12", title: "Year-End Tax Planning", description: "Schedule tax planning session. Document all strategies for ${new Date().getFullYear()} implementation.", priority: "HIGH" }
+                ];
+            } else if (concernsLower.includes('capital') || concernsLower.includes('deploy')) {
+                actionSteps = [
+                    { week: "Week 1-2", title: "Capital Deployment Audit", description: `Map your ${reportData.symbol}${reportData.liquid.toLocaleString()} liquid assets. Identify underperforming cash and low-yield positions.`, priority: "HIGH" },
+                    { week: "Week 3-4", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Set up automatic weekly investment of surplus funds.", priority: "HIGH" },
+                    { week: "Week 5-6", title: "Diversified Portfolio Build", description: "Deploy capital across recommended allocation. Start with index funds and REITs for instant diversification.", priority: "HIGH" },
+                    { week: "Week 7-8", title: "Alternative Investments", description: "Research private equity, syndications, or business investments for accredited opportunities.", priority: "MEDIUM" },
+                    { week: "Week 9-10", title: "Cash Flow Optimization", description: "Review all subscriptions and expenses. Redirect savings to investment accounts.", priority: "MEDIUM" },
+                    { week: "Week 11-12", title: "Systematic Investing", description: "Ensure 100% of monthly surplus is auto-invested. Set up quarterly rebalancing calendar.", priority: "HIGH" }
+                ];
+            } else if (concernsLower.includes('debt')) {
+                actionSteps = [
+                    { week: "Week 1-2", title: "Debt Inventory", description: "List all debts with balances, rates, and payments. Calculate total interest cost per year.", priority: "HIGH" },
+                    { week: "Week 3-4", title: "Refinancing Opportunities", description: "Check rates for mortgage, student loans, auto. Consolidate high-interest debt where possible.", priority: "HIGH" },
+                    { week: "Week 5-6", title: "Debt Avalanche Strategy", description: `Allocate portion of ${reportData.symbol}${reportData.surplus.toLocaleString()} surplus to highest-interest debt first.`, priority: "HIGH" },
+                    { week: "Week 7-8", title: "Good Debt Strategy", description: "Distinguish productive debt (real estate, business) from consumer debt. Optimize leverage ratios.", priority: "MEDIUM" },
+                    { week: "Week 9-10", title: "Emergency Fund", description: "Ensure 6 months expenses saved before aggressive debt paydown. Prevent new debt cycles.", priority: "MEDIUM" },
+                    { week: "Week 11-12", title: "Debt Freedom Timeline", description: "Create visual debt payoff timeline. Celebrate milestones and redirect freed payments to investing.", priority: "HIGH" }
+                ];
+            } else {
+                actionSteps = [
+                    { week: "Week 1-2", title: "Foundation Audit", description: `Review current position: ${reportData.symbol}${reportData.surplus.toLocaleString()}/mo surplus, ${reportData.symbol}${reportData.liquid.toLocaleString()} liquid. Ensure 6-month emergency fund.`, priority: "HIGH" },
+                    { week: "Week 3-4", title: "Tax & Legal Structure", description: "Schedule consultation with tax strategist. Review if entity optimization makes sense for your income level.", priority: "HIGH" },
+                    { week: "Week 5-6", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Establish automatic investment transfers aligned with allocation strategy.", priority: "MEDIUM" },
+                    { week: "Week 7-8", title: "Income Optimization", description: "Identify opportunities to increase active income. Explore passive income streams and side businesses.", priority: "MEDIUM" },
+                    { week: "Week 9-10", title: "Asset Protection", description: "Review insurance coverage (life, disability, umbrella). Consider trust structures for asset protection.", priority: "MEDIUM" },
+                    { week: "Week 11-12", title: "Wealth Momentum", description: "Implement full portfolio strategy. Set up quarterly wealth reviews. Document your wealth system.", priority: "HIGH" }
+                ];
+            }
             
             actionSteps.forEach((step, i) => {
-                const priorityColor = step.priority === 'HIGH' ? [239, 68, 68] : [245, 158, 11];
+                const priorityColor = step.priority === 'HIGH' ? [220, 53, 69] : [255, 193, 7];
                 
+                // Week badge
                 doc.setFillColor(255, 129, 32);
-                doc.roundedRect(margin, yPos, 22, 12, 2, 2, 'F');
+                doc.roundedRect(margin, yPos, 22, 14, 2, 2, 'F');
                 doc.setTextColor(255, 255, 255);
-                doc.setFontSize(8);
+                doc.setFontSize(7);
                 doc.setFont('helvetica', 'bold');
-                const weekLines = wrapText(step.week, 20, 8);
-                doc.text(weekLines, margin + 11, yPos + 5, { align: 'center' });
+                const weekLines = step.week.split(' ');
+                doc.text(weekLines[0], margin + 11, yPos + 5, { align: 'center' });
+                doc.text(weekLines[1] || '', margin + 11, yPos + 10, { align: 'center' });
                 
+                // Priority badge
                 doc.setFillColor(...priorityColor);
                 doc.roundedRect(margin + 25, yPos, 18, 5, 1, 1, 'F');
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(6);
                 doc.text(step.priority, margin + 34, yPos + 3.5, { align: 'center' });
                 
+                // Title
                 doc.setTextColor(26, 26, 26);
                 doc.setFontSize(11);
                 doc.setFont('helvetica', 'bold');
-                doc.text(step.title, margin + 46, yPos + 4);
+                doc.text(step.title, margin + 46, yPos + 5);
                 
+                // Description
                 doc.setTextColor(80, 80, 80);
-                doc.setFontSize(9);
+                doc.setFontSize(8);
                 doc.setFont('helvetica', 'normal');
-                const descLines = wrapText(step.description, contentWidth - 50, 9);
-                doc.text(descLines, margin + 46, yPos + 10);
+                const descLines = wrapText(step.description, contentWidth - 48, 8);
+                doc.text(descLines, margin + 46, yPos + 11);
                 
-                yPos += 18 + (descLines.length > 1 ? 4 : 0);
+                yPos += 20 + (descLines.length > 2 ? 4 : 0);
             });
             
             yPos += 10;
             
-            // Success Formula Analysis Summary
-            yPos = addSectionTitle('Success Formula Wealth Analysis', yPos);
-            
-            const analysisText = `Dear ${reportData.name.split(' ')[0]},
-
-Based on your Wealth Architecture Assessment, you've achieved a Wealth Position Score of ${reportData.wealthScore}/100, placing you in the "${getScoreLabel(reportData.wealthScore)}" category. With ${reportData.symbol}${reportData.surplus.toLocaleString()} monthly surplus and ${reportData.symbol}${reportData.liquid.toLocaleString()} in liquid assets, you have a solid foundation for accelerated wealth building.
-
-Your primary focus on ${reportData.concern || 'wealth building'} shows strategic thinking. By consistently deploying your surplus with disciplined investing, your projected wealth can reach ${reportData.symbol}${Math.round(reportData.projection5yr).toLocaleString()} within 5 years.
-
-Remember: "Your income can grow only to the extent that you do." — T. Harv Eker
-
-To your wealth,
-June Yoon | Wealth Architecture Strategist`;
-            
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(60, 60, 60);
-            const analysisLines = wrapText(analysisText, contentWidth, 10);
-            doc.text(analysisLines, margin, yPos);
-            
-            yPos += (analysisLines.length * 4.5) + 15;
-            
             // Call to Action Box
             doc.setFillColor(255, 129, 32);
-            doc.roundedRect(margin, yPos, contentWidth, 25, 3, 3, 'F');
+            doc.roundedRect(margin, yPos, contentWidth, 30, 3, 3, 'F');
             doc.setTextColor(255, 255, 255);
-            doc.setFontSize(12);
+            doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
-            doc.text('Ready to Accelerate Your Wealth Journey?', pageWidth / 2, yPos + 10, { align: 'center' });
+            doc.text('Ready to Accelerate Your Wealth Journey?', pageWidth / 2, yPos + 12, { align: 'center' });
             doc.setFontSize(10);
             doc.setFont('helvetica', 'normal');
-            doc.text('Book your complimentary 45-minute Strategy Call with June Yoon', pageWidth / 2, yPos + 18, { align: 'center' });
+            doc.text('Book your complimentary 45-minute Strategy Call with June Yoon', pageWidth / 2, yPos + 21, { align: 'center' });
+            doc.setFontSize(9);
+            doc.text('calendly.com/june-yoon/wealth-strategy', pageWidth / 2, yPos + 27, { align: 'center' });
             
-            addFooter(3, 3);
+            addFooter(4, 4);
             
             // Generate PDF blob for Airtable upload
             const pdfBlob = doc.output('blob');
             const fileName = `Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`;
+            
+            // Restore button
+            if (downloadBtn) {
+                downloadBtn.innerHTML = originalText;
+                downloadBtn.disabled = false;
+            }
             
             // Save locally for user
             doc.save(fileName);
