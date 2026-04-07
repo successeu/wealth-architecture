@@ -2366,31 +2366,38 @@
             const loadingEl = document.getElementById('aiLoadingIndicator');
             const contentEl = document.getElementById('aiAnalysisContent');
             
-            const prompt = `You are June Yoon, a Wealth Architecture Strategist. Generate a personalized wealth analysis (250-350 words) for:
-
-CLIENT: ${name}
-- Monthly Surplus: ${symbol}${surplus.toLocaleString()}
-- Liquid Assets: ${symbol}${liquid.toLocaleString()}
-- Income: ${income}
-- Status: ${status || 'Professional'}
-- Concerns: ${concern || 'Wealth building'}
-- Timeline: ${timeline}
-- Score: ${wealthScore}/100
-
-Include: 1) Warm greeting acknowledging their position, 2) 2-3 specific strategies, 3) One T. Harv Eker insight, 4) Powerful closing. No bullets or headers - flowing paragraphs only.`;
-
             try {
-                const response = await fetch('https://api.anthropic.com/v1/messages', {
+                console.log('🤖 Requesting AI-powered analysis...');
+                
+                const response = await fetch('/api/ai-analysis', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ model: 'claude-sonnet-4-20250514', max_tokens: 800, messages: [{ role: 'user', content: prompt }] })
+                    body: JSON.stringify({
+                        name: name,
+                        wealthScore: wealthScore,
+                        scoreLabel: getScoreLabel(wealthScore),
+                        surplus: surplus,
+                        liquid: liquid,
+                        income: income,
+                        currency: symbol,
+                        status: status || 'Professional',
+                        concern: concern || 'Wealth building',
+                        timeline: timeline
+                    })
                 });
+                
                 const data = await response.json();
-                const text = data.content?.[0]?.text || generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol);
-                loadingEl.style.display = 'none';
-                contentEl.style.display = 'block';
-                contentEl.innerHTML = `<p style="white-space: pre-line;">${text}</p>`;
+                
+                if (data.success && data.analysis) {
+                    console.log('✅ AI analysis received successfully');
+                    loadingEl.style.display = 'none';
+                    contentEl.style.display = 'block';
+                    contentEl.innerHTML = `<p style="white-space: pre-line;">${data.analysis}</p>`;
+                } else {
+                    throw new Error(data.error || 'AI analysis failed');
+                }
             } catch (e) {
+                console.log('⚠️ AI analysis unavailable, using fallback:', e.message);
                 loadingEl.style.display = 'none';
                 contentEl.style.display = 'block';
                 contentEl.innerHTML = `<p style="white-space: pre-line;">${generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol)}</p>`;
