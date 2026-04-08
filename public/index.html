@@ -691,14 +691,8 @@
         </div>
         
         <div id="heroSection" style="margin-bottom: 40px;">
-            <div class="hero-section hero-desktop" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
-                <!-- Left: Image (hidden on mobile) -->
-                <div class="hero-image-desktop" style="display: flex; justify-content: center;">
-                    <img src="./businessman.png" alt="Professional wealth building" style="width: 100%; max-width: 190px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); filter: grayscale(100%);">
-                </div>
-                
-                <!-- Right: Content -->
-                <div class="hero-content" style="text-align: left;">
+            <div class="hero-section" style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
+                <div class="hero-content" style="text-align: center; max-width: 600px; margin: 0 auto;">
                     <!-- Premium badge -->
                     <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: #ffd700; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 8px 18px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase;">
                         <span style="width: 8px; height: 8px; background: #ffd700; border-radius: 50%; display: inline-block;"></span>
@@ -723,15 +717,15 @@
                     </p>
                     
                     <!-- Social proof stats -->
-                    <div style="background: #fff; border-radius: 12px; padding: 18px 20px; border: 1px solid #eee; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
-                        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; text-align: left;">
+                    <div style="background: #fff; border-radius: 12px; padding: 18px 20px; border: 1px solid #eee; box-shadow: 0 4px 16px rgba(0,0,0,0.04); text-align: left;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
-                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">85%</strong> feel more confident about their finances after</span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">85%</strong> feel more confident about their finances</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
-                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">88%</strong> say they know exactly what to focus on</span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">88%</strong> know exactly what to focus on</span>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
@@ -750,34 +744,20 @@
             <style>
                 @media (max-width: 768px) {
                     #heroSection .hero-section {
-                        grid-template-columns: 1fr !important;
-                        background-image: url('./businessman.png') !important;
-                        background-size: cover !important;
-                        background-position: center top !important;
-                        position: relative !important;
-                        padding: 40px 24px !important;
-                    }
-                    #heroSection .hero-section::before {
-                        content: '';
-                        position: absolute;
-                        top: 0;
-                        left: 0;
-                        right: 0;
-                        bottom: 0;
-                        background: linear-gradient(180deg, rgba(255, 250, 245, 0.92) 0%, rgba(255, 255, 255, 0.95) 100%);
-                        border-radius: 20px;
-                        z-index: 0;
-                    }
-                    #heroSection .hero-image-desktop {
-                        display: none !important;
-                    }
-                    #heroSection .hero-content {
-                        text-align: center !important;
-                        position: relative;
-                        z-index: 1;
+                        padding: 32px 20px !important;
                     }
                     #heroSection .hero-content h1 {
-                        font-size: 28px !important;
+                        font-size: 26px !important;
+                    }
+                    #heroSection .hero-content h1 span:last-child {
+                        font-size: 20px !important;
+                    }
+                    #heroSection .hero-content > div:last-child > div {
+                        grid-template-columns: 1fr !important;
+                    }
+                }
+            </style>
+        </div>
                     }
                     #heroSection .hero-content h1 span:last-child {
                         font-size: 22px !important;
@@ -1166,33 +1146,33 @@
 
         <!-- STEP 2: INCOME & STATUS -->
         <div id="step-1" class="step-content">
-            <!-- Step 2 Hero Section - ABOVE step number -->
+            <!-- Step 2 Hero Section -->
             <div style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
                 <div style="text-align: center;">
-                    <h3 style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px;">Your Personalized Wealth Blueprint Awaits</h3>
-                    <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 16px;">
+                    <h3 style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin-bottom: 10px;">Your Personalized Wealth Blueprint Awaits</h3>
+                    <p style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 14px;">
                         This assessment has helped <strong style="color: #ff8120;">2,500+ professionals</strong> discover where they're leaving money on the table.
                     </p>
                     
                     <!-- Trust indicators with dots -->
-                    <div style="display: flex; justify-content: center; gap: 28px; margin-bottom: 16px; flex-wrap: wrap;">
-                        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; font-weight: 500;">
-                            <span style="width: 8px; height: 8px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
+                    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 14px; flex-wrap: wrap;">
+                        <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; font-weight: 500;">
+                            <span style="width: 6px; height: 6px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
                             5 minutes
                         </span>
-                        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; font-weight: 500;">
-                            <span style="width: 8px; height: 8px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
+                        <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; font-weight: 500;">
+                            <span style="width: 6px; height: 6px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
                             Real insights
                         </span>
-                        <span style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; font-weight: 500;">
-                            <span style="width: 8px; height: 8px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
+                        <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; font-weight: 500;">
+                            <span style="width: 6px; height: 6px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
                             Instant results
                         </span>
                     </div>
                     
-                    <p style="font-size: 13px; color: #666; line-height: 1.5;">
-                        The more honest your answers, the more accurate your blueprint.<br>
-                        <strong style="color: #1a1a1a;">We're not judging—we're measuring.</strong> Your assessment is 100% confidential.
+                    <p style="font-size: 12px; color: #666; line-height: 1.5;">
+                        The more honest your answers, the more accurate your blueprint.
+                        <strong style="color: #1a1a1a;">We're not judging—we're measuring.</strong>
                     </p>
                 </div>
             </div>
