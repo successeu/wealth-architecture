@@ -691,54 +691,73 @@
         </div>
         
         <div id="heroSection" style="margin-bottom: 40px;">
-            <div class="hero-section" style="grid-template-columns: 1fr; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
-                <div class="hero-content" style="text-align: center;">
+            <div class="hero-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
+                <!-- Left: Image -->
+                <div style="display: flex; justify-content: center;">
+                    <img src="/businessman.png" alt="Professional wealth building" style="width: 100%; max-width: 380px; border-radius: 16px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); filter: grayscale(100%);">
+                </div>
+                
+                <!-- Right: Content -->
+                <div class="hero-content" style="text-align: left;">
                     <!-- Premium badge -->
-                    <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: #ffd700; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 8px 18px; border-radius: 20px; margin-bottom: 24px; text-transform: uppercase;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#ffd700" stroke="none"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                    <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: #ffd700; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 8px 18px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase;">
+                        <span style="width: 8px; height: 8px; background: #ffd700; border-radius: 50%; display: inline-block;"></span>
                         Wealth Architecture Assessment
                     </div>
                     
                     <!-- Main headline -->
-                    <h1 style="font-size: 38px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; color: #1a1a1a;">
+                    <h1 style="font-size: 34px; font-weight: 700; line-height: 1.2; margin-bottom: 16px; color: #1a1a1a;">
                         Your Personalized <span style="color: #ff8120;">Wealth Blueprint</span><br>
-                        <span style="font-size: 32px; font-weight: 600;">in 5 Minutes</span>
+                        <span style="font-size: 28px; font-weight: 600;">in 5 Minutes</span>
                     </h1>
                     
                     <!-- Subheadline -->
-                    <p style="font-size: 18px; color: #444; line-height: 1.6; max-width: 600px; margin: 0 auto 28px;">
+                    <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 20px;">
                         Discover where you're leaving money on the table.<br>
                         <strong style="color: #1a1a1a;">Trusted by 2,500+ professionals and business owners.</strong>
                     </p>
                     
                     <!-- Key message -->
-                    <p style="font-size: 15px; color: #666; font-style: italic; margin-bottom: 32px;">
+                    <p style="font-size: 14px; color: #666; font-style: italic; margin-bottom: 24px;">
                         The more honest you are, the better your results.
                     </p>
                     
-                    <!-- Social proof stats in premium grid -->
-                    <div style="background: #fff; border-radius: 16px; padding: 24px 28px; border: 1px solid #eee; box-shadow: 0 4px 20px rgba(0,0,0,0.04); max-width: 640px; margin: 0 auto;">
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px 24px; text-align: left;">
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                <span style="font-size: 14px; color: #333; line-height: 1.5;"><strong style="color: #ff8120;">85%</strong> feel more confident about their finances after</span>
+                    <!-- Social proof stats -->
+                    <div style="background: #fff; border-radius: 12px; padding: 18px 20px; border: 1px solid #eee; box-shadow: 0 4px 16px rgba(0,0,0,0.04);">
+                        <div style="display: grid; grid-template-columns: 1fr; gap: 12px; text-align: left;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">85%</strong> feel more confident about their finances after</span>
                             </div>
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                <span style="font-size: 14px; color: #333; line-height: 1.5;"><strong style="color: #ff8120;">88%</strong> say they know exactly what to focus on</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">88%</strong> say they know exactly what to focus on</span>
                             </div>
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                <span style="font-size: 14px; color: #333; line-height: 1.5;"><strong style="color: #ff8120;">9 out of 10</strong> get clear direction on next steps</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong style="color: #ff8120;">9 out of 10</strong> get clear direction on next steps</span>
                             </div>
-                            <div style="display: flex; align-items: flex-start; gap: 10px;">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                                <span style="font-size: 14px; color: #333; line-height: 1.5;"><strong>Stop guessing.</strong> Know your real wealth position.</span>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <span style="width: 8px; height: 8px; background: #22c55e; border-radius: 50%; display: inline-block; flex-shrink: 0;"></span>
+                                <span style="font-size: 13px; color: #333; line-height: 1.4;"><strong>Stop guessing.</strong> Know your real wealth position.</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Mobile responsive: stack vertically -->
+            <style>
+                @media (max-width: 768px) {
+                    #heroSection .hero-section {
+                        grid-template-columns: 1fr !important;
+                        text-align: center !important;
+                    }
+                    #heroSection .hero-content {
+                        text-align: center !important;
+                    }
+                }
+            </style>
         </div>
         
         <!-- STEP 1: LOCATION & CURRENCY -->
