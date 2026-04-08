@@ -2346,9 +2346,38 @@
                     return total;
                 };
                 
-                // Generate analysis text
-                const generateAnalysisText = () => {
-                    return `Dear ${name.split(' ')[0]},
+                // Fetch AI Analysis (same as download PDF)
+                console.log('🤖 Fetching AI analysis for auto-upload PDF...');
+                let aiAnalysis = '';
+                try {
+                    const aiResponse = await fetch('/api/ai-analysis', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            name: name,
+                            wealthScore: wealthScore,
+                            scoreLabel: getScoreLabelLocal(wealthScore),
+                            surplus: surplus,
+                            liquid: liquid,
+                            income: income,
+                            currency: symbol,
+                            status: status || 'Professional',
+                            concern: concern || 'Wealth building',
+                            timeline: timeline
+                        })
+                    });
+                    const aiData = await aiResponse.json();
+                    if (aiData.success && aiData.analysis) {
+                        aiAnalysis = aiData.analysis;
+                        console.log('✅ AI analysis received for auto-upload PDF');
+                    }
+                } catch (e) {
+                    console.log('⚠️ AI analysis failed, using fallback');
+                }
+                
+                // Fallback analysis if AI fails
+                if (!aiAnalysis) {
+                    aiAnalysis = `Dear ${name.split(' ')[0]},
 
 Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/100, you're in the "${getScoreLabelLocal(wealthScore)}" category.
 
@@ -2360,7 +2389,7 @@ As T. Harv Eker teaches: "Your income can grow only to the extent that you do."
 
 To your wealth,
 June Yoon | Wealth Architecture Strategist`;
-                };
+                }
                 
                 // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
                 console.log('📄 Building Page 1: Executive Summary...');
@@ -2523,12 +2552,11 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.text('Personalized Wealth Analysis', margin + 5, yPos + 10);
                 yPos += 22;
                 
-                // Analysis Content
-                const analysisText = generateAnalysisText();
+                // Analysis Content - using AI analysis
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(50, 50, 50);
-                const analysisLines = wrapText(analysisText, contentWidth, 10);
+                const analysisLines = wrapText(aiAnalysis, contentWidth, 10);
                 doc.text(analysisLines, margin, yPos);
                 
                 yPos += (analysisLines.length * 5) + 20;
