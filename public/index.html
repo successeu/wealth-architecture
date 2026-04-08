@@ -2784,6 +2784,10 @@ June Yoon | Wealth Architecture Strategist`;
                 
                 if (result.success && result.pdfUrl) {
                     console.log('✅ FULL 4-page PDF uploaded successfully:', result.pdfUrl);
+                    // Store for reuse - download will use the same PDF
+                    generatedPdfBlob = pdfBlob;
+                    generatedPdfUrl = result.pdfUrl;
+                    generatedPdfFileName = fileName;
                     return result.pdfUrl;
                 } else {
                     console.error('❌ Upload failed:', result.error || 'Unknown error');
@@ -2954,6 +2958,9 @@ June Yoon | Wealth Architecture Strategist`;
         
         // Store report data globally for PDF generation
         let reportData = {};
+        let generatedPdfBlob = null;  // Store the PDF blob for download
+        let generatedPdfUrl = '';     // Store the uploaded PDF URL
+        let generatedPdfFileName = ''; // Store the filename
         
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
@@ -3253,629 +3260,60 @@ To your wealth,
 June Yoon`;
         }
         
+        // Download the PDF that was already generated on form submit
+        // This ensures the same PDF link goes to both Airtable AND the user
+        // AI analysis runs ONCE, PDF generated ONCE, same URL for everyone
         async function generatePDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const pageWidth = doc.internal.pageSize.getWidth();
-            const pageHeight = doc.internal.pageSize.getHeight();
-            const margin = 20;
-            const contentWidth = pageWidth - (margin * 2);
-            
-            // Get the download button container
             const downloadBtn = document.getElementById('downloadPdfBtn');
             const originalHTML = downloadBtn ? downloadBtn.innerHTML : '';
             
-            // Show progress bar
+            // Show brief loading state
             if (downloadBtn) {
                 downloadBtn.disabled = true;
                 downloadBtn.innerHTML = `
                     <div style="width: 100%;">
-                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
                             <span class="pdf-spinner"></span>
-                            <span id="pdfProgressText">Preparing your report...</span>
-                        </div>
-                        <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 6px; overflow: hidden;">
-                            <div id="pdfProgressBar" style="background: #ff8120; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 10px;"></div>
+                            <span>Preparing download...</span>
                         </div>
                     </div>
                 `;
             }
             
-            // Progress update helper
-            const updateProgress = (percent, text) => {
-                const bar = document.getElementById('pdfProgressBar');
-                const textEl = document.getElementById('pdfProgressText');
-                if (bar) bar.style.width = percent + '%';
-                if (textEl) textEl.textContent = text;
-            };
-            
-            updateProgress(10, 'Initializing...');
-            
-            // Fetch AI Analysis for PDF
-            let aiAnalysis = '';
-            let aiAllocation = null;
-            let aiAllocationRationale = '';
-            
-            try {
-                updateProgress(20, 'Generating personalized insights...');
-                console.log('🤖 Fetching AI analysis + allocation for PDF...');
-                const response = await fetch('/api/ai-analysis', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: reportData.name,
-                        wealthScore: reportData.wealthScore,
-                        scoreLabel: getScoreLabel(reportData.wealthScore),
-                        surplus: reportData.surplus,
-                        liquid: reportData.liquid,
-                        income: reportData.income,
-                        currency: reportData.symbol,
-                        status: reportData.status || 'Professional',
-                        concern: reportData.concern || 'Wealth building',
-                        timeline: reportData.timeline,
-                        country: reportData.country || ''
-                    })
-                });
-                const data = await response.json();
-                if (data.success) {
-                    aiAnalysis = data.analysis || '';
-                    aiAllocation = data.allocation || null;
-                    aiAllocationRationale = data.allocationRationale || '';
-                    console.log('✅ AI analysis + allocation received for PDF');
-                }
-            } catch (e) {
-                console.log('⚠️ Using fallback analysis for PDF');
-            }
-            
-            // Use fallback if AI analysis failed
-            if (!aiAnalysis) {
-                aiAnalysis = generateFallbackAnalysis(reportData.name, reportData.surplus, reportData.liquid, reportData.wealthScore, reportData.symbol);
-            }
-            
-            // Fallback allocation if AI fails
-            if (!aiAllocation) {
-                const concern = reportData.concern || '';
-                const timeline = reportData.timeline || '';
-                if (concern.includes('Tax')) {
-                    aiAllocation = { 'Tax-Advantaged Accounts': 30, 'Index Funds': 25, 'Real Estate / REITs': 20, 'Growth Stocks': 15, 'Cash Reserve': 10 };
-                    aiAllocationRationale = 'Given your focus on tax optimization, this allocation prioritizes tax-advantaged vehicles while maintaining growth potential.';
-                } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
-                    aiAllocation = { 'Dividend Stocks': 30, 'Bonds & Fixed Income': 25, 'Real Estate / REITs': 20, 'Index Funds': 15, 'Cash & Emergency Fund': 10 };
-                    aiAllocationRationale = 'This allocation balances income generation with capital preservation for long-term legacy planning.';
-                } else if (timeline === '10+ years') {
-                    aiAllocation = { 'Growth Stocks': 35, 'Index Funds': 25, 'Real Estate / REITs': 20, 'International Equities': 15, 'Cash Reserve': 5 };
-                    aiAllocationRationale = 'Your long investment horizon allows for aggressive growth positioning with maximum equity exposure.';
+            // Check if we already have the PDF blob from form submission
+            if (generatedPdfBlob && generatedPdfFileName) {
+                console.log('📥 Downloading pre-generated PDF (same as Airtable version)...');
+                console.log('📎 PDF URL:', generatedPdfUrl);
+                
+                // Create download link from existing blob
+                const url = URL.createObjectURL(generatedPdfBlob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = generatedPdfFileName;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                URL.revokeObjectURL(url);
+                
+                console.log('✅ PDF downloaded successfully (same file sent to Airtable)');
+            } else {
+                // Fallback: if blob not available, open the uploaded URL directly
+                if (generatedPdfUrl) {
+                    console.log('📥 Opening PDF from Vercel Blob URL...');
+                    window.open(generatedPdfUrl, '_blank');
                 } else {
-                    aiAllocation = { 'Index Funds': 30, 'Growth Stocks': 25, 'Real Estate / REITs': 20, 'Bonds & Fixed Income': 15, 'Cash Reserve': 10 };
-                    aiAllocationRationale = 'This balanced allocation provides growth potential while maintaining appropriate diversification for your profile.';
+                    console.error('❌ No PDF available to download');
+                    alert('PDF not ready yet. Please wait a moment and try again.');
                 }
             }
             
-            updateProgress(40, 'Building executive summary...');
-            
-            // Helper functions
-            const addHeader = () => {
-                doc.setFillColor(255, 129, 32);
-                doc.rect(0, 0, pageWidth, 35, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(18);
-                doc.setFont('helvetica', 'bold');
-                doc.text('WEALTH ARCHITECTURE BLUEPRINT', pageWidth / 2, 15, { align: 'center' });
-                doc.setFontSize(10);
-                doc.setFont('helvetica', 'normal');
-                doc.text(`Personalized for ${reportData.name} | Prepared by June Yoon`, pageWidth / 2, 25, { align: 'center' });
-                doc.text('Success Resources | Wealth Architecture Strategist', pageWidth / 2, 31, { align: 'center' });
-            };
-            
-            const addFooter = (pageNum, totalPages) => {
-                doc.setFillColor(40, 40, 40);
-                doc.rect(0, pageHeight - 15, pageWidth, 15, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(8);
-                doc.text('© 2024 Success Resources | June Yoon Wealth Architecture | Confidential', margin, pageHeight - 6);
-                doc.text(`Page ${pageNum} of ${totalPages}`, pageWidth - margin, pageHeight - 6, { align: 'right' });
-            };
-            
-            const addSectionTitle = (title, yPos) => {
-                doc.setFillColor(255, 129, 32);
-                doc.rect(margin, yPos, 4, 8, 'F');
-                doc.setTextColor(26, 26, 26);
-                doc.setFontSize(14);
-                doc.setFont('helvetica', 'bold');
-                doc.text(title, margin + 8, yPos + 6);
-                return yPos + 15;
-            };
-            
-            const wrapText = (text, maxWidth, fontSize) => {
-                doc.setFontSize(fontSize);
-                return doc.splitTextToSize(text, maxWidth);
-            };
-            
-            const drawMiniChart = (x, y, width, height, data, color) => {
-                const maxVal = Math.max(...data);
-                const barWidth = width / data.length - 2;
-                data.forEach((val, i) => {
-                    const barHeight = (val / maxVal) * height;
-                    doc.setFillColor(...color);
-                    doc.rect(x + (i * (barWidth + 2)), y + height - barHeight, barWidth, barHeight, 'F');
-                });
-            };
-            
-            // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
-            addHeader();
-            let yPos = 45;
-            
-            // Premium Badge - positioned properly in top right corner below header
-            doc.setFillColor(40, 40, 40);
-            doc.roundedRect(pageWidth - margin - 50, 38, 50, 10, 2, 2, 'F');
-            doc.setTextColor(255, 215, 0);
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'bold');
-            doc.text('PREMIUM REPORT', pageWidth - margin - 25, 44.5, { align: 'center' });
-            
-            yPos = 52;
-            
-            // Score Section with Visual Gauge
-            doc.setFillColor(255, 248, 240);
-            doc.roundedRect(margin, yPos, contentWidth, 45, 3, 3, 'F');
-            doc.setDrawColor(255, 129, 32);
-            doc.setLineWidth(0.5);
-            doc.roundedRect(margin, yPos, contentWidth, 45, 3, 3, 'S');
-            
-            // Score Circle
-            const scoreX = margin + 30;
-            const scoreY = yPos + 22;
-            doc.setFillColor(255, 129, 32);
-            doc.circle(scoreX, scoreY, 18, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(24);
-            doc.setFont('helvetica', 'bold');
-            doc.text(String(reportData.wealthScore), scoreX, scoreY + 3, { align: 'center' });
-            doc.setFontSize(8);
-            doc.text('/100', scoreX, scoreY + 10, { align: 'center' });
-            
-            // Score Details
-            doc.setTextColor(26, 26, 26);
-            doc.setFontSize(11);
-            doc.setFont('helvetica', 'bold');
-            doc.text('WEALTH POSITION SCORE', margin + 55, yPos + 15);
-            doc.setFontSize(16);
-            doc.setTextColor(255, 129, 32);
-            doc.text(getScoreLabel(reportData.wealthScore), margin + 55, yPos + 26);
-            
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(100, 100, 100);
-            doc.text('Based on income, surplus capacity, liquid assets & wealth concerns', margin + 55, yPos + 34);
-            
-            // Score Bar Visual
-            const barY = yPos + 40;
-            doc.setFillColor(230, 230, 230);
-            doc.rect(margin + 55, barY, 100, 3, 'F');
-            doc.setFillColor(255, 129, 32);
-            doc.rect(margin + 55, barY, reportData.wealthScore, 3, 'F');
-            
-            yPos += 55;
-            
-            // Key Metrics Row
-            yPos = addSectionTitle('Key Financial Metrics', yPos);
-            
-            const metrics = [
-                { label: 'Monthly Surplus', value: reportData.symbol + reportData.surplus.toLocaleString(), color: [76, 175, 80] },
-                { label: 'Liquid Assets', value: reportData.symbol + reportData.liquid.toLocaleString(), color: [33, 150, 243] },
-                { label: 'Annual Capacity', value: reportData.symbol + reportData.annualSurplus.toLocaleString(), color: [156, 39, 176] },
-                { label: '5-Year Projection', value: reportData.symbol + Math.round(reportData.projection5yr).toLocaleString(), color: [255, 129, 32] }
-            ];
-            
-            const metricWidth = (contentWidth - 15) / 4;
-            metrics.forEach((m, i) => {
-                const mx = margin + (i * (metricWidth + 5));
-                doc.setFillColor(...m.color);
-                doc.roundedRect(mx, yPos, metricWidth, 25, 2, 2, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(8);
-                doc.setFont('helvetica', 'normal');
-                doc.text(m.label, mx + metricWidth/2, yPos + 8, { align: 'center' });
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
-                doc.text(m.value, mx + metricWidth/2, yPos + 18, { align: 'center' });
-            });
-            
-            yPos += 35;
-            
-            // Financial Profile
-            yPos = addSectionTitle('Your Financial Profile', yPos);
-            
-            const profileData = [
-                ['Annual Income Range', reportData.income || 'Not specified'],
-                ['Professional Status', reportData.status || 'Not specified'],
-                ['Investment Timeline', reportData.timeline || 'Not specified'],
-                ['Primary Concerns', reportData.concern || 'General wealth building']
-            ];
-            
-            doc.setFontSize(10);
-            profileData.forEach(([label, value], i) => {
-                const rowY = yPos + (i * 8);
-                if (i % 2 === 0) {
-                    doc.setFillColor(249, 249, 249);
-                    doc.rect(margin, rowY - 4, contentWidth, 8, 'F');
-                }
-                doc.setFont('helvetica', 'normal');
-                doc.setTextColor(80, 80, 80);
-                doc.text(label, margin + 3, rowY);
-                doc.setFont('helvetica', 'bold');
-                doc.setTextColor(255, 129, 32);
-                const valueLines = wrapText(value, contentWidth / 2, 10);
-                doc.text(valueLines[0], margin + contentWidth - 3, rowY, { align: 'right' });
-            });
-            
-            yPos += (profileData.length * 8) + 10;
-            
-            // Wealth Projection Chart
-            yPos = addSectionTitle('Wealth Growth Projections', yPos);
-            
-            const projectionYears = [1, 3, 5, 7, 10];
-            const projections = projectionYears.map(y => ({
-                year: y,
-                conservative: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.06)),
-                moderate: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.08)),
-                aggressive: Math.round(calculateCompoundGrowth(reportData.liquid, reportData.surplus, y, 0.12))
-            }));
-            
-            // Table header
-            doc.setFillColor(255, 129, 32);
-            doc.rect(margin, yPos, contentWidth, 8, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Year', margin + 5, yPos + 5.5);
-            doc.text('Conservative (6%)', margin + 35, yPos + 5.5);
-            doc.text('Moderate (8%)', margin + 85, yPos + 5.5);
-            doc.text('Aggressive (12%)', margin + 130, yPos + 5.5);
-            yPos += 8;
-            
-            doc.setTextColor(60, 60, 60);
-            doc.setFont('helvetica', 'normal');
-            projections.forEach((p, i) => {
-                if (i % 2 === 0) {
-                    doc.setFillColor(249, 249, 249);
-                    doc.rect(margin, yPos, contentWidth, 7, 'F');
-                }
-                doc.text(`Year ${p.year}`, margin + 5, yPos + 5);
-                doc.text(reportData.symbol + p.conservative.toLocaleString(), margin + 35, yPos + 5);
-                doc.setTextColor(255, 129, 32);
-                doc.setFont('helvetica', 'bold');
-                doc.text(reportData.symbol + p.moderate.toLocaleString(), margin + 85, yPos + 5);
-                doc.setTextColor(60, 60, 60);
-                doc.setFont('helvetica', 'normal');
-                doc.text(reportData.symbol + p.aggressive.toLocaleString(), margin + 130, yPos + 5);
-                yPos += 7;
-            });
-            
-            addFooter(1, 4);
-            
-            updateProgress(55, 'Adding personalized analysis...');
-            
-            // ==================== PAGE 2: AI PERSONALIZED ANALYSIS ====================
-            doc.addPage();
-            addHeader();
-            yPos = 50;
-            
-            // AI Analysis Section
-            doc.setFillColor(255, 248, 240);
-            doc.roundedRect(margin, yPos, contentWidth, 15, 3, 3, 'F');
-            doc.setTextColor(255, 129, 32);
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Personalized Wealth Analysis', margin + 5, yPos + 10);
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(100, 100, 100);
-            doc.text('Personalized Insights Tailored to Your Profile', margin + contentWidth - 5, yPos + 10, { align: 'right' });
-            yPos += 22;
-            
-            // Analysis Content
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.setTextColor(50, 50, 50);
-            const analysisLines = wrapText(aiAnalysis, contentWidth, 10);
-            
-            // Calculate proper line height (10pt font ≈ 4.5mm)
-            const lineHeight = 4.5;
-            const maxLinesPage2 = Math.floor((pageHeight - yPos - 80) / lineHeight); // Leave room for Key Insight + footer
-            const linesToPrint = analysisLines.slice(0, maxLinesPage2);
-            const remainingLines = analysisLines.slice(maxLinesPage2);
-            
-            linesToPrint.forEach((line, i) => {
-                doc.text(line, margin, yPos + (i * lineHeight));
-            });
-            
-            yPos += (linesToPrint.length * lineHeight) + 15;
-            
-            // Ensure Key Insight box doesn't overlap footer
-            const keyInsightHeight = 30;
-            const footerBuffer = 20;
-            const maxYForKeyInsight = pageHeight - keyInsightHeight - footerBuffer;
-            
-            if (yPos > maxYForKeyInsight) {
-                yPos = maxYForKeyInsight;
-            }
-            
-            // Key Insight box
-            doc.setFillColor(255, 129, 32);
-            doc.roundedRect(margin, yPos, contentWidth, keyInsightHeight, 3, 3, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(11);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Key Insight', margin + 10, yPos + 12);
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'normal');
-            doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin + 10, yPos + 22);
-            
-            addFooter(2, 4);
-            
-            updateProgress(70, 'Creating investment strategy...');
-            
-            // ==================== PAGE 3: STRATEGY & ALLOCATION ====================
-            doc.addPage();
-            addHeader();
-            yPos = 50;
-            
-            // Asset Allocation Recommendations - Now using AI-generated allocation
-            yPos = addSectionTitle('Recommended Asset Allocation Strategy', yPos);
-            
-            // Allocation bars with percentages - using aiAllocation from AI response
-            doc.setFontSize(10);
-            Object.entries(aiAllocation).forEach(([asset, percent], i) => {
-                const barWidth = (percent / 100) * (contentWidth - 60);
-                doc.setFillColor(255, 200, 160);
-                doc.rect(margin, yPos, contentWidth - 30, 10, 'F');
-                doc.setFillColor(255, 129, 32);
-                doc.rect(margin, yPos, barWidth, 10, 'F');
-                doc.setTextColor(26, 26, 26);
-                doc.setFont('helvetica', 'normal');
-                doc.text(asset, margin + barWidth + 5 > margin + 80 ? margin + 5 : margin + barWidth + 5, yPos + 7);
-                doc.setFont('helvetica', 'bold');
-                doc.text(`${percent}%`, margin + contentWidth - 33, yPos + 7, { align: 'right' });
-                yPos += 12;
-            });
-            
-            // Rationale - using aiAllocationRationale from AI response
-            yPos += 5;
-            doc.setFillColor(245, 245, 245);
-            doc.roundedRect(margin, yPos, contentWidth, 18, 2, 2, 'F');
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(80, 80, 80);
-            const rationaleLines = wrapText(aiAllocationRationale, contentWidth - 10, 9);
-            doc.text(rationaleLines.slice(0, 2), margin + 5, yPos + 7);
-            
-            yPos += 25;
-            
-            // Millionaire Mind Principles
-            yPos = addSectionTitle('Your Millionaire Mind Blueprint', yPos);
-            
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(100, 100, 100);
-            doc.text('"Thoughts lead to feelings. Feelings lead to actions. Actions lead to results." — T. Harv Eker', margin, yPos);
-            yPos += 10;
-            
-            // Select relevant principles based on score
-            let principles = [];
-            if (reportData.wealthScore < 40) {
-                principles = [
-                    { title: "Wealth File #1: Rich people believe 'I create my life.'", insight: "Take 100% responsibility for your financial outcomes. Your wealth is a direct reflection of your thoughts, habits, and actions.", action: "Track every dollar for 30 days. Awareness is the first step to transformation." },
-                    { title: "Wealth File #4: Rich people think big.", insight: "Your income can only grow to the extent of your vision. Small thinking leads to small results.", action: "Write down your 10-year wealth vision. Make it specific and compelling." },
-                    { title: "Wealth File #17: Rich people constantly learn and grow.", insight: "Your level of success rarely exceeds your level of personal development.", action: "Commit to reading 1 wealth book monthly and attending 2 seminars yearly." }
-                ];
-            } else if (reportData.wealthScore < 70) {
-                principles = [
-                    { title: "Wealth File #2: Rich people play to win.", insight: "The goal isn't just security—it's financial freedom. Playing not to lose keeps you stuck.", action: "Define your 'Freedom Number'—passive income needed to cover lifestyle expenses." },
-                    { title: "Wealth File #6: Rich people admire successful people.", insight: "Instead of resenting wealth, study and model those who have achieved it.", action: "Find a mentor or join a mastermind of people at your next wealth level." },
-                    { title: "Wealth File #11: Rich people choose results over time.", insight: "Trading time for money has a ceiling. Results-based income has unlimited potential.", action: "Identify one income stream you can shift from hourly to results-based." }
-                ];
-            } else {
-                principles = [
-                    { title: "Wealth File #13: Rich people focus on net worth.", insight: "Working income is a trap. Net worth—assets minus liabilities—is true wealth.", action: "Calculate your net worth monthly. Set quarterly growth targets." },
-                    { title: "Wealth File #14: Rich people manage money well.", insight: "It's not about how much you make, but how much you keep and grow.", action: "Implement the Jars system: 10% FFA, 10% Education, 10% Long-term savings." },
-                    { title: "Wealth File #15: Rich people make money work for them.", insight: "The rich acquire assets that generate income. The poor acquire liabilities that drain it.", action: "Ensure every surplus dollar goes into income-generating assets." }
-                ];
-            }
-            
-            principles.forEach((p, i) => {
-                doc.setFillColor(255, 248, 240);
-                doc.roundedRect(margin, yPos, contentWidth, 25, 2, 2, 'F');
-                doc.setDrawColor(255, 129, 32);
-                doc.setLineWidth(0.5);
-                doc.line(margin, yPos, margin, yPos + 25);
-                
-                doc.setTextColor(255, 129, 32);
-                doc.setFontSize(9);
-                doc.setFont('helvetica', 'bold');
-                doc.text(p.title, margin + 4, yPos + 6);
-                
-                doc.setTextColor(60, 60, 60);
-                doc.setFontSize(8);
-                doc.setFont('helvetica', 'normal');
-                const insightLines = wrapText(p.insight, contentWidth - 10, 8);
-                doc.text(insightLines, margin + 4, yPos + 12);
-                
-                doc.setTextColor(255, 129, 32);
-                doc.setFont('helvetica', 'bold');
-                doc.text('→ ', margin + 4, yPos + 21);
-                doc.setTextColor(60, 60, 60);
-                doc.setFont('helvetica', 'normal');
-                doc.text(p.action, margin + 10, yPos + 21);
-                
-                yPos += 28;
-            });
-            
-            addFooter(3, 4);
-            
-            updateProgress(85, 'Building your action plan...');
-            
-            // ==================== PAGE 4: 90-DAY ACTION PLAN ====================
-            doc.addPage();
-            addHeader();
-            yPos = 50;
-            
-            // 90-Day Action Plan Header
-            doc.setFillColor(255, 129, 32);
-            doc.roundedRect(margin, yPos, contentWidth, 15, 3, 3, 'F');
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('Your Personalized 90-Day Wealth Action Plan', margin + 5, yPos + 10);
-            yPos += 22;
-            
-            // Generate personalized action steps based on concerns
-            let actionSteps = [];
-            const concernsLower = (reportData.concern || '').toLowerCase();
-            
-            if (concernsLower.includes('tax')) {
-                actionSteps = [
-                    { week: "Week 1-2", title: "Tax Structure Audit", description: `Review current tax position. With ${reportData.symbol}${reportData.annualSurplus.toLocaleString()} annual capacity, explore entity optimization (LLC, S-Corp, trust structures).`, priority: "HIGH" },
-                    { week: "Week 3-4", title: "Retirement Maximization", description: "Max out 401(k)/IRA contributions. Explore backdoor Roth strategies. Calculate tax savings from increased deferrals.", priority: "HIGH" },
-                    { week: "Week 5-6", title: "Tax-Loss Harvesting Setup", description: "Review portfolio for tax-loss harvesting opportunities. Set up systematic rebalancing strategy.", priority: "MEDIUM" },
-                    { week: "Week 7-8", title: "Real Estate Tax Benefits", description: "Explore real estate investments for depreciation benefits. Consider Opportunity Zone investments.", priority: "MEDIUM" },
-                    { week: "Week 9-10", title: "Charitable Strategy", description: "Set up Donor Advised Fund if charitable giving is planned. Explore appreciated stock donations.", priority: "MEDIUM" },
-                    { week: "Week 11-12", title: "Year-End Tax Planning", description: "Schedule tax planning session. Document all strategies for ${new Date().getFullYear()} implementation.", priority: "HIGH" }
-                ];
-            } else if (concernsLower.includes('capital') || concernsLower.includes('deploy')) {
-                actionSteps = [
-                    { week: "Week 1-2", title: "Capital Deployment Audit", description: `Map your ${reportData.symbol}${reportData.liquid.toLocaleString()} liquid assets. Identify underperforming cash and low-yield positions.`, priority: "HIGH" },
-                    { week: "Week 3-4", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Set up automatic weekly investment of surplus funds.", priority: "HIGH" },
-                    { week: "Week 5-6", title: "Diversified Portfolio Build", description: "Deploy capital across recommended allocation. Start with index funds and REITs for instant diversification.", priority: "HIGH" },
-                    { week: "Week 7-8", title: "Alternative Investments", description: "Research private equity, syndications, or business investments for accredited opportunities.", priority: "MEDIUM" },
-                    { week: "Week 9-10", title: "Cash Flow Optimization", description: "Review all subscriptions and expenses. Redirect savings to investment accounts.", priority: "MEDIUM" },
-                    { week: "Week 11-12", title: "Systematic Investing", description: "Ensure 100% of monthly surplus is auto-invested. Set up quarterly rebalancing calendar.", priority: "HIGH" }
-                ];
-            } else if (concernsLower.includes('debt')) {
-                actionSteps = [
-                    { week: "Week 1-2", title: "Debt Inventory", description: "List all debts with balances, rates, and payments. Calculate total interest cost per year.", priority: "HIGH" },
-                    { week: "Week 3-4", title: "Refinancing Opportunities", description: "Check rates for mortgage, student loans, auto. Consolidate high-interest debt where possible.", priority: "HIGH" },
-                    { week: "Week 5-6", title: "Debt Avalanche Strategy", description: `Allocate portion of ${reportData.symbol}${reportData.surplus.toLocaleString()} surplus to highest-interest debt first.`, priority: "HIGH" },
-                    { week: "Week 7-8", title: "Good Debt Strategy", description: "Distinguish productive debt (real estate, business) from consumer debt. Optimize leverage ratios.", priority: "MEDIUM" },
-                    { week: "Week 9-10", title: "Emergency Fund", description: "Ensure 6 months expenses saved before aggressive debt paydown. Prevent new debt cycles.", priority: "MEDIUM" },
-                    { week: "Week 11-12", title: "Debt Freedom Timeline", description: "Create visual debt payoff timeline. Celebrate milestones and redirect freed payments to investing.", priority: "HIGH" }
-                ];
-            } else {
-                actionSteps = [
-                    { week: "Week 1-2", title: "Foundation Audit", description: `Review current position: ${reportData.symbol}${reportData.surplus.toLocaleString()}/mo surplus, ${reportData.symbol}${reportData.liquid.toLocaleString()} liquid. Ensure 6-month emergency fund.`, priority: "HIGH" },
-                    { week: "Week 3-4", title: "Tax & Legal Structure", description: "Schedule consultation with tax strategist. Review if entity optimization makes sense for your income level.", priority: "HIGH" },
-                    { week: "Week 5-6", title: "Investment Infrastructure", description: "Open/optimize brokerage accounts. Establish automatic investment transfers aligned with allocation strategy.", priority: "MEDIUM" },
-                    { week: "Week 7-8", title: "Income Optimization", description: "Identify opportunities to increase active income. Explore passive income streams and side businesses.", priority: "MEDIUM" },
-                    { week: "Week 9-10", title: "Asset Protection", description: "Review insurance coverage (life, disability, umbrella). Consider trust structures for asset protection.", priority: "MEDIUM" },
-                    { week: "Week 11-12", title: "Wealth Momentum", description: "Implement full portfolio strategy. Set up quarterly wealth reviews. Document your wealth system.", priority: "HIGH" }
-                ];
-            }
-            
-            actionSteps.forEach((step, i) => {
-                // Check if we need to be more compact (if running out of space)
-                const remainingSpace = pageHeight - yPos - 85; // 85 = CTA (55) + footer (15) + buffer (15)
-                const isCompact = remainingSpace < 100;
-                
-                const priorityColor = step.priority === 'HIGH' ? [220, 53, 69] : [255, 193, 7];
-                
-                // Week badge - smaller if compact
-                const badgeHeight = isCompact ? 10 : 14;
-                doc.setFillColor(255, 129, 32);
-                doc.roundedRect(margin, yPos, 20, badgeHeight, 2, 2, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(isCompact ? 6 : 7);
-                doc.setFont('helvetica', 'bold');
-                doc.text(step.week, margin + 10, yPos + (badgeHeight / 2) + 1, { align: 'center' });
-                
-                // Priority badge
-                doc.setFillColor(...priorityColor);
-                doc.roundedRect(margin + 23, yPos, 16, 5, 1, 1, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(5);
-                doc.text(step.priority, margin + 31, yPos + 3.5, { align: 'center' });
-                
-                // Title
-                doc.setTextColor(26, 26, 26);
-                doc.setFontSize(isCompact ? 9 : 10);
-                doc.setFont('helvetica', 'bold');
-                doc.text(step.title, margin + 42, yPos + 5);
-                
-                // Description - shorter if compact
-                doc.setTextColor(80, 80, 80);
-                doc.setFontSize(isCompact ? 7 : 8);
-                doc.setFont('helvetica', 'normal');
-                const maxDescWidth = contentWidth - 44;
-                let descText = step.description;
-                if (isCompact && descText.length > 80) {
-                    descText = descText.substring(0, 77) + '...';
-                }
-                const descLines = wrapText(descText, maxDescWidth, isCompact ? 7 : 8);
-                const linesToShow = isCompact ? descLines.slice(0, 1) : descLines.slice(0, 2);
-                doc.text(linesToShow, margin + 42, yPos + (isCompact ? 10 : 11));
-                
-                yPos += isCompact ? 14 : (18 + (descLines.length > 2 ? 4 : 0));
-            });
-            
-            // Ensure minimum space for CTA
-            const ctaHeight = 45;
-            const footerHeight = 15;
-            const minYForCTA = pageHeight - ctaHeight - footerHeight - 5;
-            
-            if (yPos > minYForCTA) {
-                yPos = minYForCTA;
-            } else {
-                yPos += 8;
-            }
-            
-            // Call to Action Box - Compelling design with urgency
-            doc.setFillColor(255, 129, 32);
-            doc.roundedRect(margin, yPos, contentWidth, ctaHeight, 3, 3, 'F');
-            
-            // Headline
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(14);
-            doc.setFont('helvetica', 'bold');
-            doc.text('YOUR NEXT STEP', pageWidth / 2, yPos + 9, { align: 'center' });
-            
-            // Subheadline
-            doc.setFontSize(10);
-            doc.setFont('helvetica', 'normal');
-            doc.text('Stop Planning. Start Building. Book Your FREE Strategy Call Now.', pageWidth / 2, yPos + 18, { align: 'center' });
-            
-            // URL box
-            doc.setFillColor(255, 255, 255);
-            doc.roundedRect(margin + 20, yPos + 23, contentWidth - 40, 10, 2, 2, 'F');
-            doc.setTextColor(255, 129, 32);
-            doc.setFontSize(9);
-            doc.setFont('helvetica', 'bold');
-            doc.text('calendly.com/june-yoon/your-90-day-wealth-blueprint', pageWidth / 2, yPos + 30, { align: 'center' });
-            
-            // Urgency line
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(8);
-            doc.setFont('helvetica', 'italic');
-            doc.text('Limited slots • 45 min • 100% Free • No obligation', pageWidth / 2, yPos + 41, { align: 'center' });
-            
-            addFooter(4, 4);
-            
-            // Generate PDF blob for Airtable upload
-            const pdfBlob = doc.output('blob');
-            const fileName = `Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`;
-            
-            updateProgress(95, 'Finalizing your report...');
-            
-            // Save locally for user
-            doc.save(fileName);
-            
-            updateProgress(100, 'Download complete!');
-            
-            // Restore button after a short delay
+            // Restore button
             setTimeout(() => {
                 if (downloadBtn) {
                     downloadBtn.innerHTML = originalHTML;
                     downloadBtn.disabled = false;
                 }
-            }, 1000);
+            }, 500);
             
             // Show post-download CTA
             const postDownloadCTA = document.getElementById('postDownloadCTA');
@@ -3885,9 +3323,6 @@ June Yoon`;
                     postDownloadCTA.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }, 500);
             }
-            
-            // Upload to Airtable
-            uploadPDFToAirtable(pdfBlob, fileName);
         }
         
         async function uploadPDFToAirtable(pdfBlob, fileName) {
