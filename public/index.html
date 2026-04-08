@@ -2380,6 +2380,11 @@
                         aiAllocation = aiData.allocation || null;
                         aiAllocationRationale = aiData.allocationRationale || '';
                         console.log('✅ AI analysis + allocation received for auto-upload PDF');
+                        
+                        // Store globally for reuse in results page display
+                        generatedAiAnalysis = aiAnalysis;
+                        generatedAiAllocation = aiAllocation;
+                        generatedAiAllocationRationale = aiAllocationRationale;
                     }
                 } catch (e) {
                     console.log('⚠️ AI analysis failed, using fallback');
@@ -2401,6 +2406,8 @@ I look forward to mapping your personalized 90-day action plan in our compliment
 
 To your wealth,
 June Yoon | Wealth Architecture Strategist`;
+                    // Store fallback globally too
+                    generatedAiAnalysis = aiAnalysis;
                 }
                 
                 // Fallback allocation if AI fails
@@ -2419,6 +2426,9 @@ June Yoon | Wealth Architecture Strategist`;
                         aiAllocation = { 'Index Funds': 30, 'Growth Stocks': 25, 'Real Estate / REITs': 20, 'Bonds & Fixed Income': 15, 'Cash Reserve': 10 };
                         aiAllocationRationale = 'This balanced allocation provides growth potential while maintaining appropriate diversification for your profile.';
                     }
+                    // Store fallback globally too
+                    generatedAiAllocation = aiAllocation;
+                    generatedAiAllocationRationale = aiAllocationRationale;
                 }
                 
                 // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
@@ -2961,6 +2971,9 @@ June Yoon | Wealth Architecture Strategist`;
         let generatedPdfBlob = null;  // Store the PDF blob for download
         let generatedPdfUrl = '';     // Store the uploaded PDF URL
         let generatedPdfFileName = ''; // Store the filename
+        let generatedAiAnalysis = ''; // Store AI analysis for reuse (same for PDF and display)
+        let generatedAiAllocation = null; // Store AI allocation for reuse
+        let generatedAiAllocationRationale = ''; // Store allocation rationale
         
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
@@ -3112,17 +3125,25 @@ June Yoon | Wealth Architecture Strategist`;
             const ctx = document.getElementById('allocationChart');
             if (!ctx) return;
             
+            // Use AI-generated allocation if available (same as PDF)
             let allocation = {};
-            const isHighIncome = income.includes('500K') || income.includes('1M') || income.includes('2M') || income.includes('5M');
-            
-            if (concern.includes('Tax')) {
-                allocation = { 'Tax-Advantaged': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business': 15, 'Alternatives': 10, 'Cash': 5 };
-            } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
-                allocation = { 'Stocks': 30, 'Real Estate': 25, 'Bonds': 20, 'Private Equity': 15, 'Cash': 10 };
-            } else if (concern.includes('Protection')) {
-                allocation = { 'ETFs': 25, 'Real Estate': 20, 'Bonds': 20, 'Gold': 15, 'Insurance': 10, 'Emergency': 10 };
+            if (generatedAiAllocation && Object.keys(generatedAiAllocation).length > 0) {
+                console.log('✅ Using AI-generated allocation for chart (same as PDF)');
+                allocation = generatedAiAllocation;
             } else {
-                allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternatives': 15, 'Cash': 10 };
+                // Fallback to static allocation
+                console.log('⚠️ Using fallback allocation for chart');
+                const isHighIncome = income.includes('500K') || income.includes('1M') || income.includes('2M') || income.includes('5M');
+                
+                if (concern.includes('Tax')) {
+                    allocation = { 'Tax-Advantaged': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business': 15, 'Alternatives': 10, 'Cash': 5 };
+                } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
+                    allocation = { 'Stocks': 30, 'Real Estate': 25, 'Bonds': 20, 'Private Equity': 15, 'Cash': 10 };
+                } else if (concern.includes('Protection')) {
+                    allocation = { 'ETFs': 25, 'Real Estate': 20, 'Bonds': 20, 'Gold': 15, 'Insurance': 10, 'Emergency': 10 };
+                } else {
+                    allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternatives': 15, 'Cash': 10 };
+                }
             }
             
             const colors = ['#ff8120', '#ff9a4a', '#ffb366', '#ffc999', '#ffddb3', '#fff0e0'];
@@ -3204,38 +3225,16 @@ June Yoon | Wealth Architecture Strategist`;
             const loadingEl = document.getElementById('aiLoadingIndicator');
             const contentEl = document.getElementById('aiAnalysisContent');
             
-            try {
-                console.log('🤖 Requesting AI-powered analysis...');
-                
-                const response = await fetch('/api/ai-analysis', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        name: name,
-                        wealthScore: wealthScore,
-                        scoreLabel: getScoreLabel(wealthScore),
-                        surplus: surplus,
-                        liquid: liquid,
-                        income: income,
-                        currency: symbol,
-                        status: status || 'Professional',
-                        concern: concern || 'Wealth building',
-                        timeline: timeline
-                    })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success && data.analysis) {
-                    console.log('✅ AI analysis received successfully');
-                    loadingEl.style.display = 'none';
-                    contentEl.style.display = 'block';
-                    contentEl.innerHTML = `<p style="white-space: pre-line;">${data.analysis}</p>`;
-                } else {
-                    throw new Error(data.error || 'AI analysis failed');
-                }
-            } catch (e) {
-                console.log('⚠️ AI analysis unavailable, using fallback:', e.message);
+            // Use the SAME analysis that was already generated for the PDF
+            // This ensures website display and PDF have identical content
+            if (generatedAiAnalysis) {
+                console.log('✅ Using pre-generated AI analysis (same as PDF)');
+                loadingEl.style.display = 'none';
+                contentEl.style.display = 'block';
+                contentEl.innerHTML = `<p style="white-space: pre-line;">${generatedAiAnalysis}</p>`;
+            } else {
+                // Fallback: If somehow analysis wasn't generated yet, use fallback
+                console.log('⚠️ No pre-generated analysis found, using fallback');
                 loadingEl.style.display = 'none';
                 contentEl.style.display = 'block';
                 contentEl.innerHTML = `<p style="white-space: pre-line;">${generateFallbackAnalysis(name, surplus, liquid, wealthScore, symbol)}</p>`;
