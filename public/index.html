@@ -1607,6 +1607,20 @@
             color: #ff8120;
             background: rgba(255, 129, 32, 0.1);
         }
+        
+        /* PDF Progress Spinner */
+        .pdf-spinner {
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 129, 32, 0.3);
+            border-top-color: #ff8120;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- jsPDF for PDF Generation -->
@@ -2849,17 +2863,40 @@ June Yoon`;
             const margin = 20;
             const contentWidth = pageWidth - (margin * 2);
             
-            // Show loading indicator
-            const downloadBtn = document.querySelector('.btn-primary[onclick="generatePDF()"]');
-            const originalText = downloadBtn ? downloadBtn.innerHTML : '';
+            // Get the download button container
+            const downloadBtn = document.getElementById('downloadPdfBtn');
+            const originalHTML = downloadBtn ? downloadBtn.innerHTML : '';
+            
+            // Show progress bar
             if (downloadBtn) {
-                downloadBtn.innerHTML = '⏳ Generating Premium PDF...';
                 downloadBtn.disabled = true;
+                downloadBtn.innerHTML = `
+                    <div style="width: 100%;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+                            <span class="pdf-spinner"></span>
+                            <span id="pdfProgressText">Preparing your report...</span>
+                        </div>
+                        <div style="background: rgba(255,255,255,0.3); border-radius: 10px; height: 6px; overflow: hidden;">
+                            <div id="pdfProgressBar" style="background: #ff8120; height: 100%; width: 0%; transition: width 0.3s ease; border-radius: 10px;"></div>
+                        </div>
+                    </div>
+                `;
             }
+            
+            // Progress update helper
+            const updateProgress = (percent, text) => {
+                const bar = document.getElementById('pdfProgressBar');
+                const textEl = document.getElementById('pdfProgressText');
+                if (bar) bar.style.width = percent + '%';
+                if (textEl) textEl.textContent = text;
+            };
+            
+            updateProgress(10, 'Initializing...');
             
             // Fetch AI Analysis for PDF
             let aiAnalysis = '';
             try {
+                updateProgress(20, 'Generating AI insights...');
                 console.log('🤖 Fetching AI analysis for PDF...');
                 const response = await fetch('/api/ai-analysis', {
                     method: 'POST',
@@ -2890,6 +2927,8 @@ June Yoon`;
             if (!aiAnalysis) {
                 aiAnalysis = generateFallbackAnalysis(reportData.name, reportData.surplus, reportData.liquid, reportData.wealthScore, reportData.symbol);
             }
+            
+            updateProgress(40, 'Building executive summary...');
             
             // Helper functions
             const addHeader = () => {
@@ -3092,6 +3131,8 @@ June Yoon`;
             
             addFooter(1, 4);
             
+            updateProgress(55, 'Adding personalized analysis...');
+            
             // ==================== PAGE 2: AI PERSONALIZED ANALYSIS ====================
             doc.addPage();
             addHeader();
@@ -3152,6 +3193,8 @@ June Yoon`;
             }
             
             addFooter(2, 4);
+            
+            updateProgress(70, 'Creating investment strategy...');
             
             // ==================== PAGE 3: STRATEGY & ALLOCATION ====================
             doc.addPage();
@@ -3269,6 +3312,8 @@ June Yoon`;
             });
             
             addFooter(3, 4);
+            
+            updateProgress(85, 'Building your action plan...');
             
             // ==================== PAGE 4: 90-DAY ACTION PLAN ====================
             doc.addPage();
@@ -3417,14 +3462,20 @@ June Yoon`;
             const pdfBlob = doc.output('blob');
             const fileName = `Wealth_Blueprint_${reportData.name.replace(/\s+/g, '_')}.pdf`;
             
-            // Restore button
-            if (downloadBtn) {
-                downloadBtn.innerHTML = originalText;
-                downloadBtn.disabled = false;
-            }
+            updateProgress(95, 'Finalizing your report...');
             
             // Save locally for user
             doc.save(fileName);
+            
+            updateProgress(100, 'Download complete!');
+            
+            // Restore button after a short delay
+            setTimeout(() => {
+                if (downloadBtn) {
+                    downloadBtn.innerHTML = originalHTML;
+                    downloadBtn.disabled = false;
+                }
+            }, 1000);
             
             // Show post-download CTA
             const postDownloadCTA = document.getElementById('postDownloadCTA');
