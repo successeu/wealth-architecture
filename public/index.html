@@ -691,10 +691,10 @@
         </div>
         
         <div id="heroSection" style="margin-bottom: 40px;">
-            <div class="hero-section" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
-                <!-- Left: Image -->
-                <div style="display: flex; justify-content: center;">
-                    <img src="/businessman.png" alt="Professional wealth building" style="width: 100%; max-width: 300px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); filter: grayscale(100%);">
+            <div class="hero-section hero-desktop" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: center; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
+                <!-- Left: Image (hidden on mobile) -->
+                <div class="hero-image-desktop" style="display: flex; justify-content: center;">
+                    <img src="./businessman.png" alt="Professional wealth building" style="width: 100%; max-width: 190px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12); filter: grayscale(100%);">
                 </div>
                 
                 <!-- Right: Content -->
@@ -746,15 +746,45 @@
                 </div>
             </div>
             
-            <!-- Mobile responsive: stack vertically -->
+            <!-- Mobile responsive styles -->
             <style>
                 @media (max-width: 768px) {
                     #heroSection .hero-section {
                         grid-template-columns: 1fr !important;
-                        text-align: center !important;
+                        background-image: url('./businessman.png') !important;
+                        background-size: cover !important;
+                        background-position: center top !important;
+                        position: relative !important;
+                        padding: 40px 24px !important;
+                    }
+                    #heroSection .hero-section::before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        background: linear-gradient(180deg, rgba(255, 250, 245, 0.92) 0%, rgba(255, 255, 255, 0.95) 100%);
+                        border-radius: 20px;
+                        z-index: 0;
+                    }
+                    #heroSection .hero-image-desktop {
+                        display: none !important;
                     }
                     #heroSection .hero-content {
                         text-align: center !important;
+                        position: relative;
+                        z-index: 1;
+                    }
+                    #heroSection .hero-content h1 {
+                        font-size: 28px !important;
+                    }
+                    #heroSection .hero-content h1 span:last-child {
+                        font-size: 22px !important;
+                    }
+                    #heroSection .hero-content > div:first-child {
+                        margin-left: auto;
+                        margin-right: auto;
                     }
                 }
             </style>
