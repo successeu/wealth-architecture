@@ -2349,6 +2349,13 @@
                 // Fetch AI Analysis (same as download PDF)
                 console.log('🤖 Fetching AI analysis for auto-upload PDF...');
                 let aiAnalysis = '';
+                let aiAllocation = null;
+                let aiAllocationRationale = '';
+                
+                // Get country name for AI
+                const countrySelect = document.getElementById('country');
+                const countryName = countrySelect ? countrySelect.options[countrySelect.selectedIndex]?.textContent.replace(/^[^\s]+\s/, '') : '';
+                
                 try {
                     const aiResponse = await fetch('/api/ai-analysis', {
                         method: 'POST',
@@ -2363,13 +2370,16 @@
                             currency: symbol,
                             status: status || 'Professional',
                             concern: concern || 'Wealth building',
-                            timeline: timeline
+                            timeline: timeline,
+                            country: countryName
                         })
                     });
                     const aiData = await aiResponse.json();
-                    if (aiData.success && aiData.analysis) {
-                        aiAnalysis = aiData.analysis;
-                        console.log('✅ AI analysis received for auto-upload PDF');
+                    if (aiData.success) {
+                        aiAnalysis = aiData.analysis || '';
+                        aiAllocation = aiData.allocation || null;
+                        aiAllocationRationale = aiData.allocationRationale || '';
+                        console.log('✅ AI analysis + allocation received for auto-upload PDF');
                     }
                 } catch (e) {
                     console.log('⚠️ AI analysis failed, using fallback');
@@ -2387,8 +2397,28 @@ Key recommendations: First, maximize tax-advantaged accounts before investing in
 
 As T. Harv Eker teaches: "Your income can grow only to the extent that you do."
 
+I look forward to mapping your personalized 90-day action plan in our complimentary 45-minute strategy call.
+
 To your wealth,
 June Yoon | Wealth Architecture Strategist`;
+                }
+                
+                // Fallback allocation if AI fails
+                if (!aiAllocation) {
+                    // Smart fallback based on user data
+                    if (concern.includes('Tax')) {
+                        aiAllocation = { 'Tax-Advantaged Accounts': 30, 'Index Funds': 25, 'Real Estate / REITs': 20, 'Growth Stocks': 15, 'Cash Reserve': 10 };
+                        aiAllocationRationale = 'Given your focus on tax optimization, this allocation prioritizes tax-advantaged vehicles while maintaining growth potential.';
+                    } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
+                        aiAllocation = { 'Dividend Stocks': 30, 'Bonds & Fixed Income': 25, 'Real Estate / REITs': 20, 'Index Funds': 15, 'Cash & Emergency Fund': 10 };
+                        aiAllocationRationale = 'This allocation balances income generation with capital preservation for long-term legacy planning.';
+                    } else if (timeline === '10+ years') {
+                        aiAllocation = { 'Growth Stocks': 35, 'Index Funds': 25, 'Real Estate / REITs': 20, 'International Equities': 15, 'Cash Reserve': 5 };
+                        aiAllocationRationale = 'Your long investment horizon allows for aggressive growth positioning with maximum equity exposure.';
+                    } else {
+                        aiAllocation = { 'Index Funds': 30, 'Growth Stocks': 25, 'Real Estate / REITs': 20, 'Bonds & Fixed Income': 15, 'Cash Reserve': 10 };
+                        aiAllocationRationale = 'This balanced allocation provides growth potential while maintaining appropriate diversification for your profile.';
+                    }
                 }
                 
                 // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
@@ -2591,18 +2621,11 @@ June Yoon | Wealth Architecture Strategist`;
                 addHeader();
                 yPos = 50;
                 
-                // Asset Allocation
+                // Asset Allocation - Now using AI-generated allocation
                 yPos = addSectionTitle('Recommended Asset Allocation Strategy', yPos);
                 
-                let allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternative Investments': 15, 'Cash Reserve': 10 };
-                if (concern.includes('Tax')) {
-                    allocation = { 'Tax-Advantaged Accounts': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business Investments': 15, 'Alternative Assets': 10, 'Cash Reserve': 5 };
-                } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
-                    allocation = { 'Diversified Stocks': 30, 'Real Estate': 25, 'Bonds & Fixed Income': 20, 'Private Equity': 15, 'Cash & Liquidity': 10 };
-                }
-                
                 doc.setFontSize(10);
-                Object.entries(allocation).forEach(([asset, percent], i) => {
+                Object.entries(aiAllocation).forEach(([asset, percent], i) => {
                     const barWidth = (percent / 100) * (contentWidth - 60);
                     doc.setFillColor(255, 200, 160);
                     doc.rect(margin, yPos, contentWidth - 30, 10, 'F');
@@ -2616,7 +2639,20 @@ June Yoon | Wealth Architecture Strategist`;
                     yPos += 12;
                 });
                 
-                yPos += 15;
+                // Add allocation rationale
+                if (aiAllocationRationale) {
+                    yPos += 8;
+                    doc.setFillColor(255, 248, 240);
+                    doc.roundedRect(margin, yPos, contentWidth, 18, 2, 2, 'F');
+                    doc.setFontSize(9);
+                    doc.setFont('helvetica', 'italic');
+                    doc.setTextColor(80, 80, 80);
+                    const rationaleLines = wrapText(aiAllocationRationale, contentWidth - 10, 9);
+                    doc.text(rationaleLines.slice(0, 2), margin + 5, yPos + 7);
+                    yPos += 22;
+                } else {
+                    yPos += 15;
+                }
                 
                 // Millionaire Mind Principles
                 yPos = addSectionTitle('Your Millionaire Mind Blueprint', yPos);
@@ -2925,8 +2961,12 @@ June Yoon | Wealth Architecture Strategist`;
             const projection5yr = calculateCompoundGrowth(liquid, surplus, 5, 0.08);
             const wealthScore = calculateWealthScore(surplus, liquid, income, status, timeline, concern);
             
+            // Get country name for AI
+            const countrySelect = document.getElementById('country');
+            const countryName = countrySelect ? countrySelect.options[countrySelect.selectedIndex]?.textContent.replace(/^[^\s]+\s/, '') : '';
+            
             // Store for PDF
-            reportData = { name, surplus, liquid, income, currency, symbol, status, concern, timeline, annualSurplus, projection5yr, wealthScore };
+            reportData = { name, surplus, liquid, income, currency, symbol, status, concern, timeline, annualSurplus, projection5yr, wealthScore, country: countryName };
             
             // Update display values
             document.getElementById('resultName').textContent = name;
@@ -3253,9 +3293,12 @@ June Yoon`;
             
             // Fetch AI Analysis for PDF
             let aiAnalysis = '';
+            let aiAllocation = null;
+            let aiAllocationRationale = '';
+            
             try {
-                updateProgress(20, 'Generating AI insights...');
-                console.log('🤖 Fetching AI analysis for PDF...');
+                updateProgress(20, 'Generating personalized insights...');
+                console.log('🤖 Fetching AI analysis + allocation for PDF...');
                 const response = await fetch('/api/ai-analysis', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -3269,13 +3312,16 @@ June Yoon`;
                         currency: reportData.symbol,
                         status: reportData.status || 'Professional',
                         concern: reportData.concern || 'Wealth building',
-                        timeline: reportData.timeline
+                        timeline: reportData.timeline,
+                        country: reportData.country || ''
                     })
                 });
                 const data = await response.json();
-                if (data.success && data.analysis) {
-                    aiAnalysis = data.analysis;
-                    console.log('✅ AI analysis received for PDF');
+                if (data.success) {
+                    aiAnalysis = data.analysis || '';
+                    aiAllocation = data.allocation || null;
+                    aiAllocationRationale = data.allocationRationale || '';
+                    console.log('✅ AI analysis + allocation received for PDF');
                 }
             } catch (e) {
                 console.log('⚠️ Using fallback analysis for PDF');
@@ -3284,6 +3330,25 @@ June Yoon`;
             // Use fallback if AI analysis failed
             if (!aiAnalysis) {
                 aiAnalysis = generateFallbackAnalysis(reportData.name, reportData.surplus, reportData.liquid, reportData.wealthScore, reportData.symbol);
+            }
+            
+            // Fallback allocation if AI fails
+            if (!aiAllocation) {
+                const concern = reportData.concern || '';
+                const timeline = reportData.timeline || '';
+                if (concern.includes('Tax')) {
+                    aiAllocation = { 'Tax-Advantaged Accounts': 30, 'Index Funds': 25, 'Real Estate / REITs': 20, 'Growth Stocks': 15, 'Cash Reserve': 10 };
+                    aiAllocationRationale = 'Given your focus on tax optimization, this allocation prioritizes tax-advantaged vehicles while maintaining growth potential.';
+                } else if (concern.includes('Legacy') || concern.includes('Retirement')) {
+                    aiAllocation = { 'Dividend Stocks': 30, 'Bonds & Fixed Income': 25, 'Real Estate / REITs': 20, 'Index Funds': 15, 'Cash & Emergency Fund': 10 };
+                    aiAllocationRationale = 'This allocation balances income generation with capital preservation for long-term legacy planning.';
+                } else if (timeline === '10+ years') {
+                    aiAllocation = { 'Growth Stocks': 35, 'Index Funds': 25, 'Real Estate / REITs': 20, 'International Equities': 15, 'Cash Reserve': 5 };
+                    aiAllocationRationale = 'Your long investment horizon allows for aggressive growth positioning with maximum equity exposure.';
+                } else {
+                    aiAllocation = { 'Index Funds': 30, 'Growth Stocks': 25, 'Real Estate / REITs': 20, 'Bonds & Fixed Income': 15, 'Cash Reserve': 10 };
+                    aiAllocationRationale = 'This balanced allocation provides growth potential while maintaining appropriate diversification for your profile.';
+                }
             }
             
             updateProgress(40, 'Building executive summary...');
@@ -3556,32 +3621,12 @@ June Yoon`;
             addHeader();
             yPos = 50;
             
-            // Asset Allocation Recommendations
+            // Asset Allocation Recommendations - Now using AI-generated allocation
             yPos = addSectionTitle('Recommended Asset Allocation Strategy', yPos);
             
-            let allocation = {};
-            let allocationRationale = '';
-            
-            if (reportData.concern && reportData.concern.includes('Tax')) {
-                allocation = { 'Tax-Advantaged Accounts': 25, 'Real Estate': 25, 'Index Funds': 20, 'Business Investments': 15, 'Alternative Assets': 10, 'Cash Reserve': 5 };
-                allocationRationale = 'This allocation prioritizes tax efficiency through maximizing tax-advantaged vehicles while maintaining diversification.';
-            } else if (reportData.concern && (reportData.concern.includes('Legacy') || reportData.concern.includes('Retirement'))) {
-                allocation = { 'Diversified Stocks': 30, 'Real Estate': 25, 'Bonds & Fixed Income': 20, 'Private Equity': 15, 'Cash & Liquidity': 10 };
-                allocationRationale = 'This allocation balances growth with stability, ideal for long-term wealth preservation and intergenerational transfer.';
-            } else if (reportData.concern && reportData.concern.includes('Protection')) {
-                allocation = { 'Diversified ETFs': 25, 'Real Estate': 20, 'Government Bonds': 20, 'Gold & Commodities': 15, 'Insurance Products': 10, 'Emergency Fund': 10 };
-                allocationRationale = 'This defensive allocation emphasizes capital preservation with inflation hedges and guaranteed returns.';
-            } else if (reportData.concern && reportData.concern.includes('Capital')) {
-                allocation = { 'Growth Stocks': 35, 'Real Estate': 20, 'Index Funds': 20, 'Venture/PE': 15, 'Crypto/Alts': 5, 'Cash': 5 };
-                allocationRationale = 'This aggressive allocation maximizes growth potential for capital deployment with calculated risk exposure.';
-            } else {
-                allocation = { 'Growth Stocks': 30, 'Real Estate': 25, 'Index Funds': 20, 'Alternative Investments': 15, 'Cash Reserve': 10 };
-                allocationRationale = 'This balanced allocation provides diversified exposure across asset classes for steady wealth accumulation.';
-            }
-            
-            // Allocation bars with percentages
+            // Allocation bars with percentages - using aiAllocation from AI response
             doc.setFontSize(10);
-            Object.entries(allocation).forEach(([asset, percent], i) => {
+            Object.entries(aiAllocation).forEach(([asset, percent], i) => {
                 const barWidth = (percent / 100) * (contentWidth - 60);
                 doc.setFillColor(255, 200, 160);
                 doc.rect(margin, yPos, contentWidth - 30, 10, 'F');
@@ -3595,15 +3640,15 @@ June Yoon`;
                 yPos += 12;
             });
             
-            // Rationale
+            // Rationale - using aiAllocationRationale from AI response
             yPos += 5;
             doc.setFillColor(245, 245, 245);
-            doc.roundedRect(margin, yPos, contentWidth, 15, 2, 2, 'F');
+            doc.roundedRect(margin, yPos, contentWidth, 18, 2, 2, 'F');
             doc.setFontSize(9);
             doc.setFont('helvetica', 'italic');
             doc.setTextColor(80, 80, 80);
-            const rationaleLines = wrapText(allocationRationale, contentWidth - 10, 9);
-            doc.text(rationaleLines, margin + 5, yPos + 6);
+            const rationaleLines = wrapText(aiAllocationRationale, contentWidth - 10, 9);
+            doc.text(rationaleLines.slice(0, 2), margin + 5, yPos + 7);
             
             yPos += 25;
             
