@@ -2270,6 +2270,8 @@
         // This ensures Airtable always gets the complete report even if user doesn't click Download
         async function generateAndUploadPDF(name, surplus, liquid, income, currency, wealthScore) {
             try {
+                console.log('🚀 Starting FULL 4-page PDF generation for Airtable...');
+                
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('p', 'mm', 'a4');
                 const pageWidth = doc.internal.pageSize.getWidth();
@@ -2344,7 +2346,7 @@
                     return total;
                 };
                 
-                // Generate fallback analysis text
+                // Generate analysis text
                 const generateAnalysisText = () => {
                     return `Dear ${name.split(' ')[0]},
 
@@ -2352,7 +2354,7 @@ Thank you for completing your Wealth Architecture Assessment. With a Wealth Posi
 
 With ${symbol}${surplus.toLocaleString()} monthly surplus and ${symbol}${liquid.toLocaleString()} in liquid assets, you have a solid foundation for accelerated wealth building. Your annual investment capacity of ${symbol}${annualSurplus.toLocaleString()} positions you well for significant wealth accumulation.
 
-I recommend focusing on three key areas: First, maximize tax-advantaged accounts before investing in taxable accounts. Second, establish a diversified portfolio aligned with your timeline. Third, build multiple income streams through strategic investments.
+Key recommendations: First, maximize tax-advantaged accounts before investing in taxable accounts. Second, establish a diversified portfolio aligned with your timeline. Third, build multiple income streams through strategic investments.
 
 As T. Harv Eker teaches: "Your income can grow only to the extent that you do."
 
@@ -2361,6 +2363,7 @@ June Yoon | Wealth Architecture Strategist`;
                 };
                 
                 // ==================== PAGE 1: EXECUTIVE SUMMARY ====================
+                console.log('📄 Building Page 1: Executive Summary...');
                 addHeader();
                 let yPos = 52;
                 
@@ -2506,6 +2509,7 @@ June Yoon | Wealth Architecture Strategist`;
                 addFooter(1, 4);
                 
                 // ==================== PAGE 2: PERSONALIZED ANALYSIS ====================
+                console.log('📄 Building Page 2: Personalized Analysis...');
                 doc.addPage();
                 addHeader();
                 yPos = 50;
@@ -2535,14 +2539,15 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'bold');
-                doc.text('Key Insight', margin + 10, yPos + 10);
+                doc.text('Key Insight from T. Harv Eker', margin + 10, yPos + 10);
                 doc.setFontSize(9);
                 doc.setFont('helvetica', 'italic');
-                doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin + 10, yPos + 18);
+                doc.text('"Your income can grow only to the extent that you do."', margin + 10, yPos + 18);
                 
                 addFooter(2, 4);
                 
                 // ==================== PAGE 3: STRATEGY & ALLOCATION ====================
+                console.log('📄 Building Page 3: Strategy & Allocation...');
                 doc.addPage();
                 addHeader();
                 yPos = 50;
@@ -2606,6 +2611,7 @@ June Yoon | Wealth Architecture Strategist`;
                 addFooter(3, 4);
                 
                 // ==================== PAGE 4: 90-DAY ACTION PLAN ====================
+                console.log('📄 Building Page 4: 90-Day Action Plan...');
                 doc.addPage();
                 addHeader();
                 yPos = 50;
@@ -2659,7 +2665,7 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.setTextColor(255, 255, 255);
                 doc.setFontSize(14);
                 doc.setFont('helvetica', 'bold');
-                doc.text('YOUR NEXT STEP', pageWidth / 2, yPos + 12, { align: 'center' });
+                doc.text('🚀 YOUR NEXT STEP', pageWidth / 2, yPos + 12, { align: 'center' });
                 doc.setFontSize(10);
                 doc.setFont('helvetica', 'normal');
                 doc.text('Book your complimentary 45-minute Strategy Call with June Yoon', pageWidth / 2, yPos + 22, { align: 'center' });
@@ -2669,48 +2675,48 @@ June Yoon | Wealth Architecture Strategist`;
                 
                 addFooter(4, 4);
                 
-                // Generate blob
+                // ==================== UPLOAD PDF ====================
+                console.log('📤 PDF generation complete. Starting upload to Vercel Blob...');
+                
+                // Generate blob and convert to base64
                 const pdfBlob = doc.output('blob');
                 const fileName = `Wealth_Blueprint_${name.replace(/\s+/g, '_')}.pdf`;
                 
-                console.log('📤 Uploading FULL 4-page premium PDF to Vercel Blob...');
-                
-                // Upload to Vercel Blob
-                const reader = new FileReader();
-                
-                return new Promise((resolve, reject) => {
-                    reader.onloadend = async function() {
-                        try {
-                            const base64Data = reader.result.split(',')[1];
-                            
-                            const response = await fetch('/api/upload-pdf-only', {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    pdfBase64: base64Data,
-                                    fileName: fileName
-                                })
-                            });
-                            
-                            const result = await response.json();
-                            
-                            if (result.success) {
-                                console.log('✅ Full 4-page PDF uploaded to Vercel Blob:', result.pdfUrl);
-                                resolve(result.pdfUrl);
-                            } else {
-                                console.error('❌ Upload failed:', result.error);
-                                resolve('');
-                            }
-                        } catch (error) {
-                            console.error('❌ Upload error:', error);
-                            resolve('');
-                        }
+                // Convert blob to base64 using Promise
+                const base64Data = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onloadend = () => {
+                        const base64 = reader.result.split(',')[1];
+                        resolve(base64);
                     };
+                    reader.onerror = reject;
                     reader.readAsDataURL(pdfBlob);
                 });
                 
+                console.log('📤 Base64 conversion complete. Uploading to Vercel Blob...');
+                
+                // Upload to Vercel Blob - AWAIT the response
+                const response = await fetch('/api/upload-pdf-only', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pdfBase64: base64Data,
+                        fileName: fileName
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success && result.pdfUrl) {
+                    console.log('✅ FULL 4-page PDF uploaded successfully:', result.pdfUrl);
+                    return result.pdfUrl;
+                } else {
+                    console.error('❌ Upload failed:', result.error || 'Unknown error');
+                    return '';
+                }
+                
             } catch (error) {
-                console.error('❌ PDF generation error:', error);
+                console.error('❌ PDF generation/upload error:', error);
                 return '';
             }
         }
