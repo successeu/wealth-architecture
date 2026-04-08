@@ -659,7 +659,7 @@
         <div class="sr-header">
             <div class="sr-header-left">
                 <div class="sr-logo">
-                    <span>Success Resources</span> | Your Learning Partner
+                    <span>Success Resources</span> | Premium Financial Training
                 </div>
             </div>
             <div style="display: flex; align-items: center; gap: 12px;">
@@ -1680,7 +1680,47 @@
             initSearchableDropdown('currency', 'Select currency...', function(value) {
                 updateCurrencyPrefixes(value);
             });
+            
+            // Auto-detect user location and pre-fill country/currency
+            autoDetectLocation();
         });
+        
+        // Auto-detect user location using IP geolocation
+        async function autoDetectLocation() {
+            try {
+                // Use ipapi.co for free IP geolocation (no API key needed)
+                const response = await fetch('https://ipapi.co/json/');
+                const data = await response.json();
+                
+                if (data && data.country_code) {
+                    const countryCode = data.country_code;
+                    const countrySelect = document.getElementById('country');
+                    
+                    // Find and select the country option
+                    const countryOption = Array.from(countrySelect.options).find(opt => opt.value === countryCode);
+                    
+                    if (countryOption) {
+                        // Set the select value
+                        countrySelect.value = countryCode;
+                        
+                        // Update the searchable dropdown display
+                        const countrySearchInput = document.querySelector('#country-searchable .dropdown-search');
+                        if (countrySearchInput) {
+                            countrySearchInput.value = countryOption.textContent;
+                            countrySearchInput.placeholder = countryOption.textContent;
+                        }
+                        
+                        // Trigger currency update
+                        updateCurrencyOptions();
+                        
+                        console.log('📍 Auto-detected location:', countryOption.textContent);
+                    }
+                }
+            } catch (error) {
+                console.log('📍 Location auto-detect unavailable, using default');
+                // Silently fail - user can still manually select
+            }
+        }
         
         // Searchable Dropdown Component
         function initSearchableDropdown(selectId, placeholder, onChangeCallback) {
@@ -1912,7 +1952,7 @@
             const timeline = document.querySelector('input[name="timeline"]:checked')?.value || '';
             
             // Store form data for later use
-            const wealthScore = calculateWealthScore(surplus, liquid);
+            const wealthScore = calculateWealthScore(surplus, liquid, income, status, timeline, concern);
             const scoreLabel = getScoreLabelForZapier(wealthScore);
             const fullName = firstName + ' ' + lastName;
             
@@ -2094,18 +2134,129 @@
             return option ? option.textContent.replace(/^[^\s]+\s/, '') : code;
         }
         
-        function calculateWealthScore(surplus, liquid) {
+        // ============================================
+        // ADVANCED WEALTH SCORE CALCULATION
+        // Multi-factor scoring system considering:
+        // - Income level (base earning capacity)
+        // - Surplus ratio (financial discipline)
+        // - Liquid assets (wealth accumulation)
+        // - Professional status (income stability & growth potential)
+        // - Timeline (investment horizon)
+        // - Concerns (financial awareness)
+        // ============================================
+        
+        function calculateWealthScore(surplus, liquid, income, status, timeline, concerns) {
             let score = 0;
-            score += Math.min(surplus / 200, 40);
-            score += Math.min(liquid / 5000, 40);
-            score += 20;
+            
+            // === 1. INCOME LEVEL (Max 20 points) ===
+            // Higher income = higher earning capacity
+            const incomePoints = {
+                'Under 50K': 4,
+                '50-100K': 8,
+                '100-150K': 11,
+                '150-250K': 14,
+                '250-500K': 16,
+                '500K-1M': 18,
+                '1M-2M': 19,
+                '2M-5M': 20,
+                '5M+': 20
+            };
+            score += incomePoints[income] || 5;
+            
+            // === 2. SURPLUS RATIO (Max 25 points) ===
+            // Surplus relative to income shows financial discipline
+            // Get midpoint of income range for ratio calculation
+            const incomeMidpoints = {
+                'Under 50K': 35000,
+                '50-100K': 75000,
+                '100-150K': 125000,
+                '150-250K': 200000,
+                '250-500K': 375000,
+                '500K-1M': 750000,
+                '1M-2M': 1500000,
+                '2M-5M': 3500000,
+                '5M+': 7500000
+            };
+            const annualIncome = incomeMidpoints[income] || 100000;
+            const annualSurplus = surplus * 12;
+            const surplusRatio = annualSurplus / annualIncome;
+            
+            // Surplus ratio scoring: 
+            // 0-10% = 5pts, 10-20% = 10pts, 20-30% = 15pts, 30-40% = 20pts, 40%+ = 25pts
+            if (surplusRatio >= 0.40) score += 25;
+            else if (surplusRatio >= 0.30) score += 20;
+            else if (surplusRatio >= 0.20) score += 15;
+            else if (surplusRatio >= 0.10) score += 10;
+            else if (surplusRatio > 0) score += 5;
+            
+            // === 3. LIQUID ASSETS RATIO (Max 25 points) ===
+            // Liquid assets relative to income (months of runway / wealth multiple)
+            const wealthMultiple = liquid / annualIncome;
+            
+            // Wealth multiple scoring:
+            // < 0.5x = 5pts, 0.5-1x = 10pts, 1-2x = 15pts, 2-5x = 20pts, 5x+ = 25pts
+            if (wealthMultiple >= 5) score += 25;
+            else if (wealthMultiple >= 2) score += 20;
+            else if (wealthMultiple >= 1) score += 15;
+            else if (wealthMultiple >= 0.5) score += 10;
+            else if (wealthMultiple > 0) score += 5;
+            
+            // === 4. PROFESSIONAL STATUS (Max 15 points) ===
+            // Multiple income streams and business ownership indicate wealth-building mindset
+            const statusLower = (status || '').toLowerCase();
+            let statusScore = 0;
+            
+            if (statusLower.includes('business owner')) statusScore += 6;
+            if (statusLower.includes('investor')) statusScore += 5;
+            if (statusLower.includes('employed')) statusScore += 3;
+            if (statusLower.includes('professional') || statusLower.includes('consultant')) statusScore += 4;
+            if (statusLower.includes('retired')) statusScore += 3;
+            
+            // Bonus for multiple roles (diversified income)
+            const roleCount = (statusLower.match(/business|investor|employed|professional|consultant|retired/g) || []).length;
+            if (roleCount >= 3) statusScore += 4;
+            else if (roleCount >= 2) statusScore += 2;
+            
+            score += Math.min(statusScore, 15);
+            
+            // === 5. INVESTMENT TIMELINE (Max 10 points) ===
+            // Longer timeline = more compound growth potential
+            const timelinePoints = {
+                '1 year': 4,
+                '3 years': 7,
+                '5+ years': 10
+            };
+            score += timelinePoints[timeline] || 5;
+            
+            // === 6. FINANCIAL AWARENESS (Max 5 points) ===
+            // Selecting specific concerns shows financial awareness
+            const concernCount = (concerns || '').split(',').filter(c => c.trim() && !c.includes('Prefer not to say')).length;
+            
+            if (concernCount >= 4) score += 5;
+            else if (concernCount >= 2) score += 3;
+            else if (concernCount >= 1) score += 2;
+            
+            // Bonus for advanced concerns (tax, legacy, business growth)
+            const concernsLower = (concerns || '').toLowerCase();
+            if (concernsLower.includes('tax')) score += 1;
+            if (concernsLower.includes('legacy')) score += 1;
+            if (concernsLower.includes('business growth')) score += 1;
+            
+            // Cap at 100
             return Math.round(Math.min(score, 100));
         }
         
+        // Simple version for backwards compatibility (used in auto-upload)
+        function calculateWealthScoreSimple(surplus, liquid) {
+            // Fallback using default assumptions
+            return calculateWealthScore(surplus, liquid, '100-150K', 'Employed', '3 years', '');
+        }
+        
         function getScoreLabelForZapier(score) {
-            if (score >= 85) return 'Elite Wealth Builder';
-            if (score >= 70) return 'Strong Wealth Position';
-            if (score >= 50) return 'Building Momentum';
+            if (score >= 85) return 'Elite Wealth Architect';
+            if (score >= 70) return 'Wealth Accelerator';
+            if (score >= 55) return 'Strategic Builder';
+            if (score >= 40) return 'Growth Foundation';
             return 'Emerging Accumulator';
         }
         
@@ -2140,7 +2291,7 @@
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
             const annualSurplus = surplus * 12;
             const projection5yr = calculateCompoundGrowth(liquid, surplus, 5, 0.08);
-            const wealthScore = calculateWealthScore(surplus, liquid);
+            const wealthScore = calculateWealthScore(surplus, liquid, income, status, timeline, concern);
             
             // Store for PDF
             reportData = { name, surplus, liquid, income, currency, symbol, status, concern, timeline, annualSurplus, projection5yr, wealthScore };
@@ -3065,9 +3216,10 @@ June Yoon`;
         }
         
         function getScoreLabel(score) {
-            if (score >= 85) return 'Elite Wealth Builder';
-            if (score >= 70) return 'Strong Wealth Position';
-            if (score >= 50) return 'Building Momentum';
+            if (score >= 85) return 'Elite Wealth Architect';
+            if (score >= 70) return 'Wealth Accelerator';
+            if (score >= 55) return 'Strategic Builder';
+            if (score >= 40) return 'Growth Foundation';
             return 'Emerging Accumulator';
         }
         
