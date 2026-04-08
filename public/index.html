@@ -2557,9 +2557,20 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(50, 50, 50);
                 const analysisLines = wrapText(aiAnalysis, contentWidth, 10);
-                doc.text(analysisLines, margin, yPos);
                 
-                yPos += (analysisLines.length * 5) + 20;
+                // Calculate proper line height (10pt font ≈ 4.5mm line height)
+                const lineHeight = 4.5;
+                const maxLinesOnPage = Math.floor((pageHeight - yPos - 60) / lineHeight); // Leave 60mm for footer + Key Insight box
+                const linesToShow = analysisLines.slice(0, maxLinesOnPage);
+                
+                doc.text(linesToShow, margin, yPos);
+                
+                yPos += (linesToShow.length * lineHeight) + 15;
+                
+                // Ensure Key Insight box fits on page (need 40mm: 25mm box + 15mm footer)
+                if (yPos > pageHeight - 55) {
+                    yPos = pageHeight - 55;
+                }
                 
                 // Key Insight Box
                 doc.setFillColor(255, 129, 32);
@@ -3491,7 +3502,7 @@ June Yoon`;
             doc.setTextColor(255, 129, 32);
             doc.setFontSize(14);
             doc.setFont('helvetica', 'bold');
-            doc.text('💡 Personalized Wealth Analysis', margin + 5, yPos + 10);
+            doc.text('Personalized Wealth Analysis', margin + 5, yPos + 10);
             doc.setFontSize(8);
             doc.setFont('helvetica', 'italic');
             doc.setTextColor(100, 100, 100);
@@ -3504,40 +3515,37 @@ June Yoon`;
             doc.setTextColor(50, 50, 50);
             const analysisLines = wrapText(aiAnalysis, contentWidth, 10);
             
-            // Calculate how many lines fit on this page
-            const maxLinesPage2 = 38;
+            // Calculate proper line height (10pt font ≈ 4.5mm)
+            const lineHeight = 4.5;
+            const maxLinesPage2 = Math.floor((pageHeight - yPos - 80) / lineHeight); // Leave room for Key Insight + footer
             const linesToPrint = analysisLines.slice(0, maxLinesPage2);
             const remainingLines = analysisLines.slice(maxLinesPage2);
             
             linesToPrint.forEach((line, i) => {
-                doc.text(line, margin, yPos + (i * 5));
+                doc.text(line, margin, yPos + (i * lineHeight));
             });
             
-            yPos += (linesToPrint.length * 5) + 15;
+            yPos += (linesToPrint.length * lineHeight) + 15;
             
-            // If there's room, add a highlight box
-            if (yPos < pageHeight - 80) {
-                doc.setFillColor(255, 129, 32);
-                doc.roundedRect(margin, yPos, contentWidth, 30, 3, 3, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(11);
-                doc.setFont('helvetica', 'bold');
-                doc.text('💡 Key Insight', margin + 10, yPos + 12);
-                doc.setFontSize(9);
-                doc.setFont('helvetica', 'normal');
-                doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin + 10, yPos + 22);
-                yPos += 35;
+            // Ensure Key Insight box doesn't overlap footer
+            const keyInsightHeight = 30;
+            const footerBuffer = 20;
+            const maxYForKeyInsight = pageHeight - keyInsightHeight - footerBuffer;
+            
+            if (yPos > maxYForKeyInsight) {
+                yPos = maxYForKeyInsight;
             }
             
-            // Mini CTA teaser
-            if (yPos < pageHeight - 50) {
-                doc.setFillColor(40, 40, 40);
-                doc.roundedRect(margin, yPos, contentWidth, 18, 2, 2, 'F');
-                doc.setTextColor(255, 215, 0);
-                doc.setFontSize(9);
-                doc.setFont('helvetica', 'bold');
-                doc.text('→ Want to implement this strategy? See Page 4 for your personalized action plan & booking link', pageWidth / 2, yPos + 11, { align: 'center' });
-            }
+            // Key Insight box
+            doc.setFillColor(255, 129, 32);
+            doc.roundedRect(margin, yPos, contentWidth, keyInsightHeight, 3, 3, 'F');
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(11);
+            doc.setFont('helvetica', 'bold');
+            doc.text('Key Insight', margin + 10, yPos + 12);
+            doc.setFontSize(9);
+            doc.setFont('helvetica', 'normal');
+            doc.text('"Your income can grow only to the extent that you do." — T. Harv Eker', margin + 10, yPos + 22);
             
             addFooter(2, 4);
             
