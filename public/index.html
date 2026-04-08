@@ -569,6 +569,75 @@
             .step-dot { width: 36px; height: 36px; font-size: 13px; }
             .step-line { width: 30px; }
             .step-indicators { padding: 0 10px; }
+            
+            /* Step 5 Results Page Mobile Fixes */
+            #step-5 {
+                padding: 0 5px !important;
+            }
+            #step-5 .step-header h2 {
+                font-size: 22px !important;
+            }
+            #step-5 > div {
+                margin: 12px 0 !important;
+                padding: 15px !important;
+                border-radius: 10px !important;
+            }
+            #step-5 h3 {
+                font-size: 15px !important;
+                flex-wrap: wrap !important;
+            }
+            /* Asset Allocation - stack vertically on mobile */
+            .allocation-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            .allocation-grid > div:first-child {
+                width: 150px !important;
+                height: 150px !important;
+                margin: 0 auto !important;
+            }
+            /* Download/CTA buttons - stack vertically */
+            .download-cta-grid {
+                grid-template-columns: 1fr !important;
+                gap: 15px !important;
+            }
+            /* Post-download CTA - 3 columns to 1 */
+            .post-download-stats {
+                grid-template-columns: 1fr !important;
+                gap: 10px !important;
+            }
+            /* Wealth summary values */
+            .wealth-summary {
+                padding: 15px !important;
+            }
+            .wealth-summary .summary-value {
+                font-size: 16px !important;
+            }
+            .wealth-summary .summary-label {
+                font-size: 11px !important;
+            }
+            /* Smaller padding on mobile */
+            .cta-box {
+                padding: 18px 12px !important;
+            }
+            .cta-box h3 {
+                font-size: 16px !important;
+            }
+            .cta-box p {
+                font-size: 13px !important;
+            }
+            /* Score gauge smaller on mobile */
+            #step-5 canvas#scoreGauge {
+                width: 160px !important;
+                height: 100px !important;
+            }
+            #scoreValue {
+                font-size: 32px !important;
+            }
+            /* Projection chart */
+            #step-5 canvas#wealthProjectionChart {
+                height: 200px !important;
+            }
         }
         
         /* Searchable Dropdown Styles */
@@ -1525,7 +1594,7 @@
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
                     Recommended Asset Allocation
                 </h3>
-                <div style="display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center;">
+                <div class="allocation-grid" style="display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center;">
                     <div style="width: 180px; height: 180px; margin: 0 auto;">
                         <canvas id="allocationChart"></canvas>
                     </div>
@@ -1553,7 +1622,7 @@
             </div>
             
             <!-- Download & CTA Section -->
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
+            <div class="download-cta-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
                 <div class="cta-box" style="margin: 0; text-align: center;">
                     <h3 style="font-size: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
@@ -1592,7 +1661,7 @@
                     Your Blueprint is downloaded. The next step? A complimentary 45-minute strategy call with June Yoon to map out your personalized wealth architecture.
                 </p>
                 
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px;">
+                <div class="post-download-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px;">
                     <div style="padding: 15px 10px; background: #ffffff; border-radius: 10px; border-left: 3px solid #ff8120;">
                         <div style="font-size: 20px; font-weight: 700; color: #ff8120;">45 Min</div>
                         <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Strategy Call</div>
