@@ -563,90 +563,306 @@
             font-size: 14px;
         }
         
+        
+        /* Mobile-only: Hero section full width on step-2 */
+        .step-hero-section {
+            margin-left: 0 !important;
+            margin-right: 0 !important;
+        }
+        
         @media (max-width: 768px) {
+            .step-hero-section {
+                margin-left: -40px !important;
+                margin-right: -40px !important;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+                border-radius: 0 !important;
+                margin-top: -40px !important;
+                margin-bottom: 24px !important;
+            }
+        }
+        
+        /* Mobile progress bar - hidden on desktop, shown on mobile */
+        .mobile-progress-bar {
+            display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+            /* === GLOBAL MOBILE SPACING === */
+            body {
+                padding: 12px !important;
+            }
+            
+            .container {
+                max-width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .step-content {
+                padding: 20px !important;
+                margin-bottom: 20px !important;
+                border-radius: 12px !important;
+            }
+            
+            /* === HERO SECTION === */
             .hero-section {
                 grid-template-columns: 1fr;
-                gap: 30px;
-                padding: 30px;
+                gap: 20px !important;
+                padding: 24px 16px !important;
+                margin-bottom: 24px !important;
             }
-            .profile-circle { width: 200px; height: 200px; }
-            .profile-image { width: 190px; height: 190px; }
-            .hero-content h1 { font-size: 32px; }
+            
+            .profile-circle { 
+                width: 160px !important; 
+                height: 160px !important;
+                margin: 0 auto !important;
+            }
+            
+            .profile-image { 
+                width: 150px !important; 
+                height: 150px !important;
+            }
+            
+            .hero-content h1 { 
+                font-size: 28px !important;
+                line-height: 1.2 !important;
+                margin-bottom: 12px !important;
+            }
+            
+            .hero-content .subtitle {
+                font-size: 14px !important;
+                line-height: 1.5 !important;
+                margin-bottom: 16px !important;
+            }
+            
+            /* === PROGRESS BAR === */
             .summary-row { grid-template-columns: 1fr; }
-            .button-group { flex-direction: column; }
-            .step-dot { width: 36px; height: 36px; font-size: 13px; }
-            .step-line { width: 30px; }
+            .button-group { 
+                flex-direction: column;
+                gap: 10px !important;
+            }
+            
+            .btn-primary, .btn-secondary {
+                padding: 12px 16px !important;
+                font-size: 14px !important;
+                border-radius: 8px !important;
+            }
+            
+            .step-dot { 
+                width: 32px !important; 
+                height: 32px !important; 
+                font-size: 12px !important;
+            }
+            
+            .step-line { 
+                width: 24px !important;
+            }
+            
             #stepIndicators { 
                 display: none !important;
             }
             
+            .mobile-progress-bar {
+                display: block !important;
+            }
+            
+            /* === FORM ELEMENTS === */
+            .form-group {
+                margin-bottom: 16px !important;
+            }
+            
+            .form-group label {
+                font-size: 13px !important;
+                font-weight: 600 !important;
+                margin-bottom: 6px !important;
+                display: block !important;
+            }
+            
+            .label-subtitle {
+                font-size: 11px !important;
+                color: #888 !important;
+                display: block !important;
+                margin-top: 2px !important;
+            }
+            
+            .form-group input,
+            .form-group select {
+                font-size: 14px !important;
+                padding: 10px 12px !important;
+                border-radius: 6px !important;
+            }
+            
+            /* === STEP HEADERS === */
+            .step-header {
+                margin-bottom: 16px !important;
+                text-align: center !important;
+            }
+            
+            .step-header h2 {
+                font-size: 22px !important;
+                margin-bottom: 6px !important;
+                font-weight: 700 !important;
+            }
+            
+            .step-header .hint {
+                font-size: 12px !important;
+                color: #666 !important;
+            }
+            
+            .step-number {
+                font-size: 16px !important;
+                margin-bottom: 4px !important;
+            }
+            
+            /* === OPTION GROUPS === */
+            .option-group {
+                margin-bottom: 12px !important;
+            }
+            
+            .option-item {
+                margin-bottom: 10px !important;
+            }
+            
+            .option-item input {
+                margin-right: 8px !important;
+            }
+            
+            .option-item label {
+                font-size: 13px !important;
+                margin: 0 !important;
+            }
+            
+            /* === HERO SECTIONS (Step-2 style) === */
+            .step-hero-section {
+                margin-left: -20px !important;
+                margin-right: -20px !important;
+                padding-left: 20px !important;
+                padding-right: 20px !important;
+                padding-top: 16px !important;
+                padding-bottom: 16px !important;
+                border-radius: 0 !important;
+                margin-top: -20px !important;
+                margin-bottom: 20px !important;
+            }
+            
+            .step-hero-section h3 {
+                font-size: 24px !important;
+                font-weight: 700 !important;
+                margin-bottom: 10px !important;
+                line-height: 1.2 !important;
+            }
+            
+            .step-hero-section p {
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+                margin-bottom: 8px !important;
+            }
+            
+            /* === HEADINGS TEXT === */
+            h2 {
+                font-size: 22px !important;
+                font-weight: 700 !important;
+            }
+            
+            h3 {
+                font-size: 18px !important;
+                font-weight: 600 !important;
+            }
+            
+            p {
+                font-size: 13px !important;
+                line-height: 1.5 !important;
+            }
+            
             /* Step 5 Results Page Mobile Fixes */
             #step-5 {
-                padding: 0 5px !important;
+                padding: 16px !important;
             }
             #step-5 .step-header h2 {
-                font-size: 22px !important;
+                font-size: 20px !important;
             }
             #step-5 > div {
                 margin: 12px 0 !important;
-                padding: 15px !important;
-                border-radius: 10px !important;
+                padding: 12px !important;
+                border-radius: 8px !important;
             }
             #step-5 h3 {
-                font-size: 15px !important;
+                font-size: 14px !important;
                 flex-wrap: wrap !important;
             }
+            
             /* Asset Allocation - stack vertically on mobile */
             .allocation-grid {
                 grid-template-columns: 1fr !important;
-                gap: 15px !important;
+                gap: 12px !important;
             }
             .allocation-grid > div:first-child {
-                width: 150px !important;
-                height: 150px !important;
+                width: 120px !important;
+                height: 120px !important;
                 margin: 0 auto !important;
             }
-            /* Download/CTA buttons - stack vertically */
+            
+            /* === DOWNLOAD/CTA BUTTONS === */
             .download-cta-grid {
-                grid-template-columns: 1fr !important;
-                gap: 15px !important;
-            }
-            /* Post-download CTA - 3 columns to 1 */
-            .post-download-stats {
                 grid-template-columns: 1fr !important;
                 gap: 10px !important;
             }
-            /* Wealth summary values */
-            .wealth-summary {
-                padding: 15px !important;
+            
+            /* === POST-DOWNLOAD STATS === */
+            .post-download-stats {
+                grid-template-columns: 1fr !important;
+                gap: 8px !important;
             }
+            
+            /* === WEALTH SUMMARY === */
+            .wealth-summary {
+                padding: 12px !important;
+                margin-bottom: 12px !important;
+            }
+            
             .wealth-summary .summary-value {
                 font-size: 16px !important;
+                font-weight: 700 !important;
             }
+            
             .wealth-summary .summary-label {
                 font-size: 11px !important;
+                color: #888 !important;
             }
-            /* Smaller padding on mobile */
+            
+            /* === CTA BOXES === */
             .cta-box {
-                padding: 18px 12px !important;
+                padding: 14px 12px !important;
+                margin-bottom: 12px !important;
+                border-radius: 8px !important;
             }
+            
             .cta-box h3 {
-                font-size: 16px !important;
+                font-size: 14px !important;
+                font-weight: 700 !important;
+                margin-bottom: 6px !important;
             }
+            
             .cta-box p {
-                font-size: 13px !important;
+                font-size: 12px !important;
+                line-height: 1.4 !important;
+                margin: 0 !important;
             }
-            /* Score gauge smaller on mobile */
+            
+            /* === CHARTS === */
             #step-5 canvas#scoreGauge {
-                width: 160px !important;
-                height: 100px !important;
+                width: 140px !important;
+                height: 90px !important;
             }
+            
             #scoreValue {
-                font-size: 32px !important;
+                font-size: 28px !important;
+                font-weight: 700 !important;
             }
-            /* Projection chart */
+            
             #step-5 canvas#wealthProjectionChart {
-                height: 200px !important;
+                height: 180px !important;
             }
         }
         
@@ -1210,6 +1426,31 @@
             <div class="button-group">
                 <button class="btn-primary" onclick="nextStep()">Reveal My Wealth Blueprint →</button>
             </div>
+            
+            <!-- Mobile-only progress bar (step 0) -->
+            <div class="mobile-progress-bar" style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="step-indicators">
+                    <div class="step-item">
+                        <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
+                        <div class="step-line" id="mobile-line-1"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
+                        <div class="step-line" id="mobile-line-2"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
+                        <div class="step-line" id="mobile-line-3"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
+                        <div class="step-line" id="mobile-line-4"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- STEP 2: INCOME & STATUS -->
@@ -1314,12 +1555,37 @@
                 <button class="btn-secondary" onclick="prevStep()">Back</button>
                 <button class="btn-primary" onclick="nextStep()">Continue</button>
             </div>
+            
+            <!-- Mobile-only progress bar (step 1) -->
+            <div class="mobile-progress-bar" style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="step-indicators">
+                    <div class="step-item">
+                        <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
+                        <div class="step-line" id="mobile-line-1"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
+                        <div class="step-line" id="mobile-line-2"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
+                        <div class="step-line" id="mobile-line-3"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
+                        <div class="step-line" id="mobile-line-4"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- STEP 3: SURPLUS & CAPITAL -->
         <div id="step-2" class="step-content">
             <!-- Step 3 Hero Section - ABOVE step number -->
-            <div style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
+            <div class="step-hero-section" style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
                 <div style="text-align: center;">
                     <h3 style="font-size: 44px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px;">Be Honest. Get Honest Results.</h3>
                     <p style="font-size: 15px; color: #555; line-height: 1.6; margin-bottom: 16px;">
@@ -1421,6 +1687,31 @@
                 <button class="btn-secondary" onclick="prevStep()">Back</button>
                 <button class="btn-primary" onclick="nextStep()">Continue</button>
             </div>
+            
+            <!-- Mobile-only progress bar (step 2) -->
+            <div class="mobile-progress-bar" style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="step-indicators">
+                    <div class="step-item">
+                        <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
+                        <div class="step-line" id="mobile-line-1"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
+                        <div class="step-line" id="mobile-line-2"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
+                        <div class="step-line" id="mobile-line-3"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
+                        <div class="step-line" id="mobile-line-4"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <!-- STEP 4: PERSONAL INFO -->
@@ -1516,6 +1807,31 @@
             <div class="button-group">
                 <button class="btn-secondary" onclick="prevStep()">Back</button>
                 <button class="btn-primary" onclick="generateReport()">Access My Wealth Blueprint Report</button>
+            </div>
+            
+            <!-- Mobile-only progress bar (step 3) -->
+            <div class="mobile-progress-bar" style="margin-top: 30px; margin-bottom: 30px;">
+                <div class="step-indicators">
+                    <div class="step-item">
+                        <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
+                        <div class="step-line" id="mobile-line-1"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
+                        <div class="step-line" id="mobile-line-2"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
+                        <div class="step-line" id="mobile-line-3"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
+                        <div class="step-line" id="mobile-line-4"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -1712,31 +2028,6 @@
                     <a href="https://www.successresourcesvirtual.com/cookies-policy" target="_blank" style="color: #999; text-decoration: none; margin: 0 8px;">COOKIES POLICY</a>
                 </p>
                 <p style="font-size: 10px; color: #bbb;">Copyright 2026 Success Resources © All Rights Reserved</p>
-            </div>
-        </div>
-    </div>
-    
-    <!-- Mobile-only progress bar (displayed below button on every step) -->
-    <div id="mobileProgressBar" style="margin-top: 50px; margin-bottom: 50px;">
-        <div class="step-indicators" id="mobileStepIndicators">
-            <div class="step-item">
-                <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
-                <div class="step-line" id="mobile-line-1"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
-                <div class="step-line" id="mobile-line-2"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
-                <div class="step-line" id="mobile-line-3"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
-                <div class="step-line" id="mobile-line-4"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
             </div>
         </div>
     </div>
@@ -2100,21 +2391,26 @@
                 }
             }
             
-            // Update mobile progress bar dots
+            // Update ALL mobile progress bar dots on the page
             for (let i = 1; i <= 5; i++) {
-                const mobileDot = document.getElementById('mobile-dot-' + i);
-                const mobileLine = document.getElementById('mobile-line-' + i);
-                if (!mobileDot) continue;
+                const mobileDots = document.querySelectorAll('#mobile-dot-' + i);
+                const mobileLines = document.querySelectorAll('#mobile-line-' + i);
                 
-                mobileDot.classList.remove('active', 'completed');
-                if (mobileLine) mobileLine.classList.remove('filled');
+                mobileDots.forEach(mobileDot => {
+                    mobileDot.classList.remove('active', 'completed');
+                    if (i < currentStep + 1) {
+                        mobileDot.classList.add('completed');
+                    } else if (i === currentStep + 1) {
+                        mobileDot.classList.add('active');
+                    }
+                });
                 
-                if (i < currentStep + 1) {
-                    mobileDot.classList.add('completed');
-                    if (mobileLine) mobileLine.classList.add('filled');
-                } else if (i === currentStep + 1) {
-                    mobileDot.classList.add('active');
-                }
+                mobileLines.forEach(mobileLine => {
+                    mobileLine.classList.remove('filled');
+                    if (i < currentStep + 1) {
+                        mobileLine.classList.add('filled');
+                    }
+                });
             }
         }
         
