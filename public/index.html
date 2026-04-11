@@ -1720,23 +1720,23 @@
     <div id="mobileProgressBar" style="margin-top: 50px; margin-bottom: 50px;">
         <div class="step-indicators" id="mobileStepIndicators">
             <div class="step-item">
-                <div class="step-dot active" id="dot-1"><span>1</span></div>
-                <div class="step-line" id="line-1"></div>
+                <div class="step-dot active" id="mobile-dot-1"><span>1</span></div>
+                <div class="step-line" id="mobile-line-1"></div>
             </div>
             <div class="step-item">
-                <div class="step-dot" id="dot-2"><span>2</span></div>
-                <div class="step-line" id="line-2"></div>
+                <div class="step-dot" id="mobile-dot-2"><span>2</span></div>
+                <div class="step-line" id="mobile-line-2"></div>
             </div>
             <div class="step-item">
-                <div class="step-dot" id="dot-3"><span>3</span></div>
-                <div class="step-line" id="line-3"></div>
+                <div class="step-dot" id="mobile-dot-3"><span>3</span></div>
+                <div class="step-line" id="mobile-line-3"></div>
             </div>
             <div class="step-item">
-                <div class="step-dot" id="dot-4"><span>4</span></div>
-                <div class="step-line" id="line-4"></div>
+                <div class="step-dot" id="mobile-dot-4"><span>4</span></div>
+                <div class="step-line" id="mobile-line-4"></div>
             </div>
             <div class="step-item">
-                <div class="step-dot" id="dot-5"><span>5</span></div>
+                <div class="step-dot" id="mobile-dot-5"><span>5</span></div>
             </div>
         </div>
     </div>
@@ -2083,7 +2083,7 @@
         });
         
         function updateProgress() {
-            // Update step indicators
+            // Update step indicators (top progress bar)
             for (let i = 1; i <= 5; i++) {
                 const dot = document.getElementById('dot-' + i);
                 const line = document.getElementById('line-' + i);
@@ -2097,6 +2097,23 @@
                     if (line) line.classList.add('filled');
                 } else if (i === currentStep + 1) {
                     dot.classList.add('active');
+                }
+            }
+            
+            // Update mobile progress bar dots
+            for (let i = 1; i <= 5; i++) {
+                const mobileDot = document.getElementById('mobile-dot-' + i);
+                const mobileLine = document.getElementById('mobile-line-' + i);
+                if (!mobileDot) continue;
+                
+                mobileDot.classList.remove('active', 'completed');
+                if (mobileLine) mobileLine.classList.remove('filled');
+                
+                if (i < currentStep + 1) {
+                    mobileDot.classList.add('completed');
+                    if (mobileLine) mobileLine.classList.add('filled');
+                } else if (i === currentStep + 1) {
+                    mobileDot.classList.add('active');
                 }
             }
         }
