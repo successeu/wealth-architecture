@@ -14,13 +14,6 @@
     <title>Wealth Architecture Masterclass | June Yoon | Success Resources</title>
     <meta name="description" content="Discover the 3 wealth blueprints separating 6-figure earners from 7-figure wealth builders. Free masterclass with June Yoon.">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,&lt;svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'&gt;&lt;circle cx='50' cy='50' r='45' fill='%23ff8120'/&gt;&lt;path d='M25 52 L42 69 L75 36' stroke='white' stroke-width='10' fill='none' stroke-linecap='round' stroke-linejoin='round'/&gt;&lt;/svg&gt;">
-    <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-W58DKGD');</script>
-    <!-- End Google Tag Manager -->
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -30,7 +23,6 @@
             color: #1a1a1a;
             min-height: 100vh;
             padding: 20px;
-            padding-top: 12px;
         }
         
         .container { max-width: 900px; margin: 0 auto; }
@@ -65,12 +57,6 @@
             text-transform: uppercase;
             letter-spacing: 2px;
             font-weight: 600;
-        }
-        
-        @media (max-width: 768px) {
-            .sr-logo {
-                font-size: 7.8px;
-            }
         }
         
         .sr-logo span { color: #ff8120; }
@@ -197,7 +183,7 @@
         }
         
         .hero-content h1 {
-            font-size: 32px;
+            font-size: 44px;
             font-weight: 700;
             line-height: 1.2;
             margin-bottom: 16px;
@@ -590,7 +576,9 @@
             .button-group { flex-direction: column; }
             .step-dot { width: 36px; height: 36px; font-size: 13px; }
             .step-line { width: 30px; }
-            .step-indicators { padding: 0 10px; }
+            .step-indicators { 
+                display: none !important;
+            }
             
             /* Step 5 Results Page Mobile Fixes */
             #step-5 {
@@ -1222,7 +1210,47 @@
             <div class="button-group">
                 <button class="btn-primary" onclick="nextStep()">Reveal My Wealth Blueprint →</button>
             </div>
+            
+            <!-- Mobile-only progress bar (displayed below button on mobile) -->
+            <div id="mobileProgressBar" style="display: none; margin-top: 30px;">
+                <div class="step-indicators" id="mobileStepIndicators">
+                    <div class="step-item">
+                        <div class="step-dot active" id="dot-1"><span>1</span></div>
+                        <div class="step-line" id="line-1"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="dot-2"><span>2</span></div>
+                        <div class="step-line" id="line-2"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="dot-3"><span>3</span></div>
+                        <div class="step-line" id="line-3"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="dot-4"><span>4</span></div>
+                        <div class="step-line" id="line-4"></div>
+                    </div>
+                    <div class="step-item">
+                        <div class="step-dot" id="dot-5"><span>5</span></div>
+                    </div>
+                </div>
+            </div>
         </div>
+        
+        <style>
+            #mobileProgressBar {
+                display: none;
+            }
+            
+            @media (max-width: 768px) {
+                #mobileProgressBar {
+                    display: block !important;
+                    margin-top: 30px;
+                    padding: 0 10px;
+                    margin-bottom: 30px;
+                }
+            }
+        </style>
 
         <!-- STEP 2: INCOME & STATUS -->
         <div id="step-1" class="step-content">
