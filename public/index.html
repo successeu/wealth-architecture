@@ -776,15 +776,15 @@
                         Wealth Diagnosis Assessment
                     </div>
                     
-                    <!-- Main headline (shorter highlight for stronger punch) -->
-                    <h1 style="font-size: 44px !important; font-weight: 700; line-height: 1.15; margin-bottom: 12px; color: #1a1a1a;">
+                    <!-- Main headline -->
+                    <h1 class="hero-headline" style="font-size: 44px !important; font-weight: 700; line-height: 1.15; margin-bottom: 12px; color: #1a1a1a;">
                         What's <span style="color: #ff8120;">Holding You Back</span> Financially?<br>
-                        <span style="font-size: 32px !important; font-weight: 600; color: #1a1a1a !important;">Get Your Wealth Score in 3 Minutes</span>
+                        <span class="hero-subheadline" style="font-size: 32px !important; font-weight: 600; color: #1a1a1a !important;">Get Your Wealth Score in 3 Minutes</span>
                     </h1>
                     
-                    <!-- Highlight bar (pain + proof + urgency) -->
-                    <div style="display: flex; align-items: center; gap: 20px; background: #fdf8f4; border-radius: 12px; padding: 20px 28px; margin-bottom: 20px; border-left: 4px solid #ff8120; max-width: 750px; margin-left: auto; margin-right: auto;">
-                        <div style="width: 70px; height: 70px; border: 2px solid #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                    <!-- Highlight bar (pain + proof + urgency) - DESKTOP: before CTA -->
+                    <div class="highlight-bar" style="display: flex; align-items: center; gap: 20px; background: #fdf8f4; border-radius: 12px; padding: 20px 28px; margin-bottom: 20px; border-left: 4px solid #ff8120; max-width: 750px; margin-left: auto; margin-right: auto;">
+                        <div class="highlight-icon" style="width: 70px; height: 70px; border: 2px solid #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M3 3v18h18"/>
                                 <path d="M7 16l4-8 4 4 6-8"/>
@@ -796,42 +796,91 @@
                         </div>
                     </div>
                     
-                    <!-- PRIMARY CTA BUTTON (refined - not ALL CAPS, added "Instant") -->
-                    <button onclick="document.getElementById('step-0').scrollIntoView({behavior: 'smooth'})" class="btn-primary" style="padding: 18px 48px; font-size: 18px; font-weight: 700; margin-bottom: 12px; box-shadow: 0 4px 20px rgba(255, 129, 32, 0.35);">
+                    <!-- PRIMARY CTA BUTTON -->
+                    <button onclick="document.getElementById('step-0').scrollIntoView({behavior: 'smooth'})" class="btn-primary hero-cta" style="padding: 18px 48px; font-size: 18px; font-weight: 700; margin-bottom: 12px; box-shadow: 0 4px 20px rgba(255, 129, 32, 0.35);">
                         Get My Instant Wealth Score →
                     </button>
                     
-                    <!-- Microcopy (more conversational + human) -->
-                    <p style="font-size: 13px; color: #666; margin-bottom: 12px;">
+                    <!-- Microcopy -->
+                    <p style="font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px;">
                         Takes less than 3 minutes • Get your results instantly • No financial knowledge needed
                     </p>
                     
                     <!-- Credibility booster -->
-                    <p style="font-size: 11px; color: #888; margin-bottom: 14px;">
-                        Based on real financial behavior patterns and wealth data
+                    <p style="font-size: 11px; color: #777; margin-bottom: 14px;">
+                        Based on real financial behavior patterns used by professionals
                     </p>
                     
-                    <!-- Curiosity trigger (gaps = more concrete + tension) -->
-                    <p style="font-size: 14px; color: #555; font-style: italic; background: rgba(255,129,32,0.08); padding: 12px 20px; border-radius: 8px; display: inline-block;">
+                    <!-- Curiosity trigger -->
+                    <p class="curiosity-trigger" style="font-size: 14px; color: #555; font-style: italic; background: rgba(255,129,32,0.08); padding: 12px 20px; border-radius: 8px; display: inline-block;">
                         Most people score below 50 and uncover hidden gaps in their wealth strategy.
                     </p>
                 </div>
             </div>
             
-            <!-- Mobile responsive styles -->
+            <!-- Mobile responsive styles - MOBILE ONLY improvements -->
             <style>
                 @media (max-width: 768px) {
                     #heroSection .hero-section {
-                        padding: 32px 20px !important;
+                        padding: 28px 18px !important;
                     }
-                    #heroSection .hero-content h1 {
-                        font-size: 32px !important;
+                    #heroSection .hero-headline {
+                        font-size: 28px !important;
+                        line-height: 1.2 !important;
+                        margin-bottom: 8px !important;
                     }
-                    #heroSection .hero-content h1 span {
-                        font-size: 26px !important;
+                    #heroSection .hero-headline span:first-child {
+                        font-size: 28px !important;
                     }
-                    #heroSection .hero-content > div:last-child > div {
-                        grid-template-columns: 1fr !important;
+                    #heroSection .hero-subheadline {
+                        font-size: 20px !important;
+                        display: block !important;
+                        margin-top: 6px !important;
+                    }
+                    /* MOBILE: Move CTA before highlight bar using flexbox order */
+                    #heroSection .hero-content {
+                        display: flex !important;
+                        flex-direction: column !important;
+                    }
+                    #heroSection .hero-content > div:first-child { order: 1; } /* badge */
+                    #heroSection .hero-content > h1 { order: 2; } /* headline */
+                    #heroSection .hero-content > .hero-cta { order: 3; } /* CTA - moved up */
+                    #heroSection .hero-content > p:nth-of-type(1) { order: 4; } /* microcopy */
+                    #heroSection .hero-content > .highlight-bar { order: 5; } /* highlight bar - moved down */
+                    #heroSection .hero-content > p:nth-of-type(2) { order: 6; } /* credibility */
+                    #heroSection .hero-content > .curiosity-trigger { order: 7; } /* curiosity */
+                    
+                    #heroSection .hero-cta {
+                        width: 100% !important;
+                        padding: 16px 24px !important;
+                        font-size: 17px !important;
+                        margin-bottom: 14px !important;
+                    }
+                    #heroSection .highlight-bar {
+                        padding: 14px 16px !important;
+                        gap: 12px !important;
+                        flex-direction: column !important;
+                        text-align: center !important;
+                        margin-bottom: 14px !important;
+                    }
+                    #heroSection .highlight-bar > div:last-child {
+                        text-align: center !important;
+                    }
+                    #heroSection .highlight-bar p {
+                        font-size: 14px !important;
+                    }
+                    #heroSection .highlight-icon {
+                        width: 50px !important;
+                        height: 50px !important;
+                        margin: 0 auto !important;
+                    }
+                    #heroSection .highlight-icon svg {
+                        width: 24px !important;
+                        height: 24px !important;
+                    }
+                    #heroSection .curiosity-trigger {
+                        font-size: 13px !important;
+                        padding: 10px 16px !important;
                     }
                 }
             </style>
