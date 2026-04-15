@@ -782,8 +782,8 @@
                         <span class="hero-subheadline" style="font-size: 32px !important; font-weight: 600; color: #1a1a1a !important;">Get Your Wealth Score in 3 Minutes</span>
                     </h1>
                     
-                    <!-- Optional test line -->
-                    <p style="font-size: 16px; color: #555; font-style: italic; margin-bottom: 20px;">
+                    <!-- Emotional line (desktop: here, mobile: moved to end) -->
+                    <p class="emotional-line" style="font-size: 16px; color: #555; font-style: italic; margin-bottom: 20px;">
                         You might be closer to a financial breakthrough than you think, or further than you realize.
                     </p>
                     
@@ -801,18 +801,18 @@
                         </div>
                     </div>
                     
-                    <!-- PRIMARY CTA BUTTON -->
-                    <button onclick="document.getElementById('step-0').scrollIntoView({behavior: 'smooth'})" class="btn-primary hero-cta" style="padding: 18px 48px; font-size: 18px; font-weight: 700; margin-bottom: 12px; box-shadow: 0 4px 20px rgba(255, 129, 32, 0.35);">
+                    <!-- PRIMARY CTA BUTTON (no blue border, soft shadow instead) -->
+                    <button onclick="document.getElementById('step-0').scrollIntoView({behavior: 'smooth'})" class="btn-primary hero-cta" style="padding: 18px 48px; font-size: 18px; font-weight: 700; margin-bottom: 12px; box-shadow: 0 4px 20px rgba(255, 129, 32, 0.35); border: none; outline: none;">
                         Get My Instant Wealth Score →
                     </button>
                     
                     <!-- Microcopy -->
-                    <p style="font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px;">
+                    <p class="microcopy" style="font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px;">
                         Takes less than 3 minutes • Get your results instantly • No financial knowledge needed
                     </p>
                     
                     <!-- Credibility booster -->
-                    <p style="font-size: 11px; color: #777; margin-bottom: 14px;">
+                    <p class="credibility" style="font-size: 11px; color: #777; margin-bottom: 14px;">
                         Based on real financial behavior patterns used by professionals
                     </p>
                     
@@ -842,25 +842,38 @@
                         display: block !important;
                         margin-top: 6px !important;
                     }
-                    /* MOBILE: Move CTA before highlight bar using flexbox order */
+                    
+                    /* MOBILE: Optimized flow using flexbox order */
+                    /* Order: 1.Badge → 2.Headline → 3.CTA → 4.Microcopy → 5.Highlight bar → 6.Emotional line */
                     #heroSection .hero-content {
                         display: flex !important;
                         flex-direction: column !important;
                     }
                     #heroSection .hero-content > div:first-child { order: 1; } /* badge */
-                    #heroSection .hero-content > h1 { order: 2; } /* headline */
+                    #heroSection .hero-content > h1.hero-headline { order: 2; } /* headline */
                     #heroSection .hero-content > .hero-cta { order: 3; } /* CTA - moved up */
-                    #heroSection .hero-content > p:nth-of-type(1) { order: 4; } /* microcopy */
-                    #heroSection .hero-content > .highlight-bar { order: 5; } /* highlight bar - moved down */
-                    #heroSection .hero-content > p:nth-of-type(2) { order: 6; } /* credibility */
-                    #heroSection .hero-content > .curiosity-trigger { order: 7; } /* curiosity */
+                    #heroSection .hero-content > .microcopy { order: 4; } /* microcopy */
+                    #heroSection .hero-content > .highlight-bar { order: 5; } /* highlight bar */
+                    #heroSection .hero-content > .emotional-line { order: 6; } /* emotional line - moved to end */
+                    #heroSection .hero-content > .credibility { order: 7; } /* credibility */
+                    #heroSection .hero-content > .curiosity-trigger { order: 8; display: none !important; } /* hide on mobile - redundant */
                     
+                    /* CTA Button - Remove blue border, add soft shadow */
                     #heroSection .hero-cta {
                         width: 100% !important;
                         padding: 16px 24px !important;
                         font-size: 17px !important;
                         margin-bottom: 14px !important;
+                        border: none !important;
+                        outline: none !important;
+                        box-shadow: 0 4px 16px rgba(255, 129, 32, 0.4) !important;
                     }
+                    #heroSection .hero-cta:focus {
+                        outline: none !important;
+                        border: none !important;
+                    }
+                    
+                    /* Highlight bar - tighter on mobile */
                     #heroSection .highlight-bar {
                         padding: 14px 16px !important;
                         gap: 12px !important;
@@ -874,15 +887,31 @@
                     #heroSection .highlight-bar p {
                         font-size: 14px !important;
                     }
+                    
+                    /* Icon - reduce size by ~20% */
                     #heroSection .highlight-icon {
-                        width: 50px !important;
-                        height: 50px !important;
+                        width: 44px !important;
+                        height: 44px !important;
                         margin: 0 auto !important;
                     }
                     #heroSection .highlight-icon svg {
-                        width: 24px !important;
-                        height: 24px !important;
+                        width: 20px !important;
+                        height: 20px !important;
                     }
+                    
+                    /* Emotional line - smaller font on mobile */
+                    #heroSection .emotional-line {
+                        font-size: 14px !important;
+                        margin-bottom: 12px !important;
+                        margin-top: 0 !important;
+                    }
+                    
+                    /* Credibility - move below microcopy */
+                    #heroSection .credibility {
+                        font-size: 10px !important;
+                        margin-bottom: 10px !important;
+                    }
+                    
                     #heroSection .curiosity-trigger {
                         font-size: 13px !important;
                         padding: 10px 16px !important;
