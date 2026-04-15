@@ -1294,7 +1294,7 @@
             </div>
         </div>
 
-        <!-- STEP 2: INCOME & STATUS -->
+        <!-- STEP 2: WEALTH CONCERNS -->
         <div id="step-1" class="step-content">
             <!-- Step 2 Hero Section -->
             <div style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
@@ -1308,7 +1308,7 @@
                     <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 14px; flex-wrap: wrap;">
                         <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; font-weight: 500;">
                             <span style="width: 6px; height: 6px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
-                            5 minutes
+                            3 minutes
                         </span>
                         <span style="display: flex; align-items: center; gap: 6px; font-size: 13px; color: #333; font-weight: 500;">
                             <span style="width: 6px; height: 6px; background: #ff8120; border-radius: 50%; display: inline-block;"></span>
@@ -1330,65 +1330,88 @@
             <!-- Step number BELOW hero, above questions -->
             <div class="step-header">
                 <div class="step-number">02</div>
-                <h2>Your Income Reality</h2>
-                <p class="hint">We calibrate insights based on your earnings tier</p>
+                <h2>Your Wealth Priorities</h2>
+                <p class="hint">Help us understand what matters most to you</p>
             </div>
             
+            <!-- Wealth Concerns Question -->
             <div class="form-group">
-                <label>Approximate annual income (before tax)
-                    <span class="label-subtitle">→ Determines your wealth acceleration capacity &amp; investment tier eligibility</span>
+                <label>What's currently slowing down your financial progress? <span style="font-weight: 400; color: #888;">(Select all that apply)</span>
+                    <span class="label-subtitle">→ Helps us prioritize the key levers to pull in your situation</span>
                 </label>
-                <div class="currency-input-group">
-                    <div class="currency-prefix">
-                        <span id="incomeCurrencyPrefix">RM</span>
-                    </div>
-                    <select id="incomeLevel" required="">
-                        <option value="">Select your range...</option>
-                        <option value="Under 50K">Under 50K</option>
-                        <option value="50-100K">50K – 100K</option>
-                        <option value="100-150K">100K – 150K</option>
-                        <option value="150-250K">150K – 250K</option>
-                        <option value="250-500K">250K – 500K</option>
-                        <option value="500K-1M">500K – 1M</option>
-                        <option value="1M-2M">1M – 2M</option>
-                        <option value="2M-5M">2M – 5M</option>
-                        <option value="5M+">5M+</option>
-                    </select>
+                
+                <!-- Money Optimization Group -->
+                <div style="margin-bottom: 8px; margin-top: 16px;">
+                    <span style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 0.5px;">💰 Money Optimization</span>
                 </div>
-            </div>
-            
-            <div class="form-group">
-                <label>Are you currently...? <span style="font-weight: 400; color: #888;">(Select all that apply)</span>
-                    <span class="label-subtitle">→ Your structure determines tax strategies, deductions, &amp; entity optimization opportunities</span>
-                </label>
+                <div class="option-group" style="margin-bottom: 16px;">
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization">
+                        <label for="concern-tax">I feel like I'm paying too much in taxes</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management">
+                        <label for="concern-cashflow">I want better control over my cash flow</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy">
+                        <label for="concern-debt">I want to reduce debt or use leverage more effectively</label>
+                    </div>
+                </div>
+                
+                <!-- Growth & Investment Group -->
+                <div style="margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 0.5px;">📈 Growth & Investment</span>
+                </div>
+                <div class="option-group" style="margin-bottom: 16px;">
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment">
+                        <label for="concern-deploy">I don't know where to invest my money</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection">
+                        <label for="concern-protect">I want to protect and diversify my wealth better</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate">
+                        <label for="concern-realestate">I'm interested in real estate or property investment</label>
+                    </div>
+                </div>
+                
+                <!-- Long-Term Strategy Group -->
+                <div style="margin-bottom: 8px;">
+                    <span style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 0.5px;">🎯 Long-Term Strategy</span>
+                </div>
+                <div class="option-group" style="margin-bottom: 16px;">
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning">
+                        <label for="concern-legacy">I want to build long-term or generational wealth</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning">
+                        <label for="concern-retirement">I'm planning for retirement or financial independence</label>
+                    </div>
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth">
+                        <label for="concern-business">I want to grow my business or plan my exit strategy</label>
+                    </div>
+                </div>
+                
+                <!-- Other Options -->
                 <div class="option-group">
                     <div class="option-item">
-                        <input type="checkbox" id="opt-employed" name="status" value="Employed">
-                        <label for="opt-employed">Employed / Corporate Executive</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="opt-business" name="status" value="Business Owner">
-                        <label for="opt-business">Business Owner / Entrepreneur</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="opt-freelance" name="status" value="Professional">
-                        <label for="opt-freelance">Professional / Consultant / Freelancer</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="opt-investor" name="status" value="Investor">
-                        <label for="opt-investor">Investor / Trader</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="opt-retired" name="status" value="Retired">
-                        <label for="opt-retired">Retired / Semi-Retired</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="opt-other" name="status" value="Other" onchange="toggleOtherInput()">
-                        <label for="opt-other">Other</label>
+                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput()">
+                        <label for="concern-other">Something else</label>
                     </div>
                 </div>
-                <div id="otherStatusContainer" style="display: none; margin-top: 15px;">
-                    <input type="text" id="otherStatus" placeholder="Please specify your situation..." style="width: 100%;">
+                <div id="otherConcernContainer" style="display: none; margin-top: 15px;">
+                    <input type="text" id="otherConcern" placeholder="Please describe your concern...">
+                </div>
+                <div class="option-group" style="margin-top: 15px;">
+                    <div class="option-item">
+                        <input type="checkbox" id="concern-private" name="concern" value="Prefer not to say">
+                        <label for="concern-private">I prefer to keep this private for now</label>
+                    </div>
                 </div>
             </div>
             
@@ -1398,7 +1421,7 @@
             </div>
         </div>
 
-        <!-- STEP 3: SURPLUS & CAPITAL -->
+        <!-- STEP 3: INCOME & CAPITAL -->
         <div id="step-2" class="step-content">
             <!-- Step 3 Hero Section - ABOVE step number -->
             <div style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 28px 24px; margin-bottom: 24px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
@@ -1439,63 +1462,6 @@
                         <span id="wealthCurrencyPrefix">RM</span>
                     </div>
                     <input type="number" id="liquidWealth" placeholder="e.g., 150000" min="0" step="1000" required="">
-                </div>
-            </div>
-            
-            <div class="form-group">
-                <label>What are your primary wealth concerns right now? <span style="font-weight: 400; color: #888;">(Select all that apply)</span>
-                    <span class="label-subtitle">→ Helps us prioritize the key levers to pull in your situation</span>
-                </label>
-                <div class="option-group">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization">
-                        <label for="concern-tax">Tax inefficiency (paying too much to government)</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment">
-                        <label for="concern-deploy">Where to deploy my surplus (investment confusion)</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection">
-                        <label for="concern-protect">Protecting &amp; diversifying wealth (risk management)</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning">
-                        <label for="concern-legacy">Building generational wealth (family succession)</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management">
-                        <label for="concern-cashflow">Cash flow optimization (income vs expenses)</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy">
-                        <label for="concern-debt">Debt management &amp; leverage strategy</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning">
-                        <label for="concern-retirement">Retirement planning &amp; financial independence</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth">
-                        <label for="concern-business">Business growth &amp; exit strategy</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate">
-                        <label for="concern-realestate">Real estate investment &amp; property portfolio</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput()">
-                        <label for="concern-other">Other</label>
-                    </div>
-                </div>
-                <div id="otherConcernContainer" style="display: none; margin-top: 15px;">
-                    <input type="text" id="otherConcern" placeholder="Please describe your concern...">
-                </div>
-                <div class="option-group" style="margin-top: 15px;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-private" name="concern" value="Prefer not to say">
-                        <label for="concern-private">I prefer to keep this private for now</label>
-                    </div>
                 </div>
             </div>
             
