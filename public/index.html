@@ -1147,14 +1147,29 @@
             
             <!-- Mobile Layout -->
             <div class="intro-mobile" style="display: none;">
-                <div style="padding: 24px 20px 32px;">
+                <div style="padding: 0 20px 32px;">
+                    
+                    <!-- Step Progress Bar - Mobile -->
+                    <div style="text-align: center; padding-top: 12px; margin-bottom: 24px;">
+                        <p style="font-size: 14px; font-weight: 500; color: #555; margin-bottom: 10px;">Step 1 of 5</p>
+                        <!-- Progress Bar Only -->
+                        <div style="display: flex; gap: 4px;">
+                            <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                        </div>
+                    </div>
                     
                     <!-- Target Icon -->
                     <div style="text-align: center; margin-bottom: 20px;">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="10"/>
                             <circle cx="12" cy="12" r="6"/>
                             <circle cx="12" cy="12" r="2" fill="#ff8120"/>
+                            <path d="M12 2v3" stroke="#ff8120" stroke-width="2"/>
+                            <path d="M19.07 4.93l-2.12 2.12" stroke="#ff8120" stroke-width="2"/>
                         </svg>
                     </div>
                     
@@ -1168,52 +1183,59 @@
                         Most professionals think they're doing fine until they see <strong style="color: #111;">what's really missing</strong>.
                     </p>
                     
-                    <!-- Social Proof -->
-                    <div style="background: #fafafa; border-radius: 12px; padding: 18px; margin-bottom: 20px; border: 1px solid #f0f0f0;">
+                    <!-- Social Proof - Peach/Salmon Background -->
+                    <div style="background: #fff5f0; border-radius: 14px; padding: 18px; margin-bottom: 16px;">
                         <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 14px;">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="#ff8120" stroke="none">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="#ff8120" stroke="none">
                                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                                 <circle cx="9" cy="7" r="4"/>
                                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                             </svg>
-                            <p style="font-size: 13px; font-weight: 600; color: #111; margin: 0;">Trusted by 2,500+ professionals across Asia</p>
+                            <p style="font-size: 14px; font-weight: 600; color: #111; margin: 0;">Trusted by 2,500+ professionals across Asia</p>
                         </div>
                         
-                        <div style="display: flex; align-items: flex-start; gap: 6px;">
-                            <span style="font-size: 20px; color: #ff8120; font-weight: 700; line-height: 1;">"</span>
-                            <p id="introTestimonialTextMobile" style="font-size: 14px; font-style: italic; color: #555; margin: 0; line-height: 1.5; transition: opacity 0.5s ease;">I thought I had things under control… until I saw my score.</p>
+                        <div style="display: flex; align-items: flex-start; gap: 8px; padding-left: 4px;">
+                            <span style="font-size: 24px; color: #ff8120; font-weight: 700; line-height: 0.9;">"</span>
+                            <p id="introTestimonialTextMobile" style="font-size: 15px; font-style: italic; color: #444; margin: 0; line-height: 1.5; transition: opacity 0.5s ease;">"I thought I had things under control… until I saw my score."</p>
                         </div>
-                        <div style="display: flex; justify-content: center; gap: 6px; margin-top: 12px;">
-                            <span id="introDotMobile0" style="width: 6px; height: 6px; border-radius: 50%; background: #ff8120;"></span>
-                            <span id="introDotMobile1" style="width: 6px; height: 6px; border-radius: 50%; background: #ddd;"></span>
-                            <span id="introDotMobile2" style="width: 6px; height: 6px; border-radius: 50%; background: #ddd;"></span>
+                        <div style="display: flex; justify-content: center; gap: 8px; margin-top: 14px;">
+                            <span id="introDotMobile0" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
+                            <span id="introDotMobile1" style="width: 8px; height: 8px; border-radius: 50%; background: #ff8120;"></span>
+                            <span id="introDotMobile2" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
                         </div>
                     </div>
                     
-                    <!-- Time -->
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-                        <div style="width: 40px; height: 40px; background: rgba(255, 129, 32, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <!-- Time Box - Light Gray -->
+                    <div style="background: #f8f8f8; border-radius: 14px; padding: 16px 18px; margin-bottom: 24px; display: flex; align-items: center; gap: 14px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255, 129, 32, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"/>
                                 <polyline points="12 6 12 12 16 14"/>
                             </svg>
                         </div>
                         <div>
-                            <p style="font-size: 14px; font-weight: 600; color: #111; margin: 0;">This takes less than 2 minutes.</p>
-                            <p style="font-size: 12px; color: #888; margin: 2px 0 0 0;">Your answers will reveal gaps most people overlook.</p>
+                            <p style="font-size: 15px; font-weight: 600; color: #111; margin: 0;">This takes less than 2 minutes.</p>
+                            <p style="font-size: 13px; color: #777; margin: 3px 0 0 0;">Your answers will reveal gaps most people overlook.</p>
                         </div>
                     </div>
                     
-                    <!-- CTA -->
-                    <button onclick="startAssessment()" class="btn-primary" style="width: 100%; padding: 18px 24px; font-size: 16px; font-weight: 600; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 16px rgba(255, 129, 32, 0.3); background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%);">
+                    <!-- CTA Button -->
+                    <button onclick="startAssessment()" class="btn-primary" style="width: 100%; padding: 18px 24px; font-size: 17px; font-weight: 600; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 4px 16px rgba(255, 129, 32, 0.35); background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%);">
                         Start My Assessment
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </button>
                     
-                    <!-- Micro -->
-                    <div style="text-align: center; margin-top: 14px;">
-                        <p style="font-size: 11px; color: #999; margin: 0;">No financial knowledge required • 100% confidential</p>
+                    <!-- Micro Reassurances -->
+                    <div style="text-align: center; margin-top: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <p style="font-size: 13px; color: #888; margin: 0;">No financial knowledge required</p>
+                        </div>
+                        <p style="font-size: 12px; color: #aaa; margin: 0;">Be honest — your results depend on it.</p>
                     </div>
                 </div>
             </div>
