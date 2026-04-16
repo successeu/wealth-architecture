@@ -1826,9 +1826,9 @@
             </div>
             
             <!-- Monthly Surplus Question -->
-            <div class="form-group" style="margin-bottom: 8px;">
+            <div class="form-group" style="margin-bottom: 4px;">
                 <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Monthly money left after expenses</label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 14px;">How much you can save or invest each month</p>
+                <p style="font-size: 13px; color: #888; margin-bottom: 10px;">How much you can save or invest each month</p>
                 <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
                     <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
                         <span id="surplusCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
@@ -1836,15 +1836,15 @@
                     <input type="number" id="monthlySurplus" placeholder="e.g., 5,000" min="0" step="100" style="border: none; padding: 14px 16px; flex: 1;">
                 </div>
             </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 24px; display: flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <p style="font-size: 12px; color: #888; margin-bottom: 18px; display: flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                 Estimate is fine — no need to be exact.
             </p>
             
             <!-- Liquid Net Worth Question -->
-            <div class="form-group" style="margin-bottom: 8px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Current savings & investments</label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 14px;">Total value of your cash, stocks, and other investments</p>
+            <div class="form-group" style="margin-bottom: 4px;">
+                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Current savings & investments <span style="font-weight: 400; color: #888;">(not including your home)</span></label>
+                <p style="font-size: 13px; color: #888; margin-bottom: 10px;">Total value of your cash, stocks, and other investments</p>
                 <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
                     <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
                         <span id="wealthCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
@@ -1852,26 +1852,26 @@
                     <input type="number" id="liquidWealth" placeholder="e.g., 150,000" min="0" step="1000" style="border: none; padding: 14px 16px; flex: 1;">
                 </div>
             </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 24px; display: flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <p style="font-size: 12px; color: #888; margin-bottom: 18px; display: flex; align-items: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                 Estimate is fine — no need to be exact.
             </p>
             
-            <!-- Why we ask this - Shortened -->
-            <div style="background: #fffaf5; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+            <!-- Why we ask this - Cleaner single line -->
+            <div style="background: #fffaf5; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                 <p style="font-size: 13px; color: #555; margin: 0;"><strong style="color: #1a1a1a;">Why we ask this?</strong> We use this to calculate your personalized wealth score and strategy.</p>
             </div>
             
-            <!-- Anticipation line -->
-            <div style="background: linear-gradient(90deg, rgba(255, 129, 32, 0.08) 0%, rgba(255, 129, 32, 0.02) 100%); border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
-                <div style="width: 24px; height: 24px; border: 2px solid #ff8120; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
+            <!-- Anticipation line - Different visual with top border -->
+            <div style="background: rgba(255, 129, 32, 0.03); border-top: 2px solid rgba(255, 129, 32, 0.15); border-radius: 0 0 10px 10px; padding: 12px 16px; margin-bottom: 0; display: flex; align-items: center; gap: 10px;">
+                <div style="width: 16px; height: 16px; border: 2px solid #ff8120; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; flex-shrink: 0;"></div>
                 <p style="font-size: 13px; color: #555; margin: 0; font-weight: 500;">You're almost done — your results are being prepared.</p>
             </div>
             
-            <!-- Buttons -->
-            <div class="button-group" style="flex-direction: row;">
-                <button class="btn-secondary" onclick="goToStep3A()" style="opacity: 0.7; border-color: rgba(0,0,0,0.1);">BACK</button>
+            <!-- Buttons with more spacing above -->
+            <div class="button-group" style="flex-direction: row; margin-top: 28px;">
+                <button class="btn-secondary" onclick="goToStep3A()" style="opacity: 0.6; border-color: rgba(0,0,0,0.06); color: #aaa;">BACK</button>
                 <button class="btn-primary" onclick="nextStep()" style="flex: 1;">CONTINUE TO NEXT STEP →</button>
             </div>
             
