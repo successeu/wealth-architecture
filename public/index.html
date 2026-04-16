@@ -600,6 +600,71 @@
             color: #ff8120;
         }
         
+        /* Step 2 Desktop/Mobile View Defaults */
+        .step2-desktop-view {
+            display: block;
+        }
+        .step2-mobile-view {
+            display: none;
+        }
+        
+        /* Priority option hover effects */
+        .priority-option:hover {
+            background: #fff5f0 !important;
+            border-color: #ffcca8 !important;
+        }
+        .priority-option:has(input:checked) {
+            background: #fff5f0 !important;
+            border-color: #ff8120 !important;
+        }
+        
+        /* Step 3 - New Income Buttons */
+        .income-btn-new {
+            padding: 14px 20px;
+            background: #fff;
+            border: 1px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 120px;
+            text-align: center;
+        }
+        .income-btn-new:hover {
+            border-color: #ffcca8;
+            background: #fff9f5;
+        }
+        .income-btn-new.selected {
+            border-color: #ff8120;
+            background: #fff5f0;
+            color: #ff8120;
+            font-weight: 600;
+            position: relative;
+        }
+        .income-btn-new.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 6px;
+            right: 8px;
+            font-size: 12px;
+            color: #ff8120;
+        }
+        
+        /* Step 3 - Setup Option Hover */
+        .setup-option:hover {
+            border-color: #ffcca8 !important;
+            background: #fff9f5 !important;
+        }
+        .setup-option:has(input:checked) {
+            border-color: #ff8120 !important;
+            background: #fff5f0 !important;
+        }
+        .setup-option:has(input:checked) svg {
+            stroke: #ff8120;
+        }
+        
         @media (max-width: 768px) {
             .hero-section {
                 grid-template-columns: 1fr;
@@ -617,40 +682,18 @@
                 display: none !important;
             }
             
-            /* Step 2 Mobile Optimizations - Refined */
-            #step-1 .option-group {
-                margin-bottom: 20px !important;
-                gap: 8px !important;
+            /* Step 2 Responsive - Show mobile, hide desktop */
+            .step2-desktop-view {
+                display: none !important;
             }
-            #step-1 .option-item label {
-                padding: 14px 16px !important;
-                font-size: 14px !important;
-                line-height: 1.4 !important;
-                border-radius: 10px !important;
+            .step2-mobile-view {
+                display: block !important;
             }
-            /* Checkbox alignment - center with first line */
-            #step-1 .option-item label:before {
-                margin-top: 0 !important;
-                align-self: flex-start !important;
-            }
-            /* Section headers - tighter spacing */
-            #step-1 div[style*="gap: 10px; margin-bottom: 12px"] {
-                margin-bottom: 10px !important;
-            }
-            /* Question text */
-            #step-1 .form-group > label:first-of-type {
-                font-size: 16px !important;
-                line-height: 1.35 !important;
-            }
-            /* CTA section breathing room */
-            #step-1 > div:last-child {
-                margin-top: 28px !important;
-                padding-top: 4px !important;
-            }
-            /* Skip link styling */
-            #step-1 a[onclick*="nextStep"] {
-                display: inline-block;
-                padding: 8px 16px;
+            
+            /* Priority option hover effect on mobile */
+            .priority-option-mobile:active {
+                background: #fff5f0 !important;
+                border-color: #ff8120 !important;
             }
             
             /* Step 3A/3B Mobile Optimizations */
@@ -688,6 +731,44 @@
             #step-2 > div:first-child > div > div:last-child,
             #step-2b > div:first-child > div > div:last-child {
                 display: none !important;
+            }
+            
+            /* NEW Step 3 Mobile Styles */
+            #step-2 > div:first-child,
+            #step-2b > div:first-child {
+                margin-bottom: 20px !important;
+            }
+            /* Progress bar mobile - hide "Step 3 of 4" text on small screens */
+            #step-2 > div:first-child > div:first-child > span,
+            #step-2b > div:first-child > div:first-child > span {
+                display: none;
+            }
+            /* Step title mobile */
+            #step-2 h2, #step-2b h2 {
+                font-size: 22px !important;
+            }
+            /* Question cards mobile */
+            #step-2 > div[style*="border-radius: 14px"],
+            #step-2b > div[style*="border-radius: 14px"] {
+                padding: 18px !important;
+            }
+            /* Income buttons mobile - stack vertically */
+            .income-btn-new {
+                flex: 0 0 100% !important;
+                padding: 14px 16px !important;
+            }
+            /* Setup options mobile - single column */
+            #step-2 div[style*="grid-template-columns: repeat(2"] {
+                grid-template-columns: 1fr !important;
+            }
+            /* Buttons mobile */
+            #step-2 > div[style*="display: flex; gap: 16px"],
+            #step-2b > div[style*="display: flex; gap: 16px"] {
+                flex-direction: column-reverse !important;
+            }
+            #step-2 > div[style*="display: flex; gap: 16px"] button:first-child,
+            #step-2b > div[style*="display: flex; gap: 16px"] button:first-child {
+                width: 100% !important;
             }
             
             /* Step 5 Results Page Mobile Fixes */
@@ -866,18 +947,6 @@
                 <!-- LEFT COLUMN -->
                 <div style="padding: 0;">
                     
-                    <!-- Step Indicator - Simple Bar Only -->
-                    <div style="margin-bottom: 32px;">
-                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px;">STEP 1 OF 5</p>
-                        <div style="display: flex; gap: 6px;">
-                            <div style="flex: 1; height: 3px; background: #ff8120; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
-                        </div>
-                    </div>
-                    
                     <!-- Badge Label -->
                     <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 20px;">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -1028,20 +1097,7 @@
             
             <!-- Mobile Layout -->
             <div class="intro-mobile" style="display: none;">
-                <div style="padding: 0 20px 32px;">
-                    
-                    <!-- Step Progress Bar - Mobile -->
-                    <div style="text-align: center; padding-top: 12px; margin-bottom: 24px;">
-                        <p style="font-size: 14px; font-weight: 500; color: #555; margin-bottom: 10px;">Step 1 of 5</p>
-                        <!-- Progress Bar Only -->
-                        <div style="display: flex; gap: 4px;">
-                            <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
-                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
-                        </div>
-                    </div>
+                <div style="padding: 20px 20px 32px;">
                     
                     <!-- Target Icon -->
                     <div style="text-align: center; margin-bottom: 20px;">
@@ -1183,10 +1239,22 @@
         
         <!-- STEP 1: LOCATION & CURRENCY -->
         <div id="step-0" class="step-content">
-            <div class="step-header">
-                <div class="step-number">01</div>
-                <h2>Your Global Context</h2>
-                <p class="hint">Takes 3 minutes • Customize your strategy based on jurisdiction &amp; currency</p>
+            <!-- Simple Progress Bar -->
+            <div style="text-align: center; margin-bottom: 28px;">
+                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 1 of 5</p>
+                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                </div>
+            </div>
+            
+            <!-- Step Title -->
+            <div style="text-align: center; margin-bottom: 32px;">
+                <h2 style="font-size: 28px; font-weight: 700; color: #111; margin-bottom: 8px;">Your Global Context</h2>
+                <p style="font-size: 14px; color: #888;">Takes 3 minutes • Customize your strategy based on jurisdiction &amp; currency</p>
             </div>
             
             <div class="form-group">
@@ -1557,296 +1625,579 @@
 
         <!-- STEP 2: WEALTH PRIORITIES -->
         <div id="step-1" class="step-content">
-            <!-- Step Header -->
-            <div class="step-header">
-                <div class="step-number">02</div>
-                <h2>Your Wealth Priorities</h2>
-                <p class="hint">Takes 2 minutes • Help us personalize your results</p>
+            
+            <!-- DESKTOP VERSION -->
+            <div class="step2-desktop-view">
+                <!-- Simple Progress Bar -->
+                <div style="text-align: center; margin-bottom: 32px;">
+                    <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 2 of 5</p>
+                    <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                        <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                    </div>
+                </div>
+                
+                <!-- Badge -->
+                <div style="text-align: center; margin-bottom: 16px;">
+                    <span style="display: inline-block; background: rgba(255,129,32,0.08); color: #ff8120; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 8px 16px; border-radius: 20px;">YOUR WEALTH PRIORITY</span>
+                </div>
+                
+                <!-- Headline -->
+                <h1 style="font-size: 36px; font-weight: 700; color: #111; text-align: center; line-height: 1.3; margin-bottom: 16px;">
+                    What are you <em style="font-style: italic; color: #ff8120; text-decoration: underline; text-decoration-color: #ff8120;">really</em> trying<br>to improve right now?
+                </h1>
+                
+                <!-- Subtext -->
+                <p style="font-size: 16px; color: #666; text-align: center; line-height: 1.6; margin-bottom: 8px;">
+                    Different people have different priorities.<br>This helps us tailor your results to what matters most.
+                </p>
+                
+                <!-- Instruction -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 36px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span style="font-size: 14px; color: #555;">Select all that apply (most people choose 2–3)</span>
+                </div>
+                
+                <!-- Category Cards Container -->
+                <div style="max-width: 800px; margin: 0 auto;">
+                    
+                    <!-- Category 1: Keep More of What You Earn -->
+                    <div class="priority-category-card" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 24px; margin-bottom: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; align-items: start;">
+                            <!-- Left: Category Info -->
+                            <div style="display: flex; align-items: flex-start; gap: 14px;">
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #ff8120 0%, #ffb366 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 6px;">Keep More of What You Earn</h3>
+                                    <p style="font-size: 13px; color: #888; line-height: 1.4; margin: 0;">Improve cash flow and financial efficiency.</p>
+                                </div>
+                            </div>
+                            <!-- Right: Options -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Tax Optimization" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Reduce unnecessary expenses</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Cash Flow Management" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Optimize my taxes better</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Debt Strategy" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Money slips away without clarity</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category 2: Grow My Wealth Faster -->
+                    <div class="priority-category-card" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 24px; margin-bottom: 16px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; align-items: start;">
+                            <!-- Left: Category Info -->
+                            <div style="display: flex; align-items: flex-start; gap: 14px;">
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 6px;">Grow My Wealth Faster</h3>
+                                    <p style="font-size: 13px; color: #888; line-height: 1.4; margin: 0;">Make smarter decisions to grow your money and investments.</p>
+                                </div>
+                            </div>
+                            <!-- Right: Options -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Capital Deployment" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Want to invest but unsure where to start</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Wealth Protection" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Want my money to grow more efficiently</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Real Estate" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Not sure if my current strategy is working</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Category 3: Build Long-Term Financial Security -->
+                    <div class="priority-category-card" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 24px; margin-bottom: 32px;">
+                        <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap: 24px; align-items: start;">
+                            <!-- Left: Category Info -->
+                            <div style="display: flex; align-items: flex-start; gap: 14px;">
+                                <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                                </div>
+                                <div>
+                                    <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 6px;">Build Long-Term Financial Security</h3>
+                                    <p style="font-size: 13px; color: #888; line-height: 1.4; margin: 0;">Plan ahead to build lasting wealth and financial freedom.</p>
+                                </div>
+                            </div>
+                            <!-- Right: Options -->
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Legacy Planning" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Unsure how much I need for financial independence</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Retirement Planning" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Don't have a clear long-term plan</span>
+                                </label>
+                                <label class="priority-option" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; transition: all 0.2s ease;">
+                                    <input type="checkbox" name="concern" value="Business Growth" onchange="updateSelectionCount()" style="width: 18px; height: 18px; accent-color: #ff8120; cursor: pointer;">
+                                    <span style="font-size: 14px; color: #333;">Want to build sustainable long-term wealth</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Testimonial -->
+                    <div style="text-align: center; margin-bottom: 28px; padding: 0 20px;">
+                        <div style="display: flex; align-items: flex-start; justify-content: center; gap: 4px;">
+                            <span style="font-size: 32px; color: #ff8120; font-weight: 700; line-height: 0.8; font-family: Georgia, serif;">"</span>
+                            <p style="font-size: 16px; font-style: italic; color: #555; line-height: 1.5; margin: 0;">
+                                I thought I knew what I needed…<br>until I saw what was actually missing.
+                            </p>
+                            <span style="font-size: 32px; color: #ff8120; font-weight: 700; line-height: 0.8; font-family: Georgia, serif;">"</span>
+                        </div>
+                        <p style="font-size: 12px; color: #999; margin-top: 8px;">— Verified Assessment Participant</p>
+                    </div>
+                    
+                    <!-- Selection Counter -->
+                    <p id="selectionCounterDesktop" style="font-size: 14px; color: #ff8120; text-align: center; margin-bottom: 16px; font-weight: 600; display: none;"></p>
+                    
+                    <!-- CTA Button -->
+                    <button class="btn-primary" onclick="nextStep()" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; max-width: 480px; margin: 0 auto; padding: 18px 32px; font-size: 17px; font-weight: 600; border-radius: 12px; background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%); box-shadow: 0 4px 16px rgba(255,129,32,0.3);">
+                        Continue to Build My Strategy
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                    
+                    <!-- Back Link -->
+                    <p style="text-align: center; margin-top: 20px;">
+                        <a href="javascript:void(0)" onclick="prevStep()" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #999; text-decoration: none;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                            Back
+                        </a>
+                    </p>
+                </div>
             </div>
             
-            <!-- Question -->
-            <div class="form-group" style="margin-bottom: 0;">
-                <label style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; display: block; line-height: 1.4;">What's the biggest challenge stopping you from building real wealth?</label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 20px;">Select all that apply (most people choose 2–3)</p>
-                
-                <!-- Keep More of What You Earn -->
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Keep More of What You Earn</span>
-                </div>
-                <div class="option-group" style="margin-bottom: 24px;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization" onchange="updateSelectionCount()">
-                        <label for="concern-tax">I'm paying too much in taxes</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management" onchange="updateSelectionCount()">
-                        <label for="concern-cashflow">I want better control over my cash flow</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy" onchange="updateSelectionCount()">
-                        <label for="concern-debt">I want to reduce debt or use leverage better</label>
+            <!-- MOBILE VERSION -->
+            <div class="step2-mobile-view" style="display: none;">
+                <!-- Simple Progress Bar -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <p style="font-size: 14px; font-weight: 500; color: #555; margin-bottom: 10px;">Step 2 of 5</p>
+                    <div style="display: flex; gap: 4px;">
+                        <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                        <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
                     </div>
                 </div>
                 
-                <!-- Grow Your Wealth Faster -->
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Grow Your Wealth Faster</span>
-                </div>
-                <div class="option-group" style="margin-bottom: 24px;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment" onchange="updateSelectionCount()">
-                        <label for="concern-deploy">I don't know where to invest my money</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection" onchange="updateSelectionCount()">
-                        <label for="concern-protect">I want to protect and diversify better</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate" onchange="updateSelectionCount()">
-                        <label for="concern-realestate">I'm interested in real estate investing</label>
-                    </div>
+                <!-- Badge -->
+                <div style="text-align: center; margin-bottom: 16px; margin-top: 20px;">
+                    <span style="display: inline-block; background: rgba(255,129,32,0.08); color: #ff8120; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; padding: 6px 14px; border-radius: 16px;">YOUR WEALTH PRIORITY</span>
                 </div>
                 
-                <!-- Secure Your Financial Future -->
-                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Secure Your Financial Future</span>
-                </div>
-                <div class="option-group" style="margin-bottom: 20px;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning" onchange="updateSelectionCount()">
-                        <label for="concern-legacy">I want to build generational wealth</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning" onchange="updateSelectionCount()">
-                        <label for="concern-retirement">I'm unsure how much I need for retirement</label>
-                    </div>
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth" onchange="updateSelectionCount()">
-                        <label for="concern-business">I want to grow or exit my business</label>
-                    </div>
+                <!-- Headline -->
+                <h1 style="font-size: 26px; font-weight: 700; color: #111; text-align: center; line-height: 1.25; margin-bottom: 14px;">
+                    What are you <em style="font-style: italic; color: #ff8120; text-decoration: underline; text-decoration-color: #ff8120;">really</em><br>trying to improve<br>right now?
+                </h1>
+                
+                <!-- Subtext -->
+                <p style="font-size: 14px; color: #666; text-align: center; line-height: 1.5; margin-bottom: 6px;">
+                    Different people have different priorities.<br>This helps us tailor your results to<br>what matters most.
+                </p>
+                
+                <!-- Instruction -->
+                <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px;">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    <span style="font-size: 13px; color: #555; text-align: center;">Select all that apply<br>(most people choose 2–3)</span>
                 </div>
                 
-                <!-- Different Priority Option -->
-                <div class="option-group" style="margin-bottom: 0;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput(); updateSelectionCount();">
-                        <label for="concern-other" style="background: #fafafa; border-color: rgba(0,0,0,0.06);">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; flex-shrink: 0;"><circle cx="12" cy="12" r="10"/></svg>
-                            I have a different financial priority
+                <!-- Category 1: Keep More -->
+                <div class="priority-category-mobile" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 12px; overflow: hidden;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #ffb366 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            </div>
+                            <h3 style="font-size: 15px; font-weight: 700; color: #111; margin: 0;">Keep More of What You Earn</h3>
+                        </div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                    </div>
+                    <div style="padding: 12px;">
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Tax Optimization" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Reduce unnecessary expenses</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Cash Flow Management" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Optimize my taxes better</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer;">
+                            <input type="checkbox" name="concern_mobile" value="Debt Strategy" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Money slips away without clarity</span>
                         </label>
                     </div>
                 </div>
-                <div id="otherConcernContainer" style="display: none; margin-top: 12px; margin-left: 40px;">
-                    <input type="text" id="otherConcern" placeholder="Please describe your priority...">
-                </div>
-            </div>
-            
-            <!-- CTA Section -->
-            <div style="margin-top: 32px;">
-                <!-- Selection counter (hidden when 0) -->
-                <p id="selectionCounter" style="font-size: 13px; color: #ff8120; text-align: center; margin-bottom: 12px; font-weight: 600; display: none;"></p>
                 
-                <!-- Pre-CTA reassurance -->
-                <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; padding: 0 4px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <p style="font-size: 13px; color: #555; line-height: 1.5; margin: 0;">Based on your answers, we'll generate your personalized wealth strategy.</p>
+                <!-- Category 2: Grow Wealth -->
+                <div class="priority-category-mobile" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 12px; overflow: hidden;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            </div>
+                            <h3 style="font-size: 15px; font-weight: 700; color: #111; margin: 0;">Grow My Wealth Faster</h3>
+                        </div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                    </div>
+                    <div style="padding: 12px;">
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Capital Deployment" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Want to invest but unsure where to start</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Wealth Protection" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Want my money to grow more efficiently</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer;">
+                            <input type="checkbox" name="concern_mobile" value="Real Estate" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Not sure if my current strategy is working</span>
+                        </label>
+                    </div>
                 </div>
+                
+                <!-- Category 3: Long-Term Security -->
+                <div class="priority-category-mobile" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 24px; overflow: hidden;">
+                    <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #22c55e 0%, #4ade80 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                            </div>
+                            <h3 style="font-size: 15px; font-weight: 700; color: #111; margin: 0;">Build Long-Term Financial Security</h3>
+                        </div>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+                    </div>
+                    <div style="padding: 12px;">
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Legacy Planning" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Unsure how much I need for financial independence</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer; margin-bottom: 8px;">
+                            <input type="checkbox" name="concern_mobile" value="Retirement Planning" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Don't have a clear long-term plan</span>
+                        </label>
+                        <label class="priority-option-mobile" style="display: flex; align-items: center; gap: 12px; padding: 14px; background: #fafafa; border: 1px solid #eee; border-radius: 8px; cursor: pointer;">
+                            <input type="checkbox" name="concern_mobile" value="Business Growth" onchange="updateSelectionCount()" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer; flex-shrink: 0;">
+                            <span style="font-size: 14px; color: #333;">Want to build sustainable long-term wealth</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Testimonial -->
+                <div style="text-align: center; margin-bottom: 24px; padding: 0 8px;">
+                    <div style="display: flex; align-items: flex-start; justify-content: center; gap: 2px;">
+                        <span style="font-size: 28px; color: #ff8120; font-weight: 700; line-height: 0.8; font-family: Georgia, serif;">"</span>
+                        <p style="font-size: 14px; font-style: italic; color: #555; line-height: 1.5; margin: 0;">
+                            I thought I knew what I needed…<br>until I saw what was actually missing.
+                        </p>
+                        <span style="font-size: 28px; color: #ff8120; font-weight: 700; line-height: 0.8; font-family: Georgia, serif;">"</span>
+                    </div>
+                    <p style="font-size: 11px; color: #999; margin-top: 6px;">— Verified Assessment Participant</p>
+                </div>
+                
+                <!-- Selection Counter -->
+                <p id="selectionCounterMobile" style="font-size: 14px; color: #ff8120; text-align: center; margin-bottom: 14px; font-weight: 600; display: none;"></p>
                 
                 <!-- CTA Button -->
-                <button class="btn-primary" onclick="nextStep()" style="width: 100%; padding: 18px 24px; font-size: 16px; border-radius: 12px;">See My Wealth Score & Strategy →</button>
+                <button class="btn-primary" onclick="nextStep()" style="display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; padding: 18px 24px; font-size: 16px; font-weight: 600; border-radius: 14px; background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%); box-shadow: 0 4px 16px rgba(255,129,32,0.3);">
+                    Continue to Build My Strategy
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </button>
                 
-                <!-- Skip as text link -->
-                <p style="text-align: center; margin-top: 16px;">
-                    <a href="javascript:void(0)" onclick="nextStep()" style="font-size: 13px; color: #999; text-decoration: none;">Skip this step</a>
-                </p>
-                
-                <!-- Privacy footer -->
-                <p style="font-size: 12px; color: #bbb; text-align: center; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Your answers are private and secure.
+                <!-- Back Link -->
+                <p style="text-align: center; margin-top: 18px;">
+                    <a href="javascript:void(0)" onclick="prevStep()" style="display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: #999; text-decoration: none;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        Back
+                    </a>
                 </p>
             </div>
+            
         </div>
 
-        <!-- STEP 3A: INCOME & EMPLOYMENT -->
+        <!-- STEP 3: YOUR FINANCIAL PROFILE (Part 1 + Part 2 on same page) -->
         <div id="step-2" class="step-content">
-            <!-- Step Header -->
-            <div class="step-header">
-                <div class="step-number">03</div>
-                <h2>Your Financial Profile</h2>
-                <p class="hint">Part 1 of 2 • Let's start with the basics to personalize your results</p>
-            </div>
-            
-            <!-- Income Question - Button Selection -->
-            <div class="form-group" style="margin-bottom: 28px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Approximate annual income <span style="font-weight: 400;">(before tax)</span></label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
-                    <span style="color: #ff8120;">→</span> Determines your wealth acceleration capacity & investment tier eligibility
-                </p>
-                <div id="incomeButtonsContainer" class="income-buttons" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <!-- Buttons will be generated dynamically based on currency -->
-                    <button type="button" class="income-btn" data-tier="1" onclick="selectIncome(this)">< $50K</button>
-                    <button type="button" class="income-btn" data-tier="2" onclick="selectIncome(this)">$50K – $100K</button>
-                    <button type="button" class="income-btn" data-tier="3" onclick="selectIncome(this)">$100K – $250K</button>
-                    <button type="button" class="income-btn" data-tier="4" onclick="selectIncome(this)">$250K – $500K</button>
-                    <button type="button" class="income-btn" data-tier="5" onclick="selectIncome(this)">$500K+</button>
+            <!-- Progress Bar with Step Dots -->
+            <div style="margin-bottom: 40px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+                    <div style="display: flex; align-items: center; gap: 0; flex: 1; max-width: 300px;">
+                        <!-- Step 1 - Completed -->
+                        <div style="width: 28px; height: 28px; background: #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div style="flex: 1; height: 3px; background: #ff8120;"></div>
+                        <!-- Step 2 - Completed -->
+                        <div style="width: 28px; height: 28px; background: #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div style="flex: 1; height: 3px; background: #ff8120;"></div>
+                        <!-- Step 3 - Active -->
+                        <div style="width: 32px; height: 32px; background: #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600; flex-shrink: 0; box-shadow: 0 0 0 4px rgba(255,129,32,0.15);">3</div>
+                        <div style="flex: 1; height: 3px; background: #e0e0e0;"></div>
+                        <!-- Step 4 -->
+                        <div style="width: 28px; height: 28px; background: #fff; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; font-size: 13px; font-weight: 500; flex-shrink: 0;">4</div>
+                    </div>
+                    <span style="font-size: 13px; color: #666; margin-left: 20px;">Step 3 of 4</span>
                 </div>
-                <input type="hidden" id="incomeLevel" value="">
             </div>
             
-            <!-- Employment Status - Card Grid -->
-            <div class="form-group" style="margin-bottom: 24px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px; display: block;">What best describes your current situation?</label>
-                <p style="font-size: 13px; color: #ff8120; font-weight: 500; margin-bottom: 16px;">Select all that apply</p>
+            <!-- Step Title with Badge -->
+            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 8px;">
+                <div style="width: 48px; height: 48px; background: #ff8120; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 20px; font-weight: 700;">03</div>
+                <h2 style="font-size: 28px; font-weight: 700; color: #111; margin: 0;">Your Financial Profile</h2>
+            </div>
+            <p id="step3PartIndicator" style="font-size: 14px; color: #888; margin-bottom: 36px; margin-left: 64px;">Part 1 of 2 • Let's map your current position</p>
+            
+            <!-- ============ PART 1: INCOME & SETUP ============ -->
+            <div id="step3Part1">
+                <!-- Question 1: Income Level -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px;">1. How would you describe your current income level?</h3>
+                            <p style="font-size: 13px; color: #888; margin: 0;">Approximate annual income (before tax)</p>
+                        </div>
+                    </div>
+                    
+                    <div id="incomeButtonsContainer" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                        <button type="button" class="income-btn-new" data-tier="1" onclick="selectIncomeNew(this)">
+                            <span id="incomeRange1">S$50K – S$100K</span>
+                        </button>
+                        <button type="button" class="income-btn-new" data-tier="2" onclick="selectIncomeNew(this)">
+                            <span id="incomeRange2">S$100K – S$150K</span>
+                        </button>
+                        <button type="button" class="income-btn-new" data-tier="3" onclick="selectIncomeNew(this)">
+                            <span id="incomeRange3">S$150K – S$250K</span>
+                        </button>
+                        <button type="button" class="income-btn-new" data-tier="4" onclick="selectIncomeNew(this)">
+                            <span id="incomeRange4">S$250K – S$500K</span>
+                        </button>
+                        <button type="button" class="income-btn-new" data-tier="5" onclick="selectIncomeNew(this)">
+                            <span id="incomeRange5">S$500K+</span>
+                        </button>
+                    </div>
+                    <input type="hidden" id="incomeLevel" value="">
+                </div>
                 
-                <div class="status-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
-                    <label class="status-card" for="opt-employed">
-                        <input type="checkbox" id="opt-employed" name="status" value="Employed">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                            <span>Employed /<br>Corporate Executive</span>
+                <!-- Question 2: Financial Setup -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px; margin-bottom: 28px;">
+                    <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                         </div>
-                        <div class="status-check"></div>
-                    </label>
-                    <label class="status-card" for="opt-business">
-                        <input type="checkbox" id="opt-business" name="status" value="Business Owner">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                            <span>Business Owner /<br>Entrepreneur</span>
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px;">2. What best describes your current financial setup?</h3>
+                            <p style="font-size: 13px; color: #888; margin: 0;">Select all that apply</p>
                         </div>
-                        <div class="status-check"></div>
-                    </label>
-                    <label class="status-card" for="opt-freelance">
-                        <input type="checkbox" id="opt-freelance" name="status" value="Professional">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
-                            <span>Professional /<br>Consultant / Freelancer</span>
-                        </div>
-                        <div class="status-check"></div>
-                    </label>
-                    <label class="status-card" for="opt-investor">
-                        <input type="checkbox" id="opt-investor" name="status" value="Investor">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                            <span>Investor / Trader</span>
-                        </div>
-                        <div class="status-check"></div>
-                    </label>
-                    <label class="status-card" for="opt-retired">
-                        <input type="checkbox" id="opt-retired" name="status" value="Retired">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8h1a4 4 0 0 1 0 8h-1"/><path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"/><line x1="6" y1="1" x2="6" y2="4"/><line x1="10" y1="1" x2="10" y2="4"/><line x1="14" y1="1" x2="14" y2="4"/></svg>
-                            <span>Retired /<br>Semi-Retired</span>
-                        </div>
-                        <div class="status-check"></div>
-                    </label>
-                    <label class="status-card" for="opt-other">
-                        <input type="checkbox" id="opt-other" name="status" value="Other" onchange="toggleOtherInput()">
-                        <div class="status-card-content">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
-                            <span>Other</span>
-                        </div>
-                        <div class="status-check"></div>
-                    </label>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">I have multiple income streams</span>
+                            <input type="checkbox" name="setup" value="Multiple Income" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">I rely on a single income source</span>
+                            <input type="checkbox" name="setup" value="Single Income" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">I am growing my income actively</span>
+                            <input type="checkbox" name="setup" value="Growing Income" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">I feel stuck financially</span>
+                            <input type="checkbox" name="setup" value="Stuck" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">I am exploring new opportunities</span>
+                            <input type="checkbox" name="setup" value="Exploring" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                        <label class="setup-option" style="display: flex; align-items: center; gap: 12px; padding: 16px; background: #fff; border: 1px solid #e8e8e8; border-radius: 10px; cursor: pointer; transition: all 0.2s ease;">
+                            <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.06); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                            </div>
+                            <span style="font-size: 14px; color: #333; flex: 1;">Other</span>
+                            <input type="checkbox" name="setup" value="Other" style="width: 20px; height: 20px; accent-color: #ff8120; cursor: pointer;">
+                        </label>
+                    </div>
                 </div>
-                <div id="otherStatusContainer" style="display: none; margin-top: 12px;">
-                    <input type="text" id="otherStatus" placeholder="Please specify your situation..." style="width: 100%;">
+                
+                <!-- Part 1 Buttons -->
+                <div id="part1Buttons" style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <button onclick="prevStep()" style="flex: 0 0 auto; padding: 16px 32px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        Back
+                    </button>
+                    <button onclick="showPart2()" style="flex: 1; padding: 18px 32px; background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%); border: none; border-radius: 12px; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 16px rgba(255,129,32,0.3);">
+                        Continue
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+                
+                <!-- Privacy notice (Part 1) -->
+                <div id="part1Privacy" style="text-align: center;">
+                    <p style="font-size: 12px; color: #999; display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Your information is 100% private and secure. We will never share your data with anyone.
+                    </p>
                 </div>
             </div>
             
-            <!-- Privacy notice -->
-            <p style="font-size: 12px; color: #999; text-align: center; margin-bottom: 20px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Your information is 100% private and secure.
-            </p>
-            
-            <!-- Buttons -->
-            <div class="button-group" style="flex-direction: row;">
-                <button class="btn-secondary" onclick="prevStep()" style="opacity: 0.7; border-color: rgba(0,0,0,0.1);">BACK</button>
-                <button class="btn-primary" onclick="goToStep3B()" style="flex: 1;">CONTINUE TO BUILD MY STRATEGY →</button>
+            <!-- ============ PART 2: SURPLUS & RESERVES (Initially Hidden) ============ -->
+            <div id="step3Part2" style="display: none; margin-top: 40px; padding-top: 40px; border-top: 1px solid #eee;">
+                
+                <!-- Part 2 Header -->
+                <p style="font-size: 14px; color: #ff8120; font-weight: 600; margin-bottom: 24px; display: flex; align-items: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                    Part 1 Complete — Just 2 more quick details to go
+                </p>
+                
+                <!-- Question 3: Monthly Savings -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px;">3. How much are you currently able to set aside each month?</h3>
+                            <p style="font-size: 13px; color: #888; margin: 0;">Monthly money left after expenses</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div style="background: #ff8120; padding: 16px 20px; display: flex; align-items: center;">
+                            <span id="surplusCurrencyPrefix" style="font-weight: 700; color: #fff; font-size: 16px;">S$</span>
+                        </div>
+                        <input type="number" id="monthlySurplus" placeholder="e.g., 5,000" min="0" step="100" style="flex: 1; border: none; padding: 16px 20px; font-size: 16px; outline: none;">
+                    </div>
+                    <p style="font-size: 12px; color: #888; margin-top: 10px; display: flex; align-items: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Estimate is fine — no need to be exact.
+                    </p>
+                </div>
+                
+                <!-- Question 4: Financial Reserves -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px; margin-bottom: 20px;">
+                    <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 20px;">
+                        <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.08); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2h0V5z"/><path d="M2 9v1c0 1.1.9 2 2 2h1"/><path d="M16 11h0"/></svg>
+                        </div>
+                        <div>
+                            <h3 style="font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px;">4. What is your current level of financial reserves?</h3>
+                            <p style="font-size: 13px; color: #888; margin: 0;">Current savings & investments (not including your home)</p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
+                        <div style="background: #ff8120; padding: 16px 20px; display: flex; align-items: center;">
+                            <span id="wealthCurrencyPrefix" style="font-weight: 700; color: #fff; font-size: 16px;">S$</span>
+                        </div>
+                        <input type="number" id="liquidWealth" placeholder="e.g., 150,000" min="0" step="1000" style="flex: 1; border: none; padding: 16px 20px; font-size: 16px; outline: none;">
+                    </div>
+                    <p style="font-size: 12px; color: #888; margin-top: 10px; display: flex; align-items: center; gap: 6px;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+                        Estimate is fine — no need to be exact.
+                    </p>
+                </div>
+                
+                <!-- Why this matters -->
+                <div style="background: #fafafa; border: 1px solid #f0f0f0; border-radius: 12px; padding: 16px 20px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 14px;">
+                    <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.08); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                    </div>
+                    <div>
+                        <h4 style="font-size: 14px; font-weight: 600; color: #111; margin-bottom: 4px;">Why this matters</h4>
+                        <p style="font-size: 13px; color: #666; margin: 0; line-height: 1.5;">We use this to identify gaps and opportunities in your financial strategy.</p>
+                    </div>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffcc80" stroke-width="1.5" style="flex-shrink: 0; margin-left: auto;"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                </div>
+                
+                <!-- Almost done message -->
+                <div style="background: rgba(255,129,32,0.04); border-radius: 12px; padding: 16px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 14px;">
+                    <div style="width: 36px; height: 36px; background: rgba(255,129,32,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+                    </div>
+                    <p style="font-size: 14px; color: #555; margin: 0; font-weight: 500;">You're almost done — your personalized results are taking shape.</p>
+                </div>
+                
+                <!-- Part 2 Buttons -->
+                <div style="display: flex; gap: 16px; margin-bottom: 20px;">
+                    <button onclick="hidePart2()" style="flex: 0 0 auto; padding: 16px 32px; background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; font-size: 15px; font-weight: 500; color: #666; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+                        Back
+                    </button>
+                    <button onclick="nextStep()" style="flex: 1; padding: 18px 32px; background: linear-gradient(180deg, #ff8120 0%, #e6711a 100%); border: none; border-radius: 12px; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 16px rgba(255,129,32,0.3);">
+                        Continue to Build My Strategy
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
+                </div>
+                
+                <!-- Privacy notice (Part 2) -->
+                <div style="text-align: center;">
+                    <p style="font-size: 12px; color: #999; display: flex; align-items: center; justify-content: center; gap: 6px; margin: 0;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                        Your information is 100% private and secure. We will never share your data with anyone.
+                    </p>
+                </div>
             </div>
-            
-            <!-- Estimate reassurance -->
-            <p style="font-size: 12px; color: #ff8120; text-align: center; margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Estimate is fine — no need to be exact.
-            </p>
         </div>
         
-        <!-- STEP 3B: SURPLUS & NET WORTH -->
-        <div id="step-2b" class="step-content">
-            <!-- Step Header -->
-            <div class="step-header">
-                <div class="step-number">03</div>
-                <h2>Your Financial Profile</h2>
-                <p class="hint">Part 2 of 2 • Just 2 more quick details to go</p>
-            </div>
-            
-            <!-- Monthly Surplus Question -->
-            <div class="form-group" style="margin-bottom: 4px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Monthly money left after expenses</label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 10px;">How much you can save or invest each month</p>
-                <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
-                    <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
-                        <span id="surplusCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
-                    </div>
-                    <input type="number" id="monthlySurplus" placeholder="e.g., 5,000" min="0" step="100" style="border: none; padding: 14px 16px; flex: 1;">
-                </div>
-            </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 18px; display: flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                Estimate is fine — no need to be exact.
-            </p>
-            
-            <!-- Liquid Net Worth Question -->
-            <div class="form-group" style="margin-bottom: 4px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Current savings & investments <span style="font-weight: 400; color: #888;">(not including your home)</span></label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 10px;">Total value of your cash, stocks, and other investments</p>
-                <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
-                    <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
-                        <span id="wealthCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
-                    </div>
-                    <input type="number" id="liquidWealth" placeholder="e.g., 150,000" min="0" step="1000" style="border: none; padding: 14px 16px; flex: 1;">
-                </div>
-            </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 18px; display: flex; align-items: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
-                Estimate is fine — no need to be exact.
-            </p>
-            
-            <!-- Why we ask this - Cleaner single line -->
-            <div style="background: #fffaf5; border-radius: 10px; padding: 12px 16px; margin-bottom: 10px; display: flex; align-items: center; gap: 10px;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                <p style="font-size: 13px; color: #555; margin: 0;"><strong style="color: #1a1a1a;">Why we ask this?</strong> We use this to calculate your personalized wealth score and strategy.</p>
-            </div>
-            
-            <!-- Anticipation line - Different visual with top border -->
-            <div style="background: rgba(255, 129, 32, 0.03); border-top: 2px solid rgba(255, 129, 32, 0.15); border-radius: 0 0 10px 10px; padding: 12px 16px; margin-bottom: 0; display: flex; align-items: center; gap: 10px;">
-                <div style="width: 16px; height: 16px; border: 2px solid #ff8120; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite; flex-shrink: 0;"></div>
-                <p style="font-size: 13px; color: #555; margin: 0; font-weight: 500;">You're almost done — your results are being prepared.</p>
-            </div>
-            
-            <!-- Buttons with more spacing above -->
-            <div class="button-group" style="flex-direction: row; margin-top: 28px;">
-                <button class="btn-secondary" onclick="goToStep3A()" style="opacity: 0.6; border-color: rgba(0,0,0,0.06); color: #aaa;">BACK</button>
-                <button class="btn-primary" onclick="nextStep()" style="flex: 1;">CONTINUE TO NEXT STEP →</button>
-            </div>
-            
-            <!-- Privacy footer -->
-            <div style="text-align: center; margin-top: 20px;">
-                <p style="font-size: 12px; color: #999; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 4px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    Your information is 100% private and secure.
-                </p>
-                <p style="font-size: 11px; color: #bbb; margin: 0;">We will never share your data with anyone.</p>
-            </div>
-        </div>
+        <!-- STEP 3B is now removed - content merged into step-2 -->
+        <div id="step-2b" class="step-content" style="display: none !important;"></div>
 
         <!-- STEP 3C: ALMOST DONE - MOMENTUM SCREEN (Progress stays at Step 3) -->
         <div id="step-2c" class="step-content">
+            <!-- Simple Progress Bar -->
+            <div style="text-align: center; margin-bottom: 20px; padding-top: 20px;">
+                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 3 of 5</p>
+                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                </div>
+            </div>
+            
             <!-- Checkmark Animation -->
             <div style="text-align: center; padding: 40px 20px 30px;">
                 <div style="width: 100px; height: 100px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4d 100%); border-radius: 50%; margin: 0 auto 24px; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(255, 129, 32, 0.3);">
@@ -1910,11 +2261,22 @@
         
         <!-- STEP 4: WEALTH SCORE READY - LEAD CAPTURE -->
         <div id="step-3" class="step-content">
-            <!-- Step Header -->
-            <div class="step-header">
-                <div class="step-number">04</div>
-                <h2>Almost There. Your Wealth Score is Ready.</h2>
-                <p class="hint">Enter your details to unlock your personalized wealth report</p>
+            <!-- Simple Progress Bar -->
+            <div style="text-align: center; margin-bottom: 28px;">
+                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 4 of 5</p>
+                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 3px;"></div>
+                </div>
+            </div>
+            
+            <!-- Step Title -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <h2 style="font-size: 26px; font-weight: 700; color: #111; margin-bottom: 8px;">Almost There. Your Wealth Score is Ready.</h2>
+                <p style="font-size: 14px; color: #888;">Enter your details to unlock your personalized wealth report</p>
             </div>
             
             <!-- Chart Icon -->
@@ -2039,7 +2401,19 @@
 
         <!-- STEP 5: LOADING -->
         <div id="step-4" class="step-content">
-            <div style="text-align: center; padding: 60px 20px;">
+            <!-- Simple Progress Bar -->
+            <div style="text-align: center; margin-bottom: 20px; padding-top: 20px;">
+                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 5 of 5</p>
+                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; padding: 40px 20px;">
                 <h2 style="margin-bottom: 10px;">Building Your Wealth Blueprint Personalised Report</h2>
                 <p class="hint" style="margin-bottom: 30px;">Analyzing your financial position...</p>
                 <div class="loader"></div>
@@ -2049,9 +2423,21 @@
 
         <!-- STEP 6: RESULTS - PREMIUM REPORT -->
         <div id="step-5" class="step-content">
-            <div class="step-header" style="text-align: center;">
+            <!-- Simple Progress Bar -->
+            <div style="text-align: center; margin-bottom: 20px;">
+                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 5 of 5</p>
+                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+                </div>
+            </div>
+            
+            <div style="text-align: center; margin-bottom: 24px;">
                 <h2 style="color: #ff8120; font-size: 32px; margin-bottom: 5px;">Your Wealth Architecture Blueprint</h2>
-                <p class="hint">Success Formula Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
+                <p style="font-size: 14px; color: #888;">Success Formula Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
                 <p style="font-size: 12px; color: #888; margin-top: 8px;">Prepared by June Yoon | Wealth Architecture Strategist</p>
             </div>
             
@@ -2520,15 +2906,34 @@
         
         // Selection counter for Step 2 feedback
         function updateSelectionCount() {
-            const checkboxes = document.querySelectorAll('#step-1 input[name="concern"]:checked');
-            const counter = document.getElementById('selectionCounter');
-            const count = checkboxes.length;
+            // Get all checked checkboxes from both desktop and mobile views
+            const desktopCheckboxes = document.querySelectorAll('.step2-desktop-view input[name="concern"]:checked');
+            const mobileCheckboxes = document.querySelectorAll('.step2-mobile-view input[name="concern_mobile"]:checked');
             
-            if (count > 0) {
-                counter.style.display = 'block';
-                counter.textContent = count === 1 ? '1 area selected' : count + ' areas selected';
-            } else {
-                counter.style.display = 'none';
+            const desktopCounter = document.getElementById('selectionCounterDesktop');
+            const mobileCounter = document.getElementById('selectionCounterMobile');
+            
+            const desktopCount = desktopCheckboxes.length;
+            const mobileCount = mobileCheckboxes.length;
+            
+            // Update desktop counter
+            if (desktopCounter) {
+                if (desktopCount > 0) {
+                    desktopCounter.style.display = 'block';
+                    desktopCounter.textContent = desktopCount === 1 ? '1 area selected' : desktopCount + ' areas selected';
+                } else {
+                    desktopCounter.style.display = 'none';
+                }
+            }
+            
+            // Update mobile counter
+            if (mobileCounter) {
+                if (mobileCount > 0) {
+                    mobileCounter.style.display = 'block';
+                    mobileCounter.textContent = mobileCount === 1 ? '1 area selected' : mobileCount + ' areas selected';
+                } else {
+                    mobileCounter.style.display = 'none';
+                }
             }
         }
         
@@ -2971,23 +3376,79 @@
             document.getElementById('incomeLevel').value = currencyCode + '|' + btn.dataset.value + '|' + btn.dataset.localValue;
         }
         
-        // Navigate between Step 3A and 3B
+        // New income button selection for redesigned Step 3
+        function selectIncomeNew(btn) {
+            // Remove selected from all buttons
+            document.querySelectorAll('.income-btn-new').forEach(b => b.classList.remove('selected'));
+            // Add selected to clicked button
+            btn.classList.add('selected');
+            // Set hidden input value
+            const currencySelect = document.getElementById('currency');
+            const currencyCode = currencySelect ? currencySelect.value : 'SGD';
+            const tierValue = btn.querySelector('span').textContent;
+            document.getElementById('incomeLevel').value = currencyCode + '|' + btn.dataset.tier + '|' + tierValue;
+        }
+        
+        // Show Part 2 on the same page and scroll to it
+        function showPart2() {
+            const part2 = document.getElementById('step3Part2');
+            const part1Buttons = document.getElementById('part1Buttons');
+            const part1Privacy = document.getElementById('part1Privacy');
+            const partIndicator = document.getElementById('step3PartIndicator');
+            
+            // Hide Part 1 buttons and privacy
+            part1Buttons.style.display = 'none';
+            part1Privacy.style.display = 'none';
+            
+            // Update part indicator
+            partIndicator.textContent = 'Part 2 of 2 • Just 2 more quick details to go';
+            
+            // Show Part 2 with animation
+            part2.style.display = 'block';
+            part2.style.opacity = '0';
+            part2.style.transform = 'translateY(20px)';
+            
+            // Animate in
+            setTimeout(() => {
+                part2.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                part2.style.opacity = '1';
+                part2.style.transform = 'translateY(0)';
+            }, 50);
+            
+            // Scroll to Part 2
+            setTimeout(() => {
+                part2.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 100);
+        }
+        
+        // Hide Part 2 and go back to Part 1 view
+        function hidePart2() {
+            const part2 = document.getElementById('step3Part2');
+            const part1Buttons = document.getElementById('part1Buttons');
+            const part1Privacy = document.getElementById('part1Privacy');
+            const partIndicator = document.getElementById('step3PartIndicator');
+            
+            // Hide Part 2
+            part2.style.display = 'none';
+            
+            // Show Part 1 buttons and privacy
+            part1Buttons.style.display = 'flex';
+            part1Privacy.style.display = 'block';
+            
+            // Update part indicator
+            partIndicator.textContent = 'Part 1 of 2 • Let\'s map your current position';
+            
+            // Scroll to top of step
+            document.getElementById('step-2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        
+        // Navigate between Step 3A and 3B (legacy functions - kept for compatibility)
         function goToStep3B() {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-2b').classList.add('active');
-            // Keep progress bar at step 3 (currentStep = 2)
-            currentStep = 2;
-            updateProgress();
-            window.scrollTo(0, 0);
+            showPart2();
         }
         
         function goToStep3A() {
-            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-            document.getElementById('step-2').classList.add('active');
-            // Keep progress bar at step 3 (currentStep = 2)
-            currentStep = 2;
-            updateProgress();
-            window.scrollTo(0, 0);
+            hidePart2();
         }
         
         // Show the personal info form (step-3b) from "Almost Done" screen
@@ -3010,9 +3471,10 @@
         }
         
         function nextStep() {
-            // If we're on step-2b (Financial Profile Part 2), go to step-2c (Almost Done)
-            const step2b = document.getElementById('step-2b');
-            if (step2b && step2b.classList.contains('active')) {
+            // If we're on step-2 and Part 2 is visible, go to step-2c (Almost Done)
+            const step2 = document.getElementById('step-2');
+            const part2 = document.getElementById('step3Part2');
+            if (step2 && step2.classList.contains('active') && part2 && part2.style.display !== 'none') {
                 goToStep2C();
                 return;
             }
@@ -3031,10 +3493,12 @@
                 goToStep2C();
                 return;
             }
-            // If we're on step-2c (Almost Done), go back to step-2b (Financial Part 2)
+            // If we're on step-2c (Almost Done), go back to step-2 with Part 2 visible
             const step2c = document.getElementById('step-2c');
             if (step2c && step2c.classList.contains('active')) {
-                goToStep3B();
+                document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+                document.getElementById('step-2').classList.add('active');
+                showPart2(); // Show Part 2 since they were on it
                 return;
             }
             if (currentStep > 0) showStep(currentStep - 1);
