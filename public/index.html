@@ -592,30 +592,40 @@
             .step-line { width: 30px; }
             .step-indicators { padding: 0 10px; }
             
-            /* Step 2 Mobile Optimizations */
+            /* Step 2 Mobile Optimizations - Refined */
             #step-1 .option-group {
-                margin-bottom: 28px !important;
-                gap: 10px !important;
+                margin-bottom: 20px !important;
+                gap: 8px !important;
             }
             #step-1 .option-item label {
                 padding: 14px 16px !important;
                 font-size: 14px !important;
+                line-height: 1.4 !important;
+                border-radius: 10px !important;
             }
-            /* Reduce spacing between section labels and options */
-            #step-1 div[style*="margin-bottom: 14px"] {
-                margin-bottom: 10px !important;
+            /* Checkbox alignment - center with first line */
+            #step-1 .option-item label:before {
                 margin-top: 0 !important;
+                align-self: flex-start !important;
             }
-            /* CTA area - more thumb-friendly */
-            #step-1 .button-group {
-                padding-bottom: 20px !important;
+            /* Section headers - tighter spacing */
+            #step-1 div[style*="gap: 10px; margin-bottom: 12px"] {
+                margin-bottom: 10px !important;
             }
-            #step-1 .btn-primary {
-                padding: 18px 24px !important;
+            /* Question text */
+            #step-1 .form-group > label:first-of-type {
                 font-size: 16px !important;
+                line-height: 1.35 !important;
             }
-            #step-1 .btn-secondary {
-                padding: 14px 20px !important;
+            /* CTA section breathing room */
+            #step-1 > div:last-child {
+                margin-top: 28px !important;
+                padding-top: 4px !important;
+            }
+            /* Skip link styling */
+            #step-1 a[onclick*="nextStep"] {
+                display: inline-block;
+                padding: 8px 16px;
             }
             
             /* Step 5 Results Page Mobile Fixes */
@@ -1349,73 +1359,73 @@
             
             <!-- Question -->
             <div class="form-group" style="margin-bottom: 0;">
-                <label style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; display: block; line-height: 1.4;">What's the biggest challenge holding back your wealth growth?</label>
+                <label style="font-size: 17px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; display: block; line-height: 1.4;">What's the biggest challenge stopping you from building real wealth?</label>
                 <p style="font-size: 13px; color: #888; margin-bottom: 20px;">Select all that apply (most people choose 2–3)</p>
                 
-                <!-- Optimize Your Money -->
+                <!-- Keep More of What You Earn -->
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Optimize Your Money</span>
+                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Keep More of What You Earn</span>
                 </div>
                 <div class="option-group" style="margin-bottom: 24px;">
                     <div class="option-item">
-                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization">
-                        <label for="concern-tax">I feel like I'm paying too much in taxes</label>
+                        <input type="checkbox" id="concern-tax" name="concern" value="Tax Optimization" onchange="updateSelectionCount()">
+                        <label for="concern-tax">I'm paying too much in taxes</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management">
+                        <input type="checkbox" id="concern-cashflow" name="concern" value="Cash Flow Management" onchange="updateSelectionCount()">
                         <label for="concern-cashflow">I want better control over my cash flow</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy">
-                        <label for="concern-debt">I want to reduce debt or use leverage more effectively</label>
+                        <input type="checkbox" id="concern-debt" name="concern" value="Debt Strategy" onchange="updateSelectionCount()">
+                        <label for="concern-debt">I want to reduce debt or use leverage better</label>
                     </div>
                 </div>
                 
-                <!-- Grow Your Investments -->
+                <!-- Grow Your Wealth Faster -->
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Grow Your Investments</span>
+                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Grow Your Wealth Faster</span>
                 </div>
                 <div class="option-group" style="margin-bottom: 24px;">
                     <div class="option-item">
-                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment">
+                        <input type="checkbox" id="concern-deploy" name="concern" value="Capital Deployment" onchange="updateSelectionCount()">
                         <label for="concern-deploy">I don't know where to invest my money</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection">
-                        <label for="concern-protect">I want to protect and diversify my wealth better</label>
+                        <input type="checkbox" id="concern-protect" name="concern" value="Wealth Protection" onchange="updateSelectionCount()">
+                        <label for="concern-protect">I want to protect and diversify better</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate">
-                        <label for="concern-realestate">I'm interested in real estate or property investment</label>
+                        <input type="checkbox" id="concern-realestate" name="concern" value="Real Estate" onchange="updateSelectionCount()">
+                        <label for="concern-realestate">I'm interested in real estate investing</label>
                     </div>
                 </div>
                 
-                <!-- Build Long-Term Wealth -->
+                <!-- Secure Your Financial Future -->
                 <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Build Long-Term Wealth</span>
+                    <span style="font-size: 14px; font-weight: 600; color: #cc5500;">Secure Your Financial Future</span>
                 </div>
                 <div class="option-group" style="margin-bottom: 20px;">
                     <div class="option-item">
-                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning">
-                        <label for="concern-legacy">I want to build long-term or generational wealth</label>
+                        <input type="checkbox" id="concern-legacy" name="concern" value="Legacy Planning" onchange="updateSelectionCount()">
+                        <label for="concern-legacy">I want to build generational wealth</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning">
+                        <input type="checkbox" id="concern-retirement" name="concern" value="Retirement Planning" onchange="updateSelectionCount()">
                         <label for="concern-retirement">I'm unsure how much I need for retirement</label>
                     </div>
                     <div class="option-item">
-                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth">
-                        <label for="concern-business">I want to grow my business or plan my exit strategy</label>
+                        <input type="checkbox" id="concern-business" name="concern" value="Business Growth" onchange="updateSelectionCount()">
+                        <label for="concern-business">I want to grow or exit my business</label>
                     </div>
                 </div>
                 
-                <!-- Secondary Options -->
+                <!-- Different Priority Option -->
                 <div class="option-group" style="margin-bottom: 0;">
                     <div class="option-item">
-                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput()">
+                        <input type="checkbox" id="concern-other" name="concern" value="Other" onchange="toggleOtherConcernInput(); updateSelectionCount();">
                         <label for="concern-other" style="background: #fafafa; border-color: rgba(0,0,0,0.06);">
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; flex-shrink: 0;"><circle cx="12" cy="12" r="10"/></svg>
                             I have a different financial priority
@@ -1425,19 +1435,13 @@
                 <div id="otherConcernContainer" style="display: none; margin-top: 12px; margin-left: 40px;">
                     <input type="text" id="otherConcern" placeholder="Please describe your priority...">
                 </div>
-                <div class="option-group" style="margin-top: 10px;">
-                    <div class="option-item">
-                        <input type="checkbox" id="concern-private" name="concern" value="Skip">
-                        <label for="concern-private" style="background: #fafafa; border-color: rgba(0,0,0,0.06);">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 8px; flex-shrink: 0;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                            Skip this step
-                        </label>
-                    </div>
-                </div>
             </div>
             
             <!-- CTA Section -->
-            <div style="margin-top: 24px;">
+            <div style="margin-top: 32px;">
+                <!-- Selection counter (hidden when 0) -->
+                <p id="selectionCounter" style="font-size: 13px; color: #ff8120; text-align: center; margin-bottom: 12px; font-weight: 600; display: none;"></p>
+                
                 <!-- Pre-CTA reassurance -->
                 <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 16px; padding: 0 4px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0; margin-top: 2px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
@@ -1447,9 +1451,14 @@
                 <!-- CTA Button -->
                 <button class="btn-primary" onclick="nextStep()" style="width: 100%; padding: 18px 24px; font-size: 16px; border-radius: 12px;">See My Wealth Score & Strategy →</button>
                 
+                <!-- Skip as text link -->
+                <p style="text-align: center; margin-top: 16px;">
+                    <a href="javascript:void(0)" onclick="nextStep()" style="font-size: 13px; color: #999; text-decoration: none;">Skip this step</a>
+                </p>
+                
                 <!-- Privacy footer -->
-                <p style="font-size: 12px; color: #999; text-align: center; margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                <p style="font-size: 12px; color: #bbb; text-align: center; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     Your answers are private and secure.
                 </p>
             </div>
@@ -2141,6 +2150,20 @@
             } else {
                 otherContainer.style.display = 'none';
                 document.getElementById('otherConcern').value = '';
+            }
+        }
+        
+        // Selection counter for Step 2 feedback
+        function updateSelectionCount() {
+            const checkboxes = document.querySelectorAll('#step-1 input[name="concern"]:checked');
+            const counter = document.getElementById('selectionCounter');
+            const count = checkboxes.length;
+            
+            if (count > 0) {
+                counter.style.display = 'block';
+                counter.textContent = count === 1 ? '1 area selected' : count + ' areas selected';
+            } else {
+                counter.style.display = 'none';
             }
         }
         
