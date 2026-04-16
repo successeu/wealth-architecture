@@ -1675,12 +1675,13 @@
                 <p style="font-size: 13px; color: #888; margin-bottom: 16px; display: flex; align-items: center; gap: 6px;">
                     <span style="color: #ff8120;">→</span> Determines your wealth acceleration capacity & investment tier eligibility
                 </p>
-                <div class="income-buttons" style="display: flex; flex-wrap: wrap; gap: 10px;">
-                    <button type="button" class="income-btn" data-value="Under 50K" onclick="selectIncome(this)">< 50K</button>
-                    <button type="button" class="income-btn" data-value="50-100K" onclick="selectIncome(this)">50K – 100K</button>
-                    <button type="button" class="income-btn" data-value="100-250K" onclick="selectIncome(this)">100K – 250K</button>
-                    <button type="button" class="income-btn" data-value="250-500K" onclick="selectIncome(this)">250K – 500K</button>
-                    <button type="button" class="income-btn" data-value="500K+" onclick="selectIncome(this)">500K+</button>
+                <div id="incomeButtonsContainer" class="income-buttons" style="display: flex; flex-wrap: wrap; gap: 10px;">
+                    <!-- Buttons will be generated dynamically based on currency -->
+                    <button type="button" class="income-btn" data-tier="1" onclick="selectIncome(this)">< $50K</button>
+                    <button type="button" class="income-btn" data-tier="2" onclick="selectIncome(this)">$50K – $100K</button>
+                    <button type="button" class="income-btn" data-tier="3" onclick="selectIncome(this)">$100K – $250K</button>
+                    <button type="button" class="income-btn" data-tier="4" onclick="selectIncome(this)">$250K – $500K</button>
+                    <button type="button" class="income-btn" data-tier="5" onclick="selectIncome(this)">$500K+</button>
                 </div>
                 <input type="hidden" id="incomeLevel" value="">
             </div>
@@ -2472,6 +2473,332 @@
             currentStep = step;
             updateProgress();
             window.scrollTo(0, 0);
+            
+            // Update income buttons with currency when entering Step 3A (step-2)
+            if (step === 2) {
+                updateIncomeButtons();
+            }
+        }
+        
+        // Currency configuration with clean local tiers
+        // Each currency has its own culturally-appropriate income brackets
+        
+        // Currency symbols
+        const currencySymbols = {
+            'USD': '$', 'EUR': '€', 'GBP': '£', 'CHF': 'CHF ', 'AUD': 'A$', 'CAD': 'C$', 
+            'NZD': 'NZ$', 'SGD': 'S$', 'HKD': 'HK$', 'JPY': '¥', 'CNY': '¥',
+            'INR': '₹', 'IDR': 'Rp ', 'MYR': 'RM ', 'THB': '฿', 'PHP': '₱', 
+            'VND': '₫', 'KRW': '₩', 'TWD': 'NT$', 'PKR': '₨', 'BDT': '৳', 'LKR': 'Rs ',
+            'AED': 'AED ', 'SAR': 'SAR ', 'QAR': 'QAR ', 'KWD': 'KD ', 'BHD': 'BD ', 
+            'OMR': 'OMR ', 'ILS': '₪',
+            'ZAR': 'R', 'NGN': '₦', 'EGP': 'E£', 'KES': 'KSh ', 'GHS': 'GH₵',
+            'BRL': 'R$', 'MXN': 'MX$', 'ARS': 'AR$', 'CLP': 'CL$', 'COP': 'CO$', 'PEN': 'S/',
+            'SEK': 'kr ', 'NOK': 'kr ', 'DKK': 'kr ', 'PLN': 'zł', 'CZK': 'Kč ', 
+            'HUF': 'Ft ', 'RON': 'lei ', 'TRY': '₺', 'RUB': '₽', 'UAH': '₴'
+        };
+        
+        // Income tier groups with clean local numbers
+        const incomeTierGroups = {
+            // Group 1: Strong Western currencies (USD base)
+            'standard': {
+                currencies: ['USD', 'EUR', 'GBP', 'CHF', 'AUD', 'CAD', 'NZD', 'SGD'],
+                tiers: [
+                    { label: '< 50K', value: 'Under 50K' },
+                    { label: '50K – 100K', value: '50-100K' },
+                    { label: '100K – 250K', value: '100-250K' },
+                    { label: '250K – 500K', value: '250-500K' },
+                    { label: '500K+', value: '500K+' }
+                ]
+            },
+            
+            // Group 2: India (Lakhs & Crores)
+            'india': {
+                currencies: ['INR'],
+                tiers: [
+                    { label: '< 5L', value: 'Under 5L' },
+                    { label: '5L – 15L', value: '5-15L' },
+                    { label: '15L – 50L', value: '15-50L' },
+                    { label: '50L – 1Cr', value: '50L-1Cr' },
+                    { label: '1Cr+', value: '1Cr+' }
+                ]
+            },
+            
+            // Group 3: Pakistan, Bangladesh, Sri Lanka (similar to India but different ranges)
+            'southasia': {
+                currencies: ['PKR', 'BDT', 'LKR'],
+                tiers: [
+                    { label: '< 10L', value: 'Under 10L' },
+                    { label: '10L – 25L', value: '10-25L' },
+                    { label: '25L – 75L', value: '25-75L' },
+                    { label: '75L – 1.5Cr', value: '75L-1.5Cr' },
+                    { label: '1.5Cr+', value: '1.5Cr+' }
+                ]
+            },
+            
+            // Group 4: Southeast Asia (MYR, THB, PHP)
+            'seasiamedium': {
+                currencies: ['MYR', 'THB', 'PHP'],
+                tiers: [
+                    { label: '< 100K', value: 'Under 100K' },
+                    { label: '100K – 250K', value: '100-250K' },
+                    { label: '250K – 500K', value: '250-500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M+', value: '1M+' }
+                ]
+            },
+            
+            // Group 5: Indonesia (Millions/Billions)
+            'indonesia': {
+                currencies: ['IDR'],
+                tiers: [
+                    { label: '< 100jt', value: 'Under 100M' },
+                    { label: '100jt – 300jt', value: '100-300M' },
+                    { label: '300jt – 750jt', value: '300-750M' },
+                    { label: '750jt – 1.5M', value: '750M-1.5B' },
+                    { label: '1.5M+', value: '1.5B+' }
+                ]
+            },
+            
+            // Group 6: Vietnam (Millions)
+            'vietnam': {
+                currencies: ['VND'],
+                tiers: [
+                    { label: '< 200tr', value: 'Under 200M' },
+                    { label: '200tr – 500tr', value: '200-500M' },
+                    { label: '500tr – 1tỷ', value: '500M-1B' },
+                    { label: '1tỷ – 3tỷ', value: '1-3B' },
+                    { label: '3tỷ+', value: '3B+' }
+                ]
+            },
+            
+            // Group 7: Japan (Man = 10K)
+            'japan': {
+                currencies: ['JPY'],
+                tiers: [
+                    { label: '< 500万', value: 'Under 5M' },
+                    { label: '500万 – 1000万', value: '5-10M' },
+                    { label: '1000万 – 2500万', value: '10-25M' },
+                    { label: '2500万 – 5000万', value: '25-50M' },
+                    { label: '5000万+', value: '50M+' }
+                ]
+            },
+            
+            // Group 8: Korea (억 = 100M)
+            'korea': {
+                currencies: ['KRW'],
+                tiers: [
+                    { label: '< 5천만', value: 'Under 50M' },
+                    { label: '5천만 – 1억', value: '50-100M' },
+                    { label: '1억 – 2.5억', value: '100-250M' },
+                    { label: '2.5억 – 5억', value: '250-500M' },
+                    { label: '5억+', value: '500M+' }
+                ]
+            },
+            
+            // Group 9: China/Taiwan
+            'china': {
+                currencies: ['CNY', 'TWD'],
+                tiers: [
+                    { label: '< 30万', value: 'Under 300K' },
+                    { label: '30万 – 70万', value: '300-700K' },
+                    { label: '70万 – 150万', value: '700K-1.5M' },
+                    { label: '150万 – 300万', value: '1.5-3M' },
+                    { label: '300万+', value: '3M+' }
+                ]
+            },
+            
+            // Group 10: Hong Kong
+            'hongkong': {
+                currencies: ['HKD'],
+                tiers: [
+                    { label: '< 40萬', value: 'Under 400K' },
+                    { label: '40萬 – 80萬', value: '400-800K' },
+                    { label: '80萬 – 200萬', value: '800K-2M' },
+                    { label: '200萬 – 400萬', value: '2-4M' },
+                    { label: '400萬+', value: '4M+' }
+                ]
+            },
+            
+            // Group 11: Middle East (AED, SAR, QAR)
+            'gulf': {
+                currencies: ['AED', 'SAR', 'QAR'],
+                tiers: [
+                    { label: '< 150K', value: 'Under 150K' },
+                    { label: '150K – 300K', value: '150-300K' },
+                    { label: '300K – 750K', value: '300-750K' },
+                    { label: '750K – 1.5M', value: '750K-1.5M' },
+                    { label: '1.5M+', value: '1.5M+' }
+                ]
+            },
+            
+            // Group 12: High-value Gulf (KWD, BHD, OMR)
+            'gulfpremium': {
+                currencies: ['KWD', 'BHD', 'OMR'],
+                tiers: [
+                    { label: '< 15K', value: 'Under 15K' },
+                    { label: '15K – 30K', value: '15-30K' },
+                    { label: '30K – 75K', value: '30-75K' },
+                    { label: '75K – 150K', value: '75-150K' },
+                    { label: '150K+', value: '150K+' }
+                ]
+            },
+            
+            // Group 13: South Africa
+            'southafrica': {
+                currencies: ['ZAR'],
+                tiers: [
+                    { label: '< 500K', value: 'Under 500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M – 2.5M', value: '1-2.5M' },
+                    { label: '2.5M – 5M', value: '2.5-5M' },
+                    { label: '5M+', value: '5M+' }
+                ]
+            },
+            
+            // Group 14: Nigeria
+            'nigeria': {
+                currencies: ['NGN'],
+                tiers: [
+                    { label: '< 10M', value: 'Under 10M' },
+                    { label: '10M – 30M', value: '10-30M' },
+                    { label: '30M – 75M', value: '30-75M' },
+                    { label: '75M – 150M', value: '75-150M' },
+                    { label: '150M+', value: '150M+' }
+                ]
+            },
+            
+            // Group 15: Brazil
+            'brazil': {
+                currencies: ['BRL'],
+                tiers: [
+                    { label: '< 100K', value: 'Under 100K' },
+                    { label: '100K – 250K', value: '100-250K' },
+                    { label: '250K – 500K', value: '250-500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M+', value: '1M+' }
+                ]
+            },
+            
+            // Group 16: Mexico
+            'mexico': {
+                currencies: ['MXN'],
+                tiers: [
+                    { label: '< 500K', value: 'Under 500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M – 2.5M', value: '1-2.5M' },
+                    { label: '2.5M – 5M', value: '2.5-5M' },
+                    { label: '5M+', value: '5M+' }
+                ]
+            },
+            
+            // Group 17: Nordics
+            'nordic': {
+                currencies: ['SEK', 'NOK', 'DKK'],
+                tiers: [
+                    { label: '< 400K', value: 'Under 400K' },
+                    { label: '400K – 800K', value: '400-800K' },
+                    { label: '800K – 2M', value: '800K-2M' },
+                    { label: '2M – 4M', value: '2-4M' },
+                    { label: '4M+', value: '4M+' }
+                ]
+            },
+            
+            // Group 18: Eastern Europe
+            'easteurope': {
+                currencies: ['PLN', 'CZK', 'HUF', 'RON', 'RUB', 'UAH'],
+                tiers: [
+                    { label: '< 200K', value: 'Under 200K' },
+                    { label: '200K – 500K', value: '200-500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M – 2M', value: '1-2M' },
+                    { label: '2M+', value: '2M+' }
+                ]
+            },
+            
+            // Group 19: Turkey
+            'turkey': {
+                currencies: ['TRY'],
+                tiers: [
+                    { label: '< 500K', value: 'Under 500K' },
+                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '1M – 3M', value: '1-3M' },
+                    { label: '3M – 6M', value: '3-6M' },
+                    { label: '6M+', value: '6M+' }
+                ]
+            },
+            
+            // Group 20: Israel
+            'israel': {
+                currencies: ['ILS'],
+                tiers: [
+                    { label: '< 150K', value: 'Under 150K' },
+                    { label: '150K – 300K', value: '150-300K' },
+                    { label: '300K – 750K', value: '300-750K' },
+                    { label: '750K – 1.5M', value: '750K-1.5M' },
+                    { label: '1.5M+', value: '1.5M+' }
+                ]
+            }
+        };
+        
+        // Find which tier group a currency belongs to
+        function getTierGroup(currencyCode) {
+            for (const [groupName, group] of Object.entries(incomeTierGroups)) {
+                if (group.currencies.includes(currencyCode)) {
+                    return group;
+                }
+            }
+            // Default to standard if not found
+            return incomeTierGroups.standard;
+        }
+        
+        // Update income buttons based on selected currency
+        function updateIncomeButtons() {
+            const currencySelect = document.getElementById('currency');
+            const currencyCode = currencySelect ? currencySelect.value : 'USD';
+            const symbol = currencySymbols[currencyCode] || '$';
+            const tierGroup = getTierGroup(currencyCode);
+            
+            const container = document.getElementById('incomeButtonsContainer');
+            if (!container) return;
+            
+            // Clear existing buttons
+            container.innerHTML = '';
+            
+            // Generate buttons with local tiers
+            tierGroup.tiers.forEach((tier, index) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'income-btn';
+                btn.dataset.tier = index + 1;
+                btn.dataset.value = tier.value;
+                btn.dataset.localValue = tier.label;
+                
+                // Add currency symbol to label
+                let label = tier.label;
+                // Handle first tier (< X)
+                if (label.startsWith('<')) {
+                    label = '< ' + symbol + label.substring(2);
+                }
+                // Handle last tier (X+)
+                else if (label.endsWith('+')) {
+                    label = symbol + label;
+                }
+                // Handle range (X – Y)
+                else if (label.includes(' – ')) {
+                    const parts = label.split(' – ');
+                    label = symbol + parts[0] + ' – ' + symbol + parts[1];
+                }
+                
+                btn.textContent = label;
+                btn.onclick = function() { selectIncome(this); };
+                container.appendChild(btn);
+            });
+            
+            // Also update currency prefixes in Step 3B
+            const surplusPrefix = document.getElementById('surplusCurrencyPrefix');
+            const wealthPrefix = document.getElementById('wealthCurrencyPrefix');
+            if (surplusPrefix) surplusPrefix.textContent = symbol;
+            if (wealthPrefix) wealthPrefix.textContent = symbol;
         }
         
         // Income button selection
@@ -2480,8 +2807,10 @@
             document.querySelectorAll('.income-btn').forEach(b => b.classList.remove('selected'));
             // Add selected to clicked button
             btn.classList.add('selected');
-            // Set hidden input value
-            document.getElementById('incomeLevel').value = btn.dataset.value;
+            // Set hidden input value (store tier, value, and local display)
+            const currencySelect = document.getElementById('currency');
+            const currencyCode = currencySelect ? currencySelect.value : 'USD';
+            document.getElementById('incomeLevel').value = currencyCode + '|' + btn.dataset.value + '|' + btn.dataset.localValue;
         }
         
         // Navigate between Step 3A and 3B
