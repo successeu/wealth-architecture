@@ -1893,7 +1893,7 @@
                     <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
                 </div>
                 <h1 style="font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 12px;">Almost Done!</h1>
-                <p style="font-size: 16px; color: #666; line-height: 1.5; max-width: 280px; margin: 0 auto;">You're one step away from seeing your personalized wealth score.</p>
+                <p style="font-size: 16px; color: #666; line-height: 1.5; max-width: 300px; margin: 0 auto;">You're one step away from <strong>unlocking</strong> your personalized wealth score.</p>
             </div>
             
             <!-- Value Props -->
@@ -1944,135 +1944,156 @@
             <!-- CTA Buttons -->
             <div style="padding: 0 16px 20px;">
                 <button class="btn-primary" onclick="showStep(3)" style="width: 100%; padding: 18px 24px; font-size: 16px; border-radius: 12px; margin-bottom: 12px;">REVEAL MY WEALTH SCORE →</button>
-                <button class="btn-secondary" onclick="goToStep3B()" style="width: 100%; padding: 14px 20px; opacity: 0.6; border-color: rgba(0,0,0,0.08); color: #999;">BACK</button>
+                <button class="btn-secondary" onclick="goToStep3B()" style="width: 100%; padding: 14px 20px; opacity: 0.4; border: none; background: transparent; color: #888;">BACK</button>
             </div>
-            
-            <!-- Estimate reminder -->
-            <p style="font-size: 12px; color: #ff8120; text-align: center; padding: 0 16px 20px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                Estimate is fine — no need to be exact.
-            </p>
         </div>
         
-        <!-- STEP 4: WEALTH SCORE PREVIEW + GET FULL REPORT -->
+        <!-- STEP 4: WEALTH SCORE READY - LEAD CAPTURE -->
         <div id="step-3" class="step-content">
-            <!-- Score Preview Header -->
-            <div style="text-align: center; padding: 30px 20px 20px;">
-                <p style="font-size: 13px; color: #888; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px;">Your Wealth Position</p>
-                <h1 style="font-size: 28px; font-weight: 700; color: #1a1a1a; margin-bottom: 16px;">Your Wealth Score</h1>
+            <!-- Main Card -->
+            <div style="background: #fff; border-radius: 20px; margin: 16px; padding: 32px 24px; box-shadow: 0 2px 20px rgba(0,0,0,0.06);">
                 
-                <!-- Score Circle -->
-                <div style="position: relative; width: 160px; height: 160px; margin: 0 auto 20px;">
-                    <svg viewBox="0 0 160 160" style="transform: rotate(-90deg);">
-                        <circle cx="80" cy="80" r="70" fill="none" stroke="#f0f0f0" stroke-width="12"/>
-                        <circle id="previewScoreCircle" cx="80" cy="80" r="70" fill="none" stroke="#ff8120" stroke-width="12" stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="132" style="transition: stroke-dashoffset 1s ease;"/>
-                    </svg>
-                    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
-                        <div id="previewScoreValue" style="font-size: 48px; font-weight: 700; color: #ff8120;">72</div>
-                        <div style="font-size: 12px; color: #888; text-transform: uppercase;">out of 100</div>
+                <!-- Lock Icon -->
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div style="width: 72px; height: 72px; background: rgba(255, 129, 32, 0.1); border-radius: 50%; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
                     </div>
                 </div>
                 
-                <!-- Score Label -->
-                <div id="previewScoreLabel" style="display: inline-block; background: rgba(255, 129, 32, 0.1); color: #ff8120; padding: 8px 20px; border-radius: 20px; font-size: 14px; font-weight: 600;">Building Momentum</div>
-            </div>
-            
-            <!-- Quick Summary -->
-            <div style="background: #f9f9f9; border-radius: 16px; padding: 20px; margin: 0 16px 20px;">
-                <h3 style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-                    Quick Summary
-                </h3>
-                <div style="font-size: 14px; color: #555; line-height: 1.6;">
-                    <p id="previewSummary" style="margin: 0;">Based on your inputs, you're in a solid position with room for optimization. Your income and savings pattern suggest potential for accelerated wealth building with the right strategy.</p>
-                </div>
-            </div>
-            
-            <!-- Unlock Full Report CTA -->
-            <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.2); border-radius: 16px; padding: 24px 20px; margin: 0 16px 24px;">
-                <div style="text-align: center; margin-bottom: 16px;">
-                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4d 100%); border-radius: 14px; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                    </div>
-                    <h3 style="font-size: 18px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">Unlock Your Full Report</h3>
-                    <p style="font-size: 14px; color: #666; line-height: 1.5; margin-bottom: 16px;">Get your complete wealth analysis with personalized recommendations sent directly to your inbox.</p>
-                </div>
+                <!-- Headline -->
+                <h1 style="font-size: 28px; font-weight: 700; color: #1a1a1a; text-align: center; margin-bottom: 12px;">Your Wealth Score is Ready</h1>
+                <p style="font-size: 15px; color: #666; text-align: center; line-height: 1.5; margin-bottom: 28px;">Enter your details below to unlock your full personalized wealth report and strategy.</p>
                 
-                <!-- What's Included -->
-                <div style="background: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px;">
-                    <p style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px;">Your full report includes:</p>
-                    <div style="font-size: 13px; color: #555; line-height: 1.8;">
-                        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ff8120;">✓</span> Detailed breakdown across 7 wealth dimensions</div>
-                        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ff8120;">✓</span> Tax optimization opportunities for your situation</div>
-                        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ff8120;">✓</span> 90-day action plan tailored to your goals</div>
-                        <div style="display: flex; align-items: center; gap: 8px;"><span style="color: #ff8120;">✓</span> Wealth projection based on your current trajectory</div>
+                <!-- What You'll Get Box -->
+                <div style="background: #fffaf5; border-radius: 14px; padding: 20px; margin-bottom: 28px; border: 1px solid rgba(255, 129, 32, 0.15);">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 16px;">
+                        <div style="width: 44px; height: 44px; background: rgba(255, 129, 32, 0.15); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                        </div>
+                        <p style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin: 0;">Here's what you'll get inside:</p>
                     </div>
-                </div>
-                
-                <!-- Timeline Question -->
-                <div style="margin-bottom: 20px;">
-                    <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 10px; display: block;">How soon do you want to achieve your financial breakthrough?</label>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onclick="selectTimeline(this)">
-                            <input type="radio" name="timeline" value="Within 1 year" style="accent-color: #ff8120; width: 18px; height: 18px;">
-                            <span style="font-size: 14px; color: #333;">Within 1 year</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onclick="selectTimeline(this)">
-                            <input type="radio" name="timeline" value="1-3 years" style="accent-color: #ff8120; width: 18px; height: 18px;">
-                            <span style="font-size: 14px; color: #333;">1–3 years</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onclick="selectTimeline(this)">
-                            <input type="radio" name="timeline" value="3-5 years" style="accent-color: #ff8120; width: 18px; height: 18px;">
-                            <span style="font-size: 14px; color: #333;">3–5 years</span>
-                        </label>
-                        <label style="display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s;" onclick="selectTimeline(this)">
-                            <input type="radio" name="timeline" value="5+ years" style="accent-color: #ff8120; width: 18px; height: 18px;">
-                            <span style="font-size: 14px; color: #333;">Long-term (5+)</span>
-                        </label>
-                    </div>
-                </div>
-                
-                <!-- Form Fields -->
-                <div style="margin-bottom: 16px;">
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">First Name</label>
-                        <input type="text" id="firstName" placeholder="E.g., James" required style="width: 100%; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box;">
-                    </div>
-                    
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Last Name</label>
-                        <input type="text" id="lastName" placeholder="E.g., Smith" required style="width: 100%; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box;">
-                    </div>
-                    
-                    <div style="margin-bottom: 12px;">
-                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Email Address</label>
-                        <input type="email" id="email" placeholder="Your email address" required style="width: 100%; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box;">
-                    </div>
-                    
-                    <div>
-                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Phone <span style="font-weight: 400; color: #888;">(Optional)</span></label>
-                        <div style="display: flex; border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
-                            <div style="background: #f8f8f8; padding: 14px 12px; border-right: 1px solid #e0e0e0; min-width: 60px;">
-                                <span id="phoneCountryCode" style="font-weight: 500; color: #333;">+65</span>
-                            </div>
-                            <input type="tel" id="phone" placeholder="8123 4567" style="border: none; padding: 14px 16px; flex: 1; font-size: 15px;">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; font-size: 13px; color: #555; line-height: 1.5;">
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Identify where you're losing money</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>See your future wealth projection</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Discover tax-saving opportunities</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Personalized recommendations</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Get a 90-day action plan</span>
+                        </div>
+                        <div style="display: flex; align-items: flex-start; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2.5" style="flex-shrink: 0; margin-top: 2px;"><polyline points="20 6 9 17 4 12"/></svg>
+                            <span>Action steps aligned to your goals</span>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Submit Button -->
-                <button class="btn-primary" onclick="generateReport()" style="width: 100%; padding: 18px 24px; font-size: 16px; border-radius: 12px;">SEND MY FULL REPORT →</button>
+                <!-- Divider -->
+                <div style="height: 1px; background: #f0f0f0; margin-bottom: 24px;"></div>
+                
+                <!-- Timeline Question -->
+                <div style="margin-bottom: 24px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                        <label style="font-size: 14px; font-weight: 600; color: #1a1a1a;">What's your timeline to significantly grow your wealth?</label>
+                    </div>
+                    <p style="font-size: 12px; color: #888; margin-bottom: 12px; padding-left: 28px;">This helps us tailor recommendations to your goals.</p>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fff;" onclick="selectTimeline(this)">
+                            <input type="radio" name="timeline" value="Within 1 year" style="accent-color: #ff8120; width: 18px; height: 18px;">
+                            <span style="font-size: 14px; color: #333;">Within 1 year</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fff;" onclick="selectTimeline(this)">
+                            <input type="radio" name="timeline" value="1-3 years" style="accent-color: #ff8120; width: 18px; height: 18px;">
+                            <span style="font-size: 14px; color: #333;">1 – 3 years</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fff;" onclick="selectTimeline(this)">
+                            <input type="radio" name="timeline" value="3-5 years" style="accent-color: #ff8120; width: 18px; height: 18px;">
+                            <span style="font-size: 14px; color: #333;">3 – 5 years</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid #e0e0e0; border-radius: 10px; cursor: pointer; transition: all 0.2s; background: #fff;" onclick="selectTimeline(this)">
+                            <input type="radio" name="timeline" value="5+ years" style="accent-color: #ff8120; width: 18px; height: 18px;">
+                            <span style="font-size: 14px; color: #333;">Long-term (5+ years)</span>
+                        </label>
+                    </div>
+                </div>
+                
+                <!-- Form Fields - Reduced -->
+                <div style="margin-bottom: 20px;">
+                    <div style="margin-bottom: 14px;">
+                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">First Name</label>
+                        <div style="position: relative;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                            <input type="text" id="firstName" placeholder="e.g., James" required style="width: 100%; padding: 14px 16px 14px 44px; border: 1px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Email Address</label>
+                        <div style="position: relative;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%);"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                            <input type="email" id="email" placeholder="e.g., james@example.com" required style="width: 100%; padding: 14px 16px 14px 44px; border: 1px solid #e0e0e0; border-radius: 10px; font-size: 15px; box-sizing: border-box;">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Privacy Notice -->
+                <div style="background: #f9f9f9; border-radius: 10px; padding: 14px 16px; margin-bottom: 20px; display: flex; align-items: flex-start; gap: 12px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2" style="flex-shrink: 0; margin-top: 1px;"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <div>
+                        <p style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin-bottom: 2px;">Your privacy is our priority.</p>
+                        <p style="font-size: 12px; color: #888; margin: 0;">Your information is 100% private and secure. We will never share your data.</p>
+                    </div>
+                </div>
+                
+                <!-- Primary CTA -->
+                <button class="btn-primary" onclick="generateReport()" style="width: 100%; padding: 18px 24px; font-size: 16px; border-radius: 12px; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                    UNLOCK MY FULL WEALTH REPORT →
+                </button>
+                
+                <!-- Skip Link -->
+                <p style="text-align: center; margin-top: 16px;">
+                    <a href="#" onclick="showStep(4); return false;" style="font-size: 13px; color: #888; text-decoration: underline;">Skip this step</a>
+                </p>
             </div>
             
-            <!-- Back Button -->
-            <div style="padding: 0 16px 20px;">
-                <button class="btn-secondary" onclick="goToStep2C()" style="width: 100%; padding: 14px 20px; opacity: 0.6; border-color: rgba(0,0,0,0.08); color: #999;">BACK</button>
+            <!-- Trust Bar -->
+            <div style="background: #f9f9f9; border-radius: 16px; margin: 0 16px 20px; padding: 20px;">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 12px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    <p style="font-size: 13px; font-weight: 600; color: #1a1a1a; margin: 0;">Trusted by 2,500+ professionals and business owners</p>
+                </div>
+                <div style="display: flex; align-items: center; justify-content: center; gap: 20px; opacity: 0.6;">
+                    <span style="font-size: 14px; font-weight: 700; color: #333;">Forbes</span>
+                    <span style="font-size: 12px; font-weight: 600; color: #333;">BUSINESS<br>INSIDER</span>
+                    <span style="font-size: 14px; font-weight: 700; color: #333;">CNBC</span>
+                    <span style="font-size: 14px; font-weight: 700; color: #333; font-style: italic;">Inc.</span>
+                </div>
             </div>
             
-            <!-- Privacy footer -->
-            <p style="font-size: 12px; color: #999; text-align: center; padding: 0 16px 20px; display: flex; align-items: center; justify-content: center; gap: 6px;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                Your information is 100% private and secure.
+            <!-- Footer Privacy -->
+            <p style="font-size: 12px; color: #999; text-align: center; padding: 0 16px 10px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#999" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                Your information is 100% private and secure. We will never share your data with anyone.
+            </p>
+            
+            <!-- Estimate Fine -->
+            <p style="font-size: 12px; color: #ff8120; text-align: center; padding: 0 16px 20px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Estimate is fine — no need to be exact.
             </p>
         </div>
 
@@ -3460,52 +3481,54 @@
         }
         
         async function generateReport() {
-            const country = document.getElementById('country').value;
-            const currency = document.getElementById('currency').value;
-            const income = document.getElementById('incomeLevel').value;
-            const surplus = parseFloat(document.getElementById('monthlySurplus').value) || 0;
-            const liquid = parseFloat(document.getElementById('liquidWealth').value) || 0;
-            const firstName = document.getElementById('firstName').value.trim();
-            const lastName = document.getElementById('lastName').value.trim();
-            const email = document.getElementById('email').value.trim();
-            const phoneNumber = document.getElementById('phone').value.trim();
-            const phoneCode = document.getElementById('phoneCountryCode').textContent;
-            const phone = phoneNumber ? phoneCode + ' ' + phoneNumber : '';
-            
-            if (!firstName || !lastName || !email) {
-                alert('Please enter your first name, last name, and email');
-                return;
-            }
-            
-            // Show loading
-            showStep(4);
-            
-            // Collect all checked status checkboxes
-            const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
-            let statusValues = [];
-            statusCheckboxes.forEach(cb => {
-                if (cb.value === 'Other') {
-                    const otherText = document.getElementById('otherStatus').value.trim();
-                    if (otherText) {
-                        statusValues.push('Other: ' + otherText);
-                    }
-                } else {
-                    statusValues.push(cb.value);
+            try {
+                const country = document.getElementById('country').value;
+                const currency = document.getElementById('currency').value;
+                const income = document.getElementById('incomeLevel').value;
+                const surplus = parseFloat(document.getElementById('monthlySurplus').value) || 0;
+                const liquid = parseFloat(document.getElementById('liquidWealth').value) || 0;
+                const firstName = document.getElementById('firstName').value.trim();
+                const lastName = document.getElementById('lastName')?.value?.trim() || '';
+                const email = document.getElementById('email').value.trim();
+                const phoneNumber = document.getElementById('phone')?.value?.trim() || '';
+                const phoneCodeEl = document.getElementById('phoneCountryCode');
+                const phoneCode = phoneCodeEl ? phoneCodeEl.textContent : '';
+                const phone = phoneNumber ? phoneCode + ' ' + phoneNumber : '';
+                
+                if (!firstName || !email) {
+                    alert('Please enter your first name and email address');
+                    return;
                 }
-            });
-            const status = statusValues.join(', ') || '';
-            
-            // Collect all checked concern checkboxes
-            const concernCheckboxes = document.querySelectorAll('input[name="concern"]:checked');
-            let concernValues = [];
-            concernCheckboxes.forEach(cb => {
-                if (cb.value === 'Other') {
-                    const otherText = document.getElementById('otherConcern').value.trim();
-                    if (otherText) {
-                        concernValues.push('Other: ' + otherText);
+                
+                // Show loading
+                showStep(4);
+                
+                // Collect all checked status checkboxes
+                const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
+                let statusValues = [];
+                statusCheckboxes.forEach(cb => {
+                    if (cb.value === 'Other') {
+                        const otherText = document.getElementById('otherStatus').value.trim();
+                        if (otherText) {
+                            statusValues.push('Other: ' + otherText);
+                        }
+                    } else {
+                        statusValues.push(cb.value);
                     }
-                } else {
-                    concernValues.push(cb.value);
+                });
+                const status = statusValues.join(', ') || '';
+                
+                // Collect all checked concern checkboxes
+                const concernCheckboxes = document.querySelectorAll('input[name="concern"]:checked');
+                let concernValues = [];
+                concernCheckboxes.forEach(cb => {
+                    if (cb.value === 'Other') {
+                        const otherText = document.getElementById('otherConcern').value.trim();
+                        if (otherText) {
+                            concernValues.push('Other: ' + otherText);
+                        }
+                    } else {
+                        concernValues.push(cb.value);
                 }
             });
             const concern = concernValues.join(', ') || '';
@@ -3551,6 +3574,12 @@
             // Show report
             showStep(5);
             generateAllContent(fullName, surplus, liquid, income, currency, status, concern, timeline);
+            } catch (error) {
+                console.error('❌ Error in generateReport:', error);
+                alert('Something went wrong. Please try again. Error: ' + error.message);
+                // Still show results even if there's an error
+                showStep(5);
+            }
         }
         
         // Generate FULL 4-PAGE PREMIUM PDF and upload to Vercel Blob, return URL
