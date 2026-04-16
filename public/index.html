@@ -592,6 +592,11 @@
             .step-line { width: 30px; }
             .step-indicators { padding: 0 10px; }
             
+            /* Hide desktop hero on mobile */
+            .step2-desktop-hero {
+                display: none !important;
+            }
+            
             /* Step 2 Mobile Optimizations - Refined */
             #step-1 .option-group {
                 margin-bottom: 20px !important;
@@ -1346,6 +1351,43 @@
 
         <!-- STEP 2: WEALTH PRIORITIES -->
         <div id="step-1" class="step-content">
+            <!-- Desktop Hero Section (hidden on mobile) -->
+            <div class="step2-desktop-hero" style="background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 16px; padding: 24px; margin-bottom: 32px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 4px 20px rgba(255, 129, 32, 0.06);">
+                <div style="display: flex; align-items: flex-start; gap: 20px;">
+                    <!-- Step number box -->
+                    <div style="width: 56px; height: 56px; background: rgba(255, 129, 32, 0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <span style="font-size: 24px; font-weight: 700; color: #ff8120;">02</span>
+                    </div>
+                    <!-- Content -->
+                    <div style="flex: 1;">
+                        <h3 style="font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px;">Your Personalized Wealth Score & Strategy Awaits</h3>
+                        <p style="font-size: 14px; color: #555; line-height: 1.5; margin-bottom: 16px;">
+                            This assessment has helped <strong style="color: #ff8120;">2,500+ professionals</strong> uncover hidden gaps slowing their financial progress.
+                        </p>
+                        
+                        <!-- Trust indicators with icons -->
+                        <div style="display: flex; gap: 24px; margin-bottom: 16px; flex-wrap: wrap;">
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; font-weight: 500;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                3 minutes
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; font-weight: 500;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M18 17V9"/><path d="M13 17V5"/><path d="M8 17v-3"/></svg>
+                                Real insights
+                            </span>
+                            <span style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #555; font-weight: 500;">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                                Instant results
+                            </span>
+                        </div>
+                        
+                        <p style="font-size: 13px; color: #666; line-height: 1.5;">
+                            The more honest your answers, the more accurate your blueprint. <strong style="color: #1a1a1a;">We are not judging. We are here to measure what matters.</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Section Header - Simplified -->
             <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #eee;">
                 <div style="width: 44px; height: 44px; background: rgba(255, 129, 32, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center;">
