@@ -587,19 +587,39 @@
             font-weight: 500;
             color: #333;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
             flex: 1;
             min-width: 100px;
         }
         .income-btn:hover {
             border-color: #ff8120;
             background: #fffaf5;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 129, 32, 0.15);
         }
         .income-btn.selected {
             border-color: #ff8120;
-            background: rgba(255, 129, 32, 0.1);
+            background: rgba(255, 129, 32, 0.12);
             color: #ff8120;
             font-weight: 600;
+            box-shadow: 0 0 0 3px rgba(255, 129, 32, 0.15);
+            position: relative;
+        }
+        .income-btn.selected::after {
+            content: '✓';
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff8120;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         /* Status Card Grid */
@@ -612,11 +632,13 @@
             border-radius: 12px;
             background: #fff;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease;
         }
         .status-card:hover {
-            border-color: #ddd;
-            background: #fafafa;
+            border-color: #ffcca3;
+            background: #fffaf5;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(255, 129, 32, 0.1);
         }
         .status-card input[type="checkbox"] {
             display: none;
@@ -1754,8 +1776,8 @@
             
             <!-- Buttons -->
             <div class="button-group" style="flex-direction: row;">
-                <button class="btn-secondary" onclick="prevStep()">BACK</button>
-                <button class="btn-primary" onclick="goToStep3B()" style="flex: 1;">CONTINUE TO PART 2 →</button>
+                <button class="btn-secondary" onclick="prevStep()" style="opacity: 0.7; border-color: rgba(0,0,0,0.1);">BACK</button>
+                <button class="btn-primary" onclick="goToStep3B()" style="flex: 1;">CONTINUE TO BUILD MY STRATEGY →</button>
             </div>
             
             <!-- Estimate reassurance -->
@@ -1799,60 +1821,57 @@
                         Your Financial Profile
                         <span style="font-size: 14px; font-weight: 400; color: #888;">(Part 2 of 2)</span>
                     </h2>
-                    <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">A few more details to complete your profile.</p>
+                    <p style="font-size: 13px; color: #888; margin: 2px 0 0 0;">Just 2 more quick details to go.</p>
                 </div>
             </div>
             
             <!-- Monthly Surplus Question -->
             <div class="form-group" style="margin-bottom: 8px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Monthly discretionary surplus <span style="font-weight: 400;">(after all expenses)</span></label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
-                    <span style="color: #ff8120;">→</span> This determines your wealth-building velocity & investment capacity
-                </p>
+                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Monthly money left after expenses</label>
+                <p style="font-size: 13px; color: #888; margin-bottom: 14px;">How much you can save or invest each month</p>
                 <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
                     <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
-                        <span id="surplusCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$$</span>
+                        <span id="surplusCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
                     </div>
                     <input type="number" id="monthlySurplus" placeholder="e.g., 5,000" min="0" step="100" style="border: none; padding: 14px 16px; flex: 1;">
                 </div>
             </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 28px; display: flex; align-items: center; gap: 6px;">
+            <p style="font-size: 12px; color: #888; margin-bottom: 24px; display: flex; align-items: center; gap: 6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                 Estimate is fine — no need to be exact.
             </p>
             
             <!-- Liquid Net Worth Question -->
             <div class="form-group" style="margin-bottom: 8px;">
-                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Current liquid net worth <span style="font-weight: 400;">(cash, stocks, etc.)</span></label>
-                <p style="font-size: 13px; color: #888; margin-bottom: 14px; display: flex; align-items: center; gap: 6px;">
-                    <span style="color: #ff8120;">→</span> Your starting capital base for wealth projections
-                </p>
+                <label style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin-bottom: 6px; display: block;">Current savings & investments</label>
+                <p style="font-size: 13px; color: #888; margin-bottom: 14px;">Total value of your cash, stocks, and other investments</p>
                 <div class="currency-input-group" style="border: 1px solid #e0e0e0; border-radius: 10px; overflow: hidden;">
                     <div class="currency-prefix" style="background: #f8f8f8; padding: 14px 16px; border-right: 1px solid #e0e0e0;">
-                        <span id="wealthCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$$</span>
+                        <span id="wealthCurrencyPrefix" style="font-weight: 600; color: #ff8120;">$</span>
                     </div>
                     <input type="number" id="liquidWealth" placeholder="e.g., 150,000" min="0" step="1000" style="border: none; padding: 14px 16px; flex: 1;">
                 </div>
             </div>
-            <p style="font-size: 12px; color: #888; margin-bottom: 28px; display: flex; align-items: center; gap: 6px;">
+            <p style="font-size: 12px; color: #888; margin-bottom: 24px; display: flex; align-items: center; gap: 6px;">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
                 Estimate is fine — no need to be exact.
             </p>
             
-            <!-- Why we ask this -->
-            <div style="background: #fffaf5; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: flex-start; gap: 14px;">
-                <div style="width: 36px; height: 36px; background: rgba(255, 129, 32, 0.15); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-                </div>
-                <div>
-                    <p style="font-size: 14px; font-weight: 600; color: #1a1a1a; margin-bottom: 4px;">Why we ask this?</p>
-                    <p style="font-size: 13px; color: #555; line-height: 1.5; margin: 0;">These insights help us calculate your personalized wealth score and build a strategy that fits your unique financial profile.</p>
-                </div>
+            <!-- Why we ask this - Shortened -->
+            <div style="background: #fffaf5; border-radius: 12px; padding: 14px 18px; margin-bottom: 16px; display: flex; align-items: center; gap: 12px;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink: 0;"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+                <p style="font-size: 13px; color: #555; margin: 0;"><strong style="color: #1a1a1a;">Why we ask this?</strong> We use this to calculate your personalized wealth score and strategy.</p>
+            </div>
+            
+            <!-- Anticipation line -->
+            <div style="background: linear-gradient(90deg, rgba(255, 129, 32, 0.08) 0%, rgba(255, 129, 32, 0.02) 100%); border-radius: 10px; padding: 14px 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 12px;">
+                <div style="width: 24px; height: 24px; border: 2px solid #ff8120; border-radius: 50%; border-top-color: transparent; animation: spin 1s linear infinite;"></div>
+                <p style="font-size: 13px; color: #555; margin: 0; font-weight: 500;">You're almost done — your results are being prepared.</p>
             </div>
             
             <!-- Buttons -->
             <div class="button-group" style="flex-direction: row;">
-                <button class="btn-secondary" onclick="goToStep3A()">BACK</button>
+                <button class="btn-secondary" onclick="goToStep3A()" style="opacity: 0.7; border-color: rgba(0,0,0,0.1);">BACK</button>
                 <button class="btn-primary" onclick="nextStep()" style="flex: 1;">CONTINUE TO NEXT STEP →</button>
             </div>
             
@@ -2817,12 +2836,18 @@
         function goToStep3B() {
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
             document.getElementById('step-2b').classList.add('active');
+            // Keep progress bar at step 3 (currentStep = 2)
+            currentStep = 2;
+            updateProgress();
             window.scrollTo(0, 0);
         }
         
         function goToStep3A() {
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
             document.getElementById('step-2').classList.add('active');
+            // Keep progress bar at step 3 (currentStep = 2)
+            currentStep = 2;
+            updateProgress();
             window.scrollTo(0, 0);
         }
         
