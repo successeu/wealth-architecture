@@ -61,93 +61,6 @@
         
         .sr-logo span { color: #ff8120; }
         
-        .step-indicators {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 0;
-            margin-bottom: 50px;
-            padding: 0 20px;
-        }
-        
-        .step-item {
-            display: flex;
-            align-items: center;
-        }
-        
-        .step-dot {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            font-weight: 600;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 2px solid rgba(255, 129, 32, 0.3);
-            background: #ffffff;
-            color: #999;
-            position: relative;
-            z-index: 2;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
-        
-        .step-line {
-            width: 60px;
-            height: 2px;
-            background: linear-gradient(90deg, rgba(255, 129, 32, 0.2) 0%, rgba(255, 129, 32, 0.2) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .step-line::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 0%;
-            height: 100%;
-            background: linear-gradient(90deg, #ff8120 0%, #ffb366 100%);
-            transition: width 0.5s ease;
-        }
-        
-        .step-line.filled::after {
-            width: 100%;
-        }
-        
-        .step-dot.active {
-            background: linear-gradient(135deg, #ff8120 0%, #ffb366 50%, #ff8120 100%);
-            border: 2px solid rgba(255, 200, 150, 0.6);
-            color: #fff;
-            box-shadow: 0 0 25px rgba(255, 129, 32, 0.5), 
-                        0 0 50px rgba(255, 129, 32, 0.2),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.3);
-            transform: scale(1.1);
-        }
-        
-        .step-dot.completed {
-            background: linear-gradient(135deg, #ff8120 0%, #e06b10 100%);
-            border: 2px solid #ff8120;
-            color: #fff;
-            box-shadow: 0 2px 10px rgba(255, 129, 32, 0.3);
-        }
-        
-        .step-dot.completed::after {
-            content: '✓';
-            font-size: 18px;
-            font-weight: 300;
-        }
-        
-        .step-dot.completed span {
-            display: none;
-        }
-        
-        .step-dot:hover:not(.active):not(.completed) {
-            border-color: rgba(255, 129, 32, 0.5);
-            color: #666;
-        }
-        
         .hero-section {
             display: grid;
             grid-template-columns: 1fr 1.2fr;
@@ -698,9 +611,6 @@
             .hero-content h1 { font-size: 32px; }
             .summary-row { grid-template-columns: 1fr; }
             .button-group { flex-direction: column; }
-            .step-dot { width: 36px; height: 36px; font-size: 13px; }
-            .step-line { width: 30px; }
-            .step-indicators { padding: 0 10px; }
             
             /* Hide desktop hero on mobile */
             .step2-desktop-hero {
@@ -947,28 +857,6 @@
             </div>
         </div>
         
-        <div class="step-indicators" id="stepIndicators" style="display: none;">
-            <div class="step-item">
-                <div class="step-dot active" id="dot-1"><span>1</span></div>
-                <div class="step-line" id="line-1"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="dot-2"><span>2</span></div>
-                <div class="step-line" id="line-2"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="dot-3"><span>3</span></div>
-                <div class="step-line" id="line-3"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="dot-4"><span>4</span></div>
-                <div class="step-line" id="line-4"></div>
-            </div>
-            <div class="step-item">
-                <div class="step-dot" id="dot-5"><span>5</span></div>
-            </div>
-        </div>
-        
         <!-- INTRO LANDING PAGE - Clean Premium Design (Matching Image 1 Mockup) -->
         <div id="heroSection" style="margin-bottom: 56px;">
             
@@ -978,22 +866,15 @@
                 <!-- LEFT COLUMN -->
                 <div style="padding: 0;">
                     
-                    <!-- Step Indicator - Simplified -->
+                    <!-- Step Indicator - Simple Bar Only -->
                     <div style="margin-bottom: 32px;">
-                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 16px;">STEP 1 OF 5</p>
-                        <div style="display: flex; gap: 6px; margin-bottom: 14px;">
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 12px;">STEP 1 OF 5</p>
+                        <div style="display: flex; gap: 6px;">
                             <div style="flex: 1; height: 3px; background: #ff8120; border-radius: 2px;"></div>
                             <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
                             <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
                             <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
                             <div style="flex: 1; height: 3px; background: #e8e8e8; border-radius: 2px;"></div>
-                        </div>
-                        <div style="display: flex; gap: 0; justify-content: space-between; max-width: 280px;">
-                            <div style="width: 28px; height: 28px; background: #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 13px; font-weight: 600;">1</div>
-                            <div style="width: 28px; height: 28px; background: #fff; border: 1.5px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 13px; font-weight: 500;">2</div>
-                            <div style="width: 28px; height: 28px; background: #fff; border: 1.5px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 13px; font-weight: 500;">3</div>
-                            <div style="width: 28px; height: 28px; background: #fff; border: 1.5px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 13px; font-weight: 500;">4</div>
-                            <div style="width: 28px; height: 28px; background: #fff; border: 1.5px solid #ddd; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 13px; font-weight: 500;">5</div>
                         </div>
                     </div>
                     
@@ -3307,12 +3188,6 @@
         
         // Start assessment - scroll to step 1 form section
         function startAssessment() {
-            // Show step indicators
-            const stepIndicators = document.querySelector('.step-indicators');
-            if (stepIndicators) {
-                stepIndicators.style.display = 'flex';
-            }
-            
             // Show step 0 (first question step)
             const step0 = document.getElementById('step-0');
             if (step0) {
