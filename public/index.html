@@ -947,7 +947,7 @@
             </div>
         </div>
         
-        <div class="step-indicators" id="stepIndicators">
+        <div class="step-indicators" id="stepIndicators" style="display: none;">
             <div class="step-item">
                 <div class="step-dot active" id="dot-1"><span>1</span></div>
                 <div class="step-line" id="line-1"></div>
@@ -969,161 +969,337 @@
             </div>
         </div>
         
+        <!-- INTRO LANDING PAGE - Desktop Two-Column + Mobile Single Column -->
         <div id="heroSection" style="margin-bottom: 40px;">
-            <div class="hero-section" style="display: block !important; grid-template-columns: none !important; background: linear-gradient(180deg, #fffaf5 0%, #fff 100%); border-radius: 20px; padding: 48px 40px; border: 1px solid rgba(255, 129, 32, 0.15); box-shadow: 0 8px 32px rgba(255, 129, 32, 0.08);">
-                <div class="hero-content" style="text-align: center;">
-                    <!-- Premium badge -->
-                    <div style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a1a1a 0%, #333 100%); color: #ffd700; font-size: 11px; font-weight: 600; letter-spacing: 1.5px; padding: 8px 18px; border-radius: 20px; margin-bottom: 20px; text-transform: uppercase;">
-                        <span style="width: 8px; height: 8px; background: #ffd700; border-radius: 50%; display: inline-block;"></span>
-                        Wealth Diagnosis Assessment
+            
+            <!-- Desktop Layout -->
+            <div class="intro-desktop" style="display: grid; grid-template-columns: 1fr 1.1fr; gap: 50px; align-items: start;">
+                
+                <!-- LEFT COLUMN - Conversion Copy -->
+                <div style="padding: 20px 0;">
+                    
+                    <!-- Step Indicator -->
+                    <div style="margin-bottom: 24px;">
+                        <p style="font-size: 13px; font-weight: 600; color: #ff8120; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px;">STEP 1 OF 5</p>
+                        <div style="display: flex; gap: 8px;">
+                            <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                            <div style="flex: 1; height: 4px; background: #e0e0e0; border-radius: 2px;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                            <div style="width: 32px; height: 32px; background: #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 14px; font-weight: 600;">1</div>
+                            <div style="width: 32px; height: 32px; background: #fff; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; font-weight: 500;">2</div>
+                            <div style="width: 32px; height: 32px; background: #fff; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; font-weight: 500;">3</div>
+                            <div style="width: 32px; height: 32px; background: #fff; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; font-weight: 500;">4</div>
+                            <div style="width: 32px; height: 32px; background: #fff; border: 2px solid #e0e0e0; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #999; font-size: 14px; font-weight: 500;">5</div>
+                        </div>
                     </div>
                     
-                    <!-- Main headline -->
-                    <h1 class="hero-headline" style="font-size: 44px !important; font-weight: 700; line-height: 1.15; margin-bottom: 12px; color: #1a1a1a;">
-                        What's <span style="color: #ff8120;">Holding You Back</span> Financially?<br>
-                        <span class="hero-subheadline" style="font-size: 32px !important; font-weight: 600; color: #1a1a1a !important;">Get Your Wealth Score in 3 Minutes</span>
+                    <!-- Badge -->
+                    <div style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <circle cx="12" cy="12" r="6"/>
+                            <circle cx="12" cy="12" r="2" fill="#ff8120"/>
+                        </svg>
+                        <span style="font-size: 12px; font-weight: 700; color: #ff8120; text-transform: uppercase; letter-spacing: 1px;">YOUR FINANCIAL BLUEPRINT STARTS HERE</span>
+                    </div>
+                    
+                    <!-- Main Headline -->
+                    <h1 style="font-size: 42px; font-weight: 700; color: #1a1a1a; line-height: 1.15; margin-bottom: 16px;">
+                        You're earning…<br>but are you actually<br><span style="color: #ff8120;">getting ahead?</span>
                     </h1>
                     
-                    <!-- Emotional line (desktop: here, mobile: moved to end) -->
-                    <p class="emotional-line" style="font-size: 16px; color: #555; font-style: italic; margin-bottom: 20px;">
-                        You might be closer to a financial breakthrough than you think, or further than you realize.
+                    <!-- Subheadline -->
+                    <p style="font-size: 18px; color: #555; line-height: 1.6; margin-bottom: 28px;">
+                        Most professionals think they're doing fine until they see <strong style="color: #1a1a1a;">what's really missing</strong>.
                     </p>
                     
-                    <!-- Highlight bar (pain + proof + urgency) - DESKTOP: before CTA -->
-                    <div class="highlight-bar" style="display: flex; align-items: center; gap: 20px; background: #fdf8f4; border-radius: 12px; padding: 20px 28px; margin-bottom: 20px; border-left: 4px solid #ff8120; max-width: 750px; margin-left: auto; margin-right: auto;">
-                        <div class="highlight-icon" style="width: 70px; height: 70px; border: 2px solid #ff8120; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M3 3v18h18"/>
-                                <path d="M7 16l4-8 4 4 6-8"/>
+                    <!-- Social Proof + Testimonial Row -->
+                    <div style="display: grid; grid-template-columns: auto 1fr; gap: 20px; background: #fff8f5; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
+                        <!-- Trust Stats -->
+                        <div style="display: flex; align-items: center; gap: 12px; border-right: 1px solid rgba(255,129,32,0.2); padding-right: 20px;">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="#ff8120" stroke="none">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                             </svg>
+                            <div>
+                                <p style="font-size: 12px; color: #888; margin: 0;">Trusted by</p>
+                                <p style="font-size: 20px; font-weight: 700; color: #1a1a1a; margin: 0;">2,500+</p>
+                                <p style="font-size: 12px; color: #888; margin: 0;">professionals<br>across Asia</p>
+                            </div>
                         </div>
-                        <div style="text-align: left;">
-                            <p style="font-size: 17px; color: #1a1a1a; margin-bottom: 4px; font-weight: 500;">Discover exactly where you're losing money and what's slowing your wealth growth <strong>right now</strong>.</p>
-                            <p style="font-size: 17px; color: #1a1a1a; font-weight: 700;">Trusted by <span style="color: #ff8120;">2,500+</span> professionals and business owners.</p>
+                        
+                        <!-- Testimonial -->
+                        <div>
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <span style="font-size: 32px; color: #ff8120; font-weight: 700; line-height: 0.8;">"</span>
+                                <p id="introTestimonialText" style="font-size: 15px; font-style: italic; color: #555; margin: 0; line-height: 1.5; transition: opacity 0.5s ease;">I thought I had things under control… until I saw my score.</p>
+                            </div>
+                            <!-- Testimonial Dots -->
+                            <div style="display: flex; gap: 8px; margin-top: 12px; margin-left: 40px;">
+                                <span id="introDot0" style="width: 8px; height: 8px; border-radius: 50%; background: #ff8120;"></span>
+                                <span id="introDot1" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
+                                <span id="introDot2" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
+                            </div>
                         </div>
                     </div>
                     
-                    <!-- PRIMARY CTA BUTTON (no blue border, soft shadow instead) -->
-                    <button onclick="document.getElementById('step-0').scrollIntoView({behavior: 'smooth'})" class="btn-primary hero-cta" style="padding: 18px 48px; font-size: 18px; font-weight: 700; margin-bottom: 12px; box-shadow: 0 4px 20px rgba(255, 129, 32, 0.35); border: none; outline: none;">
-                        Get My Instant Wealth Score →
+                    <!-- Time Expectation Box -->
+                    <div style="background: #fafafa; border-radius: 12px; padding: 16px 20px; margin-bottom: 24px; display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255, 129, 32, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin: 0 0 2px 0;">This takes less than 3 minutes.</p>
+                            <p style="font-size: 14px; color: #888; margin: 0;">Your answers will reveal gaps most people overlook.</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Primary CTA -->
+                    <button onclick="startAssessment()" class="btn-primary" style="width: 100%; padding: 20px 32px; font-size: 18px; font-weight: 600; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 6px 24px rgba(255, 129, 32, 0.35);">
+                        Start My Assessment
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
                     </button>
                     
-                    <!-- Microcopy -->
-                    <p class="microcopy" style="font-size: 13px; color: #555; font-weight: 500; margin-bottom: 12px;">
-                        Takes less than 3 minutes • Get your results instantly • No financial knowledge needed
-                    </p>
+                    <!-- Micro Reassurances -->
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 24px; margin-top: 16px;">
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <p style="font-size: 13px; color: #888; margin: 0;">No financial knowledge required</p>
+                        </div>
+                        <div style="width: 1px; height: 16px; background: #ddd;"></div>
+                        <div style="display: flex; align-items: center; gap: 6px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                            </svg>
+                            <p style="font-size: 13px; color: #888; margin: 0;">Your answers are 100% confidential</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- RIGHT COLUMN - Visual Preview -->
+                <div style="padding: 20px 0;">
+                    <!-- Dashboard Preview Image -->
+                    <div style="margin-bottom: 24px;">
+                        <img src="https://raw.githubusercontent.com/successeu/wealth-architecture/main/public/home%20office%20with%20clarity%20score.png" alt="Wealth Clarity Score Dashboard" style="width: 100%; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.12);">
+                    </div>
                     
-                    <!-- Credibility booster -->
-                    <p class="credibility" style="font-size: 11px; color: #777; margin-bottom: 14px;">
-                        Based on real financial behavior patterns used by professionals
-                    </p>
-                    
-                    <!-- Curiosity trigger -->
-                    <p class="curiosity-trigger" style="font-size: 14px; color: #555; font-style: italic; background: rgba(255,129,32,0.08); padding: 12px 20px; border-radius: 8px; display: inline-block;">
-                        Most people score below 50 and uncover hidden gaps in their wealth strategy.
-                    </p>
+                    <!-- Three Benefit Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 24px;">
+                        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px 16px; text-align: center;">
+                            <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <circle cx="12" cy="12" r="6"/>
+                                    <circle cx="12" cy="12" r="2"/>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;">Personalized Insights</h4>
+                            <p style="font-size: 12px; color: #888; line-height: 1.4; margin: 0;">Get a clear view of your financial strengths and weaknesses.</p>
+                        </div>
+                        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px 16px; text-align: center;">
+                            <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3v18h18"/>
+                                    <path d="M18 17V9"/>
+                                    <path d="M13 17V5"/>
+                                    <path d="M8 17v-3"/>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;">Actionable Recommendations</h4>
+                            <p style="font-size: 12px; color: #888; line-height: 1.4; margin: 0;">Know exactly where to focus for the biggest impact.</p>
+                        </div>
+                        <div style="background: #fff; border: 1px solid #f0f0f0; border-radius: 12px; padding: 20px 16px; text-align: center;">
+                            <div style="width: 44px; height: 44px; background: rgba(255,129,32,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                    <polyline points="22 4 12 14.01 9 11.01"/>
+                                </svg>
+                            </div>
+                            <h4 style="font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;">Build True Wealth</h4>
+                            <p style="font-size: 12px; color: #888; line-height: 1.4; margin: 0;">Create a roadmap to build, protect and grow your wealth with confidence.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- Mobile responsive styles - MOBILE ONLY improvements -->
-            <style>
-                @media (max-width: 768px) {
-                    #heroSection .hero-section {
-                        padding: 28px 18px !important;
-                    }
-                    #heroSection .hero-headline {
-                        font-size: 28px !important;
-                        line-height: 1.2 !important;
-                        margin-bottom: 8px !important;
-                    }
-                    #heroSection .hero-headline span:first-child {
-                        font-size: 28px !important;
-                    }
-                    #heroSection .hero-subheadline {
-                        font-size: 20px !important;
-                        display: block !important;
-                        margin-top: 6px !important;
-                    }
+            <!-- Credibility Footer -->
+            <div style="text-align: center; padding: 24px 0; margin-top: 20px; border-top: 1px solid #f0f0f0;">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                        <polyline points="22 4 12 14.01 9 11.01"/>
+                    </svg>
+                    <p style="font-size: 14px; color: #666; margin: 0;">Built on proven wealth frameworks used by high-performing individuals.</p>
+                </div>
+            </div>
+            
+            <!-- Mobile Layout (hidden on desktop) -->
+            <div class="intro-mobile" style="display: none;">
+                <div style="background: #fff; border-radius: 20px; padding: 32px 24px 40px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 4px 24px rgba(0,0,0,0.04);">
                     
-                    /* MOBILE: Optimized flow using flexbox order */
-                    /* Order: 1.Badge → 2.Headline → 3.CTA → 4.Microcopy → 5.Highlight bar → 6.Emotional line */
-                    #heroSection .hero-content {
-                        display: flex !important;
-                        flex-direction: column !important;
-                    }
-                    #heroSection .hero-content > div:first-child { order: 1; } /* badge */
-                    #heroSection .hero-content > h1.hero-headline { order: 2; } /* headline */
-                    #heroSection .hero-content > .hero-cta { order: 3; } /* CTA - moved up */
-                    #heroSection .hero-content > .microcopy { order: 4; } /* microcopy */
-                    #heroSection .hero-content > .highlight-bar { order: 5; } /* highlight bar */
-                    #heroSection .hero-content > .emotional-line { order: 6; } /* emotional line - moved to end */
-                    #heroSection .hero-content > .credibility { order: 7; } /* credibility */
-                    #heroSection .hero-content > .curiosity-trigger { order: 8; display: none !important; } /* hide on mobile - redundant */
+                    <!-- Target Icon -->
+                    <div style="text-align: center; margin-bottom: 24px;">
+                        <div style="width: 80px; height: 80px; margin: 0 auto; display: flex; align-items: center; justify-content: center;">
+                            <svg width="70" height="70" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <circle cx="12" cy="12" r="6"/>
+                                <circle cx="12" cy="12" r="2" fill="#ff8120"/>
+                            </svg>
+                        </div>
+                    </div>
                     
-                    /* CTA Button - Remove blue border, add soft shadow */
-                    #heroSection .hero-cta {
-                        width: 100% !important;
-                        padding: 16px 24px !important;
-                        font-size: 17px !important;
-                        margin-bottom: 14px !important;
-                        border: none !important;
-                        outline: none !important;
-                        box-shadow: 0 4px 16px rgba(255, 129, 32, 0.4) !important;
-                    }
-                    #heroSection .hero-cta:focus {
-                        outline: none !important;
-                        border: none !important;
-                    }
+                    <!-- Main Headline -->
+                    <h1 style="font-size: 28px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.25; margin-bottom: 16px;">
+                        You're earning…<br>but are you actually<br><span style="color: #ff8120;">getting ahead?</span>
+                    </h1>
                     
-                    /* Highlight bar - tighter on mobile */
-                    #heroSection .highlight-bar {
-                        padding: 14px 16px !important;
-                        gap: 12px !important;
-                        flex-direction: column !important;
-                        text-align: center !important;
-                        margin-bottom: 14px !important;
-                    }
-                    #heroSection .highlight-bar > div:last-child {
-                        text-align: center !important;
-                    }
-                    #heroSection .highlight-bar p {
-                        font-size: 14px !important;
-                    }
+                    <!-- Subheadline -->
+                    <p style="font-size: 16px; color: #666; text-align: center; line-height: 1.5; margin-bottom: 28px;">
+                        Most professionals think they're doing fine until they see <strong style="color: #1a1a1a;">what's really missing</strong>.
+                    </p>
                     
-                    /* Icon - reduce size by ~20% */
-                    #heroSection .highlight-icon {
-                        width: 44px !important;
-                        height: 44px !important;
-                        margin: 0 auto !important;
-                    }
-                    #heroSection .highlight-icon svg {
-                        width: 20px !important;
-                        height: 20px !important;
-                    }
+                    <!-- Social Proof Block -->
+                    <div style="background: #fff8f5; border-radius: 14px; padding: 20px; margin-bottom: 24px;">
+                        <!-- Trust Line -->
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="#ff8120" stroke="none">
+                                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                <circle cx="9" cy="7" r="4"/>
+                                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                            </svg>
+                            <p style="font-size: 14px; font-weight: 600; color: #1a1a1a; margin: 0;">Trusted by 2,500+ professionals across Asia</p>
+                        </div>
+                        
+                        <!-- Rotating Testimonial -->
+                        <div style="position: relative; min-height: 50px;">
+                            <div style="display: flex; align-items: flex-start; gap: 8px;">
+                                <span style="font-size: 28px; color: #ff8120; font-weight: 700; line-height: 1;">"</span>
+                                <p id="introTestimonialTextMobile" style="font-size: 15px; font-style: italic; color: #555; margin: 0; line-height: 1.5; transition: opacity 0.5s ease;">I thought I had things under control… until I saw my score.</p>
+                            </div>
+                            
+                            <!-- Testimonial Dots -->
+                            <div style="display: flex; justify-content: center; gap: 8px; margin-top: 16px;">
+                                <span id="introDotMobile0" style="width: 8px; height: 8px; border-radius: 50%; background: #ff8120;"></span>
+                                <span id="introDotMobile1" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
+                                <span id="introDotMobile2" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd;"></span>
+                            </div>
+                        </div>
+                    </div>
                     
-                    /* Emotional line - smaller font on mobile */
-                    #heroSection .emotional-line {
-                        font-size: 14px !important;
-                        margin-bottom: 12px !important;
-                        margin-top: 0 !important;
-                    }
+                    <!-- Time Expectation Box -->
+                    <div style="background: #fafafa; border-radius: 14px; padding: 18px 20px; margin-bottom: 28px; display: flex; align-items: center; gap: 16px;">
+                        <div style="width: 48px; height: 48px; background: rgba(255, 129, 32, 0.12); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <p style="font-size: 15px; font-weight: 600; color: #1a1a1a; margin: 0 0 4px 0;">This takes less than 2 minutes.</p>
+                            <p style="font-size: 14px; color: #888; margin: 0; line-height: 1.4;">Your answers will reveal gaps most people overlook.</p>
+                        </div>
+                    </div>
                     
-                    /* Credibility - move below microcopy */
-                    #heroSection .credibility {
-                        font-size: 10px !important;
-                        margin-bottom: 10px !important;
-                    }
+                    <!-- Primary CTA -->
+                    <button onclick="startAssessment()" class="btn-primary" style="width: 100%; padding: 20px 24px; font-size: 17px; font-weight: 600; border-radius: 14px; display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 6px 20px rgba(255, 129, 32, 0.35);">
+                        Start My Assessment
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
                     
-                    #heroSection .curiosity-trigger {
-                        font-size: 13px !important;
-                        padding: 10px 16px !important;
-                    }
-                }
-            </style>
+                    <!-- Micro Reassurance -->
+                    <div style="text-align: center; margin-top: 20px;">
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                                <polyline points="22 4 12 14.01 9 11.01"/>
+                            </svg>
+                            <p style="font-size: 13px; color: #888; margin: 0;">No financial knowledge required</p>
+                        </div>
+                        <p style="font-size: 12px; color: #aaa; margin: 0;">Be honest — your results depend on it.</p>
+                    </div>
+                </div>
+            </div>
         </div>
         
+        <!-- Responsive Styles for Desktop/Mobile Intro -->
+        <style>
+            @media (min-width: 769px) {
+                .intro-desktop { display: grid !important; }
+                .intro-mobile { display: none !important; }
+            }
+            @media (max-width: 768px) {
+                .intro-desktop { display: none !important; }
+                .intro-mobile { display: block !important; }
+            }
+        </style>
+        
+        <!-- Intro Testimonial Rotation Script -->
+        <script>
+            (function() {
+                const introTestimonials = [
+                    'I thought I had things under control… until I saw my score.',
+                    'I didn\'t expect much, but it showed me what I\'ve been missing.',
+                    'It made me realize I wasn\'t progressing as much as I thought.'
+                ];
+                let introIndex = 0;
+                
+                function updateTestimonials() {
+                    const desktopEl = document.getElementById('introTestimonialText');
+                    const mobileEl = document.getElementById('introTestimonialTextMobile');
+                    
+                    // Fade out
+                    if (desktopEl) desktopEl.style.opacity = '0';
+                    if (mobileEl) mobileEl.style.opacity = '0';
+                    
+                    // Update dots - reset all
+                    for (let i = 0; i < 3; i++) {
+                        const dotDesktop = document.getElementById('introDot' + i);
+                        const dotMobile = document.getElementById('introDotMobile' + i);
+                        if (dotDesktop) dotDesktop.style.background = '#ddd';
+                        if (dotMobile) dotMobile.style.background = '#ddd';
+                    }
+                    
+                    setTimeout(function() {
+                        introIndex = (introIndex + 1) % introTestimonials.length;
+                        
+                        // Update text
+                        if (desktopEl) {
+                            desktopEl.textContent = introTestimonials[introIndex];
+                            desktopEl.style.opacity = '1';
+                        }
+                        if (mobileEl) {
+                            mobileEl.textContent = introTestimonials[introIndex];
+                            mobileEl.style.opacity = '1';
+                        }
+                        
+                        // Highlight current dot
+                        const currentDotDesktop = document.getElementById('introDot' + introIndex);
+                        const currentDotMobile = document.getElementById('introDotMobile' + introIndex);
+                        if (currentDotDesktop) currentDotDesktop.style.background = '#ff8120';
+                        if (currentDotMobile) currentDotMobile.style.background = '#ff8120';
+                    }, 500);
+                }
+                
+                setInterval(updateTestimonials, 4000);
+            })();
+        </script>
+        
         <!-- STEP 1: LOCATION & CURRENCY -->
-        <div id="step-0" class="step-content active">
+        <div id="step-0" class="step-content">
             <div class="step-header">
                 <div class="step-number">01</div>
                 <h2>Your Global Context</h2>
@@ -3125,6 +3301,24 @@
                 const el = document.getElementById(id);
                 if (el) el.textContent = symbol;
             });
+        }
+        
+        // Start assessment - scroll to step 1 form section
+        function startAssessment() {
+            // Show step indicators
+            const stepIndicators = document.querySelector('.step-indicators');
+            if (stepIndicators) {
+                stepIndicators.style.display = 'flex';
+            }
+            
+            // Show step 0 (first question step)
+            const step0 = document.getElementById('step-0');
+            if (step0) {
+                step0.classList.add('active');
+            }
+            
+            // Scroll to step-0 smoothly
+            document.getElementById('step-0').scrollIntoView({ behavior: 'smooth' });
         }
         
         // Also update prefixes when currency dropdown is changed directly
