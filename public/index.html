@@ -771,14 +771,9 @@
                 width: 100% !important;
             }
             
-            /* Step 5 Results Page Mobile Fixes - NEW DESIGN */
+            /* Step 5 Results Page Mobile Fixes */
             #step-5 {
                 padding: 0 16px !important;
-            }
-            
-            /* Show mobile header on mobile */
-            #mobileResultsHeader {
-                display: flex !important;
             }
             
             /* Score number smaller on mobile */
@@ -786,9 +781,102 @@
                 font-size: 56px !important;
             }
             
-            /* Pillars already in 2x2 grid - no change needed */
+            /* SECTION 1: Score Hero - stack vertically on mobile */
+            #step-5 > div:first-child {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
             
-            /* Trust footer stays 3 columns on mobile for compact look */
+            /* STAGE PROGRESS: Stage boxes - 2x2 grid on mobile */
+            .stage-boxes-desktop {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            .stage-boxes-desktop > div {
+                padding: 12px 8px !important;
+            }
+            .stage-boxes-desktop > div p:first-of-type {
+                font-size: 11px !important;
+            }
+            
+            /* SECTION 2: 4 Pillars - 2x2 grid on mobile */
+            .pillars-desktop {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+            .pillars-desktop > div {
+                padding: 14px !important;
+            }
+            .pillars-desktop > div > div:first-child {
+                width: 32px !important;
+                height: 32px !important;
+            }
+            .pillars-desktop span[id^="pillar"][id$="Score"] {
+                font-size: 26px !important;
+            }
+            
+            /* Hide desktop card sections on mobile */
+            .desktop-cards-section {
+                display: none !important;
+            }
+            
+            /* Show mobile accordion sections */
+            .mobile-accordions-section {
+                display: block !important;
+            }
+            
+            /* SECTION 4: MMI row - stack vertically on mobile */
+            .mmi-row-desktop {
+                grid-template-columns: 1fr !important;
+                gap: 12px !important;
+            }
+            
+            /* SECTION 5: CTA - stack vertically on mobile */
+            .cta-section-desktop > div {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
+            }
+            
+            /* Trust footer - keep 3 columns but smaller */
+            .trust-footer-desktop > div {
+                padding: 8px !important;
+            }
+            .trust-footer-desktop > div > div:first-child {
+                width: 32px !important;
+                height: 32px !important;
+            }
+            .trust-footer-desktop p {
+                font-size: 10px !important;
+            }
+        }
+        
+        /* Accordion Styles for Mobile */
+        .accordion-item {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            overflow: hidden;
+        }
+        .accordion-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            cursor: pointer;
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-arrow {
+            transition: transform 0.3s;
+        }
+        
+        /* Hide mobile accordions on desktop */
+        .mobile-accordions-section {
+            display: none;
         }
         
         /* Searchable Dropdown Styles */
@@ -2376,188 +2464,265 @@
             </div>
         </div>
 
-        <!-- STEP 6: RESULTS - MOBILE-FIRST DESIGN -->
+        <!-- STEP 6: RESULTS - PREMIUM REPORT -->
         <div id="step-5" class="step-content">
-            <!-- MOBILE HEADER (Success Resources - only shows on mobile) -->
-            <div id="mobileResultsHeader" style="display: none; align-items: center; justify-content: space-between; padding: 16px 0; border-bottom: 1px solid #eee; margin-bottom: 20px;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <div style="width: 32px; height: 32px; background: linear-gradient(135deg, #1a365d, #2d4a7c); border-radius: 6px; display: flex; align-items: center; justify-content: center;">
-                        <span style="color: #fff; font-weight: 700; font-size: 11px;">SR</span>
+            <!-- SECTION 1: SCORE HERO -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 30px;">
+                <!-- Left: Score -->
+                <div style="text-align: center;">
+                    <p style="font-size: 12px; font-weight: 600; color: #666; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;">YOUR WEALTH SCORE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+                        <span id="scoreValueNew" style="font-size: 72px; font-weight: 700; color: #1a1a1a; line-height: 1;">27</span>
+                        <span style="font-size: 28px; color: #888; font-weight: 400;">/50</span>
                     </div>
-                    <span style="font-size: 13px; font-weight: 600; color: #1a365d;">SUCCESS RESOURCES</span>
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: #f5f5f5; padding: 6px 14px; border-radius: 20px; margin: 12px 0;">
+                        <span style="font-size: 14px;">📈</span>
+                        <span id="percentageDisplay" style="font-size: 13px; color: #666;">54% of your financial freedom potential</span>
+                    </div>
+                    <p style="font-size: 14px; color: #666; margin-top: 12px; line-height: 1.6;">
+                        This score reflects not just your finances — but <span style="color: #ff8120; font-weight: 500;">how you think about money</span>.
+                    </p>
                 </div>
-                <div style="width: 28px; height: 20px; display: flex; flex-direction: column; justify-content: space-between;">
-                    <span style="display: block; width: 100%; height: 2px; background: #333;"></span>
-                    <span style="display: block; width: 100%; height: 2px; background: #333;"></span>
-                    <span style="display: block; width: 100%; height: 2px; background: #333;"></span>
+                
+                <!-- Right: Current Stage -->
+                <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 1px solid rgba(255, 129, 32, 0.2); border-radius: 16px; padding: 24px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;">YOU ARE CURRENTLY IN</p>
+                    <h2 id="stageNameDisplay" style="font-size: 28px; font-weight: 700; color: #ff8120; margin: 0 0 12px;">STABILITY TRAP</h2>
+                    <p id="stageDescDisplay" style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 12px;">
+                        You're earning, but your income still depends on your time and energy.
+                    </p>
+                    <p style="font-size: 13px; color: #888;">
+                        This isn't a strategy problem.<br>It's a <span style="color: #ff8120; font-weight: 600;">pattern</span>.
+                    </p>
                 </div>
             </div>
             
-            <!-- A. SCORE SECTION (HERO) -->
-            <div style="text-align: center; margin-bottom: 24px;">
-                <p style="font-size: 12px; font-weight: 600; color: #666; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;">YOUR WEALTH SCORE</p>
-                <div style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
-                    <span id="scoreValueNew" style="font-size: 72px; font-weight: 700; color: #1a1a1a; line-height: 1;">27</span>
-                    <span style="font-size: 28px; color: #888; font-weight: 400;">/ 50</span>
-                </div>
-                <div style="display: inline-flex; align-items: center; gap: 6px; background: #f5f5f5; padding: 8px 16px; border-radius: 20px; margin: 12px 0;">
-                    <span style="font-size: 14px;">📊</span>
-                    <span id="percentageDisplay" style="font-size: 13px; color: #666;">54% of your financial freedom potential</span>
-                </div>
-                <p style="font-size: 14px; color: #666; margin-top: 12px; line-height: 1.6;">
-                    This score reflects not just your finances —<br>but <span style="color: #ff8120; font-weight: 500;">how you think about money</span>.
-                </p>
-            </div>
-            
-            <!-- B. PROGRESS BAR -->
-            <div style="margin-bottom: 24px; padding: 0 10px;">
-                <div style="position: relative; height: 12px; background: #e5e5e5; border-radius: 6px; overflow: visible;">
+            <!-- STAGE PROGRESS BAR -->
+            <div style="margin-bottom: 40px;">
+                <div style="position: relative; height: 12px; background: linear-gradient(to right, #e0e0e0, #f0f0f0); border-radius: 6px; overflow: visible;">
                     <!-- Colored segments -->
                     <div style="position: absolute; left: 0; width: 24%; height: 100%; background: #ccc; border-radius: 6px 0 0 6px;"></div>
-                    <div style="position: absolute; left: 24%; width: 26%; height: 100%; background: #ff8120;"></div>
-                    <div style="position: absolute; left: 50%; width: 24%; height: 100%; background: #ffb380;"></div>
-                    <div style="position: absolute; left: 74%; width: 26%; height: 100%; background: #ffd699; border-radius: 0 6px 6px 0;"></div>
+                    <div id="progressSegmentActive" style="position: absolute; left: 24%; width: 26%; height: 100%; background: linear-gradient(to right, #ff8120, #ff9a4a);"></div>
                     <!-- Score marker -->
                     <div id="scoreMarker" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; background: #fff; border: 3px solid #ff8120; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10;"></div>
                 </div>
-                <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 12px; color: #888;">
-                    <span>0</span>
-                    <span>12</span>
-                    <span id="currentScoreLabel" style="color: #ff8120; font-weight: 600;">25</span>
-                    <span>37</span>
-                    <span>50</span>
+                <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: #888;">
+                    <span>0</span><span>12</span><span>25</span><span>37</span><span>50</span>
                 </div>
-            </div>
-            
-            <!-- C. CURRENT STATUS CARD -->
-            <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 1px solid rgba(255, 129, 32, 0.2); border-radius: 16px; padding: 20px; margin-bottom: 24px;">
-                <div style="display: flex; align-items: center; gap: 14px;">
-                    <div style="width: 56px; height: 56px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M16 12l-4-4-4 4M12 16V8"></path></svg>
+                
+                <!-- Stage Labels -->
+                <div class="stage-boxes-desktop" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px;">
+                    <div id="stage1Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">😰</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">SURVIVAL MODE</p>
+                        <p style="font-size: 11px; color: #aaa;">0-12</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">Just getting by.<br>Financial stress is high.</p>
                     </div>
-                    <div>
-                        <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px;">YOU ARE CURRENTLY IN</p>
-                        <h2 id="stageNameDisplay" style="font-size: 22px; font-weight: 700; color: #ff8120; margin: 0;">STABILITY TRAP</h2>
+                    <div id="stage2Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #fff5f0; border: 2px solid #ff8120;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">🪤</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; margin-bottom: 2px;">STABILITY TRAP</p>
+                        <p style="font-size: 11px; color: #ff8120;">13-25</p>
+                        <p style="font-size: 11px; color: #ff8120; margin-top: 6px; line-height: 1.4;">You're earning, but your income still depends on you.</p>
                     </div>
-                </div>
-                <p id="stageDescDisplay" style="font-size: 14px; color: #555; line-height: 1.6; margin: 14px 0 10px;">
-                    You're earning, but your income still depends on your time and energy.
-                </p>
-                <p style="font-size: 13px; color: #888;">
-                    This isn't a strategy problem. It's a <span style="color: #ff8120; font-weight: 600;">pattern</span>.
-                </p>
-            </div>
-            
-            <!-- D. SCORE BREAKDOWN (4 CARDS - 2x2 Grid) -->
-            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 24px;">
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.3px; margin-bottom: 8px;">Income<br>Capacity</p>
-                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
-                        <span id="pillarIncomeScore" style="font-size: 28px; font-weight: 700; color: #ff8120;">6</span>
-                        <span style="font-size: 14px; color: #aaa;">/10</span>
+                    <div id="stage3Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">📈</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">GROWTH PHASE</p>
+                        <p style="font-size: 11px; color: #aaa;">26-37</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">You're building momentum and creating leverage.</p>
                     </div>
-                    <div style="width: 100%; height: 4px; background: #eee; border-radius: 2px; margin-top: 8px;">
-                        <div id="pillarIncomeBar" style="width: 60%; height: 100%; background: #ff8120; border-radius: 2px;"></div>
-                    </div>
-                </div>
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.3px; margin-bottom: 8px;">Income<br>Structure</p>
-                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
-                        <span id="pillarStructureScore" style="font-size: 28px; font-weight: 700; color: #ff8120;">2</span>
-                        <span style="font-size: 14px; color: #aaa;">/10</span>
-                    </div>
-                    <div style="width: 100%; height: 4px; background: #eee; border-radius: 2px; margin-top: 8px;">
-                        <div id="pillarStructureBar" style="width: 20%; height: 100%; background: #ff8120; border-radius: 2px;"></div>
-                    </div>
-                </div>
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.3px; margin-bottom: 8px;">Savings<br>Rate</p>
-                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
-                        <span id="pillarSavingsScore" style="font-size: 28px; font-weight: 700; color: #ff8120;">9</span>
-                        <span style="font-size: 14px; color: #aaa;">/15</span>
-                    </div>
-                    <div style="width: 100%; height: 4px; background: #eee; border-radius: 2px; margin-top: 8px;">
-                        <div id="pillarSavingsBar" style="width: 60%; height: 100%; background: #ff8120; border-radius: 2px;"></div>
-                    </div>
-                </div>
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 16px; text-align: center;">
-                    <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.3px; margin-bottom: 8px;">Asset<br>Strength</p>
-                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
-                        <span id="pillarAssetScore" style="font-size: 28px; font-weight: 700; color: #ff8120;">5</span>
-                        <span style="font-size: 14px; color: #aaa;">/15</span>
-                    </div>
-                    <div style="width: 100%; height: 4px; background: #eee; border-radius: 2px; margin-top: 8px;">
-                        <div id="pillarAssetBar" style="width: 33%; height: 100%; background: #ff8120; border-radius: 2px;"></div>
+                    <div id="stage4Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">🚀</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">FREEDOM PATH</p>
+                        <p style="font-size: 11px; color: #aaa;">38-50</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">Your money and systems are working for you.</p>
                     </div>
                 </div>
             </div>
             
-            <!-- E. COLLAPSIBLE INSIGHTS (Accordions) -->
-            <div style="margin-bottom: 24px;">
+            <!-- SECTION 2: 4 PILLARS BREAKDOWN -->
+            <div class="pillars-desktop" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 30px;">
+                <!-- Income Capacity -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">INCOME CAPACITY</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarIncomeScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">6</span>
+                        <span style="font-size: 16px; color: #aaa;">/10</span>
+                    </div>
+                    <p id="pillarIncomeText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You have the potential to earn more.</p>
+                </div>
+                
+                <!-- Income Structure -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">INCOME STRUCTURE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarStructureScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">2</span>
+                        <span style="font-size: 16px; color: #aaa;">/10</span>
+                    </div>
+                    <p id="pillarStructureText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">Your income is still too dependent on active effort.</p>
+                </div>
+                
+                <!-- Savings Rate -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">SAVINGS RATE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarSavingsScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">9</span>
+                        <span style="font-size: 16px; color: #aaa;">/15</span>
+                    </div>
+                    <p id="pillarSavingsText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You're saving, but not enough to accelerate your freedom.</p>
+                </div>
+                
+                <!-- Asset Strength -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">ASSET STRENGTH</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarAssetScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">5</span>
+                        <span style="font-size: 16px; color: #aaa;">/15</span>
+                    </div>
+                    <p id="pillarAssetText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You haven't built enough financial reserves yet.</p>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: WHY + OPPORTUNITY + CONSEQUENCE (3 columns) - DESKTOP -->
+            <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px;">
+                <!-- Why This Is Happening (DYNAMIC) -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">💡</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">WHY THIS IS HAPPENING</p>
+                    </div>
+                    <div id="whyThisIsHappening">
+                        <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
+                        <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
+                        <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
+                            <li style="color: #ff8120;">How they think about money</li>
+                            <li style="color: #ff8120;">How they evaluate risk</li>
+                            <li style="color: #ff8120;">How they make financial decisions</li>
+                            <li style="color: #ff8120;">What they believe is "possible" for them</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Your Biggest Opportunity -->
+                <div style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #ff8120; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">🎯</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">YOUR BIGGEST OPPORTUNITY</p>
+                    </div>
+                    <p id="bottleneckTitle" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
+                    <p id="bottleneckDesc" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
+                    <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
+                </div>
+                
+                <!-- If Nothing Changes (DYNAMIC) -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #fef3f2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">⚠️</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #dc2626; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">IF NOTHING CHANGES</p>
+                    </div>
+                    <ul id="ifNothingChanges" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>You will keep trading time for money</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>Your growth will remain limited</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>Financial freedom will stay out of reach</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SECTION 3 MOBILE: Collapsible Accordions (hidden on desktop) -->
+            <div class="mobile-accordions-section" style="margin-bottom: 24px;">
                 <!-- Accordion 1: Why This Is Happening -->
-                <div class="accordion-item" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 10px; overflow: hidden;">
-                    <div class="accordion-header" onclick="toggleAccordion(this)" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; cursor: pointer;">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 18px;">💡</span>
-                            <span style="font-size: 14px; font-weight: 600; color: #1a365d;">WHY THIS IS HAPPENING</span>
+                            <span style="font-size: 14px; font-weight: 600; color: #ff8120;">WHY THIS IS HAPPENING</span>
                         </div>
-                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" style="transition: transform 0.3s;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
-                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;">
-                        <div id="whyThisIsHappening" style="padding: 0 16px 16px;">
-                            <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">You're earning well but your wealth isn't growing at the same rate.</p>
-                            <p style="font-size: 13px; color: #555; margin-bottom: 10px;">This happens because of:</p>
+                    <div class="accordion-content">
+                        <div id="whyThisIsHappeningMobile" style="padding: 0 16px 16px;">
+                            <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
+                            <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
                             <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
-                                <li style="color: #ff8120;">Your income still depends on your time</li>
-                                <li style="color: #ff8120;">Lifestyle expenses grow with your salary</li>
-                                <li style="color: #ff8120;">You're optimizing the wrong financial levers</li>
-                                <li style="color: #ff8120;">Fear of risk keeps your money idle</li>
+                                <li style="color: #ff8120;">How they think about money</li>
+                                <li style="color: #ff8120;">How they evaluate risk</li>
+                                <li style="color: #ff8120;">How they make financial decisions</li>
+                                <li style="color: #ff8120;">What they believe is "possible" for them</li>
                             </ul>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Accordion 2: Your Biggest Opportunity -->
-                <div class="accordion-item" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 10px; overflow: hidden;">
-                    <div class="accordion-header" onclick="toggleAccordion(this)" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; cursor: pointer;">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 18px;">🎯</span>
                             <span style="font-size: 14px; font-weight: 600; color: #ff8120;">YOUR BIGGEST OPPORTUNITY</span>
                         </div>
-                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" style="transition: transform 0.3s;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
-                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;">
+                    <div class="accordion-content">
                         <div style="padding: 0 16px 16px;">
-                            <p id="bottleneckTitle" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
-                            <p id="bottleneckDesc" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
+                            <p id="bottleneckTitleMobile" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
+                            <p id="bottleneckDescMobile" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
                             <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
                         </div>
                     </div>
                 </div>
                 
                 <!-- Accordion 3: If Nothing Changes -->
-                <div class="accordion-item" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; margin-bottom: 10px; overflow: hidden;">
-                    <div class="accordion-header" onclick="toggleAccordion(this)" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; cursor: pointer;">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div style="display: flex; align-items: center; gap: 12px;">
                             <span style="font-size: 18px;">⚠️</span>
                             <span style="font-size: 14px; font-weight: 600; color: #dc2626;">IF NOTHING CHANGES</span>
                         </div>
-                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" style="transition: transform 0.3s;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
-                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;">
+                    <div class="accordion-content">
                         <div style="padding: 0 16px 16px;">
-                            <ul id="ifNothingChanges" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                            <ul id="ifNothingChangesMobile" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
                                 <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
                                     <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>You'll keep trading time for money indefinitely</span>
+                                    <span>You will keep trading time for money</span>
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
                                     <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>Your savings won't outpace inflation</span>
+                                    <span>Your growth will remain limited</span>
                                 </li>
                                 <li style="display: flex; align-items: flex-start; gap: 8px;">
                                     <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>You'll reach retirement age still dependent on a paycheck</span>
+                                    <span>Financial freedom will stay out of reach</span>
                                 </li>
                             </ul>
                         </div>
@@ -2565,15 +2730,15 @@
                 </div>
                 
                 <!-- Accordion 4: This Is Where Most People Get Stuck -->
-                <div class="accordion-item" style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; overflow: hidden;">
-                    <div class="accordion-header" onclick="toggleAccordion(this)" style="display: flex; align-items: center; justify-content: space-between; padding: 16px; cursor: pointer;">
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div style="display: flex; align-items: center; gap: 12px;">
-                            <span style="font-size: 18px;">👥</span>
+                            <span style="font-size: 18px;">🔄</span>
                             <span style="font-size: 14px; font-weight: 600; color: #1a365d;">THIS IS WHERE MOST PEOPLE GET STUCK</span>
                         </div>
-                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2" style="transition: transform 0.3s;"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
-                    <div class="accordion-content" style="max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out;">
+                    <div class="accordion-content">
                         <div style="padding: 0 16px 16px;">
                             <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">They try to fix their finances with strategies.</p>
                             <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">But high performers fix something deeper first:</p>
@@ -2583,69 +2748,160 @@
                 </div>
             </div>
             
-            <!-- F. MMI OFFER CARD -->
-            <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 16px; padding: 20px; margin-bottom: 20px;">
-                <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
-                    <img src="https://raw.githubusercontent.com/successeu/wealth-architecture/main/public/mmi-logo.png" alt="MMI" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; flex-shrink: 0;">
+            <!-- SECTION 4: PSYCHOLOGY SHIFT + MMI INTRO - DESKTOP -->
+            <div class="desktop-cards-section mmi-row-desktop" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 30px;">
+                <!-- This Is Where Most People Get Stuck -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">🔄</span>
+                        </div>
+                        <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">THIS IS WHERE MOST PEOPLE GET STUCK</p>
+                    </div>
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">They try to fix their finances with strategies.</p>
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">But high performers fix something deeper first:</p>
+                    <p style="font-size: 14px; font-weight: 600; color: #1a1a1a;">How they <span style="color: #ff8120; text-decoration: underline;">THINK</span> about money.</p>
+                </div>
+                
+                <!-- MMI Intro -->
+                <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 20px; color: #fff;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <img src="https://raw.githubusercontent.com/successeu/wealth-architecture/main/public/mmi-logo.png" alt="MMI" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <div>
+                            <p style="font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px;">INTRODUCING:</p>
+                            <p style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">MILLIONAIRE MIND INTENSIVE</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 8px;">This is not a financial course.</p>
+                    <p style="font-size: 13px; color: #ccc; line-height: 1.6;">It's where you uncover and reset the hidden patterns controlling your financial results.</p>
+                </div>
+                
+                <!-- What You'll Experience -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <p style="font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 14px;">WHAT YOU'LL EXPERIENCE</p>
+                    <ul style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Identify hidden beliefs limiting your income</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Understand how wealthy people think differently</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Break patterns keeping you stuck</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Build a new financial blueprint</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SECTION 4 MOBILE: MMI Card Only (appears after accordions) -->
+            <div class="mobile-accordions-section" style="margin-bottom: 20px;">
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 16px; padding: 20px;">
+                    <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
+                        <img src="https://raw.githubusercontent.com/successeu/wealth-architecture/main/public/mmi-logo.png" alt="MMI" style="width: 80px; height: 80px; border-radius: 12px; object-fit: cover; flex-shrink: 0;">
+                        <div>
+                            <p style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;">MILLIONAIRE MIND INTENSIVE</p>
+                            <p style="font-size: 13px; color: #666; line-height: 1.5;">Reset the hidden patterns controlling your financial results.</p>
+                        </div>
+                    </div>
+                    <button onclick="window.open('https://www.millionairemind.online', '_blank')" class="btn-primary" style="width: 100%; padding: 16px; font-size: 15px; margin-bottom: 12px;">
+                        JOIN MILLIONAIRE MIND INTENSIVE →
+                    </button>
+                    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 12px; color: #888;">
+                        <span style="display: flex; align-items: center; gap: 4px;">📅 Live Online Event</span>
+                        <span>|</span>
+                        <span>Limited Seats Available</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SECTION 5: PRIMARY CTA (Desktop - hidden on mobile since mobile has MMI card above) -->
+            <div class="desktop-cards-section cta-section-desktop" style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 16px; padding: 30px; margin-bottom: 30px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
+                    <!-- Left: CTA -->
                     <div>
-                        <p style="font-size: 16px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px;">MILLIONAIRE MIND INTENSIVE</p>
-                        <p style="font-size: 13px; color: #666; line-height: 1.5;">Reset the hidden patterns controlling your financial results.</p>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 24px;">🎯</span>
+                            </div>
+                            <div>
+                                <p id="ctaTitle" style="font-size: 20px; font-weight: 700; color: #ff8120; margin: 0;">BREAK OUT OF THE STABILITY TRAP</p>
+                                <p style="font-size: 13px; color: #666; margin: 4px 0 0;">Start building a new financial blueprint today.</p>
+                            </div>
+                        </div>
+                        <button onclick="window.open('https://www.millionairemind.online', '_blank')" class="btn-primary" style="width: 100%; padding: 16px; font-size: 16px; margin-bottom: 12px;">
+                            JOIN MILLIONAIRE MIND INTENSIVE →
+                        </button>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 12px; color: #888;">
+                            <span style="display: flex; align-items: center; gap: 4px;">📅 Live Online Event</span>
+                            <span>|</span>
+                            <span>Limited Seats Available</span>
+                        </div>
                     </div>
-                </div>
-                <button onclick="window.open('https://www.millionairemind.online', '_blank')" class="btn-primary" style="width: 100%; padding: 16px; font-size: 15px; margin-bottom: 12px;">
-                    JOIN MILLIONAIRE MIND INTENSIVE →
-                </button>
-                <div style="display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 12px; color: #888;">
-                    <span style="display: flex; align-items: center; gap: 4px;">📅 Live Online Event</span>
-                    <span>|</span>
-                    <span>Limited Seats Available</span>
+                    
+                    <!-- Right: Rotating Testimonial -->
+                    <div style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8;">
+                        <p id="resultsTestimonialText" style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="color: #ff8120; font-size: 12px;">★★★★★</div>
+                            <span id="resultsTestimonialName" style="font-size: 12px; color: #888; transition: opacity 0.3s ease;">— Sandra Kiers</span>
+                        </div>
+                    </div>
                 </div>
             </div>
             
-            <!-- G. ROTATING TESTIMONIAL WITH DOTS -->
-            <div style="background: linear-gradient(135deg, #fafafa 0%, #fff 100%); border: 1px solid #e8e8e8; border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;">
-                <div style="color: #ff8120; font-size: 28px; margin-bottom: 12px; font-family: Georgia, serif;">"</div>
-                <p id="resultsTestimonialText" style="font-size: 15px; color: #444; line-height: 1.7; margin-bottom: 16px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
-                <p id="resultsTestimonialName" style="font-size: 13px; color: #888; font-weight: 500; margin-bottom: 16px; transition: opacity 0.3s ease;">— Sandra Kiers</p>
-                <!-- Carousel Dots -->
-                <div id="testimonialDots" style="display: flex; justify-content: center; gap: 8px;">
-                    <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background: #ff8120; transition: background 0.3s;"></span>
-                    <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
-                    <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
-                    <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
-                    <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
+            <!-- SECTION 5 MOBILE: Rotating Testimonial -->
+            <div class="mobile-accordions-section" style="margin-bottom: 20px;">
+                <div style="background: linear-gradient(135deg, #fafafa 0%, #fff 100%); border: 1px solid #e8e8e8; border-radius: 16px; padding: 24px; text-align: center;">
+                    <div style="color: #ff8120; font-size: 28px; margin-bottom: 12px; font-family: Georgia, serif;">"</div>
+                    <p id="resultsTestimonialTextMobile" style="font-size: 15px; color: #444; line-height: 1.7; margin-bottom: 16px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
+                    <p id="resultsTestimonialNameMobile" style="font-size: 13px; color: #888; font-weight: 500; margin-bottom: 16px; transition: opacity 0.3s ease;">— Sandra Kiers</p>
+                    <!-- Carousel Dots -->
+                    <div id="testimonialDotsMobile" style="display: flex; justify-content: center; gap: 8px;">
+                        <span class="dot active" style="width: 8px; height: 8px; border-radius: 50%; background: #ff8120; transition: background 0.3s;"></span>
+                        <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
+                        <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
+                        <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
+                        <span class="dot" style="width: 8px; height: 8px; border-radius: 50%; background: #ddd; transition: background 0.3s;"></span>
+                    </div>
                 </div>
             </div>
             
-            <!-- H. TRUST ROW (BOTTOM) -->
-            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 20px 0; border-top: 1px solid #e8e8e8;">
+            <!-- SECTION 6: TRUST FOOTER -->
+            <div class="trust-footer-desktop" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px 0; border-top: 1px solid #e8e8e8;">
                 <div style="text-align: center;">
-                    <div style="width: 36px; height: 36px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
-                    <p style="font-size: 11px; font-weight: 600; color: #555; margin: 0;">100% Private</p>
-                    <p style="font-size: 10px; color: #888;">& Secure</p>
+                    <p style="font-size: 12px; color: #666; margin: 0;">Your information is 100% private and secure.</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">We never share your data.</p>
                 </div>
                 <div style="text-align: center;">
-                    <div style="width: 36px; height: 36px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
-                    <p style="font-size: 11px; font-weight: 600; color: #555; margin: 0;">Trusted by</p>
-                    <p style="font-size: 10px; color: #888;">Professionals</p>
+                    <p style="font-size: 12px; color: #666; margin: 0;">Trusted by thousands of professionals</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">who are transforming their financial future.</p>
                 </div>
                 <div style="text-align: center;">
-                    <div style="width: 36px; height: 36px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                     </div>
-                    <p style="font-size: 11px; font-weight: 600; color: #555; margin: 0;">No Spam</p>
-                    <p style="font-size: 10px; color: #888;">No Obligation</p>
+                    <p style="font-size: 12px; color: #666; margin: 0;">No spam. No obligation.</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">Cancel anytime.</p>
                 </div>
             </div>
             
             <!-- Footer -->
-            <div style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 10px;">
-                <p style="font-size: 11px; color: #888;">© 2026 Success Resources | June Yoon Wealth Architecture</p>
-                <p style="font-size: 10px; color: #aaa; margin-top: 5px;">This report is for educational purposes. Please consult licensed financial advisors for personalized advice.</p>
+            <div style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 20px;">
+                <p style="font-size: 12px; color: #888;">© 2026 Success Resources | June Yoon Wealth Architecture</p>
+                <p style="font-size: 11px; color: #aaa; margin-top: 5px;">This report is for educational purposes. Please consult licensed financial advisors for personalized advice.</p>
             </div>
         </div>
         
@@ -2815,6 +3071,23 @@
             // API tokens are now stored securely in Vercel Environment Variables
             // PDF upload is handled by /api/upload-pdf serverless function
         };
+        
+        // ============================================
+        // ACCORDION TOGGLE FUNCTION (Mobile Results)
+        // ============================================
+        function toggleAccordion(header) {
+            const content = header.nextElementSibling;
+            const arrow = header.querySelector('.accordion-arrow');
+            const isOpen = content.style.maxHeight && content.style.maxHeight !== '0px';
+            
+            if (isOpen) {
+                content.style.maxHeight = '0px';
+                arrow.style.transform = 'rotate(0deg)';
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+                arrow.style.transform = 'rotate(90deg)';
+            }
+        }
         
         const CURRENCY_SYMBOLS = {
             'AED': 'AED', 'AFN': '؋', 'ALL': 'L', 'AMD': '֏', 'AOA': 'Kz',
@@ -5042,24 +5315,42 @@ June Yoon | Wealth Architecture Strategist`;
         let testimonialInterval = null;
         
         function rotateTestimonial() {
+            // Desktop elements
             const textEl = document.getElementById('resultsTestimonialText');
             const nameEl = document.getElementById('resultsTestimonialName');
             const dotsContainer = document.getElementById('testimonialDots');
             
-            if (!textEl || !nameEl) return;
+            // Mobile elements
+            const textElMobile = document.getElementById('resultsTestimonialTextMobile');
+            const nameElMobile = document.getElementById('resultsTestimonialNameMobile');
+            const dotsContainerMobile = document.getElementById('testimonialDotsMobile');
             
-            // Fade out
-            textEl.style.opacity = '0';
-            nameEl.style.opacity = '0';
+            // Fade out desktop
+            if (textEl && nameEl) {
+                textEl.style.opacity = '0';
+                nameEl.style.opacity = '0';
+            }
+            
+            // Fade out mobile
+            if (textElMobile && nameElMobile) {
+                textElMobile.style.opacity = '0';
+                nameElMobile.style.opacity = '0';
+            }
             
             setTimeout(() => {
                 // Update content
                 testimonialIndex = (testimonialIndex + 1) % testimonials.length;
                 const item = testimonials[testimonialIndex];
-                textEl.textContent = item.text;
-                nameEl.textContent = '— ' + item.name;
                 
-                // Update dots
+                // Update desktop
+                if (textEl) textEl.textContent = item.text;
+                if (nameEl) nameEl.textContent = '— ' + item.name;
+                
+                // Update mobile
+                if (textElMobile) textElMobile.textContent = item.text;
+                if (nameElMobile) nameElMobile.textContent = '— ' + item.name;
+                
+                // Update desktop dots
                 if (dotsContainer) {
                     const dots = dotsContainer.querySelectorAll('.dot');
                     dots.forEach((dot, i) => {
@@ -5071,9 +5362,25 @@ June Yoon | Wealth Architecture Strategist`;
                     });
                 }
                 
-                // Fade in
-                textEl.style.opacity = '1';
-                nameEl.style.opacity = '1';
+                // Update mobile dots
+                if (dotsContainerMobile) {
+                    const dots = dotsContainerMobile.querySelectorAll('.dot');
+                    dots.forEach((dot, i) => {
+                        if (i === testimonialIndex % 5) {
+                            dot.style.background = '#ff8120';
+                        } else {
+                            dot.style.background = '#ddd';
+                        }
+                    });
+                }
+                
+                // Fade in desktop
+                if (textEl) textEl.style.opacity = '1';
+                if (nameEl) nameEl.style.opacity = '1';
+                
+                // Fade in mobile
+                if (textElMobile) textElMobile.style.opacity = '1';
+                if (nameElMobile) nameElMobile.style.opacity = '1';
             }, 300);
         }
         
@@ -5176,7 +5483,7 @@ June Yoon | Wealth Architecture Strategist`;
         function updateStageBasedContent(stage) {
             const content = stageContent[stage] || stageContent['Stability Trap'];
             
-            // Update WHY THIS IS HAPPENING
+            // Update WHY THIS IS HAPPENING (Desktop)
             const whyEl = document.getElementById('whyThisIsHappening');
             if (whyEl) {
                 const why = content.whyThisIsHappening;
@@ -5189,11 +5496,36 @@ June Yoon | Wealth Architecture Strategist`;
                 `;
             }
             
-            // Update IF NOTHING CHANGES
+            // Update WHY THIS IS HAPPENING (Mobile)
+            const whyElMobile = document.getElementById('whyThisIsHappeningMobile');
+            if (whyElMobile) {
+                const why = content.whyThisIsHappening;
+                whyElMobile.innerHTML = `
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">${why.intro}</p>
+                    <p style="font-size: 13px; color: #555; margin-bottom: 10px;">${why.subtext}</p>
+                    <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
+                        ${why.points.map(point => `<li style="color: #ff8120;">${point}</li>`).join('')}
+                    </ul>
+                `;
+            }
+            
+            // Update IF NOTHING CHANGES (Desktop)
             const ifEl = document.getElementById('ifNothingChanges');
             if (ifEl) {
                 const consequences = content.ifNothingChanges;
                 ifEl.innerHTML = consequences.map((item, index) => `
+                    <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: ${index < consequences.length - 1 ? '8px' : '0'};">
+                        <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                        <span>${item}</span>
+                    </li>
+                `).join('');
+            }
+            
+            // Update IF NOTHING CHANGES (Mobile)
+            const ifElMobile = document.getElementById('ifNothingChangesMobile');
+            if (ifElMobile) {
+                const consequences = content.ifNothingChanges;
+                ifElMobile.innerHTML = consequences.map((item, index) => `
                     <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: ${index < consequences.length - 1 ? '8px' : '0'};">
                         <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
                         <span>${item}</span>
@@ -5332,12 +5664,19 @@ June Yoon | Wealth Architecture Strategist`;
             const pillarAssetText = document.getElementById('pillarAssetText');
             if (pillarAssetText) pillarAssetText.textContent = pillarTexts.assetStrength;
             
-            // Update bottleneck section
+            // Update bottleneck section (Desktop)
             const bottleneckTitle = document.getElementById('bottleneckTitle');
             if (bottleneckTitle) bottleneckTitle.textContent = bottleneckLabels[weakest.key] + ' (' + weakest.score + ' / ' + weakest.max + ')';
             
             const bottleneckDesc = document.getElementById('bottleneckDesc');
             if (bottleneckDesc) bottleneckDesc.textContent = bottleneckDescs[weakest.key];
+            
+            // Update bottleneck section (Mobile)
+            const bottleneckTitleMobile = document.getElementById('bottleneckTitleMobile');
+            if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = bottleneckLabels[weakest.key] + ' (' + weakest.score + ' / ' + weakest.max + ')';
+            
+            const bottleneckDescMobile = document.getElementById('bottleneckDescMobile');
+            if (bottleneckDescMobile) bottleneckDescMobile.textContent = bottleneckDescs[weakest.key];
             
             // Update CTA title
             const ctaTitle = document.getElementById('ctaTitle');
