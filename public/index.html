@@ -2609,9 +2609,7 @@
                 <!-- MMI Intro -->
                 <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 20px; color: #fff;">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #d4a574 0%, #c9956c 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
-                            <span style="font-size: 11px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.2;">MMI</span>
-                        </div>
+                        <img src="./public/mmi-logo.png" alt="MMI" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover; flex-shrink: 0;">
                         <div>
                             <p style="font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px;">INTRODUCING:</p>
                             <p style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">MILLIONAIRE MIND INTENSIVE</p>
@@ -2672,10 +2670,10 @@
                     <!-- Right: Rotating Testimonial -->
                     <div id="testimonialBox" style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; min-height: 140px;">
                         <div style="font-size: 32px; color: #e0e0e0; margin-bottom: 8px;">"</div>
-                        <p id="testimonialText" style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
+                        <p id="resultsTestimonialText" style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <div style="color: #ff8120; font-size: 12px;">★★★★★</div>
-                            <span id="testimonialName" style="font-size: 12px; color: #888; transition: opacity 0.3s ease;">– Sandra Kiers</span>
+                            <span id="resultsTestimonialName" style="font-size: 12px; color: #888; transition: opacity 0.3s ease;">– Sandra Kiers</span>
                         </div>
                     </div>
                 </div>
@@ -4988,8 +4986,8 @@ June Yoon | Wealth Architecture Strategist`;
         let testimonialInterval = null;
         
         function rotateTestimonial() {
-            const textEl = document.getElementById('testimonialText');
-            const nameEl = document.getElementById('testimonialName');
+            const textEl = document.getElementById('resultsTestimonialText');
+            const nameEl = document.getElementById('resultsTestimonialName');
             
             if (!textEl || !nameEl) return;
             
