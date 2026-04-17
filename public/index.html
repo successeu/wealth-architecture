@@ -2535,7 +2535,7 @@
             
             <!-- SECTION 3: WHY + OPPORTUNITY + CONSEQUENCE (3 columns) -->
             <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px;">
-                <!-- Why This Is Happening -->
+                <!-- Why This Is Happening (DYNAMIC) -->
                 <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2543,14 +2543,16 @@
                         </div>
                         <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">WHY THIS IS HAPPENING</p>
                     </div>
-                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
-                    <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
-                    <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
-                        <li style="color: #ff8120;">How they think about money</li>
-                        <li style="color: #ff8120;">How they evaluate risk</li>
-                        <li style="color: #ff8120;">How they make financial decisions</li>
-                        <li style="color: #ff8120;">What they believe is "possible" for them</li>
-                    </ul>
+                    <div id="whyThisIsHappening">
+                        <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
+                        <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
+                        <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
+                            <li style="color: #ff8120;">How they think about money</li>
+                            <li style="color: #ff8120;">How they evaluate risk</li>
+                            <li style="color: #ff8120;">How they make financial decisions</li>
+                            <li style="color: #ff8120;">What they believe is "possible" for them</li>
+                        </ul>
+                    </div>
                 </div>
                 
                 <!-- Your Biggest Opportunity -->
@@ -2566,7 +2568,7 @@
                     <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
                 </div>
                 
-                <!-- If Nothing Changes -->
+                <!-- If Nothing Changes (DYNAMIC) -->
                 <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div style="width: 32px; height: 32px; background: #fef3f2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2574,7 +2576,7 @@
                         </div>
                         <p style="font-size: 12px; font-weight: 600; color: #dc2626; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">IF NOTHING CHANGES</p>
                     </div>
-                    <ul style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                    <ul id="ifNothingChanges" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
                         <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
                             <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
                             <span>You will keep trading time for money</span>
@@ -5012,6 +5014,109 @@ June Yoon | Wealth Architecture Strategist`;
             testimonialInterval = setInterval(rotateTestimonial, 3500);
         }
         
+        // ============================================
+        // STAGE-BASED PERSONALIZATION
+        // ============================================
+        const stageContent = {
+            'Survival Mode': {
+                whyThisIsHappening: {
+                    intro: "You're in survival mode — focused on covering immediate needs.",
+                    subtext: "This happens because of:",
+                    points: [
+                        "Income barely covers expenses",
+                        "No breathing room to think long-term",
+                        "Every financial decision feels urgent",
+                        "Money stress dominates your thinking"
+                    ]
+                },
+                ifNothingChanges: [
+                    "You'll stay trapped in the paycheck-to-paycheck cycle",
+                    "Emergencies will keep wiping out any progress",
+                    "The wealth gap between you and others will widen"
+                ]
+            },
+            'Stability Trap': {
+                whyThisIsHappening: {
+                    intro: "You're earning well but your wealth isn't growing at the same rate.",
+                    subtext: "This happens because of:",
+                    points: [
+                        "Your income still depends on your time",
+                        "Lifestyle expenses grow with your salary",
+                        "You're optimizing the wrong financial levers",
+                        "Fear of risk keeps your money idle"
+                    ]
+                },
+                ifNothingChanges: [
+                    "You'll keep trading time for money indefinitely",
+                    "Your savings won't outpace inflation",
+                    "You'll reach retirement age still dependent on a paycheck"
+                ]
+            },
+            'Growth Phase': {
+                whyThisIsHappening: {
+                    intro: "You've built a foundation — but you're not accelerating.",
+                    subtext: "This happens because of:",
+                    points: [
+                        "You haven't optimized your asset allocation",
+                        "Your money isn't working as hard as you do",
+                        "You're missing advanced wealth-building strategies",
+                        "You're playing not to lose, instead of playing to win"
+                    ]
+                },
+                ifNothingChanges: [
+                    "Your wealth will grow slowly instead of compounding",
+                    "You'll miss the window for exponential growth",
+                    "Financial freedom will take decades instead of years"
+                ]
+            },
+            'Freedom Path': {
+                whyThisIsHappening: {
+                    intro: "You're on track — but there's still untapped potential.",
+                    subtext: "At this level, most people plateau because of:",
+                    points: [
+                        "They stop optimizing once comfortable",
+                        "They don't leverage their position for bigger moves",
+                        "They lack a system for generational wealth",
+                        "They haven't shifted from accumulation to legacy"
+                    ]
+                },
+                ifNothingChanges: [
+                    "You'll plateau at 'comfortable' instead of reaching 'free'",
+                    "Your wealth won't outlast your lifetime",
+                    "You'll miss opportunities to create lasting impact"
+                ]
+            }
+        };
+        
+        function updateStageBasedContent(stage) {
+            const content = stageContent[stage] || stageContent['Stability Trap'];
+            
+            // Update WHY THIS IS HAPPENING
+            const whyEl = document.getElementById('whyThisIsHappening');
+            if (whyEl) {
+                const why = content.whyThisIsHappening;
+                whyEl.innerHTML = `
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">${why.intro}</p>
+                    <p style="font-size: 13px; color: #555; margin-bottom: 10px;">${why.subtext}</p>
+                    <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
+                        ${why.points.map(point => `<li style="color: #ff8120;">${point}</li>`).join('')}
+                    </ul>
+                `;
+            }
+            
+            // Update IF NOTHING CHANGES
+            const ifEl = document.getElementById('ifNothingChanges');
+            if (ifEl) {
+                const consequences = content.ifNothingChanges;
+                ifEl.innerHTML = consequences.map((item, index) => `
+                    <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: ${index < consequences.length - 1 ? '8px' : '0'};">
+                        <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                        <span>${item}</span>
+                    </li>
+                `).join('');
+            }
+        }
+        
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
             const annualSurplus = surplus * 12;
@@ -5135,6 +5240,9 @@ June Yoon | Wealth Architecture Strategist`;
             // Update CTA title
             const ctaTitle = document.getElementById('ctaTitle');
             if (ctaTitle) ctaTitle.textContent = 'BREAK OUT OF THE ' + stage.toUpperCase();
+            
+            // Update stage-based personalized content
+            updateStageBasedContent(stage);
             
             // Update progress bar marker position (0-50 maps to 0-100%)
             const scoreMarker = document.getElementById('scoreMarker');
