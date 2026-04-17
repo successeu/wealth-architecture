@@ -1,0 +1,369 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Wealth Score API",
+  "description": "Currency-aware, ratio-based wealth scoring engine (50 points max)",
+  
+  "definitions": {
+    "Currency": {
+      "type": "string",
+      "enum": ["USD", "SGD", "MYR", "IDR", "THB", "PHP", "AUD", "GBP", "EUR", "INR", "HKD", "CNY", "JPY", "KRW", "VND", "NZD", "CAD", "CHF"],
+      "description": "Supported currency codes"
+    },
+    
+    "IncomeTier": {
+      "type": "string",
+      "enum": ["1", "2", "3", "4", "5", "Under 50K", "50-100K", "100-150K", "150-250K", "250-500K", "500K-1M", "1M-2M", "2M-5M", "5M+"],
+      "description": "Income tier selection (1-5 or range string)"
+    },
+    
+    "WealthStage": {
+      "type": "string",
+      "enum": ["Survival Mode", "Stability Trap", "Growth Phase", "Freedom Path"],
+      "description": "Wealth stage classification based on score"
+    },
+    
+    "BottleneckKey": {
+      "type": "string",
+      "enum": ["incomeCapacity", "incomeStructure", "savingsRate", "assetStrength"],
+      "description": "Score component identifiers"
+    },
+    
+    "ComponentScore": {
+      "type": "object",
+      "properties": {
+        "score": {
+          "type": "integer",
+          "description": "Points earned for this component"
+        },
+        "maxScore": {
+          "type": "integer",
+          "description": "Maximum possible points for this component"
+        },
+        "percentage": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "Percentage of max score achieved"
+        }
+      },
+      "required": ["score", "maxScore", "percentage"]
+    },
+    
+    "BottleneckInsight": {
+      "type": "object",
+      "properties": {
+        "key": {
+          "$ref": "#/definitions/BottleneckKey"
+        },
+        "label": {
+          "type": "string",
+          "description": "Human-readable label for the bottleneck"
+        },
+        "insight": {
+          "type": "string",
+          "description": "Personalized insight explaining the bottleneck"
+        },
+        "action": {
+          "type": "string",
+          "description": "Recommended action to address the bottleneck"
+        }
+      },
+      "required": ["key", "label", "insight", "action"]
+    }
+  },
+  
+  "request": {
+    "type": "object",
+    "title": "WealthScoreRequest",
+    "description": "Request body for POST /api/wealth-score",
+    "properties": {
+      "currency": {
+        "$ref": "#/definitions/Currency",
+        "description": "Currency code for all monetary values"
+      },
+      "income_tier": {
+        "$ref": "#/definitions/IncomeTier",
+        "description": "Income tier selection (use if annual_income not provided)"
+      },
+      "annual_income": {
+        "type": "number",
+        "minimum": 0,
+        "description": "Exact annual income in local currency (overrides income_tier if provided)"
+      },
+      "monthly_surplus": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0,
+        "description": "Monthly savings/surplus in local currency"
+      },
+      "total_assets": {
+        "type": "number",
+        "minimum": 0,
+        "default": 0,
+        "description": "Total liquid assets/reserves in local currency"
+      },
+      "income_status": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "array", "items": { "type": "string" } }
+        ],
+        "description": "Income status selections (comma-separated string or array)"
+      }
+    },
+    "required": ["currency"],
+    "oneOf": [
+      { "required": ["income_tier"] },
+      { "required": ["annual_income"] }
+    ]
+  },
+  
+  "response": {
+    "type": "object",
+    "title": "WealthScoreResponse",
+    "description": "Response body for POST /api/wealth-score",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Whether the request was successful"
+      },
+      "data": {
+        "type": "object",
+        "properties": {
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 50,
+            "description": "Total wealth score"
+          },
+          "maxScore": {
+            "type": "integer",
+            "const": 50,
+            "description": "Maximum possible score"
+          },
+          "stage": {
+            "$ref": "#/definitions/WealthStage",
+            "description": "Wealth stage classification"
+          },
+          "stageDescription": {
+            "type": "string",
+            "description": "Description of the current wealth stage"
+          },
+          "breakdown": {
+            "type": "object",
+            "properties": {
+              "incomeCapacity": {
+                "$ref": "#/definitions/ComponentScore",
+                "description": "Income Capacity score (0-10 points)"
+              },
+              "incomeStructure": {
+                "$ref": "#/definitions/ComponentScore",
+                "description": "Income Structure score (0-10 points)"
+              },
+              "savingsRate": {
+                "$ref": "#/definitions/ComponentScore",
+                "description": "Savings Rate score (0-15 points)"
+              },
+              "assetStrength": {
+                "$ref": "#/definitions/ComponentScore",
+                "description": "Asset Strength score (0-15 points)"
+              }
+            },
+            "required": ["incomeCapacity", "incomeStructure", "savingsRate", "assetStrength"]
+          },
+          "insights": {
+            "type": "object",
+            "properties": {
+              "primaryBottleneck": {
+                "$ref": "#/definitions/BottleneckInsight",
+                "description": "Primary area limiting wealth growth"
+              },
+              "secondaryBottleneck": {
+                "$ref": "#/definitions/BottleneckInsight",
+                "description": "Secondary area limiting wealth growth"
+              }
+            },
+            "required": ["primaryBottleneck", "secondaryBottleneck"]
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "annualIncomeUSD": {
+                "type": "integer",
+                "description": "Annual income converted to USD"
+              },
+              "monthlySurplusUSD": {
+                "type": "integer",
+                "description": "Monthly surplus converted to USD"
+              },
+              "totalAssetsUSD": {
+                "type": "integer",
+                "description": "Total assets converted to USD"
+              },
+              "savingsRatePercent": {
+                "type": "number",
+                "description": "Savings rate as percentage of monthly income"
+              },
+              "assetToIncomeRatio": {
+                "type": "number",
+                "description": "Assets divided by annual income"
+              }
+            },
+            "required": ["annualIncomeUSD", "monthlySurplusUSD", "totalAssetsUSD", "savingsRatePercent", "assetToIncomeRatio"]
+          },
+          "input": {
+            "type": "object",
+            "description": "Echo of input values for verification",
+            "properties": {
+              "currency": { "type": "string" },
+              "annualIncomeLocal": { "type": "number" },
+              "monthlySurplus": { "type": "number" },
+              "totalAssets": { "type": "number" },
+              "incomeStatus": { "type": "string" }
+            }
+          }
+        },
+        "required": ["score", "maxScore", "stage", "stageDescription", "breakdown", "insights", "metrics", "input"]
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message (only present if success is false)"
+      }
+    },
+    "required": ["success"]
+  },
+  
+  "examples": {
+    "request": {
+      "basic": {
+        "currency": "SGD",
+        "income_tier": "3",
+        "monthly_surplus": 2500,
+        "total_assets": 90000,
+        "income_status": "Employed"
+      },
+      "withExactIncome": {
+        "currency": "USD",
+        "annual_income": 180000,
+        "monthly_surplus": 5000,
+        "total_assets": 250000,
+        "income_status": ["Business Owner", "Investor"]
+      },
+      "minimal": {
+        "currency": "MYR",
+        "income_tier": "2"
+      }
+    },
+    "response": {
+      "success": {
+        "success": true,
+        "data": {
+          "score": 22,
+          "maxScore": 50,
+          "stage": "Stability Trap",
+          "stageDescription": "You have stability but are not yet building significant wealth. Income is not converting to assets fast enough.",
+          "breakdown": {
+            "incomeCapacity": { "score": 6, "maxScore": 10, "percentage": 60 },
+            "incomeStructure": { "score": 2, "maxScore": 10, "percentage": 20 },
+            "savingsRate": { "score": 9, "maxScore": 15, "percentage": 60 },
+            "assetStrength": { "score": 5, "maxScore": 15, "percentage": 33 }
+          },
+          "insights": {
+            "primaryBottleneck": {
+              "key": "incomeStructure",
+              "label": "Income Structure",
+              "insight": "Your income still depends too heavily on active effort. Building passive income streams will accelerate your path to financial freedom.",
+              "action": "Start building passive income through investments, business systems, or royalties."
+            },
+            "secondaryBottleneck": {
+              "key": "assetStrength",
+              "label": "Asset Strength",
+              "insight": "You have not yet built enough financial reserves to create real stability. Prioritize building your asset base through consistent investing.",
+              "action": "Prioritize consistent investing and avoid lifestyle inflation."
+            }
+          },
+          "metrics": {
+            "annualIncomeUSD": 148000,
+            "monthlySurplusUSD": 1850,
+            "totalAssetsUSD": 66600,
+            "savingsRatePercent": 15.0,
+            "assetToIncomeRatio": 0.45
+          },
+          "input": {
+            "currency": "SGD",
+            "annualIncomeLocal": 200000,
+            "monthlySurplus": 2500,
+            "totalAssets": 90000,
+            "incomeStatus": "Employed"
+          }
+        }
+      },
+      "error": {
+        "success": false,
+        "error": "Currency is required"
+      }
+    }
+  },
+  
+  "scoring": {
+    "components": {
+      "incomeCapacity": {
+        "maxPoints": 10,
+        "description": "Measures raw earning power normalized to USD",
+        "thresholds": [
+          { "usdThreshold": 0, "points": 2 },
+          { "usdThreshold": 30000, "points": 4 },
+          { "usdThreshold": 70000, "points": 6 },
+          { "usdThreshold": 150000, "points": 8 },
+          { "usdThreshold": 300000, "points": 10 }
+        ]
+      },
+      "incomeStructure": {
+        "maxPoints": 10,
+        "description": "Measures passive vs active income, multiple streams",
+        "keywords": {
+          "multiple income": 4,
+          "business owner": 4,
+          "investor": 4,
+          "retired": 5,
+          "professional": 3,
+          "consultant": 3,
+          "growing income": 3,
+          "employed": 2,
+          "single income": 2,
+          "exploring": 2,
+          "stuck": 1,
+          "other": 1
+        },
+        "multipleBonus": 2
+      },
+      "savingsRate": {
+        "maxPoints": 15,
+        "description": "Measures surplus as percentage of income",
+        "thresholds": [
+          { "rate": 0, "points": 2 },
+          { "rate": 0.05, "points": 5 },
+          { "rate": 0.10, "points": 9 },
+          { "rate": 0.20, "points": 12 },
+          { "rate": 0.30, "points": 15 }
+        ]
+      },
+      "assetStrength": {
+        "maxPoints": 15,
+        "description": "Measures assets relative to annual income",
+        "thresholds": [
+          { "ratio": 0, "points": 2 },
+          { "ratio": 0.25, "points": 5 },
+          { "ratio": 0.50, "points": 9 },
+          { "ratio": 1.00, "points": 12 },
+          { "ratio": 2.00, "points": 15 }
+        ]
+      }
+    },
+    "stages": [
+      { "minScore": 0, "maxScore": 12, "name": "Survival Mode" },
+      { "minScore": 13, "maxScore": 25, "name": "Stability Trap" },
+      { "minScore": 26, "maxScore": 37, "name": "Growth Phase" },
+      { "minScore": 38, "maxScore": 50, "name": "Freedom Path" }
+    ]
+  }
+}
