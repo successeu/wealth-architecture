@@ -2609,7 +2609,9 @@
                 <!-- MMI Intro -->
                 <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 20px; color: #fff;">
                     <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
-                        <img src="/public/mmi-logo.png" alt="MMI" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #d4a574 0%, #c9956c 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span style="font-size: 11px; font-weight: 700; color: #1a1a1a; text-align: center; line-height: 1.2;">MMI</span>
+                        </div>
                         <div>
                             <p style="font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px;">INTRODUCING:</p>
                             <p style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">MILLIONAIRE MIND INTENSIVE</p>
@@ -2667,13 +2669,13 @@
                         </div>
                     </div>
                     
-                    <!-- Right: Testimonial -->
-                    <div style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8;">
+                    <!-- Right: Rotating Testimonial -->
+                    <div id="testimonialBox" style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8; min-height: 140px;">
                         <div style="font-size: 32px; color: #e0e0e0; margin-bottom: 8px;">"</div>
-                        <p style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px;">This made me realize I wasn't progressing as much as I thought.</p>
+                        <p id="testimonialText" style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px; transition: opacity 0.3s ease;">This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.</p>
                         <div style="display: flex; align-items: center; gap: 8px;">
                             <div style="color: #ff8120; font-size: 12px;">★★★★★</div>
-                            <span style="font-size: 12px; color: #888;">– MMI Participant</span>
+                            <span id="testimonialName" style="font-size: 12px; color: #888; transition: opacity 0.3s ease;">– Sandra Kiers</span>
                         </div>
                     </div>
                 </div>
@@ -4128,11 +4130,15 @@
             // Show report
             showStep(5);
             generateAllContent(fullName, surplus, liquid, income, currency, status, concern, timeline);
+            
+            // Start testimonial rotation
+            startTestimonialRotation();
             } catch (error) {
                 console.error('❌ Error in generateReport:', error);
                 alert('Something went wrong. Please try again. Error: ' + error.message);
                 // Still show results even if there's an error
                 showStep(5);
+                startTestimonialRotation();
             }
         }
         
@@ -4939,6 +4945,75 @@ June Yoon | Wealth Architecture Strategist`;
         let generatedAiAnalysis = ''; // Store AI analysis for reuse (same for PDF and display)
         let generatedAiAllocation = null; // Store AI allocation for reuse
         let generatedAiAllocationRationale = ''; // Store allocation rationale
+        
+        // ============================================
+        // ROTATING TESTIMONIALS
+        // ============================================
+        const testimonials = [
+            {
+                text: "This event changed my life. I had massive breakthroughs with business ideas and opportunities that can help me become financially free.",
+                name: "Sandra Kiers"
+            },
+            {
+                text: "I didn't expect it to be real. I thought it was just advertising, but it turned out amazing. This 3-day intensive changed my life.",
+                name: "Natalia Nurse"
+            },
+            {
+                text: "The value given was amazing. It was hands-on, practical, and proven. I had a great connection with like-minded people.",
+                name: "Thomas Orths"
+            },
+            {
+                text: "It was not just good. It was WONDERFUL. The trainers were great and the energy was amazing.",
+                name: "Soraida Ellerbeck-van Omsen"
+            },
+            {
+                text: "A beautiful and transformative experience. I learned so much and feel motivated to grow further.",
+                name: "Diana Mũ Sa"
+            },
+            {
+                text: "It was a powerful event. The concepts were explained clearly and easy to follow. I now have tools to move forward.",
+                name: "Paul Corcoran"
+            },
+            {
+                text: "An excellent course that revived my journey towards adopting a millionaire's mindset.",
+                name: "Christian Koepchen"
+            },
+            {
+                text: "A great experience. It was fully inspiring and insightful. It truly shifts how you think about wealth.",
+                name: "Yusuf Kemal Çiftçi"
+            }
+        ];
+        
+        let testimonialIndex = 0;
+        let testimonialInterval = null;
+        
+        function rotateTestimonial() {
+            const textEl = document.getElementById('testimonialText');
+            const nameEl = document.getElementById('testimonialName');
+            
+            if (!textEl || !nameEl) return;
+            
+            // Fade out
+            textEl.style.opacity = '0';
+            nameEl.style.opacity = '0';
+            
+            setTimeout(() => {
+                // Update content
+                testimonialIndex = (testimonialIndex + 1) % testimonials.length;
+                const item = testimonials[testimonialIndex];
+                textEl.textContent = item.text;
+                nameEl.textContent = '– ' + item.name;
+                
+                // Fade in
+                textEl.style.opacity = '1';
+                nameEl.style.opacity = '1';
+            }, 300);
+        }
+        
+        function startTestimonialRotation() {
+            if (testimonialInterval) clearInterval(testimonialInterval);
+            testimonialInterval = setInterval(rotateTestimonial, 3500);
+        }
         
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
