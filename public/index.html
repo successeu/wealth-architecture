@@ -4425,7 +4425,24 @@
             const pdfUrl = await generateAndUploadPDF(fullName, surplus, liquid, income, currency, wealthScore);
             console.log('✅ PDF URL ready:', pdfUrl);
             
-            // Prepare data for Airtable (via Zapier) - NOW INCLUDING PDF URL
+            // Get score breakdown components
+            const breakdown = window.scoreBreakdown || {
+                incomeCapacity: 0,
+                incomeStructure: 0,
+                savingsRate: 0,
+                assetStrength: 0
+            };
+            
+            // Get primary bottleneck
+            const primaryBottleneck = getPrimaryBottleneck();
+            const bottleneckLabels = {
+                incomeCapacity: 'Income Capacity',
+                incomeStructure: 'Income Structure',
+                savingsRate: 'Savings Rate',
+                assetStrength: 'Asset Strength'
+            };
+            
+            // Prepare data for Airtable (via Zapier) - NOW INCLUDING PDF URL AND SCORE BREAKDOWN
             const formData = {
                 'First Name': firstName,
                 'Last Name': lastName,
@@ -4441,6 +4458,11 @@
                 'Timeline': timeline,
                 'Wealth Score': wealthScore,
                 'Score Label': scoreLabel,
+                'Income Capacity Score': breakdown.incomeCapacity,
+                'Income Structure Score': breakdown.incomeStructure,
+                'Savings Rate Score': breakdown.savingsRate,
+                'Asset Strength Score': breakdown.assetStrength,
+                'Primary Bottleneck': bottleneckLabels[primaryBottleneck] || 'Savings Rate',
                 'PDF Report': pdfUrl || '',
                 'Created At': new Date().toISOString()
             };
