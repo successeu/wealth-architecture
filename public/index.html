@@ -2347,10 +2347,32 @@
             </div>
             
             <div style="text-align: center; padding: 40px 20px;">
-                <h2 style="margin-bottom: 10px;">Building Your Wealth Blueprint Personalised Report</h2>
-                <p class="hint" style="margin-bottom: 30px;">Analyzing your financial position...</p>
-                <div class="loader"></div>
-                <p class="loading-text">Calculating wealth position • Tax optimization opportunities • Growth potential analysis</p>
+                <!-- Headline (Personal + Outcome-focused) -->
+                <h2 style="margin-bottom: 12px; font-size: 24px; color: #1a1a1a; line-height: 1.3;">Your Personalized Wealth Blueprint<br>is Being Built</h2>
+                
+                <!-- Sub-headline (Curiosity + relevance) -->
+                <p style="font-size: 14px; color: #666; margin-bottom: 30px; line-height: 1.5;">We're uncovering patterns in how you<br><span style="color: #ff8120; font-weight: 500;">earn, save, and grow</span> your money…</p>
+                
+                <!-- Fake Progress Bar -->
+                <div style="max-width: 320px; margin: 0 auto 24px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span id="loadingStatusText" style="font-size: 13px; color: #555; font-weight: 500;">Analyzing your income patterns…</span>
+                        <span id="loadingPercentage" style="font-size: 13px; color: #ff8120; font-weight: 600;">0%</span>
+                    </div>
+                    <div style="height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden;">
+                        <div id="loadingProgressBar" style="height: 100%; width: 0%; background: linear-gradient(90deg, #ff8120, #ff9a4a); border-radius: 4px; transition: width 0.3s ease;"></div>
+                    </div>
+                </div>
+                
+                <!-- Spinner -->
+                <div class="loader" style="margin-bottom: 20px;"></div>
+                
+                <!-- Rotating Dynamic Messages -->
+                <p id="rotatingMessage" style="font-size: 13px; color: #888; margin-bottom: 24px; min-height: 20px; transition: opacity 0.3s ease;">Analyzing your income patterns…</p>
+                
+                <!-- Bottom Reinforcement -->
+                <p style="font-size: 12px; color: #999; margin-bottom: 8px;">This takes less than 10 seconds. Your personalized insights are worth it.</p>
+                <p style="font-size: 13px; color: #ff8120; font-weight: 500;">✨ Most people discover something they didn't expect.</p>
             </div>
         </div>
 
@@ -2986,6 +3008,119 @@
             if (step === 3) {
                 calculatePreviewScore();
             }
+            
+            // Start loading animation when entering loading step (step-4)
+            if (step === 4) {
+                startLoadingAnimation();
+            }
+        }
+        
+        // ============================================
+        // LOADING ANIMATION (Fake Progress + Rotating Messages)
+        // ============================================
+        const loadingMessages = [
+            "Analyzing your income patterns…",
+            "Identifying hidden gaps in your strategy…",
+            "Calculating your wealth growth potential…",
+            "Comparing your profile with high performers…",
+            "Detecting opportunities most people miss…",
+            "Mapping your financial blueprint…",
+            "Almost ready…"
+        ];
+        
+        let loadingInterval = null;
+        let loadingMessageIndex = 0;
+        
+        function startLoadingAnimation() {
+            const progressBar = document.getElementById('loadingProgressBar');
+            const percentageEl = document.getElementById('loadingPercentage');
+            const statusTextEl = document.getElementById('loadingStatusText');
+            const rotatingMessageEl = document.getElementById('rotatingMessage');
+            
+            if (!progressBar || !percentageEl) return;
+            
+            // Reset
+            let progress = 0;
+            loadingMessageIndex = 0;
+            progressBar.style.width = '0%';
+            percentageEl.textContent = '0%';
+            
+            // Clear any existing interval
+            if (loadingInterval) clearInterval(loadingInterval);
+            
+            // Animate progress over ~8 seconds
+            const totalDuration = 8000; // 8 seconds
+            const updateFrequency = 100; // Update every 100ms
+            const steps = totalDuration / updateFrequency;
+            let currentStep = 0;
+            
+            loadingInterval = setInterval(() => {
+                currentStep++;
+                
+                // Ease-out progress (faster at start, slower at end)
+                const linearProgress = currentStep / steps;
+                progress = Math.min(Math.floor(easeOutQuad(linearProgress) * 100), 99);
+                
+                progressBar.style.width = progress + '%';
+                percentageEl.textContent = progress + '%';
+                
+                // Update rotating message every ~1.5 seconds
+                if (currentStep % 15 === 0) {
+                    updateLoadingMessage(statusTextEl, rotatingMessageEl, progress);
+                }
+                
+                // Stop at 99% - the actual completion will push to 100%
+                if (currentStep >= steps) {
+                    clearInterval(loadingInterval);
+                    loadingInterval = null;
+                }
+            }, updateFrequency);
+        }
+        
+        function updateLoadingMessage(statusEl, rotatingEl, progress) {
+            // Select message based on progress
+            let messageIndex;
+            if (progress < 15) messageIndex = 0;
+            else if (progress < 30) messageIndex = 1;
+            else if (progress < 45) messageIndex = 2;
+            else if (progress < 60) messageIndex = 3;
+            else if (progress < 75) messageIndex = 4;
+            else if (progress < 90) messageIndex = 5;
+            else messageIndex = 6;
+            
+            const message = loadingMessages[messageIndex];
+            
+            // Fade out
+            if (rotatingEl) {
+                rotatingEl.style.opacity = '0';
+                setTimeout(() => {
+                    rotatingEl.textContent = message;
+                    rotatingEl.style.opacity = '1';
+                }, 150);
+            }
+            
+            if (statusEl) {
+                statusEl.textContent = message;
+            }
+        }
+        
+        // Easing function for smoother progress
+        function easeOutQuad(t) {
+            return t * (2 - t);
+        }
+        
+        // Complete loading animation (called when results are ready)
+        function completeLoadingAnimation() {
+            const progressBar = document.getElementById('loadingProgressBar');
+            const percentageEl = document.getElementById('loadingPercentage');
+            
+            if (loadingInterval) {
+                clearInterval(loadingInterval);
+                loadingInterval = null;
+            }
+            
+            if (progressBar) progressBar.style.width = '100%';
+            if (percentageEl) percentageEl.textContent = '100%';
         }
         
         // Calculate preview wealth score based on inputs
@@ -4041,6 +4176,9 @@
             sendToZapier(formData);
             console.log('✅ Data sent to Zapier with PDF URL');
             
+            // Complete loading animation
+            completeLoadingAnimation();
+            
             // Show report
             showStep(5);
             generateAllContent(fullName, surplus, liquid, income, currency, status, concern, timeline);
@@ -4050,6 +4188,8 @@
             } catch (error) {
                 console.error('❌ Error in generateReport:', error);
                 alert('Something went wrong. Please try again. Error: ' + error.message);
+                // Complete loading animation
+                completeLoadingAnimation();
                 // Still show results even if there's an error
                 showStep(5);
                 startTestimonialRotation();
