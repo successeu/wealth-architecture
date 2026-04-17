@@ -771,73 +771,69 @@
                 width: 100% !important;
             }
             
-            /* Step 5 Results Page Mobile Fixes */
+            /* Step 5 Results Page Mobile Fixes - NEW DESIGN */
             #step-5 {
-                padding: 0 5px !important;
+                padding: 0 10px !important;
             }
-            #step-5 .step-header h2 {
-                font-size: 22px !important;
+            
+            /* Header bar mobile */
+            #step-5 > div:first-child {
+                flex-direction: column !important;
+                gap: 12px !important;
+                text-align: center !important;
             }
-            #step-5 > div {
-                margin: 12px 0 !important;
-                padding: 15px !important;
-                border-radius: 10px !important;
-            }
-            #step-5 h3 {
-                font-size: 15px !important;
-                flex-wrap: wrap !important;
-            }
-            /* Asset Allocation - stack vertically on mobile */
-            .allocation-grid {
+            
+            /* Score hero - stack vertically */
+            #step-5 > div:nth-child(2) {
                 grid-template-columns: 1fr !important;
-                gap: 15px !important;
+                gap: 20px !important;
             }
-            .allocation-grid > div:first-child {
-                width: 150px !important;
-                height: 150px !important;
-                margin: 0 auto !important;
+            
+            /* Score number smaller on mobile */
+            #scoreValueNew {
+                font-size: 56px !important;
             }
-            /* Download/CTA buttons - stack vertically */
-            .download-cta-grid {
-                grid-template-columns: 1fr !important;
-                gap: 15px !important;
-            }
-            /* Post-download CTA - 3 columns to 1 */
-            .post-download-stats {
-                grid-template-columns: 1fr !important;
+            
+            /* Stage boxes - 2x2 grid on mobile */
+            #step-5 > div:nth-child(3) > div:last-child {
+                grid-template-columns: repeat(2, 1fr) !important;
                 gap: 10px !important;
             }
-            /* Wealth summary values */
-            .wealth-summary {
-                padding: 15px !important;
+            
+            /* 4 pillars - 2x2 on mobile */
+            #step-5 > div:nth-child(4) {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 12px !important;
             }
-            .wealth-summary .summary-value {
-                font-size: 16px !important;
+            #step-5 > div:nth-child(4) > div {
+                padding: 16px 12px !important;
             }
-            .wealth-summary .summary-label {
-                font-size: 11px !important;
+            #step-5 > div:nth-child(4) span[style*="font-size: 32px"] {
+                font-size: 28px !important;
             }
-            /* Smaller padding on mobile */
-            .cta-box {
-                padding: 18px 12px !important;
+            
+            /* Why/Opportunity/Consequence - stack */
+            #step-5 > div:nth-child(5) {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
             }
-            .cta-box h3 {
-                font-size: 16px !important;
+            
+            /* Psychology/MMI/Experience - stack */
+            #step-5 > div:nth-child(6) {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
             }
-            .cta-box p {
-                font-size: 13px !important;
+            
+            /* CTA section - stack */
+            #step-5 > div:nth-child(7) > div {
+                grid-template-columns: 1fr !important;
+                gap: 20px !important;
             }
-            /* Score gauge smaller on mobile */
-            #step-5 canvas#scoreGauge {
-                width: 160px !important;
-                height: 100px !important;
-            }
-            #scoreValue {
-                font-size: 32px !important;
-            }
-            /* Projection chart */
-            #step-5 canvas#wealthProjectionChart {
-                height: 200px !important;
+            
+            /* Trust footer - stack */
+            #step-5 > div:nth-child(8) {
+                grid-template-columns: 1fr !important;
+                gap: 16px !important;
             }
         }
         
@@ -2406,182 +2402,310 @@
 
         <!-- STEP 6: RESULTS - PREMIUM REPORT -->
         <div id="step-5" class="step-content">
-            <!-- Simple Progress Bar -->
-            <div style="text-align: center; margin-bottom: 20px;">
-                <p style="font-size: 15px; font-weight: 500; color: #555; margin-bottom: 12px;">Step 5 of 5</p>
-                <div style="display: flex; gap: 6px; max-width: 400px; margin: 0 auto;">
-                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
-                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
-                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
-                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
-                    <div style="flex: 1; height: 4px; background: #ff8120; border-radius: 3px;"></div>
+            <!-- SECTION 1: SCORE HERO -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 30px;">
+                <!-- Left: Score -->
+                <div style="text-align: center;">
+                    <p style="font-size: 12px; font-weight: 600; color: #666; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 8px;">YOUR WEALTH SCORE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 4px;">
+                        <span id="scoreValueNew" style="font-size: 72px; font-weight: 700; color: #1a1a1a; line-height: 1;">27</span>
+                        <span style="font-size: 28px; color: #888; font-weight: 400;">/50</span>
+                    </div>
+                    <div style="display: inline-flex; align-items: center; gap: 6px; background: #f5f5f5; padding: 6px 14px; border-radius: 20px; margin: 12px 0;">
+                        <span style="font-size: 14px;">📈</span>
+                        <span id="percentageDisplay" style="font-size: 13px; color: #666;">54% of your financial freedom potential</span>
+                    </div>
+                    <p style="font-size: 14px; color: #666; margin-top: 12px; line-height: 1.6;">
+                        This score reflects not just your finances — but <span style="color: #ff8120; font-weight: 500;">how you think about money</span>.
+                    </p>
+                </div>
+                
+                <!-- Right: Current Stage -->
+                <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 1px solid rgba(255, 129, 32, 0.2); border-radius: 16px; padding: 24px; text-align: center;">
+                    <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 12px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 6px;">YOU ARE CURRENTLY IN</p>
+                    <h2 id="stageNameDisplay" style="font-size: 28px; font-weight: 700; color: #ff8120; margin: 0 0 12px;">STABILITY TRAP</h2>
+                    <p id="stageDescDisplay" style="font-size: 14px; color: #555; line-height: 1.6; margin-bottom: 12px;">
+                        You're earning, but your income still depends on your time and energy.
+                    </p>
+                    <p style="font-size: 13px; color: #888;">
+                        This isn't a strategy problem.<br>It's a <span style="color: #ff8120; font-weight: 600;">pattern</span>.
+                    </p>
                 </div>
             </div>
             
-            <div style="text-align: center; margin-bottom: 24px;">
-                <h2 style="color: #ff8120; font-size: 32px; margin-bottom: 5px;">Your Wealth Architecture Blueprint</h2>
-                <p style="font-size: 14px; color: #888;">Success Formula Personalized Analysis for <span id="resultName" style="color: #ff8120; font-weight: 600;"></span></p>
-                <p style="font-size: 12px; color: #888; margin-top: 8px;">Prepared by June Yoon | Wealth Architecture Strategist</p>
+            <!-- STAGE PROGRESS BAR -->
+            <div style="margin-bottom: 40px;">
+                <div style="position: relative; height: 12px; background: linear-gradient(to right, #e0e0e0, #f0f0f0); border-radius: 6px; overflow: visible;">
+                    <!-- Colored segments -->
+                    <div style="position: absolute; left: 0; width: 24%; height: 100%; background: #ccc; border-radius: 6px 0 0 6px;"></div>
+                    <div id="progressSegmentActive" style="position: absolute; left: 24%; width: 26%; height: 100%; background: linear-gradient(to right, #ff8120, #ff9a4a);"></div>
+                    <!-- Score marker -->
+                    <div id="scoreMarker" style="position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 24px; height: 24px; background: #fff; border: 3px solid #ff8120; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 10;"></div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: #888;">
+                    <span>0</span><span>12</span><span>25</span><span>37</span><span>50</span>
+                </div>
+                
+                <!-- Stage Labels -->
+                <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 20px;">
+                    <div id="stage1Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">😰</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">SURVIVAL MODE</p>
+                        <p style="font-size: 11px; color: #aaa;">0-12</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">Just getting by.<br>Financial stress is high.</p>
+                    </div>
+                    <div id="stage2Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #fff5f0; border: 2px solid #ff8120;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">🪤</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; margin-bottom: 2px;">STABILITY TRAP</p>
+                        <p style="font-size: 11px; color: #ff8120;">13-25</p>
+                        <p style="font-size: 11px; color: #ff8120; margin-top: 6px; line-height: 1.4;">You're earning, but your income still depends on you.</p>
+                    </div>
+                    <div id="stage3Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">📈</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">GROWTH PHASE</p>
+                        <p style="font-size: 11px; color: #aaa;">26-37</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">You're building momentum and creating leverage.</p>
+                    </div>
+                    <div id="stage4Box" style="text-align: center; padding: 16px 12px; border-radius: 10px; background: #f8f8f8;">
+                        <div style="font-size: 20px; margin-bottom: 6px;">🚀</div>
+                        <p style="font-size: 12px; font-weight: 600; color: #888; margin-bottom: 2px;">FREEDOM PATH</p>
+                        <p style="font-size: 11px; color: #aaa;">38-50</p>
+                        <p style="font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4;">Your money and systems are working for you.</p>
+                    </div>
+                </div>
             </div>
             
-            <!-- Wealth Score Section -->
-            <div class="wealth-summary" style="background: linear-gradient(135deg, #fff 0%, #fff9f5 100%);">
-                <div style="text-align: center; margin-bottom: 25px;">
-                    <div style="font-size: 14px; color: #666; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;">Your Wealth Position Score</div>
-                    <div style="position: relative; display: inline-block;">
-                        <canvas id="scoreGauge" width="200" height="120"></canvas>
-                        <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); text-align: center;">
-                            <div style="font-size: 42px; font-weight: 700; color: #ff8120;" id="scoreValue">-</div>
-                            <div style="color: #666; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;" id="scoreLabel">Calculating...</div>
+            <!-- SECTION 2: 4 PILLARS BREAKDOWN -->
+            <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 30px;">
+                <!-- Income Capacity -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">INCOME CAPACITY</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarIncomeScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">6</span>
+                        <span style="font-size: 16px; color: #aaa;">/10</span>
+                    </div>
+                    <p id="pillarIncomeText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You have the potential to earn more.</p>
+                </div>
+                
+                <!-- Income Structure -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">INCOME STRUCTURE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarStructureScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">2</span>
+                        <span style="font-size: 16px; color: #aaa;">/10</span>
+                    </div>
+                    <p id="pillarStructureText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">Your income is still too dependent on active effort.</p>
+                </div>
+                
+                <!-- Savings Rate -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">SAVINGS RATE</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarSavingsScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">9</span>
+                        <span style="font-size: 16px; color: #aaa;">/15</span>
+                    </div>
+                    <p id="pillarSavingsText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You're saving, but not enough to accelerate your freedom.</p>
+                </div>
+                
+                <!-- Asset Strength -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path></svg>
+                    </div>
+                    <p style="font-size: 11px; font-weight: 600; color: #888; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 8px;">ASSET STRENGTH</p>
+                    <div style="display: flex; align-items: baseline; justify-content: center; gap: 2px;">
+                        <span id="pillarAssetScore" style="font-size: 32px; font-weight: 700; color: #ff8120;">5</span>
+                        <span style="font-size: 16px; color: #aaa;">/15</span>
+                    </div>
+                    <p id="pillarAssetText" style="font-size: 12px; color: #666; margin-top: 10px; line-height: 1.4;">You haven't built enough financial reserves yet.</p>
+                </div>
+            </div>
+            
+            <!-- SECTION 3: WHY + OPPORTUNITY + CONSEQUENCE (3 columns) -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px;">
+                <!-- Why This Is Happening -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">💡</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">WHY THIS IS HAPPENING</p>
+                    </div>
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
+                    <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
+                    <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
+                        <li style="color: #ff8120;">How they think about money</li>
+                        <li style="color: #ff8120;">How they evaluate risk</li>
+                        <li style="color: #ff8120;">How they make financial decisions</li>
+                        <li style="color: #ff8120;">What they believe is "possible" for them</li>
+                    </ul>
+                </div>
+                
+                <!-- Your Biggest Opportunity -->
+                <div style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #ff8120; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">🎯</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">YOUR BIGGEST OPPORTUNITY</p>
+                    </div>
+                    <p id="bottleneckTitle" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
+                    <p id="bottleneckDesc" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
+                    <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
+                </div>
+                
+                <!-- If Nothing Changes -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #fef3f2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">⚠️</span>
+                        </div>
+                        <p style="font-size: 12px; font-weight: 600; color: #dc2626; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">IF NOTHING CHANGES</p>
+                    </div>
+                    <ul style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>You will keep trading time for money</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>Your growth will remain limited</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
+                            <span>Financial freedom will stay out of reach</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SECTION 4: PSYCHOLOGY SHIFT + MMI INTRO -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 30px;">
+                <!-- This Is Where Most People Get Stuck -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
+                        <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 16px;">🔄</span>
+                        </div>
+                        <p style="font-size: 11px; font-weight: 600; color: #666; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">THIS IS WHERE MOST PEOPLE GET STUCK</p>
+                    </div>
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">They try to fix their finances with strategies.</p>
+                    <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 10px;">But high performers fix something deeper first:</p>
+                    <p style="font-size: 14px; font-weight: 600; color: #1a1a1a;">How they <span style="color: #ff8120; text-decoration: underline;">THINK</span> about money.</p>
+                </div>
+                
+                <!-- MMI Intro -->
+                <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 20px; color: #fff;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 14px;">
+                        <img src="https://i.imgur.com/5VKjZqR.png" alt="MMI" style="width: 60px; height: 60px; border-radius: 8px; object-fit: cover;">
+                        <div>
+                            <p style="font-size: 10px; color: #888; letter-spacing: 1px; text-transform: uppercase; margin: 0 0 4px;">INTRODUCING:</p>
+                            <p style="font-size: 16px; font-weight: 700; color: #fff; margin: 0;">MILLIONAIRE MIND INTENSIVE</p>
+                        </div>
+                    </div>
+                    <p style="font-size: 13px; color: #ccc; line-height: 1.6; margin-bottom: 8px;">This is not a financial course.</p>
+                    <p style="font-size: 13px; color: #ccc; line-height: 1.6;">It's where you uncover and reset the hidden patterns controlling your financial results.</p>
+                </div>
+                
+                <!-- What You'll Experience -->
+                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
+                    <p style="font-size: 12px; font-weight: 600; color: #666; letter-spacing: 0.5px; text-transform: uppercase; margin: 0 0 14px;">WHAT YOU'LL EXPERIENCE</p>
+                    <ul style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Identify hidden beliefs limiting your income</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Understand how wealthy people think differently</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Break patterns keeping you stuck</span>
+                        </li>
+                        <li style="display: flex; align-items: flex-start; gap: 8px;">
+                            <span style="color: #ff8120;">✔</span>
+                            <span>Build a new financial blueprint</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- SECTION 5: PRIMARY CTA -->
+            <div style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 16px; padding: 30px; margin-bottom: 30px;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
+                    <!-- Left: CTA -->
+                    <div>
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                            <div style="width: 48px; height: 48px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+                                <span style="font-size: 24px;">🎯</span>
+                            </div>
+                            <div>
+                                <p id="ctaTitle" style="font-size: 20px; font-weight: 700; color: #ff8120; margin: 0;">BREAK OUT OF THE STABILITY TRAP</p>
+                                <p style="font-size: 13px; color: #666; margin: 4px 0 0;">Start building a new financial blueprint today.</p>
+                            </div>
+                        </div>
+                        <button onclick="window.open('https://www.millionairemind.online', '_blank')" class="btn-primary" style="width: 100%; padding: 16px; font-size: 16px; margin-bottom: 12px;">
+                            JOIN MILLIONAIRE MIND INTENSIVE →
+                        </button>
+                        <div style="display: flex; align-items: center; justify-content: center; gap: 16px; font-size: 12px; color: #888;">
+                            <span style="display: flex; align-items: center; gap: 4px;">📅 Live Online Event</span>
+                            <span>|</span>
+                            <span>Limited Seats Available</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Right: Testimonial -->
+                    <div style="background: #fff; border-radius: 12px; padding: 20px; border: 1px solid #e8e8e8;">
+                        <div style="font-size: 32px; color: #e0e0e0; margin-bottom: 8px;">"</div>
+                        <p style="font-size: 14px; color: #555; line-height: 1.7; font-style: italic; margin-bottom: 12px;">This made me realize I wasn't progressing as much as I thought.</p>
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <div style="color: #ff8120; font-size: 12px;">★★★★★</div>
+                            <span style="font-size: 12px; color: #888;">– MMI Participant</span>
                         </div>
                     </div>
                 </div>
-                <div class="summary-row">
-                    <div class="summary-item">
-                        <div class="summary-label">Monthly Surplus</div>
-                        <div class="summary-value" id="displaySurplus">-</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">Liquid Assets</div>
-                        <div class="summary-value" id="displayLiquid">-</div>
-                    </div>
-                </div>
-                <div class="summary-row">
-                    <div class="summary-item">
-                        <div class="summary-label">Annual Investment Capacity</div>
-                        <div class="summary-value" id="displayAnnual">-</div>
-                    </div>
-                    <div class="summary-item">
-                        <div class="summary-label">5-Year Wealth Projection</div>
-                        <div class="summary-value" id="display5Year">-</div>
-                    </div>
-                </div>
             </div>
             
-            <!-- Wealth Projection Chart -->
-            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
-                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                    <span style="color: #ff8120;">📈</span> Your Wealth Growth Trajectory
-                </h3>
-                <canvas id="wealthProjectionChart" height="250"></canvas>
-                <p style="font-size: 12px; color: #888; margin-top: 15px; text-align: center;">*Projections based on 8% conservative growth rate with consistent monthly contributions</p>
-            </div>
-            
-            <!-- Personalized Analysis Section -->
-            <div style="background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); border-radius: 12px; padding: 30px; margin: 25px 0; color: #fff;">
-                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 20px;">
-                    <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px;">💡</div>
-                    <div>
-                        <h3 style="margin: 0; font-size: 18px;">Success Formula Wealth Analysis</h3>
-                        <p style="margin: 0; font-size: 12px; color: #888;">Personalized insights for your wealth journey</p>
+            <!-- SECTION 6: TRUST FOOTER -->
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px 0; border-top: 1px solid #e8e8e8;">
+                <div style="text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                     </div>
+                    <p style="font-size: 12px; color: #666; margin: 0;">Your information is 100% private and secure.</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">We never share your data.</p>
                 </div>
-                <div id="aiAnalysisContainer" style="min-height: 150px;">
-                    <div id="aiLoadingIndicator" style="text-align: center; padding: 40px;">
-                        <div class="loader" style="margin: 0 auto 15px;"></div>
-                        <p style="color: #888; font-size: 14px;">Generating your personalized wealth strategy...</p>
+                <div style="text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
                     </div>
-                    <div id="aiAnalysisContent" style="display: none; line-height: 1.8; font-size: 15px;"></div>
+                    <p style="font-size: 12px; color: #666; margin: 0;">Trusted by thousands of professionals</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">who are transforming their financial future.</p>
                 </div>
-            </div>
-            
-            <!-- Asset Allocation Recommendation -->
-            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
-                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                    Recommended Asset Allocation
-                </h3>
-                <div class="allocation-grid" style="display: grid; grid-template-columns: 200px 1fr; gap: 30px; align-items: center;">
-                    <div style="width: 180px; height: 180px; margin: 0 auto;">
-                        <canvas id="allocationChart"></canvas>
+                <div style="text-align: center;">
+                    <div style="width: 40px; height: 40px; background: #f5f5f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
                     </div>
-                    <div id="allocationBreakdown"></div>
+                    <p style="font-size: 12px; color: #666; margin: 0;">No spam. No obligation.</p>
+                    <p style="font-size: 11px; color: #999; margin-top: 2px;">Cancel anytime.</p>
                 </div>
-            </div>
-            
-            <!-- Millionaire Mind Principles -->
-            <div style="background: linear-gradient(135deg, #fff9f5 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.2); border-radius: 12px; padding: 25px; margin: 25px 0;">
-                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    Your Millionaire Mind Blueprint
-                </h3>
-                <p style="font-size: 13px; color: #666; margin-bottom: 20px; font-style: italic;">"Your income can grow only to the extent that you do." — T. Harv Eker</p>
-                <div id="mindsetPrinciples"></div>
-            </div>
-            
-            <!-- Personalized Action Steps -->
-            <div style="background: #fff; border: 1px solid rgba(0,0,0,0.08); border-radius: 12px; padding: 25px; margin: 25px 0; box-shadow: 0 2px 12px rgba(0,0,0,0.04);">
-                <h3 style="color: #1a1a1a; font-size: 18px; margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    Your 90-Day Action Plan
-                </h3>
-                <div id="actionStepsContainer"></div>
-            </div>
-            
-            <!-- Download & CTA Section -->
-            <div class="download-cta-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 30px 0;">
-                <div class="cta-box" style="margin: 0; text-align: center;">
-                    <h3 style="font-size: 18px; margin-bottom: 10px; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8120" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                        Download Your Report
-                    </h3>
-                    <p style="font-size: 14px; margin-bottom: 20px;">Get your complete Wealth Architecture Blueprint as a beautifully formatted PDF.</p>
-                    <button id="downloadPdfBtn" class="btn-secondary" style="width: 100%;" onclick="generatePDF()">
-                        <span style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                            Download PDF Report
-                        </span>
-                    </button>
-                </div>
-                <div class="cta-box" style="margin: 0; text-align: center; background: linear-gradient(135deg, #ff8120 0%, #ff9a4a 100%); border: none;">
-                    <h3 style="font-size: 18px; margin-bottom: 10px; color: #fff; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
-                        Book Your Strategy Call
-                    </h3>
-                    <p style="font-size: 14px; margin-bottom: 20px; color: rgba(255,255,255,0.9);">Turn this blueprint into action with June Yoon's personalized guidance.</p>
-                    <button class="btn-primary" style="width: 100%; background: #fff; color: #ff8120;" onclick="scheduleCall()">
-                        <span style="display: flex; align-items: center; justify-content: center; gap: 8px;">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                            Schedule Free 45-Min Call
-                        </span>
-                    </button>
-                </div>
-            </div>
-            
-            <!-- POST-DOWNLOAD CTA (Hidden until PDF downloads) -->
-            <div id="postDownloadCTA" style="display: none; margin-top: 30px; padding: 30px; background: linear-gradient(135deg, rgba(255, 129, 32, 0.08) 0%, rgba(255, 154, 74, 0.03) 100%); border: 2px solid rgba(255, 129, 32, 0.25); border-radius: 16px; text-align: center;">
-                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #ff8120, #ff9a4a); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 15px;">
-                    <span style="width: 12px; height: 12px; background: #fff; border-radius: 50%; display: inline-block;"></span>
-                </div>
-                <h3 style="color: #1a1a1a; margin-bottom: 10px; font-size: 20px;">Ready to Turn This Into Action?</h3>
-                <p style="color: #666; margin-bottom: 20px; font-size: 15px; line-height: 1.6;">
-                    Your Blueprint is downloaded. The next step? A complimentary 45-minute strategy call with June Yoon to map out your personalized wealth architecture.
-                </p>
-                
-                <div class="post-download-stats" style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 20px;">
-                    <div style="padding: 15px 10px; background: #ffffff; border-radius: 10px; border-left: 3px solid #ff8120;">
-                        <div style="font-size: 20px; font-weight: 700; color: #ff8120;">45 Min</div>
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Strategy Call</div>
-                    </div>
-                    <div style="padding: 15px 10px; background: #ffffff; border-radius: 10px; border-left: 3px solid #ff8120;">
-                        <div style="font-size: 20px; font-weight: 700; color: #ff8120;">1-on-1</div>
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">With June</div>
-                    </div>
-                    <div style="padding: 15px 10px; background: #ffffff; border-radius: 10px; border-left: 3px solid #ff8120;">
-                        <div style="font-size: 20px; font-weight: 700; color: #ff8120;">$100K+</div>
-                        <div style="font-size: 11px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Annual Income</div>
-                    </div>
-                </div>
-                
-                <button onclick="window.open('https://calendly.com/june-yoon/your-90-day-wealth-blueprint', '_blank')" class="btn-primary" style="width: 100%; padding: 16px; font-size: 16px;">
-                    Book Your Free Strategy Call →
-                </button>
-                
-                <p style="font-size: 12px; color: #999; margin-top: 12px;">Limited availability. Serious wealth-builders only.</p>
             </div>
             
             <!-- Footer -->
-            <div style="text-align: center; padding: 30px 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 30px;">
+            <div style="text-align: center; padding: 20px 0; border-top: 1px solid rgba(0,0,0,0.08); margin-top: 20px;">
                 <p style="font-size: 12px; color: #888;">© 2026 Success Resources | June Yoon Wealth Architecture</p>
                 <p style="font-size: 11px; color: #aaa; margin-top: 5px;">This report is for educational purposes. Please consult licensed financial advisors for personalized advice.</p>
             </div>
@@ -4140,7 +4264,7 @@
                 if (!aiAnalysis) {
                     aiAnalysis = `Dear ${name.split(' ')[0]},
 
-Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/100, you're in the "${getScoreLabelLocal(wealthScore)}" category.
+Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/50, you're in the "${getScoreLabelLocal(wealthScore)}" category.
 
 With ${symbol}${surplus.toLocaleString()} monthly surplus and ${symbol}${liquid.toLocaleString()} in liquid assets, you have a solid foundation for accelerated wealth building. Your annual investment capacity of ${symbol}${annualSurplus.toLocaleString()} positions you well for significant wealth accumulation.
 
@@ -4207,7 +4331,7 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.setFont('helvetica', 'bold');
                 doc.text(String(wealthScore), scoreX, scoreY + 3, { align: 'center' });
                 doc.setFontSize(8);
-                doc.text('/100', scoreX, scoreY + 10, { align: 'center' });
+                doc.text('/50', scoreX, scoreY + 10, { align: 'center' });
                 
                 // Score Details
                 doc.setTextColor(26, 26, 26);
@@ -4221,7 +4345,7 @@ June Yoon | Wealth Architecture Strategist`;
                 doc.setFontSize(9);
                 doc.setFont('helvetica', 'normal');
                 doc.setTextColor(100, 100, 100);
-                doc.text('Based on income, surplus capacity, liquid assets & wealth concerns', margin + 55, yPos + 34);
+                doc.text('Based on income capacity, income structure, savings rate & asset strength', margin + 55, yPos + 34);
                 
                 yPos += 55;
                 
@@ -4573,28 +4697,118 @@ June Yoon | Wealth Architecture Strategist`;
         // - Concerns (financial awareness)
         // ============================================
         
-        function calculateWealthScore(surplus, liquid, income, status, timeline, concerns) {
-            let score = 0;
+        // ============================================
+        // NEW WEALTH SCORE ENGINE (50 points max)
+        // Currency-aware, ratio-based, fair across regions
+        // ============================================
+        
+        // Currency conversion rates to USD (for internal calculation only)
+        const FX_RATES = {
+            USD: 1,
+            SGD: 0.74,
+            MYR: 0.21,
+            IDR: 0.000064,
+            THB: 0.027,
+            PHP: 0.018,
+            AUD: 0.66,
+            GBP: 1.27,
+            EUR: 1.09,
+            INR: 0.012,
+            HKD: 0.13,
+            CNY: 0.14,
+            JPY: 0.0067,
+            KRW: 0.00075,
+            VND: 0.00004,
+            NZD: 0.61,
+            CAD: 0.74,
+            CHF: 1.12
+        };
+        
+        function toUSD(amount, currency) {
+            return amount * (FX_RATES[currency] || 1);
+        }
+        
+        // Component 1: Income Capacity (0-10 points)
+        function scoreIncomeCapacity(annualIncomeUSD) {
+            if (annualIncomeUSD < 30000) return 2;
+            if (annualIncomeUSD < 70000) return 4;
+            if (annualIncomeUSD < 150000) return 6;
+            if (annualIncomeUSD < 300000) return 8;
+            return 10;
+        }
+        
+        // Component 2: Income Structure (0-10 points)
+        // Based on selected statuses - takes highest + bonus for multiple
+        const STRUCTURE_POINTS = {
+            'multiple income': 4,
+            'single income': 2,
+            'growing income': 3,
+            'stuck': 1,
+            'exploring': 2,
+            'business owner': 4,
+            'investor': 4,
+            'employed': 2,
+            'professional': 3,
+            'consultant': 3,
+            'retired': 5,
+            'other': 1
+        };
+        
+        function scoreIncomeStructure(statusString) {
+            if (!statusString) return 1;
+            const statusLower = statusString.toLowerCase();
             
-            // === 1. INCOME LEVEL (Max 20 points) ===
-            // Higher income = higher earning capacity
-            const incomePoints = {
-                'Under 50K': 4,
-                '50-100K': 8,
-                '100-150K': 11,
-                '150-250K': 14,
-                '250-500K': 16,
-                '500K-1M': 18,
-                '1M-2M': 19,
-                '2M-5M': 20,
-                '5M+': 20
-            };
-            score += incomePoints[income] || 5;
+            let maxScore = 0;
+            let matchCount = 0;
             
-            // === 2. SURPLUS RATIO (Max 25 points) ===
-            // Surplus relative to income shows financial discipline
-            // Get midpoint of income range for ratio calculation
-            const incomeMidpoints = {
+            for (const [key, points] of Object.entries(STRUCTURE_POINTS)) {
+                if (statusLower.includes(key)) {
+                    maxScore = Math.max(maxScore, points);
+                    matchCount++;
+                }
+            }
+            
+            // Bonus for multiple income sources
+            let bonus = matchCount >= 2 ? 2 : 0;
+            return Math.min(maxScore + bonus, 10);
+        }
+        
+        // Component 3: Savings Rate (0-15 points)
+        function scoreSavingsRate(monthlySurplusUSD, annualIncomeUSD) {
+            const monthlyIncome = annualIncomeUSD / 12;
+            if (monthlyIncome <= 0) return 0;
+            
+            const rate = monthlySurplusUSD / monthlyIncome;
+            
+            if (rate < 0.05) return 2;
+            if (rate < 0.10) return 5;
+            if (rate < 0.20) return 9;
+            if (rate < 0.30) return 12;
+            return 15;
+        }
+        
+        // Component 4: Asset Strength (0-15 points)
+        function scoreAssetStrength(totalAssetsUSD, annualIncomeUSD) {
+            if (annualIncomeUSD <= 0) return 0;
+            
+            const ratio = totalAssetsUSD / annualIncomeUSD;
+            
+            if (ratio < 0.25) return 2;
+            if (ratio < 0.50) return 5;
+            if (ratio < 1.00) return 9;
+            if (ratio < 2.00) return 12;
+            return 15;
+        }
+        
+        // Get annual income from tier selection
+        function getAnnualIncomeFromTier(incomeTier, currency) {
+            // Map income tier to approximate annual income in local currency
+            const tierMidpoints = {
+                '1': 75000,    // 50K-100K range
+                '2': 125000,   // 100K-150K range
+                '3': 200000,   // 150K-250K range
+                '4': 375000,   // 250K-500K range
+                '5': 750000,   // 500K+ range
                 'Under 50K': 35000,
                 '50-100K': 75000,
                 '100-150K': 125000,
@@ -4605,87 +4819,92 @@ June Yoon | Wealth Architecture Strategist`;
                 '2M-5M': 3500000,
                 '5M+': 7500000
             };
-            const annualIncome = incomeMidpoints[income] || 100000;
-            const annualSurplus = surplus * 12;
-            const surplusRatio = annualSurplus / annualIncome;
+            return tierMidpoints[incomeTier] || 100000;
+        }
+        
+        // Main wealth score calculator (NEW 50-point system)
+        function calculateWealthScore(surplus, liquid, income, status, timeline, concerns) {
+            // Get currency from page
+            const currencySelect = document.getElementById('currency');
+            const currency = currencySelect ? currencySelect.value : 'USD';
             
-            // Surplus ratio scoring: 
-            // 0-10% = 5pts, 10-20% = 10pts, 20-30% = 15pts, 30-40% = 20pts, 40%+ = 25pts
-            if (surplusRatio >= 0.40) score += 25;
-            else if (surplusRatio >= 0.30) score += 20;
-            else if (surplusRatio >= 0.20) score += 15;
-            else if (surplusRatio >= 0.10) score += 10;
-            else if (surplusRatio > 0) score += 5;
+            // Get annual income in local currency, then convert to USD
+            const annualIncomeLocal = getAnnualIncomeFromTier(income, currency);
+            const annualIncomeUSD = toUSD(annualIncomeLocal, currency);
+            const monthlySurplusUSD = toUSD(surplus, currency);
+            const totalAssetsUSD = toUSD(liquid, currency);
             
-            // === 3. LIQUID ASSETS RATIO (Max 25 points) ===
-            // Liquid assets relative to income (months of runway / wealth multiple)
-            const wealthMultiple = liquid / annualIncome;
+            // Calculate each component
+            const incomeCapacity = scoreIncomeCapacity(annualIncomeUSD);
+            const incomeStructure = scoreIncomeStructure(status);
+            const savingsRate = scoreSavingsRate(monthlySurplusUSD, annualIncomeUSD);
+            const assetStrength = scoreAssetStrength(totalAssetsUSD, annualIncomeUSD);
             
-            // Wealth multiple scoring:
-            // < 0.5x = 5pts, 0.5-1x = 10pts, 1-2x = 15pts, 2-5x = 20pts, 5x+ = 25pts
-            if (wealthMultiple >= 5) score += 25;
-            else if (wealthMultiple >= 2) score += 20;
-            else if (wealthMultiple >= 1) score += 15;
-            else if (wealthMultiple >= 0.5) score += 10;
-            else if (wealthMultiple > 0) score += 5;
+            // Total score (max 50)
+            const total = incomeCapacity + incomeStructure + savingsRate + assetStrength;
             
-            // === 4. PROFESSIONAL STATUS (Max 15 points) ===
-            // Multiple income streams and business ownership indicate wealth-building mindset
-            const statusLower = (status || '').toLowerCase();
-            let statusScore = 0;
-            
-            if (statusLower.includes('business owner')) statusScore += 6;
-            if (statusLower.includes('investor')) statusScore += 5;
-            if (statusLower.includes('employed')) statusScore += 3;
-            if (statusLower.includes('professional') || statusLower.includes('consultant')) statusScore += 4;
-            if (statusLower.includes('retired')) statusScore += 3;
-            
-            // Bonus for multiple roles (diversified income)
-            const roleCount = (statusLower.match(/business|investor|employed|professional|consultant|retired/g) || []).length;
-            if (roleCount >= 3) statusScore += 4;
-            else if (roleCount >= 2) statusScore += 2;
-            
-            score += Math.min(statusScore, 15);
-            
-            // === 5. INVESTMENT TIMELINE (Max 10 points) ===
-            // Longer timeline = more compound growth potential
-            const timelinePoints = {
-                '1 year': 4,
-                '3 years': 7,
-                '5+ years': 10
+            // Store breakdown for insights
+            window.scoreBreakdown = {
+                incomeCapacity,
+                incomeStructure,
+                savingsRate,
+                assetStrength,
+                total: Math.min(total, 50)
             };
-            score += timelinePoints[timeline] || 5;
             
-            // === 6. FINANCIAL AWARENESS (Max 5 points) ===
-            // Selecting specific concerns shows financial awareness
-            const concernCount = (concerns || '').split(',').filter(c => c.trim() && !c.includes('Prefer not to say')).length;
+            console.log('📊 Wealth Score Breakdown:', window.scoreBreakdown);
             
-            if (concernCount >= 4) score += 5;
-            else if (concernCount >= 2) score += 3;
-            else if (concernCount >= 1) score += 2;
-            
-            // Bonus for advanced concerns (tax, legacy, business growth)
-            const concernsLower = (concerns || '').toLowerCase();
-            if (concernsLower.includes('tax')) score += 1;
-            if (concernsLower.includes('legacy')) score += 1;
-            if (concernsLower.includes('business growth')) score += 1;
-            
-            // Cap at 100
-            return Math.round(Math.min(score, 100));
+            return Math.round(Math.min(total, 50));
         }
         
         // Simple version for backwards compatibility (used in auto-upload)
         function calculateWealthScoreSimple(surplus, liquid) {
-            // Fallback using default assumptions
-            return calculateWealthScore(surplus, liquid, '100-150K', 'Employed', '3 years', '');
+            return calculateWealthScore(surplus, liquid, '3', 'Employed', '3 years', '');
+        }
+        
+        // Get wealth stage from score (NEW 4-stage system)
+        function getScoreLabel(score) {
+            if (score <= 12) return 'Survival Mode';
+            if (score <= 25) return 'Stability Trap';
+            if (score <= 37) return 'Growth Phase';
+            return 'Freedom Path';
         }
         
         function getScoreLabelForZapier(score) {
-            if (score >= 85) return 'Elite Wealth Architect';
-            if (score >= 70) return 'Wealth Accelerator';
-            if (score >= 55) return 'Strategic Builder';
-            if (score >= 40) return 'Growth Foundation';
-            return 'Emerging Accumulator';
+            return getScoreLabel(score);
+        }
+        
+        function getScoreLabelLocal(score) {
+            return getScoreLabel(score);
+        }
+        
+        // Get primary bottleneck for personalized insights
+        function getPrimaryBottleneck() {
+            if (!window.scoreBreakdown) return 'savingsRate';
+            
+            const breakdown = window.scoreBreakdown;
+            const entries = [
+                ['incomeCapacity', breakdown.incomeCapacity],
+                ['incomeStructure', breakdown.incomeStructure],
+                ['savingsRate', breakdown.savingsRate],
+                ['assetStrength', breakdown.assetStrength]
+            ];
+            
+            // Sort by score (lowest first)
+            entries.sort((a, b) => a[1] - b[1]);
+            return entries[0][0];
+        }
+        
+        // Get insight text based on bottleneck
+        function getBottleneckInsight() {
+            const bottleneck = getPrimaryBottleneck();
+            const insights = {
+                incomeCapacity: "Your earning capacity is still limiting your wealth-building options. Focus on increasing your income through skills, promotions, or additional revenue streams.",
+                incomeStructure: "Your income still depends too heavily on active effort. Building passive income streams will accelerate your path to financial freedom.",
+                savingsRate: "Your income is not converting into investable surplus fast enough. Review your expenses and find ways to increase your savings rate.",
+                assetStrength: "You have not yet built enough financial reserves to create real stability. Prioritize building your asset base through consistent investing."
+            };
+            return insights[bottleneck] || insights.savingsRate;
         }
         
         // ============================================
@@ -4734,32 +4953,188 @@ June Yoon | Wealth Architecture Strategist`;
             // Store for PDF
             reportData = { name, surplus, liquid, income, currency, symbol, status, concern, timeline, annualSurplus, projection5yr, wealthScore, country: countryName };
             
-            // Update display values
-            document.getElementById('resultName').textContent = name;
-            document.getElementById('scoreValue').textContent = wealthScore;
-            document.getElementById('scoreLabel').textContent = getScoreLabel(wealthScore);
-            document.getElementById('displaySurplus').textContent = symbol + surplus.toLocaleString();
-            document.getElementById('displayLiquid').textContent = symbol + liquid.toLocaleString();
-            document.getElementById('displayAnnual').textContent = symbol + annualSurplus.toLocaleString();
-            document.getElementById('display5Year').textContent = symbol + Math.round(projection5yr).toLocaleString();
+            // Get score breakdown from global
+            const breakdown = window.scoreBreakdown || {
+                incomeCapacity: 5,
+                incomeStructure: 2,
+                savingsRate: 7,
+                assetStrength: 5
+            };
             
-            // Draw score gauge
-            drawScoreGauge(wealthScore);
+            // Calculate percentage
+            const percentage = Math.round((wealthScore / 50) * 100);
             
-            // Draw wealth projection chart
-            drawWealthProjectionChart(liquid, surplus, symbol);
+            // Get stage info
+            const stage = getScoreLabel(wealthScore);
+            const stageDescriptions = {
+                'Survival Mode': "You're getting by, but financial pressure is high.",
+                'Stability Trap': "You're earning, but your income still depends on your time and energy.",
+                'Growth Phase': "You're building momentum, but not fully leveraging your financial potential yet.",
+                'Freedom Path': "Your money and systems are working for you."
+            };
             
-            // Draw allocation chart
-            drawAllocationChart(income, concern, status);
+            // Pillar descriptions based on score
+            const pillarTexts = {
+                incomeCapacity: breakdown.incomeCapacity >= 8 ? "You have strong earning power." : 
+                               breakdown.incomeCapacity >= 5 ? "You have the potential to earn more." :
+                               "Your earning capacity needs attention.",
+                incomeStructure: breakdown.incomeStructure >= 8 ? "You have diversified income sources." :
+                                breakdown.incomeStructure >= 5 ? "Your income structure is developing." :
+                                "Your income is still too dependent on active effort.",
+                savingsRate: breakdown.savingsRate >= 12 ? "Excellent savings discipline." :
+                            breakdown.savingsRate >= 7 ? "You're saving, but not enough to accelerate your freedom." :
+                            "Your savings rate needs improvement.",
+                assetStrength: breakdown.assetStrength >= 12 ? "Strong asset base established." :
+                              breakdown.assetStrength >= 7 ? "You're building reserves." :
+                              "You haven't built enough financial reserves yet."
+            };
             
-            // Generate Millionaire Mind principles
-            generateMindsetPrinciples(wealthScore, concern, status);
+            // Bottleneck info
+            const bottleneckLabels = {
+                incomeCapacity: 'INCOME CAPACITY',
+                incomeStructure: 'INCOME STRUCTURE',
+                savingsRate: 'SAVINGS RATE',
+                assetStrength: 'ASSET STRENGTH'
+            };
+            const bottleneckDescs = {
+                incomeCapacity: "You have the potential to earn more, but it's not fully optimized yet.",
+                incomeStructure: "Your income is still dependent on active effort.",
+                savingsRate: "You're saving, but not enough to accelerate your financial freedom.",
+                assetStrength: "You haven't built strong enough financial reserves or assets yet."
+            };
             
-            // Generate action steps
-            generateActionSteps(concern, status, timeline, income);
+            // Find weakest pillar
+            const entries = [
+                { key: 'incomeCapacity', score: breakdown.incomeCapacity, max: 10 },
+                { key: 'incomeStructure', score: breakdown.incomeStructure, max: 10 },
+                { key: 'savingsRate', score: breakdown.savingsRate, max: 15 },
+                { key: 'assetStrength', score: breakdown.assetStrength, max: 15 }
+            ];
+            entries.forEach(e => e.percentage = e.score / e.max);
+            entries.sort((a, b) => a.percentage - b.percentage);
+            const weakest = entries[0];
             
-            // Generate AI-powered analysis
-            generateAIAnalysis(name, surplus, liquid, income, currency, status, concern, timeline, wealthScore, symbol);
+            // Update NEW results page elements
+            const scoreValueNew = document.getElementById('scoreValueNew');
+            if (scoreValueNew) scoreValueNew.textContent = wealthScore;
+            
+            const percentageDisplay = document.getElementById('percentageDisplay');
+            if (percentageDisplay) percentageDisplay.textContent = percentage + '% of your financial freedom potential';
+            
+            const stageNameDisplay = document.getElementById('stageNameDisplay');
+            if (stageNameDisplay) stageNameDisplay.textContent = stage.toUpperCase();
+            
+            const stageDescDisplay = document.getElementById('stageDescDisplay');
+            if (stageDescDisplay) stageDescDisplay.textContent = stageDescriptions[stage] || '';
+            
+            // Update pillar scores
+            const pillarIncomeScore = document.getElementById('pillarIncomeScore');
+            if (pillarIncomeScore) pillarIncomeScore.textContent = breakdown.incomeCapacity;
+            
+            const pillarStructureScore = document.getElementById('pillarStructureScore');
+            if (pillarStructureScore) pillarStructureScore.textContent = breakdown.incomeStructure;
+            
+            const pillarSavingsScore = document.getElementById('pillarSavingsScore');
+            if (pillarSavingsScore) pillarSavingsScore.textContent = breakdown.savingsRate;
+            
+            const pillarAssetScore = document.getElementById('pillarAssetScore');
+            if (pillarAssetScore) pillarAssetScore.textContent = breakdown.assetStrength;
+            
+            // Update pillar text
+            const pillarIncomeText = document.getElementById('pillarIncomeText');
+            if (pillarIncomeText) pillarIncomeText.textContent = pillarTexts.incomeCapacity;
+            
+            const pillarStructureText = document.getElementById('pillarStructureText');
+            if (pillarStructureText) pillarStructureText.textContent = pillarTexts.incomeStructure;
+            
+            const pillarSavingsText = document.getElementById('pillarSavingsText');
+            if (pillarSavingsText) pillarSavingsText.textContent = pillarTexts.savingsRate;
+            
+            const pillarAssetText = document.getElementById('pillarAssetText');
+            if (pillarAssetText) pillarAssetText.textContent = pillarTexts.assetStrength;
+            
+            // Update bottleneck section
+            const bottleneckTitle = document.getElementById('bottleneckTitle');
+            if (bottleneckTitle) bottleneckTitle.textContent = bottleneckLabels[weakest.key] + ' (' + weakest.score + ' / ' + weakest.max + ')';
+            
+            const bottleneckDesc = document.getElementById('bottleneckDesc');
+            if (bottleneckDesc) bottleneckDesc.textContent = bottleneckDescs[weakest.key];
+            
+            // Update CTA title
+            const ctaTitle = document.getElementById('ctaTitle');
+            if (ctaTitle) ctaTitle.textContent = 'BREAK OUT OF THE ' + stage.toUpperCase();
+            
+            // Update progress bar marker position (0-50 maps to 0-100%)
+            const scoreMarker = document.getElementById('scoreMarker');
+            if (scoreMarker) {
+                const markerPos = (wealthScore / 50) * 100;
+                scoreMarker.style.left = markerPos + '%';
+            }
+            
+            // Highlight active stage box
+            updateStageBoxHighlight(wealthScore);
+            
+            // Update progress segment colors based on stage
+            updateProgressSegments(wealthScore);
+            
+            console.log('📊 Results populated with new design:', {
+                score: wealthScore,
+                percentage,
+                stage,
+                breakdown,
+                weakest: weakest.key
+            });
+        }
+        
+        function updateStageBoxHighlight(score) {
+            // Reset all boxes
+            const boxes = ['stage1Box', 'stage2Box', 'stage3Box', 'stage4Box'];
+            boxes.forEach(id => {
+                const box = document.getElementById(id);
+                if (box) {
+                    box.style.background = '#f8f8f8';
+                    box.style.border = 'none';
+                    const texts = box.querySelectorAll('p');
+                    texts.forEach(p => p.style.color = '');
+                }
+            });
+            
+            // Highlight active box
+            let activeBox;
+            if (score <= 12) activeBox = 'stage1Box';
+            else if (score <= 25) activeBox = 'stage2Box';
+            else if (score <= 37) activeBox = 'stage3Box';
+            else activeBox = 'stage4Box';
+            
+            const box = document.getElementById(activeBox);
+            if (box) {
+                box.style.background = '#fff5f0';
+                box.style.border = '2px solid #ff8120';
+                const texts = box.querySelectorAll('p');
+                texts.forEach(p => {
+                    if (!p.style.color) p.style.color = '#ff8120';
+                });
+            }
+        }
+        
+        function updateProgressSegments(score) {
+            const progressSegment = document.getElementById('progressSegmentActive');
+            if (!progressSegment) return;
+            
+            // Calculate position and width based on score
+            if (score <= 12) {
+                progressSegment.style.left = '0';
+                progressSegment.style.width = (score / 50 * 100) + '%';
+            } else if (score <= 25) {
+                progressSegment.style.left = '0';
+                progressSegment.style.width = (score / 50 * 100) + '%';
+            } else if (score <= 37) {
+                progressSegment.style.left = '0';
+                progressSegment.style.width = (score / 50 * 100) + '%';
+            } else {
+                progressSegment.style.left = '0';
+                progressSegment.style.width = (score / 50 * 100) + '%';
+            }
         }
         
         function calculateCompoundGrowth(principal, monthlyAdd, years, rate) {
@@ -4787,7 +5162,8 @@ June Yoon | Wealth Architecture Strategist`;
             ctx.strokeStyle = '#f0f0f0';
             ctx.stroke();
             
-            const scoreAngle = Math.PI + (Math.PI * (score / 100));
+            // Score is now out of 50, not 100
+            const scoreAngle = Math.PI + (Math.PI * (score / 50));
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius, Math.PI, scoreAngle, false);
             ctx.lineWidth = 15;
@@ -4991,7 +5367,7 @@ June Yoon | Wealth Architecture Strategist`;
             const firstName = name.split(' ')[0];
             return `Dear ${firstName},
 
-Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/100, you're in the "${getScoreLabel(wealthScore)}" category—a solid foundation for accelerated wealth building.
+Thank you for completing your Wealth Architecture Assessment. With a Wealth Position Score of ${wealthScore}/50, you're in the "${getScoreLabel(wealthScore)}" stage.
 
 Your ${symbol}${surplus.toLocaleString()} monthly surplus and ${symbol}${liquid.toLocaleString()} in liquid assets position you well for strategic growth. The key now is optimizing where this capital flows and ensuring every dollar works as hard as possible.
 
