@@ -4700,18 +4700,45 @@
                     pillarTexts: getPillarText,
                     finalCta: stageTemplate.ctaText
                 },
-                narratives: {
-                    whyThisIsHappening: `${input.firstName}, you're in ${stage} because your financial structure hasn't caught up with your earning potential.`,
-                    hiddenPattern: `Your savings rate is creating a ceiling on your wealth growth that you may not have noticed.`,
-                    ifNothingChanges: `If you stay on this path, you'll reach retirement still trading time for money.`,
-                    transitionToSolution: `The good news? You've already taken the first step by getting clarity on where you stand.`
-                },
+                narratives: getStageNarratives(stage, input.firstName, 'Savings Rate', input.timeframe),
                 meta: {
                     generatedAt: new Date().toISOString(),
                     version: '2.0',
                     architecture: 'frontend-fallback'
                 }
             };
+        }
+        
+        // Rich stage-specific narratives for fallback
+        function getStageNarratives(stage, firstName, bottleneck, timeframe) {
+            const narratives = {
+                'Survival Mode': {
+                    whyThisIsHappening: `${firstName}, being in Survival Mode isn't a reflection of your worth or your effort. It simply means your current financial structure hasn't yet created the breathing room you need to think beyond next month's bills. When you're constantly focused on immediate needs, it's nearly impossible to build the systems that create lasting wealth. The good news is that recognizing this pattern is the first step toward breaking it.`,
+                    hiddenPattern: `Here's something most people in your situation don't realize: the stress of financial survival actually reinforces the behaviors that keep you stuck. When money feels scarce, we unconsciously make decisions that prioritize short-term relief over long-term growth. Your ${bottleneck.toLowerCase()} isn't just a number problem — it's a symptom of a financial operating system designed for survival, not prosperity.`,
+                    ifNothingChanges: `If nothing changes in how you approach your finances, you'll likely find yourself in this same position five years from now, perhaps with a slightly higher income but the same underlying stress. The gap between what you earn and what you keep will continue to feel frustratingly small. Time, your most valuable asset, will continue slipping away without building the foundation for real financial freedom.`,
+                    transitionToSolution: `But here's what I want you to hold onto: you've already done something most people never do. You've looked honestly at your situation and gotten clear on where you stand. That clarity is the foundation everything else is built on. Your ${timeframe.toLowerCase()} timeline gives us something concrete to work with, and there are specific strategies that can shift you out of survival mode faster than you might think.`
+                },
+                'Stability Trap': {
+                    whyThisIsHappening: `${firstName}, being in the Stability Trap is actually a sign that you've achieved something real — you've built a foundation that many people never reach. But here's the uncomfortable truth: the same cautious approach that got you here is now the very thing holding you back. You're earning well, you're responsible, you're doing "all the right things" — and yet your wealth isn't growing at the rate your efforts deserve. This isn't about working harder; it's about working differently.`,
+                    hiddenPattern: `The pattern I see in your numbers tells a story you might not have fully recognized yet. Your ${bottleneck.toLowerCase()} is functioning like a silent ceiling on your wealth growth. Every month, you're making decisions that feel responsible but are actually keeping you trapped in a cycle of stability without acceleration. It's like driving with the parking brake on — you're moving forward, but you're burning fuel and getting nowhere near the progress you should be making.`,
+                    ifNothingChanges: `Without a shift in strategy, here's what the next decade likely looks like: you'll continue earning well, continue saving responsibly, and continue feeling like something's missing. You might accumulate more, but the gap between your current trajectory and true financial freedom will grow wider, not smaller. The most frustrating part? You'll watch others with similar incomes somehow pull ahead, wondering what they know that you don't.`,
+                    transitionToSolution: `The good news is that escaping the Stability Trap doesn't require a complete overhaul of your life. It requires strategic adjustments to how your money works. You've already proven you can be disciplined — now it's about directing that discipline toward the right levers. Given your ${timeframe.toLowerCase()} timeline, you're in an ideal position to implement the changes that will finally let your wealth catch up to your income.`
+                },
+                'Growth Phase': {
+                    whyThisIsHappening: `${firstName}, your position in the Growth Phase reflects real progress — you've moved beyond just surviving and stabilizing into active wealth building. This is where most people who achieve financial freedom spent significant time, so you're on the right track. That said, being in Growth Phase also means you're at a critical juncture where the decisions you make now will determine whether you accelerate into true freedom or plateau at "comfortable but not free."`,
+                    hiddenPattern: `Looking at your numbers, I can see something interesting: your ${bottleneck.toLowerCase()} is the specific area where you're leaving the most potential on the table. It's not that you're doing anything wrong — it's that you're underutilizing this particular lever. Many people in your position focus on what's already working rather than optimizing what's underperforming. But the fastest path to financial freedom often runs through the areas we've been unconsciously avoiding.`,
+                    ifNothingChanges: `If you continue on your current trajectory without strategic adjustments, you'll likely reach a point of financial comfort — but it may take twice as long as it needs to. The difference between optimized growth and organic growth isn't just about speed; it's about the options you'll have when you get there. Five years from now, you could either be choosing how to spend your time, or still negotiating for it.`,
+                    transitionToSolution: `You're closer than you might realize to the inflection point where wealth starts to build momentum on its own. The strategies that work at this stage are different from what got you here — more sophisticated, more leveraged, more focused on multiplication rather than addition. Your ${timeframe.toLowerCase()} timeline is actually perfect for implementing these changes and seeing meaningful results.`
+                },
+                'Freedom Path': {
+                    whyThisIsHappening: `${firstName}, being on the Freedom Path means you've already accomplished what most people only dream about — you've built real wealth momentum. Your financial foundation is strong, and your trajectory is pointed in the right direction. The question now isn't whether you'll achieve financial freedom, but how quickly you'll get there and how much you'll optimize along the way. You're playing a different game now, one where strategy matters more than hustle.`,
+                    hiddenPattern: `Even at your level, there are often overlooked opportunities hiding in plain sight. Your ${bottleneck.toLowerCase()} might seem minor compared to your strengths, but at this stage, optimizing your weaker areas can have a multiplicative effect on your overall wealth velocity. The pattern I often see with high performers like you is a tendency to double down on what's working rather than addressing what's limiting — and sometimes the biggest gains come from removing constraints, not adding fuel.`,
+                    ifNothingChanges: `You'll reach financial freedom either way — that's the good news. But the difference between an optimized path and a default path could mean years of additional working or millions in unrealized potential. At your level, small percentage improvements compound dramatically over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there eventually.`,
+                    transitionToSolution: `You're in a position that many would envy, but that doesn't mean the work is done. The strategies that matter most at this stage are about optimization, protection, and acceleration — fine-tuning an already strong engine to reach its full potential. Your ${timeframe.toLowerCase()} timeline gives us the window to implement the sophisticated approaches that separate the wealthy from the truly financially free.`
+                }
+            };
+            
+            return narratives[stage] || narratives['Stability Trap'];
         }
         
         // NEW: Render result page using hybrid API response
