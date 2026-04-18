@@ -4527,7 +4527,10 @@
                 assetStrength: 'Asset Strength'
             };
             
-            // Prepare data for Airtable (via Zapier) - NOW INCLUDING PDF URL AND SCORE BREAKDOWN
+            // Get wealth stage
+            const stage = getWealthStage(wealthScore);
+            
+            // Prepare data for Airtable (via Zapier) - COMPLETE 22-FIELD PAYLOAD
             const formData = {
                 'First Name': firstName,
                 'Last Name': lastName,
@@ -4543,6 +4546,7 @@
                 'Timeline': timeline,
                 'Wealth Score': wealthScore,
                 'Score Label': scoreLabel,
+                'Stage': stage,
                 'Income Capacity Score': breakdown.incomeCapacity,
                 'Income Structure Score': breakdown.incomeStructure,
                 'Savings Rate Score': breakdown.savingsRate,
@@ -4552,9 +4556,12 @@
                 'Created At': new Date().toISOString()
             };
             
-            // Send to Zapier webhook (now includes PDF URL!)
+            // DEBUG: Log exact payload being sent
+            console.log('🚀 FINAL PAYLOAD TO ZAPIER:', JSON.stringify(formData, null, 2));
+            
+            // Send to Zapier webhook
             sendToZapier(formData);
-            console.log('✅ Data sent to Zapier with PDF URL');
+            console.log('✅ Data sent to Zapier with all 22 fields');
             
             // Complete loading animation
             completeLoadingAnimation();
@@ -5308,6 +5315,11 @@ June Yoon | Wealth Architecture Strategist`;
             if (score <= 25) return 'Stability Trap';
             if (score <= 37) return 'Growth Phase';
             return 'Freedom Path';
+        }
+        
+        // Alias for stage (same logic)
+        function getWealthStage(score) {
+            return getScoreLabel(score);
         }
         
         function getScoreLabelForZapier(score) {
