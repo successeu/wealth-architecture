@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wealth Architecture Report</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #fff;
+            color: #1a1a1a;
+            line-height: 1.6;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+        
+        /* Print-specific styles */
+        @media print {
+            body {
+                background: #fff;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-break {
+                page-break-before: always;
+            }
+            .avoid-break {
+                page-break-inside: avoid;
+            }
+            @page {
+                size: A4;
+                margin: 15mm 15mm 20mm 15mm;
+            }
+        }
+        
+        .report-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .report-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e5e5e5;
+            margin-bottom: 25px;
+        }
+        
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .brand-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ff8120;
+            letter-spacing: 0.5px;
+        }
+        
+        .brand-tagline {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .presenter {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        /* Score Hero Section */
+        .score-hero {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+        
+        .score-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .score-label {
+            font-size: 10px;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        
+        .score-number {
+            font-size: 72px;
+            font-weight: 700;
+            color: #1a1a1a;
+            line-height: 1;
+        }
+        
+        .score-max {
+            font-size: 28px;
+            font-weight: 400;
+            color: #ccc;
+        }
+        
+        .score-percentage {
+            font-size: 12px;
+            color: #666;
+            margin-top: 8px;
+        }
+        
+        .score-tagline {
+            font-size: 11px;
+            color: #666;
+            margin-top: 15px;
+        }
+        
+        .score-tagline span {
+            color: #ff8120;
+            font-weight: 600;
+        }
+        
+        .stage-card {
+            background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+            border: 1.5px solid #fed7aa;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .stage-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        
+        .stage-label {
+            font-size: 9px;
+            color: #666;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        
+        .stage-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #ff8120;
+            margin-bottom: 10px;
+        }
+        
+        .stage-tagline {
+            font-size: 11px;
+            color: #666;
+        }
+        
+        .stage-tagline span {
+            color: #ff8120;
+            font-weight: 600;
+        }
+        
+        /* Progress Bar */
+        .progress-section {
+            margin-bottom: 20px;
+        }
+        
+        .progress-bar-container {
+            height: 12px;
+            background: #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+        
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff8120, #f97316);
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-markers {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9px;
+            color: #999;
+        }
+        
+        /* Stage Boxes */
+        .stages-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        
+        .stage-box {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 15px 10px;
+            text-align: center;
+        }
+        
+        .stage-box.active {
+            background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+            border-color: #ff8120;
+        }
+        
+        .stage-box-icon {
+            font-size: 18px;
+            margin-bottom: 6px;
+        }
+        
+        .stage-box-name {
+            font-size: 8px;
+            font-weight: 700;
+            color: #666;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+        
+        .stage-box.active .stage-box-name {
+            color: #ff8120;
+        }
+        
+        .stage-box-range {
+            font-size: 8px;
+            color: #999;
+            margin-bottom: 6px;
+        }
+        
+        .stage-box-desc {
+            font-size: 7px;
+            color: #888;
+            line-height: 1.4;
+        }
+        
+        /* Pillars Grid */
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 30px;
+        }
+        
+        .pillar-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 10px;
+            padding: 18px 12px;
+            text-align: center;
+        }
+        
+        .pillar-icon {
+            width: 36px;
+            height: 36px;
+            background: #f8f8f8;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 16px;
+            color: #ff8120;
+        }
+        
+        .pillar-label {
+            font-size: 8px;
+            font-weight: 700;
+            color: #999;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+        
+        .pillar-score {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ff8120;
+        }
+        
+        .pillar-max {
+            font-size: 14px;
+            font-weight: 500;
+            color: #ccc;
+        }
+        
+        .pillar-desc {
+            font-size: 9px;
+            color: #666;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        
+        /* Insight Cards */
+        .insight-card {
+            background: #fff;
+            border: 1px solid #e8e8e8;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .insight-card.amber {
+            background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
+            border-color: #fde68a;
+        }
+        
+        .insight-card.orange {
+            background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+            border-color: #fed7aa;
+        }
+        
+        .insight-card.red {
+            background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
+            border-color: #fecaca;
+        }
+        
+        .insight-card.green {
+            background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
+            border-color: #86efac;
+        }
+        
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+        
+        .insight-icon {
+            font-size: 20px;
+        }
+        
+        .insight-title {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        
+        .insight-title.amber { color: #b45309; }
+        .insight-title.orange { color: #c2410c; }
+        .insight-title.red { color: #b91c1c; }
+        .insight-title.green { color: #15803d; }
+        
+        .insight-subtitle {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ea580c;
+            margin-bottom: 12px;
+        }
+        
+        .insight-content {
+            font-size: 12px;
+            color: #444;
+            line-height: 1.7;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            background: #fff;
+            border: 2px solid #fed7aa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+        }
+        
+        .cta-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .cta-icon {
+            font-size: 28px;
+        }
+        
+        .cta-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #ff8120;
+            margin-bottom: 5px;
+        }
+        
+        .cta-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: #ff8120;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 12px 28px;
+            border-radius: 8px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        
+        .cta-testimonial {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .cta-quote {
+            font-size: 11px;
+            font-style: italic;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .cta-author {
+            font-size: 10px;
+            color: #ff8120;
+        }
+        
+        /* Trust Badges */
+        .trust-badges {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e8e8e8;
+        }
+        
+        .trust-badge {
+            text-align: center;
+        }
+        
+        .trust-badge-icon {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+        
+        .trust-badge-text {
+            font-size: 9px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        /* Footer */
+        .report-footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid #e8e8e8;
+        }
+        
+        .footer-copyright {
+            font-size: 9px;
+            color: #999;
+            margin-bottom: 5px;
+        }
+        
+        .footer-disclaimer {
+            font-size: 8px;
+            color: #aaa;
+            line-height: 1.5;
+        }
+        
+        /* Print Button (hidden on print) */
+        .print-controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+        }
+        
+        .print-btn {
+            background: #ff8120;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(255, 129, 32, 0.3);
+        }
+        
+        .print-btn:hover {
+            background: #e67318;
+        }
+        
+        .close-btn {
+            background: #666;
+            color: #fff;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Page 2 header */
+        .page-header {
+            margin-bottom: 20px;
+        }
+        
+        .page-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 5px;
+        }
+        
+        .page-subtitle {
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <!-- Print Controls (hidden on print) -->
+    <div class="print-controls no-print">
+        <button class="print-btn" onclick="window.print()">📄 Save as PDF</button>
+        <button class="close-btn" onclick="window.close()">✕ Close</button>
+    </div>
+
+    <div class="report-container">
+        <!-- PAGE 1 -->
+        <div class="page-1">
+            <!-- Header -->
+            <div class="report-header">
+                <div class="brand">
+                    <span class="brand-name">SUCCESS RESOURCES</span>
+                    <span class="brand-tagline">| YOUR LEARNING PARTNER</span>
+                </div>
+                <div class="presenter">Presented by <span id="presenterName">June Yoon</span></div>
+            </div>
+            
+            <!-- Score Hero -->
+            <div class="score-hero">
+                <div class="score-card">
+                    <div class="score-label">YOUR WEALTH SCORE</div>
+                    <div>
+                        <span class="score-number" id="wealthScore">27</span><span class="score-max">/50</span>
+                    </div>
+                    <div class="score-percentage"><span id="percentage">54</span>% of your financial freedom potential</div>
+                    <div class="score-tagline">This score reflects not just your finances - <span>but how you THINK about money.</span></div>
+                </div>
+                <div class="stage-card">
+                    <div class="stage-icon">📊</div>
+                    <div class="stage-label">YOU ARE CURRENTLY IN</div>
+                    <div class="stage-name" id="stageName">GROWTH PHASE</div>
+                    <div class="stage-tagline">This isn't a strategy problem. <span>It's a pattern.</span></div>
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-section">
+                <div class="progress-bar-container">
+                    <div class="progress-bar-fill" id="progressBar" style="width: 54%;"></div>
+                </div>
+                <div class="progress-markers">
+                    <span>0</span>
+                    <span>12</span>
+                    <span>25</span>
+                    <span>37</span>
+                    <span>50</span>
+                </div>
+            </div>
+            
+            <!-- Stage Boxes -->
+            <div class="stages-grid">
+                <div class="stage-box" id="stage-survival">
+                    <div class="stage-box-icon">😰</div>
+                    <div class="stage-box-name">SURVIVAL MODE</div>
+                    <div class="stage-box-range">0-12</div>
+                    <div class="stage-box-desc">Just getting by. Financial stress is high.</div>
+                </div>
+                <div class="stage-box" id="stage-stability">
+                    <div class="stage-box-icon">📉</div>
+                    <div class="stage-box-name">STABILITY TRAP</div>
+                    <div class="stage-box-range">13-25</div>
+                    <div class="stage-box-desc">You're earning, but income still depends on you.</div>
+                </div>
+                <div class="stage-box active" id="stage-growth">
+                    <div class="stage-box-icon">📈</div>
+                    <div class="stage-box-name">GROWTH PHASE</div>
+                    <div class="stage-box-range">26-37</div>
+                    <div class="stage-box-desc">Building momentum and creating leverage.</div>
+                </div>
+                <div class="stage-box" id="stage-freedom">
+                    <div class="stage-box-icon">🚀</div>
+                    <div class="stage-box-name">FREEDOM PATH</div>
+                    <div class="stage-box-range">38-50</div>
+                    <div class="stage-box-desc">Your money and systems work for you.</div>
+                </div>
+            </div>
+            
+            <!-- Pillars -->
+            <div class="pillars-grid">
+                <div class="pillar-card">
+                    <div class="pillar-icon">$</div>
+                    <div class="pillar-label">INCOME CAPACITY</div>
+                    <div><span class="pillar-score" id="incomeCapacityScore">10</span><span class="pillar-max">/10</span></div>
+                    <div class="pillar-desc" id="incomeCapacityText">You have strong earning power.</div>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">⊞</div>
+                    <div class="pillar-label">INCOME STRUCTURE</div>
+                    <div><span class="pillar-score" id="incomeStructureScore">3</span><span class="pillar-max">/10</span></div>
+                    <div class="pillar-desc" id="incomeStructureText">Your income is still too dependent on active effort.</div>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">☆</div>
+                    <div class="pillar-label">SAVINGS RATE</div>
+                    <div><span class="pillar-score" id="savingsRateScore">9</span><span class="pillar-max">/15</span></div>
+                    <div class="pillar-desc" id="savingsRateText">You're saving, but not enough to accelerate your freedom.</div>
+                </div>
+                <div class="pillar-card">
+                    <div class="pillar-icon">⬡</div>
+                    <div class="pillar-label">ASSET STRENGTH</div>
+                    <div><span class="pillar-score" id="assetStrengthScore">5</span><span class="pillar-max">/15</span></div>
+                    <div class="pillar-desc" id="assetStrengthText">You haven't built enough financial reserves yet.</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAGE 2 -->
+        <div class="page-break page-2">
+            <!-- Header (repeated for page 2) -->
+            <div class="report-header">
+                <div class="brand">
+                    <span class="brand-name">SUCCESS RESOURCES</span>
+                    <span class="brand-tagline">| YOUR LEARNING PARTNER</span>
+                </div>
+                <div class="presenter">Presented by <span>June Yoon</span></div>
+            </div>
+            
+            <div class="page-header">
+                <div class="page-title">Your Personalized Wealth Analysis</div>
+                <div class="page-subtitle">Based on your assessment results, <span id="firstName2">June</span></div>
+            </div>
+            
+            <!-- Why This Is Happening -->
+            <div class="insight-card amber avoid-break">
+                <div class="insight-header">
+                    <span class="insight-icon">💡</span>
+                    <span class="insight-title amber">WHY THIS IS HAPPENING</span>
+                </div>
+                <div class="insight-content" id="whyThisIsHappening">
+                    Loading your personalized analysis...
+                </div>
+            </div>
+            
+            <!-- Your Biggest Opportunity -->
+            <div class="insight-card orange avoid-break">
+                <div class="insight-header">
+                    <span class="insight-icon">🎯</span>
+                    <span class="insight-title orange">YOUR BIGGEST OPPORTUNITY</span>
+                </div>
+                <div class="insight-subtitle" id="bottleneckTitle">INCOME STRUCTURE (3/10)</div>
+                <div class="insight-content" id="hiddenPattern">
+                    Loading your personalized insight...
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAGE 3 -->
+        <div class="page-break page-3">
+            <!-- Header (repeated for page 3) -->
+            <div class="report-header">
+                <div class="brand">
+                    <span class="brand-name">SUCCESS RESOURCES</span>
+                    <span class="brand-tagline">| YOUR LEARNING PARTNER</span>
+                </div>
+                <div class="presenter">Presented by <span>June Yoon</span></div>
+            </div>
+            
+            <!-- If Nothing Changes -->
+            <div class="insight-card red avoid-break">
+                <div class="insight-header">
+                    <span class="insight-icon">⚠️</span>
+                    <span class="insight-title red">IF NOTHING CHANGES</span>
+                </div>
+                <div class="insight-content" id="ifNothingChanges">
+                    Loading consequences analysis...
+                </div>
+            </div>
+            
+            <!-- Your Path Forward -->
+            <div class="insight-card green avoid-break">
+                <div class="insight-header">
+                    <span class="insight-icon">✨</span>
+                    <span class="insight-title green">YOUR PATH FORWARD</span>
+                </div>
+                <div class="insight-content" id="transitionToSolution">
+                    Loading your personalized path forward...
+                </div>
+            </div>
+            
+            <!-- CTA Section -->
+            <div class="cta-section avoid-break">
+                <div class="cta-header">
+                    <span class="cta-icon">🚀</span>
+                    <div>
+                        <div class="cta-title" id="ctaTitle">BREAK OUT OF THE GROWTH PHASE</div>
+                        <div class="cta-subtitle">Start building a new financial blueprint today.</div>
+                    </div>
+                </div>
+                <a href="https://calendly.com/june-yoon/your-90-day-wealth-blueprint" class="cta-button">JOIN MILLIONAIRE MIND INTENSIVE →</a>
+                <div class="cta-testimonial">
+                    <div class="cta-quote">"An excellent course that revived my journey towards adopting a millionaire's mindset."</div>
+                    <div class="cta-author">★★★★★ — Christian Koepchen</div>
+                </div>
+            </div>
+            
+            <!-- Trust Badges -->
+            <div class="trust-badges">
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">🔒</div>
+                    <div class="trust-badge-text">Your information is 100% private and secure. We never share your data.</div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">👥</div>
+                    <div class="trust-badge-text">Trusted by thousands of professionals transforming their financial future.</div>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-badge-icon">✓</div>
+                    <div class="trust-badge-text">No spam. No obligation. Cancel anytime.</div>
+                </div>
+            </div>
+            
+            <!-- Footer -->
+            <div class="report-footer">
+                <div class="footer-copyright">© 2026 Success Resources | June Yoon Wealth Architecture</div>
+                <div class="footer-disclaimer">This assessment is for educational and informational purposes only. It does not constitute financial, tax, legal, or investment advice. Please consult licensed financial advisors for personalized advice.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters
+        function getUrlParams() {
+            const params = new URLSearchParams(window.location.search);
+            const data = {};
+            
+            // Try to get data from 'data' param (base64 encoded JSON)
+            const encodedData = params.get('data');
+            if (encodedData) {
+                try {
+                    const decoded = atob(encodedData);
+                    return JSON.parse(decoded);
+                } catch (e) {
+                    console.error('Failed to decode data:', e);
+                }
+            }
+            
+            // Fallback: get individual params
+            data.firstName = params.get('firstName') || 'Friend';
+            data.wealthScore = parseInt(params.get('wealthScore')) || 27;
+            data.stage = params.get('stage') || 'Growth Phase';
+            data.incomeCapacityScore = parseInt(params.get('incomeCapacity')) || 10;
+            data.incomeStructureScore = parseInt(params.get('incomeStructure')) || 3;
+            data.savingsRateScore = parseInt(params.get('savingsRate')) || 9;
+            data.assetStrengthScore = parseInt(params.get('assetStrength')) || 5;
+            data.primaryBottleneck = params.get('bottleneck') || 'Income Structure';
+            data.bottleneckScore = parseInt(params.get('bottleneckScore')) || 3;
+            data.bottleneckMax = parseInt(params.get('bottleneckMax')) || 10;
+            
+            // AI Narratives (URL encoded)
+            data.whyThisIsHappening = params.get('why') ? decodeURIComponent(params.get('why')) : null;
+            data.hiddenPattern = params.get('hidden') ? decodeURIComponent(params.get('hidden')) : null;
+            data.ifNothingChanges = params.get('if') ? decodeURIComponent(params.get('if')) : null;
+            data.transitionToSolution = params.get('path') ? decodeURIComponent(params.get('path')) : null;
+            
+            return data;
+        }
+        
+        // Populate the report with data
+        function populateReport(data) {
+            // Score
+            const score = data.wealthScore || 27;
+            const percentage = Math.round((score / 50) * 100);
+            
+            document.getElementById('wealthScore').textContent = score;
+            document.getElementById('percentage').textContent = percentage;
+            document.getElementById('progressBar').style.width = percentage + '%';
+            
+            // Stage
+            const stage = data.stage || 'Growth Phase';
+            document.getElementById('stageName').textContent = stage.toUpperCase();
+            document.getElementById('ctaTitle').textContent = `BREAK OUT OF THE ${stage.toUpperCase()}`;
+            
+            // Highlight active stage box
+            document.querySelectorAll('.stage-box').forEach(box => box.classList.remove('active'));
+            const stageKey = stage.toLowerCase().replace(/\s+/g, '');
+            if (stageKey.includes('survival')) {
+                document.getElementById('stage-survival').classList.add('active');
+            } else if (stageKey.includes('stability')) {
+                document.getElementById('stage-stability').classList.add('active');
+            } else if (stageKey.includes('growth')) {
+                document.getElementById('stage-growth').classList.add('active');
+            } else if (stageKey.includes('freedom')) {
+                document.getElementById('stage-freedom').classList.add('active');
+            }
+            
+            // Pillars
+            document.getElementById('incomeCapacityScore').textContent = data.incomeCapacityScore || 10;
+            document.getElementById('incomeStructureScore').textContent = data.incomeStructureScore || 3;
+            document.getElementById('savingsRateScore').textContent = data.savingsRateScore || 9;
+            document.getElementById('assetStrengthScore').textContent = data.assetStrengthScore || 5;
+            
+            // Pillar texts
+            if (data.incomeCapacityText) document.getElementById('incomeCapacityText').textContent = data.incomeCapacityText;
+            if (data.incomeStructureText) document.getElementById('incomeStructureText').textContent = data.incomeStructureText;
+            if (data.savingsRateText) document.getElementById('savingsRateText').textContent = data.savingsRateText;
+            if (data.assetStrengthText) document.getElementById('assetStrengthText').textContent = data.assetStrengthText;
+            
+            // Name
+            const firstName = data.firstName || 'Friend';
+            document.getElementById('firstName2').textContent = firstName;
+            
+            // Bottleneck
+            const bottleneck = data.primaryBottleneck || 'Income Structure';
+            const bottleneckScore = data.bottleneckScore || 3;
+            const bottleneckMax = data.bottleneckMax || 10;
+            document.getElementById('bottleneckTitle').textContent = `${bottleneck.toUpperCase()} (${bottleneckScore}/${bottleneckMax})`;
+            
+            // AI Narratives
+            if (data.whyThisIsHappening) {
+                document.getElementById('whyThisIsHappening').textContent = data.whyThisIsHappening;
+            }
+            if (data.hiddenPattern) {
+                document.getElementById('hiddenPattern').textContent = data.hiddenPattern;
+            }
+            if (data.ifNothingChanges) {
+                document.getElementById('ifNothingChanges').textContent = data.ifNothingChanges;
+            }
+            if (data.transitionToSolution) {
+                document.getElementById('transitionToSolution').textContent = data.transitionToSolution;
+            }
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = getUrlParams();
+            populateReport(data);
+            
+            // Auto-print if requested
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('autoprint') === 'true') {
+                setTimeout(() => {
+                    window.print();
+                }, 500);
+            }
+        });
+    </script>
+</body>
+</html>
