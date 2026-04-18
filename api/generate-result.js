@@ -8,92 +8,187 @@ const anthropic = new Anthropic({
 });
 
 // ============================================
+// CURRENCY CONVERSION (Same as frontend)
+// ============================================
+
+const FX_RATES = {
+    // Group 1: US/Standard
+    USD: 1,
+    // Group 2: Southeast Asia ASEAN
+    SGD: 0.74, MYR: 0.21, IDR: 0.000062, THB: 0.028, PHP: 0.017, VND: 0.000039, BND: 0.74,
+    // Group 3: Greater China
+    HKD: 0.128, TWD: 0.031, CNY: 0.137,
+    // Group 4: East Asia
+    JPY: 0.0065, KRW: 0.00072,
+    // Group 5: South Asia
+    INR: 0.012, PKR: 0.0035, BDT: 0.0083, LKR: 0.003, NPR: 0.0074,
+    // Group 6: Oceania
+    AUD: 0.65, NZD: 0.59,
+    // Group 7-9: Europe
+    GBP: 1.27, EUR: 1.09, CHF: 1.14,
+    // Group 10-12: Gulf
+    AED: 0.27, SAR: 0.27, QAR: 0.27, KWD: 3.25, BHD: 2.65, OMR: 2.60,
+    // Group 11: Canada
+    CAD: 0.73,
+    // Group 13-16: Africa & Americas
+    ZAR: 0.053, NGN: 0.00063, BRL: 0.19, MXN: 0.058,
+    // Group 17-20: Europe & Middle East
+    SEK: 0.093, NOK: 0.089, DKK: 0.146,
+    PLN: 0.25, CZK: 0.043, HUF: 0.0027, RON: 0.22, RUB: 0.011, UAH: 0.024,
+    TRY: 0.029, ILS: 0.27
+};
+
+function toUSD(amount, currency) {
+    return amount * (FX_RATES[currency] || 1);
+}
+
+// ============================================
+// INCOME TIER PARSER (Same as frontend)
+// ============================================
+
+function getAnnualIncomeFromTier(incomeTier, currency) {
+    const tierMidpoints = {
+        // Group 1: US/Standard (USD)
+        'Under 50K': 35000, '50-100K': 75000, '100-250K': 175000, '250-500K': 375000, '500K+': 750000,
+        // Group 2: SE Asia (SGD, MYR, etc)
+        'Under 100K': 70000, '500K-1M': 750000, '1M+': 1500000,
+        // Group 3: Indonesia (IDR)
+        'Under 100M': 70000000, '100-300M': 200000000, '300-750M': 525000000, '750M-1.5B': 1125000000, '1.5B+': 2000000000,
+        // Group 4: Vietnam (VND)
+        'Under 200M': 150000000, '200-500M': 350000000, '500M-1B': 750000000, '1-3B': 2000000000, '3B+': 4500000000,
+        // Group 5: Japan (JPY)
+        'Under 5M': 3500000, '5-10M': 7500000, '10-25M': 17500000, '25-50M': 37500000, '50M+': 75000000,
+        // Group 6: Korea (KRW)
+        'Under 50M': 35000000, '50-100M': 75000000, '100-250M': 175000000, '250-500M': 375000000, '500M+': 750000000,
+        // Group 7: China (CNY)
+        'Under 300K': 200000, '300-700K': 500000, '700K-1.5M': 1100000, '1.5-3M': 2250000, '3M+': 4500000,
+        // Group 8: Taiwan (TWD)
+        'Under 400K': 300000, '400-800K': 600000, '800K-2M': 1400000, '2-4M': 3000000, '4M+': 6000000,
+        // Group 9: India (INR Lakh/Crore)
+        'Under 5L': 350000, '5-15L': 1000000, '15-50L': 3250000, '50L-1Cr': 7500000, '1Cr+': 15000000,
+        // Group 10: Bangladesh (BDT)
+        'Under 10L': 700000, '10-25L': 1750000, '25-75L': 5000000, '75L-1.5Cr': 11250000, '1.5Cr+': 22500000,
+        // Group 11: Gulf AED-pegged
+        'Under 150K': 100000, '150-300K': 225000, '300-750K': 525000, '750K-1.5M': 1125000, '1.5M+': 2250000,
+        // Group 12: High-value Gulf (KWD, BHD, OMR)
+        'Under 15K': 10000, '15-30K': 22500, '30-75K': 52500, '75-150K': 112500, '150K+': 225000,
+        // Group 13: South Africa (ZAR)
+        'Under 500K': 350000, '500K-1M': 750000, '1-2.5M': 1750000, '2.5-5M': 3750000, '5M+': 7500000,
+        // Group 14: Nigeria (NGN)
+        'Under 10M': 7000000, '10-30M': 20000000, '30-75M': 52500000, '75-150M': 112500000, '150M+': 225000000,
+        // Group 18: Eastern Europe
+        'Under 200K': 150000, '200-500K': 350000, '1-2M': 1500000, '2M+': 3000000,
+        // Group 19: Turkey
+        '1-3M': 2000000, '3-6M': 4500000, '6M+': 9000000,
+        // Legacy
+        '1': 75000, '2': 125000, '3': 200000, '4': 375000, '5': 750000
+    };
+    
+    if (tierMidpoints[incomeTier]) return tierMidpoints[incomeTier];
+    
+    // Parse tier string
+    const parsed = parseTierValue(incomeTier);
+    if (parsed) return parsed;
+    
+    console.warn(`⚠️ Unknown income tier: ${incomeTier} for ${currency}`);
+    return 100000;
+}
+
+function parseTierValue(tier) {
+    if (!tier) return null;
+    const multipliers = { 'K': 1000, 'L': 100000, 'Cr': 10000000, 'M': 1000000, 'B': 1000000000 };
+    
+    const rangeMatch = tier.match(/(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*([KLMBCr]+)?/i);
+    if (rangeMatch) {
+        const low = parseFloat(rangeMatch[1]);
+        const high = parseFloat(rangeMatch[2]);
+        const suffix = rangeMatch[3] || '';
+        const mult = multipliers[suffix.toUpperCase()] || multipliers[suffix] || 1;
+        return ((low + high) / 2) * mult;
+    }
+    
+    const singleMatch = tier.match(/(\d+\.?\d*)\s*([KLMBCr]+)?/i);
+    if (singleMatch) {
+        const value = parseFloat(singleMatch[1]);
+        const suffix = singleMatch[2] || '';
+        const mult = multipliers[suffix.toUpperCase()] || multipliers[suffix] || 1;
+        if (tier.toLowerCase().includes('under')) return value * mult * 0.7;
+        if (tier.includes('+')) return value * mult * 1.5;
+        return value * mult;
+    }
+    return null;
+}
+
+// ============================================
 // MODULE 1: RULE ENGINE (SOURCE OF TRUTH)
-// All scoring logic - deterministic, no AI
+// Currency-normalized, ratio-based scoring
 // ============================================
 
 const RuleEngine = {
-    // Income Level → Score (0-10)
-    getIncomeCapacityScore(incomeLevel) {
-        const map = {
-            'Under $50,000': 2,
-            '$50,000 - $100,000': 4,
-            '$100,000 - $150,000': 6,
-            '$150,000 - $250,000': 7,
-            '$250,000 - $500,000': 8,
-            '$500,000 - $1,000,000': 9,
-            'Over $1,000,000': 10
-        };
-        return map[incomeLevel] || 5;
+    // Income Capacity Score (0-10) - Based on USD-normalized income
+    getIncomeCapacityScore(annualIncomeUSD) {
+        if (annualIncomeUSD < 30000) return 2;
+        if (annualIncomeUSD < 70000) return 4;
+        if (annualIncomeUSD < 150000) return 6;
+        if (annualIncomeUSD < 300000) return 8;
+        return 10;
     },
 
-    // Professional Status → Score (0-10)
+    // Income Structure Score (0-10) - Based on professional status
     getIncomeStructureScore(status) {
-        const map = {
-            'Employee': 3,
-            'Self-Employed': 5,
-            'Business Owner': 7,
-            'Investor': 9,
-            'Executive': 6,
-            'Professional': 5,
-            'Entrepreneur': 7,
-            'Retired': 4
+        if (!status) return 2;
+        const statusLower = status.toLowerCase();
+        
+        const scores = {
+            'multiple income': 4, 'single income': 2, 'growing income': 3, 'stuck': 1,
+            'exploring': 2, 'business owner': 4, 'investor': 4, 'employed': 2,
+            'professional': 3, 'consultant': 3, 'retired': 5, 'other': 1
         };
-        return map[status] || 4;
+        
+        let maxScore = 0;
+        let matchCount = 0;
+        for (const [key, points] of Object.entries(scores)) {
+            if (statusLower.includes(key)) {
+                maxScore = Math.max(maxScore, points);
+                matchCount++;
+            }
+        }
+        const bonus = matchCount >= 2 ? 2 : 0;
+        return Math.min(maxScore + bonus, 10) || 2;
     },
 
-    // Monthly Surplus / Income → Score (0-15)
-    getSavingsRateScore(surplus, incomeLevel) {
-        // Estimate monthly income from level
-        const incomeMap = {
-            'Under $50,000': 3500,
-            '$50,000 - $100,000': 6250,
-            '$100,000 - $150,000': 10400,
-            '$150,000 - $250,000': 16600,
-            '$250,000 - $500,000': 31250,
-            '$500,000 - $1,000,000': 62500,
-            'Over $1,000,000': 100000
-        };
-        const monthlyIncome = incomeMap[incomeLevel] || 6250;
-        const savingsRate = (surplus / monthlyIncome) * 100;
-
-        if (savingsRate >= 30) return 15;
-        if (savingsRate >= 25) return 13;
-        if (savingsRate >= 20) return 11;
-        if (savingsRate >= 15) return 9;
-        if (savingsRate >= 10) return 7;
-        if (savingsRate >= 5) return 4;
-        return 2;
+    // Savings Rate Score (0-15) - RATIO-BASED
+    getSavingsRateScore(monthlySurplusUSD, annualIncomeUSD) {
+        const monthlyIncome = annualIncomeUSD / 12;
+        if (monthlyIncome <= 0) return 0;
+        
+        const rate = monthlySurplusUSD / monthlyIncome;
+        
+        if (rate < 0.05) return 2;
+        if (rate < 0.10) return 5;
+        if (rate < 0.20) return 9;
+        if (rate < 0.30) return 12;
+        return 15;
     },
 
-    // Liquid Assets → Score (0-15)
-    getAssetStrengthScore(liquid, incomeLevel) {
-        const incomeMap = {
-            'Under $50,000': 42000,
-            '$50,000 - $100,000': 75000,
-            '$100,000 - $150,000': 125000,
-            '$150,000 - $250,000': 200000,
-            '$250,000 - $500,000': 375000,
-            '$500,000 - $1,000,000': 750000,
-            'Over $1,000,000': 1200000
-        };
-        const annualIncome = incomeMap[incomeLevel] || 75000;
-        const assetRatio = liquid / annualIncome;
-
-        if (assetRatio >= 5) return 15;
-        if (assetRatio >= 3) return 13;
-        if (assetRatio >= 2) return 11;
-        if (assetRatio >= 1) return 9;
-        if (assetRatio >= 0.5) return 6;
-        if (assetRatio >= 0.25) return 4;
-        return 2;
+    // Asset Strength Score (0-15) - RATIO-BASED
+    getAssetStrengthScore(totalAssetsUSD, annualIncomeUSD) {
+        if (annualIncomeUSD <= 0) return 0;
+        
+        const ratio = totalAssetsUSD / annualIncomeUSD;
+        
+        if (ratio < 0.25) return 2;
+        if (ratio < 0.50) return 5;
+        if (ratio < 1.00) return 9;
+        if (ratio < 2.00) return 12;
+        return 15;
     },
 
     // Timeframe → Urgency Score (1-4)
     getUrgencyScore(timeframe) {
         const map = {
-            '0-3 months': 4,
-            '3-6 months': 3,
+            '0-3 months': 4, 'Immediate (0-3 months)': 4,
+            '3-6 months': 3, 'Soon (3-6 months)': 3,
             'Within this year': 2,
             'Just exploring': 1
         };
@@ -124,7 +219,6 @@ const RuleEngine = {
             { key: 'assetStrength', label: 'Asset Strength', score: breakdown.assetStrength, max: 15 }
         ];
 
-        // Find weakest by percentage
         let weakest = pillars[0];
         pillars.forEach(p => {
             if ((p.score / p.max) < (weakest.score / weakest.max)) {
@@ -135,13 +229,29 @@ const RuleEngine = {
         return weakest;
     },
 
-    // Generate complete truth payload
+    // Generate complete truth payload with currency normalization
     generateTruthPayload(input) {
+        const currency = input.currency || 'USD';
+        
+        // Step 1: Parse income tier to local currency amount
+        const annualIncomeLocal = getAnnualIncomeFromTier(input.incomeLevel, currency);
+        
+        // Step 2: Convert to USD for scoring
+        const annualIncomeUSD = toUSD(annualIncomeLocal, currency);
+        const monthlySurplusUSD = toUSD(parseFloat(input.monthlySurplus) || 0, currency);
+        const totalAssetsUSD = toUSD(parseFloat(input.liquidAssets) || 0, currency);
+        
+        // Step 3: Calculate ratios (for logging)
+        const monthlyIncomeUSD = annualIncomeUSD / 12;
+        const savingsRateRatio = monthlyIncomeUSD > 0 ? monthlySurplusUSD / monthlyIncomeUSD : 0;
+        const assetRatio = annualIncomeUSD > 0 ? totalAssetsUSD / annualIncomeUSD : 0;
+        
+        // Step 4: Calculate pillar scores using USD-normalized values
         const breakdown = {
-            incomeCapacity: this.getIncomeCapacityScore(input.incomeLevel),
+            incomeCapacity: this.getIncomeCapacityScore(annualIncomeUSD),
             incomeStructure: this.getIncomeStructureScore(input.professionalStatus),
-            savingsRate: this.getSavingsRateScore(input.monthlySurplus, input.incomeLevel),
-            assetStrength: this.getAssetStrengthScore(input.liquidAssets, input.incomeLevel)
+            savingsRate: this.getSavingsRateScore(monthlySurplusUSD, annualIncomeUSD),
+            assetStrength: this.getAssetStrengthScore(totalAssetsUSD, annualIncomeUSD)
         };
 
         const wealthScore = breakdown.incomeCapacity + breakdown.incomeStructure + breakdown.savingsRate + breakdown.assetStrength;
@@ -150,6 +260,19 @@ const RuleEngine = {
         const leadTier = this.getLeadTier(urgencyScore, wealthScore);
         const bottleneck = this.getBottleneck(breakdown);
         const percentage = Math.round((wealthScore / 50) * 100);
+
+        // Log for debugging
+        console.log('═══════════════════════════════════════════════');
+        console.log('💰 BACKEND WEALTH SCORE CALCULATION');
+        console.log('═══════════════════════════════════════════════');
+        console.log(`Currency: ${currency} | FX Rate: ${FX_RATES[currency] || 'unknown'}`);
+        console.log(`Income Tier: "${input.incomeLevel}" → ${annualIncomeLocal.toLocaleString()} ${currency}`);
+        console.log(`Annual Income USD: $${annualIncomeUSD.toLocaleString()}`);
+        console.log(`Savings Rate: ${(savingsRateRatio * 100).toFixed(1)}%`);
+        console.log(`Asset Ratio: ${assetRatio.toFixed(2)}x annual income`);
+        console.log(`Pillar Scores: IC=${breakdown.incomeCapacity}, IS=${breakdown.incomeStructure}, SR=${breakdown.savingsRate}, AS=${breakdown.assetStrength}`);
+        console.log(`Total Score: ${wealthScore}/50 → ${stage}`);
+        console.log('═══════════════════════════════════════════════');
 
         return {
             // User info
@@ -161,7 +284,7 @@ const RuleEngine = {
             country: input.country,
             currency: input.currency,
 
-            // Financial inputs
+            // Financial inputs (local currency - for display)
             incomeLevel: input.incomeLevel,
             monthlySurplus: input.monthlySurplus,
             liquidAssets: input.liquidAssets,
@@ -186,7 +309,11 @@ const RuleEngine = {
             primaryBottleneck: bottleneck.label,
             bottleneckKey: bottleneck.key,
             bottleneckScore: bottleneck.score,
-            bottleneckMax: bottleneck.max
+            bottleneckMax: bottleneck.max,
+            
+            // Ratios (for AI narrative context)
+            savingsRatePercent: Math.round(savingsRateRatio * 100),
+            assetRatioX: assetRatio.toFixed(2)
         };
     }
 };
@@ -360,12 +487,14 @@ CONTEXT (use this data but don't repeat it verbatim):
 - Stage: ${truth.stage}
 - Score: ${truth.wealthScore}/50 (${truth.percentage}%)
 - Primary Bottleneck: ${truth.primaryBottleneck}
-- Monthly Surplus: ${truth.currency}${truth.monthlySurplus?.toLocaleString()}
-- Liquid Assets: ${truth.currency}${truth.liquidAssets?.toLocaleString()}
+- Monthly Surplus: ${truth.currency} ${truth.monthlySurplus?.toLocaleString()}
+- Liquid Assets: ${truth.currency} ${truth.liquidAssets?.toLocaleString()}
 - Income Level: ${truth.incomeLevel}
 - Professional Status: ${truth.professionalStatus}
 - Primary Concern: ${truth.primaryConcern}
 - Timeframe: ${truth.timeframe}
+- Savings Rate: ${truth.savingsRatePercent || '?'}% of income
+- Asset Ratio: ${truth.assetRatioX || '?'}x annual income
 - Pillar Scores: Income Capacity ${truth.incomeCapacityScore}/10, Income Structure ${truth.incomeStructureScore}/10, Savings Rate ${truth.savingsRateScore}/15, Asset Strength ${truth.assetStrengthScore}/15`;
 
     const userPrompt = `Generate exactly 4 narrative sections in JSON format:
