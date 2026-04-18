@@ -4510,7 +4510,7 @@
             // Get wealth stage
             const stage = getWealthStage(wealthScore);
             
-            // Prepare data for Airtable (via Zapier) - COMPLETE 24-FIELD PAYLOAD
+            // Prepare data for Airtable (via Zapier) - COMPLETE 23-FIELD PAYLOAD
             const formData = {
                 'First Name': firstName,
                 'Last Name': lastName,
@@ -4523,8 +4523,7 @@
                 'Liquid Assets': liquid,
                 'Professional Status': status,
                 'Primary Concern': concern,
-                'Timeline': timeline,
-                'Timeframe': selectedTimeframe || timeline,
+                'Timeframe': selectedTimeframe || 'Within this year',
                 'Urgency Score': urgencyScore || 2,
                 'Wealth Score': wealthScore,
                 'Score Label': scoreLabel,
@@ -4543,7 +4542,7 @@
             
             // Send to Zapier webhook
             sendToZapier(formData);
-            console.log('✅ Data sent to Zapier with all 24 fields');
+            console.log('✅ Data sent to Zapier with all 23 fields');
             
             // Complete loading animation
             completeLoadingAnimation();
