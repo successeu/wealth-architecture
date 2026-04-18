@@ -470,44 +470,40 @@ const TemplateEngine = {
 // ============================================
 
 async function generateAINarratives(truth, template) {
-    const systemPrompt = `You are a wealth psychology expert writing personalized analysis for someone who just completed a wealth assessment. 
+    const systemPrompt = `You are June Yoon, a wealth psychology expert and T. Harv Eker-trained strategist. You're writing a personalized wealth analysis for ${truth.firstName} who just completed an assessment.
 
-Your job is to write 4 short narrative sections that feel personal and insightful. The person's name is ${truth.firstName}.
+Your tone is warm, direct, and insightful — like a trusted mentor who genuinely cares. You see patterns others miss. You tell the truth with compassion but without sugar-coating.
 
-CRITICAL RULES:
-- Write in second person ("you")
-- Be direct and specific to their situation
-- No generic advice - reference their actual numbers and situation
-- Each section should be 2-3 sentences max
-- Sound like a wise mentor, not a corporate report
-- No bullet points or lists - flowing prose only
+WRITING STYLE:
+- Write in flowing, conversational prose — NEVER use bullet points, numbered lists, or dashes
+- Each section should be 3-5 sentences of connected thoughts
+- Use "you" and address them by name occasionally
+- Be specific to their numbers and situation
+- Sound like a wise friend explaining something important over coffee
+- Create "aha moments" — help them see what they've been missing
+- Balance honesty about challenges with genuine optimism about possibilities
 
-CONTEXT (use this data but don't repeat it verbatim):
+THEIR DATA:
 - Name: ${truth.firstName}
-- Stage: ${truth.stage}
-- Score: ${truth.wealthScore}/50 (${truth.percentage}%)
-- Primary Bottleneck: ${truth.primaryBottleneck}
-- Monthly Surplus: ${truth.currency} ${truth.monthlySurplus?.toLocaleString()}
-- Liquid Assets: ${truth.currency} ${truth.liquidAssets?.toLocaleString()}
-- Income Level: ${truth.incomeLevel}
-- Professional Status: ${truth.professionalStatus}
-- Primary Concern: ${truth.primaryConcern}
+- Stage: ${truth.stage} (Score: ${truth.wealthScore}/50)
+- Main Bottleneck: ${truth.primaryBottleneck}
+- Savings Rate: ${truth.savingsRatePercent || 'unknown'}% of income
+- Asset Ratio: ${truth.assetRatioX || 'unknown'}x annual income
+- Concerns: ${truth.primaryConcern || 'wealth building'}
 - Timeframe: ${truth.timeframe}
-- Savings Rate: ${truth.savingsRatePercent || '?'}% of income
-- Asset Ratio: ${truth.assetRatioX || '?'}x annual income
-- Pillar Scores: Income Capacity ${truth.incomeCapacityScore}/10, Income Structure ${truth.incomeStructureScore}/10, Savings Rate ${truth.savingsRateScore}/15, Asset Strength ${truth.assetStrengthScore}/15`;
+- Lead Tier: ${truth.leadTier}`;
 
-    const userPrompt = `Generate exactly 4 narrative sections in JSON format:
+    const userPrompt = `Write 4 narrative sections as compelling prose. Each should be 3-5 sentences that flow naturally. NO bullet points or lists.
 
-1. whyThisIsHappening: Explain why they're in ${truth.stage}. Reference their specific situation (${truth.professionalStatus}, concern about ${truth.primaryConcern}). Make it feel like you truly understand their situation.
+1. whyThisIsHappening: Explain why ${truth.firstName} is in "${truth.stage}" in a way that makes them feel understood, not judged. Reference their situation and make it clear you see the bigger picture of their financial life.
 
-2. hiddenPattern: Reveal an insight about their wealth psychology they probably haven't noticed. Something specific to their pillar scores - their weakest area is ${truth.primaryBottleneck}. Make this feel like an "aha moment".
+2. hiddenPattern: Reveal a specific insight about their wealth psychology that will make them think "wow, that's exactly what's been happening." Their weakest pillar is ${truth.primaryBottleneck} at ${truth.bottleneckScore}/${truth.bottleneckMax}. Connect this to a deeper pattern in how they're approaching money.
 
-3. ifNothingChanges: Paint a vivid but brief picture of their financial future if they stay on their current path. Be specific to their stage (${truth.stage}) and their ${truth.currency}${truth.monthlySurplus?.toLocaleString()} monthly surplus.
+3. ifNothingChanges: Paint a realistic picture of their financial future if they stay on their current path. Be specific but not scary — honest but not cruel. Help them see the cost of inaction in concrete terms.
 
-4. transitionToSolution: Bridge from their current situation to the opportunity. Reference their timeframe (${truth.timeframe}) and create urgency appropriate to their Lead Tier (${truth.leadTier}).
+4. transitionToSolution: Bridge from their current reality to the opportunity ahead. Make them feel that change is possible and within reach. Their timeframe is "${truth.timeframe}" — use this to create appropriate urgency.
 
-Respond with ONLY valid JSON, no markdown:
+Return ONLY valid JSON:
 {
   "whyThisIsHappening": "...",
   "hiddenPattern": "...",
@@ -518,7 +514,7 @@ Respond with ONLY valid JSON, no markdown:
     try {
         const response = await anthropic.messages.create({
             model: 'claude-sonnet-4-20250514',
-            max_tokens: 1000,
+            max_tokens: 1200,
             messages: [
                 { role: 'user', content: userPrompt }
             ],
@@ -537,13 +533,35 @@ Respond with ONLY valid JSON, no markdown:
     } catch (error) {
         console.error('AI generation error:', error);
         
-        // Fallback narratives if AI fails
-        return {
-            whyThisIsHappening: `${truth.firstName}, you're in ${truth.stage} because your financial structure hasn't caught up with your earning potential. Your ${truth.primaryBottleneck.toLowerCase()} is creating a ceiling on your wealth growth.`,
-            hiddenPattern: `Here's what most people miss: your ${truth.primaryBottleneck.toLowerCase()} isn't just a number problem. It's a pattern that's been quietly shaping every financial decision you make without you realizing it.`,
-            ifNothingChanges: `If you stay on this path with your current ${truth.currency}${truth.monthlySurplus?.toLocaleString()} monthly surplus, you'll reach retirement still trading time for money. The gap between where you are and where you could be will only widen.`,
-            transitionToSolution: `The good news? You've already taken the first step by getting clarity on where you stand. Your ${truth.timeframe.toLowerCase()} timeline means now is the perfect moment to implement the right strategies.`
+        // Rich fallback narratives for each stage
+        const stageNarratives = {
+            'Survival Mode': {
+                whyThisIsHappening: `${truth.firstName}, being in Survival Mode isn't a reflection of your worth or your effort. It simply means your current financial structure hasn't yet created the breathing room you need to think beyond next month's bills. When you're constantly focused on immediate needs, it's nearly impossible to build the systems that create lasting wealth. The good news is that recognizing this pattern is the first step toward breaking it.`,
+                hiddenPattern: `Here's something most people in your situation don't realize: the stress of financial survival actually reinforces the behaviors that keep you stuck. When money feels scarce, we unconsciously make decisions that prioritize short-term relief over long-term growth. Your ${truth.primaryBottleneck.toLowerCase()} isn't just a number problem — it's a symptom of a financial operating system that's designed for survival, not prosperity. Once you see this pattern, you can start to rewire it.`,
+                ifNothingChanges: `If nothing changes in how you approach your finances, you'll likely find yourself in this same position five years from now, perhaps with a slightly higher income but the same underlying stress. The gap between what you earn and what you keep will continue to feel frustratingly small. Time, which is your most valuable asset right now, will continue slipping away without building the foundation for real financial freedom.`,
+                transitionToSolution: `But here's what I want you to hold onto: you've already done something most people never do. You've looked honestly at your situation and gotten clear on where you stand. That clarity is the foundation everything else is built on. Your ${truth.timeframe.toLowerCase()} timeline gives us something concrete to work with, and there are specific strategies that can shift you out of survival mode faster than you might think.`
+            },
+            'Stability Trap': {
+                whyThisIsHappening: `${truth.firstName}, being in the Stability Trap is actually a sign that you've achieved something real — you've built a foundation that many people never reach. But here's the uncomfortable truth: the same cautious approach that got you here is now the very thing holding you back. You're earning well, you're responsible, you're doing "all the right things" — and yet your wealth isn't growing at the rate your efforts deserve. This isn't about working harder; it's about working differently.`,
+                hiddenPattern: `The pattern I see in your numbers tells a story you might not have fully recognized yet. Your ${truth.primaryBottleneck.toLowerCase()} is functioning like a silent ceiling on your wealth growth. Every month, you're making decisions that feel responsible but are actually keeping you trapped in a cycle of stability without acceleration. It's like driving with the parking brake on — you're moving forward, but you're burning fuel and getting nowhere near the progress you should be making.`,
+                ifNothingChanges: `Without a shift in strategy, here's what the next decade likely looks like: you'll continue earning well, continue saving responsibly, and continue feeling like something's missing. You might accumulate more, but the gap between your current trajectory and true financial freedom will grow wider, not smaller. The most frustrating part? You'll watch others with similar incomes — or even lower ones — somehow pull ahead, wondering what they know that you don't.`,
+                transitionToSolution: `The good news is that escaping the Stability Trap doesn't require a complete overhaul of your life. It requires strategic adjustments to how your money works. You've already proven you can be disciplined — now it's about directing that discipline toward the right levers. Given your ${truth.timeframe.toLowerCase()} timeline, you're in an ideal position to implement the changes that will finally let your wealth catch up to your income.`
+            },
+            'Growth Phase': {
+                whyThisIsHappening: `${truth.firstName}, your position in the Growth Phase reflects real progress — you've moved beyond just surviving and stabilizing into active wealth building. This is where most people who achieve financial freedom spent significant time, so you're on the right track. That said, being in Growth Phase also means you're at a critical juncture where the decisions you make now will determine whether you accelerate into true freedom or plateau at "comfortable but not free."`,
+                hiddenPattern: `Looking at your numbers, I can see something interesting: your ${truth.primaryBottleneck.toLowerCase()} is the specific area where you're leaving the most potential on the table. It's not that you're doing anything wrong — it's that you're underutilizing this particular lever. Many people in your position focus on what's already working rather than optimizing what's underperforming. But the fastest path to financial freedom often runs through the areas we've been unconsciously avoiding.`,
+                ifNothingChanges: `If you continue on your current trajectory without strategic adjustments, you'll likely reach a point of financial comfort — but it may take twice as long as it needs to. The difference between optimized growth and organic growth isn't just about speed; it's about the options you'll have when you get there. Five years from now, you could either be choosing how to spend your time, or still negotiating for it.`,
+                transitionToSolution: `You're closer than you might realize to the inflection point where wealth starts to build momentum on its own. The strategies that work at this stage are different from what got you here — more sophisticated, more leveraged, more focused on multiplication rather than addition. Your ${truth.timeframe.toLowerCase()} timeline is actually perfect for implementing these changes and seeing meaningful results.`
+            },
+            'Freedom Path': {
+                whyThisIsHappening: `${truth.firstName}, being on the Freedom Path means you've already accomplished what most people only dream about — you've built real wealth momentum. Your financial foundation is strong, and your trajectory is pointed in the right direction. The question now isn't whether you'll achieve financial freedom, but how quickly you'll get there and how much you'll optimize along the way. You're playing a different game now, one where strategy matters more than hustle.`,
+                hiddenPattern: `Even at your level, there are often overlooked opportunities hiding in plain sight. Your ${truth.primaryBottleneck.toLowerCase()} might seem minor compared to your strengths, but at this stage, optimizing your weaker areas can have a multiplicative effect on your overall wealth velocity. The pattern I often see with high performers like you is a tendency to double down on what's working rather than addressing what's limiting — and sometimes the biggest gains come from removing constraints, not adding fuel.`,
+                ifNothingChanges: `You'll reach financial freedom either way — that's the good news. But the difference between an optimized path and a default path could mean years of additional working years or millions in unrealized potential. At your level, small percentage improvements compound dramatically over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there eventually.`,
+                transitionToSolution: `You're in a position that many would envy, but that doesn't mean the work is done. The strategies that matter most at this stage are about optimization, protection, and acceleration — fine-tuning an already strong engine to reach its full potential. Your ${truth.timeframe.toLowerCase()} timeline gives us the window to implement the sophisticated approaches that separate the wealthy from the truly financially free.`
+            }
         };
+        
+        return stageNarratives[truth.stage] || stageNarratives['Stability Trap'];
     }
 }
 
@@ -653,15 +671,21 @@ export default async function handler(req, res) {
     try {
         const input = req.body;
 
-        // Validate required fields
-        const required = ['firstName', 'email', 'incomeLevel', 'monthlySurplus', 'liquidAssets', 'professionalStatus', 'timeframe'];
+        // Validate required fields (professionalStatus is now optional)
+        const required = ['firstName', 'email', 'incomeLevel', 'monthlySurplus', 'liquidAssets', 'timeframe'];
         const missing = required.filter(field => !input[field] && input[field] !== 0);
         
         if (missing.length > 0) {
+            console.log('❌ Missing fields:', missing);
             return res.status(400).json({ 
                 error: 'Missing required fields', 
                 missing 
             });
+        }
+        
+        // Default professionalStatus if empty
+        if (!input.professionalStatus) {
+            input.professionalStatus = 'Professional';
         }
 
         console.log('📥 Input received:', input.firstName, input.email);
