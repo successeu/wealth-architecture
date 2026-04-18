@@ -452,10 +452,10 @@
         /* Expandable Sections - Read More/Less */
         .expandable-section {
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
         .expandable-section[data-expanded="false"] {
-            max-height: 130px; /* Approx 6 lines */
+            max-height: 180px; /* Approx 6 lines at 15px/1.8 line-height */
             position: relative;
         }
         .expandable-section[data-expanded="false"]::after {
@@ -464,27 +464,34 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 40px;
-            background: linear-gradient(transparent, white);
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
             pointer-events: none;
         }
         .expandable-section[data-expanded="true"] {
-            max-height: 2000px;
+            max-height: 3000px;
         }
         .read-more-btn {
             transition: all 0.2s;
         }
         .read-more-btn:hover {
-            opacity: 0.8;
+            opacity: 0.7;
+        }
+        
+        /* AI Card text styling */
+        .expandable-text {
+            text-align: left !important;
+            hyphens: none;
+            word-break: normal;
         }
         
         /* Mobile expandable sections */
         .expandable-section-mobile {
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: max-height 0.4s ease;
         }
         .expandable-section-mobile[data-expanded="false"] {
-            max-height: 130px;
+            max-height: 180px;
             position: relative;
         }
         .expandable-section-mobile[data-expanded="false"]::after {
@@ -493,12 +500,12 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 40px;
-            background: linear-gradient(transparent, #fafafa);
+            height: 60px;
+            background: linear-gradient(to bottom, rgba(250,250,250,0) 0%, rgba(250,250,250,1) 100%);
             pointer-events: none;
         }
         .expandable-section-mobile[data-expanded="true"] {
-            max-height: 2000px;
+            max-height: 3000px;
         }
         
         .cta-box {
@@ -2663,65 +2670,65 @@
                 </div>
             </div>
             
-            <!-- SECTION 3: WHY + OPPORTUNITY + CONSEQUENCE (3 columns) - DESKTOP -->
-            <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 30px;">
-                <!-- Why This Is Happening (DYNAMIC with Read More) -->
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="width: 36px; height: 36px; background: #f5f5f5; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <span style="font-size: 18px;">💡</span>
+            <!-- SECTION 3: AI INSIGHT CARDS (3 columns) - DESKTOP -->
+            <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; align-items: stretch;">
+                <!-- Why This Is Happening -->
+                <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span style="font-size: 20px;">💡</span>
                         </div>
-                        <p style="font-size: 12px; font-weight: 700; color: #ff8120; letter-spacing: 1px; text-transform: uppercase; margin: 0;">WHY THIS IS HAPPENING</p>
+                        <h3 style="font-size: 13px; font-weight: 700; color: #b45309; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">Why This Is Happening</h3>
                     </div>
-                    <div id="whyThisIsHappening" class="expandable-section" data-expanded="false">
-                        <p class="expandable-text" style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized analysis...</p>
+                    <div id="whyThisIsHappening" class="expandable-section" data-expanded="false" style="flex: 1;">
+                        <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading your personalized analysis...</p>
                     </div>
-                    <button class="read-more-btn" onclick="toggleExpandSection('whyThisIsHappening')" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 10px 0 0; display: none;">Read More ▼</button>
+                    <button class="read-more-btn" onclick="toggleExpandSection('whyThisIsHappening')" style="background: none; border: none; color: #b45309; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
                 
-                <!-- Your Biggest Opportunity (NOW with AI hiddenPattern prose) -->
-                <div style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 14px; padding: 24px;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="width: 36px; height: 36px; background: #ff8120; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <span style="font-size: 18px;">🎯</span>
+                <!-- Your Biggest Opportunity -->
+                <div style="background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%); border: 2px solid #fed7aa; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 129, 32, 0.15);">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #f97316 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span style="font-size: 20px;">🎯</span>
                         </div>
-                        <p style="font-size: 12px; font-weight: 700; color: #ff8120; letter-spacing: 1px; text-transform: uppercase; margin: 0;">YOUR BIGGEST OPPORTUNITY</p>
+                        <h3 style="font-size: 13px; font-weight: 700; color: #c2410c; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">Your Biggest Opportunity</h3>
                     </div>
-                    <p id="bottleneckTitle" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 12px;">INCOME STRUCTURE (2 / 10)</p>
-                    <div id="hiddenPattern" class="expandable-section" data-expanded="false">
-                        <p class="expandable-text" style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized insight...</p>
+                    <p id="bottleneckTitle" style="font-size: 18px; font-weight: 700; color: #ea580c; margin-bottom: 16px; letter-spacing: -0.3px;">INCOME STRUCTURE (3/10)</p>
+                    <div id="hiddenPattern" class="expandable-section" data-expanded="false" style="flex: 1;">
+                        <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading your personalized insight...</p>
                     </div>
-                    <button class="read-more-btn" onclick="toggleExpandSection('hiddenPattern')" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 10px 0 0; display: none;">Read More ▼</button>
+                    <button class="read-more-btn" onclick="toggleExpandSection('hiddenPattern')" style="background: none; border: none; color: #ea580c; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
                 
-                <!-- If Nothing Changes (DYNAMIC with Read More) -->
-                <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 14px; padding: 24px;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="width: 36px; height: 36px; background: #fef3f2; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <span style="font-size: 18px;">⚠️</span>
+                <!-- If Nothing Changes -->
+                <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span style="font-size: 20px;">⚠️</span>
                         </div>
-                        <p style="font-size: 12px; font-weight: 700; color: #dc2626; letter-spacing: 1px; text-transform: uppercase; margin: 0;">IF NOTHING CHANGES</p>
+                        <h3 style="font-size: 13px; font-weight: 700; color: #b91c1c; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">If Nothing Changes</h3>
                     </div>
-                    <div id="ifNothingChanges" class="expandable-section" data-expanded="false">
-                        <p class="expandable-text" style="font-size: 14px; color: #555; line-height: 1.7; margin: 0;">Loading consequences analysis...</p>
+                    <div id="ifNothingChanges" class="expandable-section" data-expanded="false" style="flex: 1;">
+                        <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading consequences analysis...</p>
                     </div>
-                    <button class="read-more-btn" onclick="toggleExpandSection('ifNothingChanges')" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 600; cursor: pointer; padding: 10px 0 0; display: none;">Read More ▼</button>
+                    <button class="read-more-btn" onclick="toggleExpandSection('ifNothingChanges')" style="background: none; border: none; color: #b91c1c; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
             </div>
             
-            <!-- SECTION 3B: YOUR PATH FORWARD (Full width - uses transitionToSolution) - DESKTOP -->
-            <div class="desktop-cards-section" style="margin-bottom: 30px;">
-                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%); border: 2px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 24px;">
-                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-                        <div style="width: 36px; height: 36px; background: #22c55e; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                            <span style="font-size: 18px;">✨</span>
+            <!-- SECTION 3B: YOUR PATH FORWARD (Full width) - DESKTOP -->
+            <div class="desktop-cards-section" style="margin-bottom: 40px;">
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%); border: 2px solid #86efac; border-radius: 16px; padding: 32px;">
+                    <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(34, 197, 94, 0.15);">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                            <span style="font-size: 20px;">✨</span>
                         </div>
-                        <p style="font-size: 14px; font-weight: 600; color: #22c55e; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">YOUR PATH FORWARD</p>
+                        <h3 style="font-size: 14px; font-weight: 700; color: #15803d; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">Your Path Forward</h3>
                     </div>
                     <div id="transitionToSolution" class="expandable-section" data-expanded="false">
-                        <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.7; margin: 0;">Loading your personalized path forward...</p>
+                        <p class="expandable-text" style="font-size: 16px; color: #374151; line-height: 1.85; margin: 0; text-align: left; max-width: 900px;">Loading your personalized path forward...</p>
                     </div>
-                    <button class="read-more-btn" onclick="toggleExpandSection('transitionToSolution')" style="background: none; border: none; color: #22c55e; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
+                    <button class="read-more-btn" onclick="toggleExpandSection('transitionToSolution')" style="background: none; border: none; color: #16a34a; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
             </div>
             
