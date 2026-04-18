@@ -449,6 +449,58 @@
             line-height: 1.6;
         }
         
+        /* Expandable Sections - Read More/Less */
+        .expandable-section {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .expandable-section[data-expanded="false"] {
+            max-height: 130px; /* Approx 6 lines */
+            position: relative;
+        }
+        .expandable-section[data-expanded="false"]::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, white);
+            pointer-events: none;
+        }
+        .expandable-section[data-expanded="true"] {
+            max-height: 2000px;
+        }
+        .read-more-btn {
+            transition: all 0.2s;
+        }
+        .read-more-btn:hover {
+            opacity: 0.8;
+        }
+        
+        /* Mobile expandable sections */
+        .expandable-section-mobile {
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        .expandable-section-mobile[data-expanded="false"] {
+            max-height: 130px;
+            position: relative;
+        }
+        .expandable-section-mobile[data-expanded="false"]::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            background: linear-gradient(transparent, #fafafa);
+            pointer-events: none;
+        }
+        .expandable-section-mobile[data-expanded="true"] {
+            max-height: 2000px;
+        }
+        
         .cta-box {
             text-align: center;
             margin-top: 40px;
@@ -1772,7 +1824,7 @@
                 <!-- Instruction -->
                 <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 36px;">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span style="font-size: 14px; color: #555;">Select all that apply (most people choose 2–3)</span>
+                    <span style="font-size: 14px; color: #555;">Select all that apply (most people choose 2 - 3)</span>
                 </div>
                 
                 <!-- Category Cards Container -->
@@ -1934,7 +1986,7 @@
                 <!-- Instruction -->
                 <div style="display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 24px;">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-                    <span style="font-size: 13px; color: #555; text-align: center;">Select all that apply<br>(most people choose 2–3)</span>
+                    <span style="font-size: 13px; color: #555; text-align: center;">Select all that apply<br>(most people choose 2 - 3)</span>
                 </div>
                 
                 <!-- Category 1: Keep More -->
@@ -2086,16 +2138,16 @@
                     
                     <div id="incomeButtonsContainer" style="display: flex; flex-wrap: wrap; gap: 10px;">
                         <button type="button" class="income-btn-new" data-tier="1" onclick="selectIncomeNew(this)">
-                            <span id="incomeRange1">S$50K – S$100K</span>
+                            <span id="incomeRange1">S$50K  -  S$100K</span>
                         </button>
                         <button type="button" class="income-btn-new" data-tier="2" onclick="selectIncomeNew(this)">
-                            <span id="incomeRange2">S$100K – S$150K</span>
+                            <span id="incomeRange2">S$100K  -  S$150K</span>
                         </button>
                         <button type="button" class="income-btn-new" data-tier="3" onclick="selectIncomeNew(this)">
-                            <span id="incomeRange3">S$150K – S$250K</span>
+                            <span id="incomeRange3">S$150K  -  S$250K</span>
                         </button>
                         <button type="button" class="income-btn-new" data-tier="4" onclick="selectIncomeNew(this)">
-                            <span id="incomeRange4">S$250K – S$500K</span>
+                            <span id="incomeRange4">S$250K  -  S$500K</span>
                         </button>
                         <button type="button" class="income-btn-new" data-tier="5" onclick="selectIncomeNew(this)">
                             <span id="incomeRange5">S$500K+</span>
@@ -2316,12 +2368,12 @@
                 <div class="timeframe-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
                     <label class="timeframe-card" onclick="selectTimeframe(this, '0-3 months', 4)" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #E5E5E5; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background: #fff;">
                         <span style="font-size: 18px;">🔥</span>
-                        <span style="font-size: 14px; color: #333; font-weight: 500;">Immediately (0–3 months)</span>
+                        <span style="font-size: 14px; color: #333; font-weight: 500;">Immediately (0 - 3 months)</span>
                         <input type="radio" name="timeframe" value="0-3 months" style="display: none;">
                     </label>
                     <label class="timeframe-card" onclick="selectTimeframe(this, '3-6 months', 3)" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #E5E5E5; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background: #fff;">
                         <span style="font-size: 18px;">🚀</span>
-                        <span style="font-size: 14px; color: #333; font-weight: 500;">Soon (3–6 months)</span>
+                        <span style="font-size: 14px; color: #333; font-weight: 500;">Soon (3 - 6 months)</span>
                         <input type="radio" name="timeframe" value="3-6 months" style="display: none;">
                     </label>
                     <label class="timeframe-card" onclick="selectTimeframe(this, 'Within this year', 2)" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid #E5E5E5; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background: #fff;">
@@ -2613,7 +2665,7 @@
             
             <!-- SECTION 3: WHY + OPPORTUNITY + CONSEQUENCE (3 columns) - DESKTOP -->
             <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 30px;">
-                <!-- Why This Is Happening (DYNAMIC) -->
+                <!-- Why This Is Happening (DYNAMIC with Read More) -->
                 <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div style="width: 32px; height: 32px; background: #f0f0f0; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2621,19 +2673,13 @@
                         </div>
                         <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">WHY THIS IS HAPPENING</p>
                     </div>
-                    <div id="whyThisIsHappening">
-                        <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
-                        <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
-                        <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
-                            <li style="color: #ff8120;">How they think about money</li>
-                            <li style="color: #ff8120;">How they evaluate risk</li>
-                            <li style="color: #ff8120;">How they make financial decisions</li>
-                            <li style="color: #ff8120;">What they believe is "possible" for them</li>
-                        </ul>
+                    <div id="whyThisIsHappening" class="expandable-section" data-expanded="false">
+                        <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized analysis...</p>
                     </div>
+                    <button class="read-more-btn" onclick="toggleExpandSection('whyThisIsHappening')" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
                 </div>
                 
-                <!-- Your Biggest Opportunity -->
+                <!-- Your Biggest Opportunity (NOW with AI hiddenPattern prose) -->
                 <div style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 12px; padding: 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div style="width: 32px; height: 32px; background: #ff8120; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2641,12 +2687,14 @@
                         </div>
                         <p style="font-size: 12px; font-weight: 600; color: #ff8120; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">YOUR BIGGEST OPPORTUNITY</p>
                     </div>
-                    <p id="bottleneckTitle" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
-                    <p id="bottleneckDesc" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
-                    <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
+                    <p id="bottleneckTitle" style="font-size: 15px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
+                    <div id="hiddenPattern" class="expandable-section" data-expanded="false">
+                        <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized insight...</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleExpandSection('hiddenPattern')" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
                 </div>
                 
-                <!-- If Nothing Changes (DYNAMIC) -->
+                <!-- If Nothing Changes (DYNAMIC with Read More) -->
                 <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 12px; padding: 20px;">
                     <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 14px;">
                         <div style="width: 32px; height: 32px; background: #fef3f2; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
@@ -2654,20 +2702,26 @@
                         </div>
                         <p style="font-size: 12px; font-weight: 600; color: #dc2626; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">IF NOTHING CHANGES</p>
                     </div>
-                    <ul id="ifNothingChanges" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
-                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                            <span>You will keep trading time for money</span>
-                        </li>
-                        <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                            <span>Your growth will remain limited</span>
-                        </li>
-                        <li style="display: flex; align-items: flex-start; gap: 8px;">
-                            <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                            <span>Financial freedom will stay out of reach</span>
-                        </li>
-                    </ul>
+                    <div id="ifNothingChanges" class="expandable-section" data-expanded="false">
+                        <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading consequences analysis...</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleExpandSection('ifNothingChanges')" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
+                </div>
+            </div>
+            
+            <!-- SECTION 3B: YOUR PATH FORWARD (Full width - uses transitionToSolution) - DESKTOP -->
+            <div class="desktop-cards-section" style="margin-bottom: 30px;">
+                <div style="background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%); border: 2px solid rgba(34, 197, 94, 0.3); border-radius: 12px; padding: 24px;">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+                        <div style="width: 36px; height: 36px; background: #22c55e; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                            <span style="font-size: 18px;">✨</span>
+                        </div>
+                        <p style="font-size: 14px; font-weight: 600; color: #22c55e; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">YOUR PATH FORWARD</p>
+                    </div>
+                    <div id="transitionToSolution" class="expandable-section" data-expanded="false">
+                        <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.7; margin: 0;">Loading your personalized path forward...</p>
+                    </div>
+                    <button class="read-more-btn" onclick="toggleExpandSection('transitionToSolution')" style="background: none; border: none; color: #22c55e; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
                 </div>
             </div>
             
@@ -2683,20 +2737,14 @@
                         <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                     <div class="accordion-content">
-                        <div id="whyThisIsHappeningMobile" style="padding: 0 16px 16px;">
-                            <p style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Most people at your level are not stuck because of lack of income.</p>
-                            <p style="font-size: 13px; color: #555; margin-bottom: 10px;">They are stuck because of:</p>
-                            <ul style="font-size: 12px; color: #666; line-height: 1.8; padding-left: 16px; margin: 0;">
-                                <li style="color: #ff8120;">How they think about money</li>
-                                <li style="color: #ff8120;">How they evaluate risk</li>
-                                <li style="color: #ff8120;">How they make financial decisions</li>
-                                <li style="color: #ff8120;">What they believe is "possible" for them</li>
-                            </ul>
+                        <div id="whyThisIsHappeningMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized analysis...</p>
                         </div>
+                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('whyThisIsHappeningMobile', event)" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
                     </div>
                 </div>
                 
-                <!-- Accordion 2: Your Biggest Opportunity -->
+                <!-- Accordion 2: Your Biggest Opportunity (NOW with hiddenPattern) -->
                 <div class="accordion-item">
                     <div class="accordion-header" onclick="toggleAccordion(this)">
                         <div style="display: flex; align-items: center; gap: 12px;">
@@ -2707,9 +2755,11 @@
                     </div>
                     <div class="accordion-content">
                         <div style="padding: 0 16px 16px;">
-                            <p id="bottleneckTitleMobile" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
-                            <p id="bottleneckDescMobile" style="font-size: 13px; color: #555; line-height: 1.6; margin-bottom: 12px;">Your income is still dependent on active effort.</p>
-                            <p style="font-size: 12px; color: #888; font-style: italic;">Even if you earn more... you won't build real wealth until this changes.</p>
+                            <p id="bottleneckTitleMobile" style="font-size: 15px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
+                            <div id="hiddenPatternMobile" class="expandable-section-mobile" data-expanded="false">
+                                <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized insight...</p>
+                            </div>
+                            <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('hiddenPatternMobile', event)" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
                         </div>
                     </div>
                 </div>
@@ -2724,22 +2774,27 @@
                         <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                     <div class="accordion-content">
-                        <div style="padding: 0 16px 16px;">
-                            <ul id="ifNothingChangesMobile" style="font-size: 13px; color: #555; line-height: 1.8; padding-left: 0; margin: 0; list-style: none;">
-                                <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                                    <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>You will keep trading time for money</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px; margin-bottom: 8px;">
-                                    <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>Your growth will remain limited</span>
-                                </li>
-                                <li style="display: flex; align-items: flex-start; gap: 8px;">
-                                    <span style="color: #dc2626; font-size: 10px; margin-top: 5px;">●</span>
-                                    <span>Financial freedom will stay out of reach</span>
-                                </li>
-                            </ul>
+                        <div id="ifNothingChangesMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading consequences analysis...</p>
                         </div>
+                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('ifNothingChangesMobile', event)" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
+                    </div>
+                </div>
+                
+                <!-- Accordion 4: Your Path Forward (NEW - transitionToSolution) -->
+                <div class="accordion-item">
+                    <div class="accordion-header" onclick="toggleAccordion(this)">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span style="font-size: 18px;">✨</span>
+                            <span style="font-size: 14px; font-weight: 600; color: #22c55e;">YOUR PATH FORWARD</span>
+                        </div>
+                        <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    <div class="accordion-content">
+                        <div id="transitionToSolutionMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 13px; color: #444; line-height: 1.7; margin: 0;">Loading your personalized path forward...</p>
+                        </div>
+                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('transitionToSolutionMobile', event)" style="background: none; border: none; color: #22c55e; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
                     </div>
                 </div>
                 
@@ -3576,9 +3631,9 @@
                 currencies: ['USD', 'EUR', 'GBP', 'CHF', 'AUD', 'CAD', 'NZD', 'SGD'],
                 tiers: [
                     { label: '< 50K', value: 'Under 50K' },
-                    { label: '50K – 100K', value: '50-100K' },
-                    { label: '100K – 250K', value: '100-250K' },
-                    { label: '250K – 500K', value: '250-500K' },
+                    { label: '50K  -  100K', value: '50-100K' },
+                    { label: '100K  -  250K', value: '100-250K' },
+                    { label: '250K  -  500K', value: '250-500K' },
                     { label: '500K+', value: '500K+' }
                 ]
             },
@@ -3588,9 +3643,9 @@
                 currencies: ['INR'],
                 tiers: [
                     { label: '< 5L', value: 'Under 5L' },
-                    { label: '5L – 15L', value: '5-15L' },
-                    { label: '15L – 50L', value: '15-50L' },
-                    { label: '50L – 1Cr', value: '50L-1Cr' },
+                    { label: '5L  -  15L', value: '5-15L' },
+                    { label: '15L  -  50L', value: '15-50L' },
+                    { label: '50L  -  1Cr', value: '50L-1Cr' },
                     { label: '1Cr+', value: '1Cr+' }
                 ]
             },
@@ -3600,9 +3655,9 @@
                 currencies: ['PKR', 'BDT', 'LKR'],
                 tiers: [
                     { label: '< 10L', value: 'Under 10L' },
-                    { label: '10L – 25L', value: '10-25L' },
-                    { label: '25L – 75L', value: '25-75L' },
-                    { label: '75L – 1.5Cr', value: '75L-1.5Cr' },
+                    { label: '10L  -  25L', value: '10-25L' },
+                    { label: '25L  -  75L', value: '25-75L' },
+                    { label: '75L  -  1.5Cr', value: '75L-1.5Cr' },
                     { label: '1.5Cr+', value: '1.5Cr+' }
                 ]
             },
@@ -3612,9 +3667,9 @@
                 currencies: ['MYR', 'THB', 'PHP'],
                 tiers: [
                     { label: '< 100K', value: 'Under 100K' },
-                    { label: '100K – 250K', value: '100-250K' },
-                    { label: '250K – 500K', value: '250-500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '100K  -  250K', value: '100-250K' },
+                    { label: '250K  -  500K', value: '250-500K' },
+                    { label: '500K  -  1M', value: '500K-1M' },
                     { label: '1M+', value: '1M+' }
                 ]
             },
@@ -3624,9 +3679,9 @@
                 currencies: ['IDR'],
                 tiers: [
                     { label: '< 100jt', value: 'Under 100M' },
-                    { label: '100jt – 300jt', value: '100-300M' },
-                    { label: '300jt – 750jt', value: '300-750M' },
-                    { label: '750jt – 1.5M', value: '750M-1.5B' },
+                    { label: '100jt  -  300jt', value: '100-300M' },
+                    { label: '300jt  -  750jt', value: '300-750M' },
+                    { label: '750jt  -  1.5M', value: '750M-1.5B' },
                     { label: '1.5M+', value: '1.5B+' }
                 ]
             },
@@ -3636,9 +3691,9 @@
                 currencies: ['VND'],
                 tiers: [
                     { label: '< 200tr', value: 'Under 200M' },
-                    { label: '200tr – 500tr', value: '200-500M' },
-                    { label: '500tr – 1tỷ', value: '500M-1B' },
-                    { label: '1tỷ – 3tỷ', value: '1-3B' },
+                    { label: '200tr  -  500tr', value: '200-500M' },
+                    { label: '500tr  -  1tỷ', value: '500M-1B' },
+                    { label: '1tỷ  -  3tỷ', value: '1-3B' },
                     { label: '3tỷ+', value: '3B+' }
                 ]
             },
@@ -3648,9 +3703,9 @@
                 currencies: ['JPY'],
                 tiers: [
                     { label: '< 500万', value: 'Under 5M' },
-                    { label: '500万 – 1000万', value: '5-10M' },
-                    { label: '1000万 – 2500万', value: '10-25M' },
-                    { label: '2500万 – 5000万', value: '25-50M' },
+                    { label: '500万  -  1000万', value: '5-10M' },
+                    { label: '1000万  -  2500万', value: '10-25M' },
+                    { label: '2500万  -  5000万', value: '25-50M' },
                     { label: '5000万+', value: '50M+' }
                 ]
             },
@@ -3660,9 +3715,9 @@
                 currencies: ['KRW'],
                 tiers: [
                     { label: '< 5천만', value: 'Under 50M' },
-                    { label: '5천만 – 1억', value: '50-100M' },
-                    { label: '1억 – 2.5억', value: '100-250M' },
-                    { label: '2.5억 – 5억', value: '250-500M' },
+                    { label: '5천만  -  1억', value: '50-100M' },
+                    { label: '1억  -  2.5억', value: '100-250M' },
+                    { label: '2.5억  -  5억', value: '250-500M' },
                     { label: '5억+', value: '500M+' }
                 ]
             },
@@ -3672,9 +3727,9 @@
                 currencies: ['CNY', 'TWD'],
                 tiers: [
                     { label: '< 30万', value: 'Under 300K' },
-                    { label: '30万 – 70万', value: '300-700K' },
-                    { label: '70万 – 150万', value: '700K-1.5M' },
-                    { label: '150万 – 300万', value: '1.5-3M' },
+                    { label: '30万  -  70万', value: '300-700K' },
+                    { label: '70万  -  150万', value: '700K-1.5M' },
+                    { label: '150万  -  300万', value: '1.5-3M' },
                     { label: '300万+', value: '3M+' }
                 ]
             },
@@ -3684,9 +3739,9 @@
                 currencies: ['HKD'],
                 tiers: [
                     { label: '< 40萬', value: 'Under 400K' },
-                    { label: '40萬 – 80萬', value: '400-800K' },
-                    { label: '80萬 – 200萬', value: '800K-2M' },
-                    { label: '200萬 – 400萬', value: '2-4M' },
+                    { label: '40萬  -  80萬', value: '400-800K' },
+                    { label: '80萬  -  200萬', value: '800K-2M' },
+                    { label: '200萬  -  400萬', value: '2-4M' },
                     { label: '400萬+', value: '4M+' }
                 ]
             },
@@ -3696,9 +3751,9 @@
                 currencies: ['AED', 'SAR', 'QAR'],
                 tiers: [
                     { label: '< 150K', value: 'Under 150K' },
-                    { label: '150K – 300K', value: '150-300K' },
-                    { label: '300K – 750K', value: '300-750K' },
-                    { label: '750K – 1.5M', value: '750K-1.5M' },
+                    { label: '150K  -  300K', value: '150-300K' },
+                    { label: '300K  -  750K', value: '300-750K' },
+                    { label: '750K  -  1.5M', value: '750K-1.5M' },
                     { label: '1.5M+', value: '1.5M+' }
                 ]
             },
@@ -3708,9 +3763,9 @@
                 currencies: ['KWD', 'BHD', 'OMR'],
                 tiers: [
                     { label: '< 15K', value: 'Under 15K' },
-                    { label: '15K – 30K', value: '15-30K' },
-                    { label: '30K – 75K', value: '30-75K' },
-                    { label: '75K – 150K', value: '75-150K' },
+                    { label: '15K  -  30K', value: '15-30K' },
+                    { label: '30K  -  75K', value: '30-75K' },
+                    { label: '75K  -  150K', value: '75-150K' },
                     { label: '150K+', value: '150K+' }
                 ]
             },
@@ -3720,9 +3775,9 @@
                 currencies: ['ZAR'],
                 tiers: [
                     { label: '< 500K', value: 'Under 500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
-                    { label: '1M – 2.5M', value: '1-2.5M' },
-                    { label: '2.5M – 5M', value: '2.5-5M' },
+                    { label: '500K  -  1M', value: '500K-1M' },
+                    { label: '1M  -  2.5M', value: '1-2.5M' },
+                    { label: '2.5M  -  5M', value: '2.5-5M' },
                     { label: '5M+', value: '5M+' }
                 ]
             },
@@ -3732,9 +3787,9 @@
                 currencies: ['NGN'],
                 tiers: [
                     { label: '< 10M', value: 'Under 10M' },
-                    { label: '10M – 30M', value: '10-30M' },
-                    { label: '30M – 75M', value: '30-75M' },
-                    { label: '75M – 150M', value: '75-150M' },
+                    { label: '10M  -  30M', value: '10-30M' },
+                    { label: '30M  -  75M', value: '30-75M' },
+                    { label: '75M  -  150M', value: '75-150M' },
                     { label: '150M+', value: '150M+' }
                 ]
             },
@@ -3744,9 +3799,9 @@
                 currencies: ['BRL'],
                 tiers: [
                     { label: '< 100K', value: 'Under 100K' },
-                    { label: '100K – 250K', value: '100-250K' },
-                    { label: '250K – 500K', value: '250-500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
+                    { label: '100K  -  250K', value: '100-250K' },
+                    { label: '250K  -  500K', value: '250-500K' },
+                    { label: '500K  -  1M', value: '500K-1M' },
                     { label: '1M+', value: '1M+' }
                 ]
             },
@@ -3756,9 +3811,9 @@
                 currencies: ['MXN'],
                 tiers: [
                     { label: '< 500K', value: 'Under 500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
-                    { label: '1M – 2.5M', value: '1-2.5M' },
-                    { label: '2.5M – 5M', value: '2.5-5M' },
+                    { label: '500K  -  1M', value: '500K-1M' },
+                    { label: '1M  -  2.5M', value: '1-2.5M' },
+                    { label: '2.5M  -  5M', value: '2.5-5M' },
                     { label: '5M+', value: '5M+' }
                 ]
             },
@@ -3768,9 +3823,9 @@
                 currencies: ['SEK', 'NOK', 'DKK'],
                 tiers: [
                     { label: '< 400K', value: 'Under 400K' },
-                    { label: '400K – 800K', value: '400-800K' },
-                    { label: '800K – 2M', value: '800K-2M' },
-                    { label: '2M – 4M', value: '2-4M' },
+                    { label: '400K  -  800K', value: '400-800K' },
+                    { label: '800K  -  2M', value: '800K-2M' },
+                    { label: '2M  -  4M', value: '2-4M' },
                     { label: '4M+', value: '4M+' }
                 ]
             },
@@ -3780,9 +3835,9 @@
                 currencies: ['PLN', 'CZK', 'HUF', 'RON', 'RUB', 'UAH'],
                 tiers: [
                     { label: '< 200K', value: 'Under 200K' },
-                    { label: '200K – 500K', value: '200-500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
-                    { label: '1M – 2M', value: '1-2M' },
+                    { label: '200K  -  500K', value: '200-500K' },
+                    { label: '500K  -  1M', value: '500K-1M' },
+                    { label: '1M  -  2M', value: '1-2M' },
                     { label: '2M+', value: '2M+' }
                 ]
             },
@@ -3792,9 +3847,9 @@
                 currencies: ['TRY'],
                 tiers: [
                     { label: '< 500K', value: 'Under 500K' },
-                    { label: '500K – 1M', value: '500K-1M' },
-                    { label: '1M – 3M', value: '1-3M' },
-                    { label: '3M – 6M', value: '3-6M' },
+                    { label: '500K  -  1M', value: '500K-1M' },
+                    { label: '1M  -  3M', value: '1-3M' },
+                    { label: '3M  -  6M', value: '3-6M' },
                     { label: '6M+', value: '6M+' }
                 ]
             },
@@ -3804,9 +3859,9 @@
                 currencies: ['ILS'],
                 tiers: [
                     { label: '< 150K', value: 'Under 150K' },
-                    { label: '150K – 300K', value: '150-300K' },
-                    { label: '300K – 750K', value: '300-750K' },
-                    { label: '750K – 1.5M', value: '750K-1.5M' },
+                    { label: '150K  -  300K', value: '150-300K' },
+                    { label: '300K  -  750K', value: '300-750K' },
+                    { label: '750K  -  1.5M', value: '750K-1.5M' },
                     { label: '1.5M+', value: '1.5M+' }
                 ]
             }
@@ -3855,10 +3910,10 @@
                 else if (label.endsWith('+')) {
                     label = symbol + label;
                 }
-                // Handle range (X – Y)
-                else if (label.includes(' – ')) {
-                    const parts = label.split(' – ');
-                    label = symbol + parts[0] + ' – ' + symbol + parts[1];
+                // Handle range (X  -  Y)
+                else if (label.includes('  -  ')) {
+                    const parts = label.split('  -  ');
+                    label = symbol + parts[0] + '  -  ' + symbol + parts[1];
                 }
                 
                 btn.textContent = label;
@@ -4714,27 +4769,27 @@
             const narratives = {
                 'Survival Mode': {
                     whyThisIsHappening: `${firstName}, being in Survival Mode isn't a reflection of your worth or your effort. It simply means your current financial structure hasn't yet created the breathing room you need to think beyond next month's bills. When you're constantly focused on immediate needs, it's nearly impossible to build the systems that create lasting wealth. The good news is that recognizing this pattern is the first step toward breaking it.`,
-                    hiddenPattern: `Here's something most people in your situation don't realize: the stress of financial survival actually reinforces the behaviors that keep you stuck. When money feels scarce, we unconsciously make decisions that prioritize short-term relief over long-term growth. Your ${bottleneck.toLowerCase()} isn't just a number problem — it's a symptom of a financial operating system designed for survival, not prosperity.`,
+                    hiddenPattern: `Here's something most people in your situation don't realize: the stress of financial survival actually reinforces the behaviors that keep you stuck. When money feels scarce, we unconsciously make decisions that prioritize short-term relief over long-term growth. Your ${bottleneck.toLowerCase()} isn't just a number problem  -  it's a symptom of a financial operating system designed for survival, not prosperity.`,
                     ifNothingChanges: `If nothing changes in how you approach your finances, you'll likely find yourself in this same position five years from now, perhaps with a slightly higher income but the same underlying stress. The gap between what you earn and what you keep will continue to feel frustratingly small. Time, your most valuable asset, will continue slipping away without building the foundation for real financial freedom.`,
                     transitionToSolution: `But here's what I want you to hold onto: you've already done something most people never do. You've looked honestly at your situation and gotten clear on where you stand. That clarity is the foundation everything else is built on. Your ${timeframe.toLowerCase()} timeline gives us something concrete to work with, and there are specific strategies that can shift you out of survival mode faster than you might think.`
                 },
                 'Stability Trap': {
-                    whyThisIsHappening: `${firstName}, being in the Stability Trap is actually a sign that you've achieved something real — you've built a foundation that many people never reach. But here's the uncomfortable truth: the same cautious approach that got you here is now the very thing holding you back. You're earning well, you're responsible, you're doing "all the right things" — and yet your wealth isn't growing at the rate your efforts deserve. This isn't about working harder; it's about working differently.`,
-                    hiddenPattern: `The pattern I see in your numbers tells a story you might not have fully recognized yet. Your ${bottleneck.toLowerCase()} is functioning like a silent ceiling on your wealth growth. Every month, you're making decisions that feel responsible but are actually keeping you trapped in a cycle of stability without acceleration. It's like driving with the parking brake on — you're moving forward, but you're burning fuel and getting nowhere near the progress you should be making.`,
+                    whyThisIsHappening: `${firstName}, being in the Stability Trap is actually a sign that you've achieved something real  -  you've built a foundation that many people never reach. But here's the uncomfortable truth: the same cautious approach that got you here is now the very thing holding you back. You're earning well, you're responsible, you're doing "all the right things"  -  and yet your wealth isn't growing at the rate your efforts deserve. This isn't about working harder; it's about working differently.`,
+                    hiddenPattern: `The pattern I see in your numbers tells a story you might not have fully recognized yet. Your ${bottleneck.toLowerCase()} is functioning like a silent ceiling on your wealth growth. Every month, you're making decisions that feel responsible but are actually keeping you trapped in a cycle of stability without acceleration. It's like driving with the parking brake on  -  you're moving forward, but you're burning fuel and getting nowhere near the progress you should be making.`,
                     ifNothingChanges: `Without a shift in strategy, here's what the next decade likely looks like: you'll continue earning well, continue saving responsibly, and continue feeling like something's missing. You might accumulate more, but the gap between your current trajectory and true financial freedom will grow wider, not smaller. The most frustrating part? You'll watch others with similar incomes somehow pull ahead, wondering what they know that you don't.`,
-                    transitionToSolution: `The good news is that escaping the Stability Trap doesn't require a complete overhaul of your life. It requires strategic adjustments to how your money works. You've already proven you can be disciplined — now it's about directing that discipline toward the right levers. Given your ${timeframe.toLowerCase()} timeline, you're in an ideal position to implement the changes that will finally let your wealth catch up to your income.`
+                    transitionToSolution: `The good news is that escaping the Stability Trap doesn't require a complete overhaul of your life. It requires strategic adjustments to how your money works. You've already proven you can be disciplined  -  now it's about directing that discipline toward the right levers. Given your ${timeframe.toLowerCase()} timeline, you're in an ideal position to implement the changes that will finally let your wealth catch up to your income.`
                 },
                 'Growth Phase': {
-                    whyThisIsHappening: `${firstName}, your position in the Growth Phase reflects real progress — you've moved beyond just surviving and stabilizing into active wealth building. This is where most people who achieve financial freedom spent significant time, so you're on the right track. That said, being in Growth Phase also means you're at a critical juncture where the decisions you make now will determine whether you accelerate into true freedom or plateau at "comfortable but not free."`,
-                    hiddenPattern: `Looking at your numbers, I can see something interesting: your ${bottleneck.toLowerCase()} is the specific area where you're leaving the most potential on the table. It's not that you're doing anything wrong — it's that you're underutilizing this particular lever. Many people in your position focus on what's already working rather than optimizing what's underperforming. But the fastest path to financial freedom often runs through the areas we've been unconsciously avoiding.`,
-                    ifNothingChanges: `If you continue on your current trajectory without strategic adjustments, you'll likely reach a point of financial comfort — but it may take twice as long as it needs to. The difference between optimized growth and organic growth isn't just about speed; it's about the options you'll have when you get there. Five years from now, you could either be choosing how to spend your time, or still negotiating for it.`,
-                    transitionToSolution: `You're closer than you might realize to the inflection point where wealth starts to build momentum on its own. The strategies that work at this stage are different from what got you here — more sophisticated, more leveraged, more focused on multiplication rather than addition. Your ${timeframe.toLowerCase()} timeline is actually perfect for implementing these changes and seeing meaningful results.`
+                    whyThisIsHappening: `${firstName}, your position in the Growth Phase reflects real progress  -  you've moved beyond just surviving and stabilizing into active wealth building. This is where most people who achieve financial freedom spent significant time, so you're on the right track. That said, being in Growth Phase also means you're at a critical juncture where the decisions you make now will determine whether you accelerate into true freedom or plateau at "comfortable but not free."`,
+                    hiddenPattern: `Looking at your numbers, I can see something interesting: your ${bottleneck.toLowerCase()} is the specific area where you're leaving the most potential on the table. It's not that you're doing anything wrong  -  it's that you're underutilizing this particular lever. Many people in your position focus on what's already working rather than optimizing what's underperforming. But the fastest path to financial freedom often runs through the areas we've been unconsciously avoiding.`,
+                    ifNothingChanges: `If you continue on your current trajectory without strategic adjustments, you'll likely reach a point of financial comfort  -  but it may take twice as long as it needs to. The difference between optimized growth and organic growth isn't just about speed; it's about the options you'll have when you get there. Five years from now, you could either be choosing how to spend your time, or still negotiating for it.`,
+                    transitionToSolution: `You're closer than you might realize to the inflection point where wealth starts to build momentum on its own. The strategies that work at this stage are different from what got you here  -  more sophisticated, more leveraged, more focused on multiplication rather than addition. Your ${timeframe.toLowerCase()} timeline is actually perfect for implementing these changes and seeing meaningful results.`
                 },
                 'Freedom Path': {
-                    whyThisIsHappening: `${firstName}, being on the Freedom Path means you've already accomplished what most people only dream about — you've built real wealth momentum. Your financial foundation is strong, and your trajectory is pointed in the right direction. The question now isn't whether you'll achieve financial freedom, but how quickly you'll get there and how much you'll optimize along the way. You're playing a different game now, one where strategy matters more than hustle.`,
-                    hiddenPattern: `Even at your level, there are often overlooked opportunities hiding in plain sight. Your ${bottleneck.toLowerCase()} might seem minor compared to your strengths, but at this stage, optimizing your weaker areas can have a multiplicative effect on your overall wealth velocity. The pattern I often see with high performers like you is a tendency to double down on what's working rather than addressing what's limiting — and sometimes the biggest gains come from removing constraints, not adding fuel.`,
-                    ifNothingChanges: `You'll reach financial freedom either way — that's the good news. But the difference between an optimized path and a default path could mean years of additional working or millions in unrealized potential. At your level, small percentage improvements compound dramatically over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there eventually.`,
-                    transitionToSolution: `You're in a position that many would envy, but that doesn't mean the work is done. The strategies that matter most at this stage are about optimization, protection, and acceleration — fine-tuning an already strong engine to reach its full potential. Your ${timeframe.toLowerCase()} timeline gives us the window to implement the sophisticated approaches that separate the wealthy from the truly financially free.`
+                    whyThisIsHappening: `${firstName}, being on the Freedom Path means you've already accomplished what most people only dream about  -  you've built real wealth momentum. Your financial foundation is strong, and your trajectory is pointed in the right direction. The question now isn't whether you'll achieve financial freedom, but how quickly you'll get there and how much you'll optimize along the way. You're playing a different game now, one where strategy matters more than hustle.`,
+                    hiddenPattern: `Even at your level, there are often overlooked opportunities hiding in plain sight. Your ${bottleneck.toLowerCase()} might seem minor compared to your strengths, but at this stage, optimizing your weaker areas can have a multiplicative effect on your overall wealth velocity. The pattern I often see with high performers like you is a tendency to double down on what's working rather than addressing what's limiting  -  and sometimes the biggest gains come from removing constraints, not adding fuel.`,
+                    ifNothingChanges: `You'll reach financial freedom either way  -  that's the good news. But the difference between an optimized path and a default path could mean years of additional working or millions in unrealized potential. At your level, small percentage improvements compound dramatically over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there eventually.`,
+                    transitionToSolution: `You're in a position that many would envy, but that doesn't mean the work is done. The strategies that matter most at this stage are about optimization, protection, and acceleration  -  fine-tuning an already strong engine to reach its full potential. Your ${timeframe.toLowerCase()} timeline gives us the window to implement the sophisticated approaches that separate the wealthy from the truly financially free.`
                 }
             };
             
@@ -4826,51 +4881,68 @@
             const bottleneckTitle = document.getElementById('bottleneckTitle');
             if (bottleneckTitle) bottleneckTitle.textContent = template.bottleneckTitle || 'SAVINGS RATE (7/15)';
             
-            const bottleneckDesc = document.getElementById('bottleneckDesc');
-            if (bottleneckDesc) bottleneckDesc.textContent = template.bottleneckFullDesc || "You're saving, but not enough to accelerate your financial freedom.";
-            
             const bottleneckTitleMobile = document.getElementById('bottleneckTitleMobile');
             if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = template.bottleneckTitle || 'SAVINGS RATE (7/15)';
             
-            const bottleneckDescMobile = document.getElementById('bottleneckDescMobile');
-            if (bottleneckDescMobile) bottleneckDescMobile.textContent = template.bottleneckFullDesc;
+            // ===== SECTION 5: AI NARRATIVES (Expandable with Read More) =====
+            // Helper to set up expandable section
+            function setupExpandableSection(elementId, content) {
+                const el = document.getElementById(elementId);
+                if (el) {
+                    // Remove em-dashes from content
+                    const cleanContent = content.replace(/ - /g, ' - ').replace(/ - /g, ' - ');
+                    el.innerHTML = `<p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.7; margin: 0;">${cleanContent}</p>`;
+                    
+                    // Check if content needs Read More button (more than ~6 lines / 400 chars)
+                    const btn = el.nextElementSibling;
+                    if (btn && btn.classList.contains('read-more-btn')) {
+                        if (cleanContent.length > 350) {
+                            btn.style.display = 'block';
+                            el.setAttribute('data-expanded', 'false');
+                        } else {
+                            btn.style.display = 'none';
+                            el.setAttribute('data-expanded', 'true');
+                        }
+                    }
+                }
+            }
             
-            // ===== SECTION 5: AI NARRATIVES (NEW - from Claude API) =====
+            function setupExpandableSectionMobile(elementId, content) {
+                const el = document.getElementById(elementId);
+                if (el) {
+                    const cleanContent = content.replace(/ - /g, ' - ').replace(/ - /g, ' - ');
+                    el.innerHTML = `<p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">${cleanContent}</p>`;
+                    
+                    // Find the button (may be sibling or nearby)
+                    const parent = el.parentElement;
+                    const btn = parent ? parent.querySelector('.read-more-btn-mobile') : null;
+                    if (btn) {
+                        if (cleanContent.length > 350) {
+                            btn.style.display = 'block';
+                            el.setAttribute('data-expanded', 'false');
+                        } else {
+                            btn.style.display = 'none';
+                            el.setAttribute('data-expanded', 'true');
+                        }
+                    }
+                }
+            }
+            
             // Why This Is Happening
-            const whyEl = document.getElementById('whyThisIsHappening');
-            if (whyEl) {
-                whyEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.whyThisIsHappening}</p>`;
-            }
-            const whyElMobile = document.getElementById('whyThisIsHappeningMobile');
-            if (whyElMobile) {
-                whyElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.whyThisIsHappening}</p>`;
-            }
+            setupExpandableSection('whyThisIsHappening', narratives.whyThisIsHappening || '');
+            setupExpandableSectionMobile('whyThisIsHappeningMobile', narratives.whyThisIsHappening || '');
             
-            // Hidden Pattern (NEW SECTION)
-            const hiddenPatternEl = document.getElementById('hiddenPattern');
-            if (hiddenPatternEl) {
-                hiddenPatternEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.hiddenPattern}</p>`;
-            }
-            const hiddenPatternElMobile = document.getElementById('hiddenPatternMobile');
-            if (hiddenPatternElMobile) {
-                hiddenPatternElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.hiddenPattern}</p>`;
-            }
+            // Hidden Pattern (YOUR BIGGEST OPPORTUNITY - now with AI prose)
+            setupExpandableSection('hiddenPattern', narratives.hiddenPattern || '');
+            setupExpandableSectionMobile('hiddenPatternMobile', narratives.hiddenPattern || '');
             
             // If Nothing Changes
-            const ifEl = document.getElementById('ifNothingChanges');
-            if (ifEl) {
-                ifEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.ifNothingChanges}</p>`;
-            }
-            const ifElMobile = document.getElementById('ifNothingChangesMobile');
-            if (ifElMobile) {
-                ifElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.ifNothingChanges}</p>`;
-            }
+            setupExpandableSection('ifNothingChanges', narratives.ifNothingChanges || '');
+            setupExpandableSectionMobile('ifNothingChangesMobile', narratives.ifNothingChanges || '');
             
-            // Transition to Solution (for CTA section)
-            const transitionEl = document.getElementById('transitionToSolution');
-            if (transitionEl) {
-                transitionEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.transitionToSolution}</p>`;
-            }
+            // Transition to Solution (YOUR PATH FORWARD)
+            setupExpandableSection('transitionToSolution', narratives.transitionToSolution || '');
+            setupExpandableSectionMobile('transitionToSolutionMobile', narratives.transitionToSolution || '');
             
             // ===== SECTION 6: CTA =====
             const ctaTitle = document.getElementById('ctaTitle');
@@ -6061,7 +6133,7 @@ June Yoon | Wealth Architecture Strategist`;
             };
             
             // Try to extract range like "100-250K" or "5-15L"
-            const rangeMatch = tier.match(/(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*([KLMBCr]+)?/i);
+            const rangeMatch = tier.match(/(\d+\.?\d*)\s*[- - ]\s*(\d+\.?\d*)\s*([KLMBCr]+)?/i);
             if (rangeMatch) {
                 const low = parseFloat(rangeMatch[1]);
                 const high = parseFloat(rangeMatch[2]);
@@ -6380,6 +6452,45 @@ June Yoon | Wealth Architecture Strategist`;
             } else {
                 content.style.maxHeight = content.scrollHeight + 'px';
                 arrow.style.transform = 'rotate(90deg)';
+            }
+        }
+        
+        // Toggle expandable section (Read More / Read Less)
+        function toggleExpandSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            const btn = section ? section.nextElementSibling : null;
+            
+            if (section && btn) {
+                const isExpanded = section.getAttribute('data-expanded') === 'true';
+                
+                if (isExpanded) {
+                    section.setAttribute('data-expanded', 'false');
+                    btn.innerHTML = 'Read More ▼';
+                } else {
+                    section.setAttribute('data-expanded', 'true');
+                    btn.innerHTML = 'Read Less ▲';
+                }
+            }
+        }
+        
+        // Toggle expandable section for mobile
+        function toggleExpandSectionMobile(sectionId, event) {
+            if (event) event.stopPropagation(); // Don't toggle accordion
+            
+            const section = document.getElementById(sectionId);
+            const parent = section ? section.parentElement : null;
+            const btn = parent ? parent.querySelector('.read-more-btn-mobile') : null;
+            
+            if (section && btn) {
+                const isExpanded = section.getAttribute('data-expanded') === 'true';
+                
+                if (isExpanded) {
+                    section.setAttribute('data-expanded', 'false');
+                    btn.innerHTML = 'Read More ▼';
+                } else {
+                    section.setAttribute('data-expanded', 'true');
+                    btn.innerHTML = 'Read Less ▲';
+                }
             }
         }
         
