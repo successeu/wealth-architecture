@@ -469,7 +469,11 @@
             pointer-events: none;
         }
         .expandable-section[data-expanded="true"] {
-            max-height: 3000px;
+            max-height: none !important;
+            overflow: visible;
+        }
+        .expandable-section[data-expanded="true"]::after {
+            display: none;
         }
         .read-more-btn {
             transition: all 0.2s;
@@ -505,7 +509,11 @@
             pointer-events: none;
         }
         .expandable-section-mobile[data-expanded="true"] {
-            max-height: 3000px;
+            max-height: none !important;
+            overflow: visible;
+        }
+        .expandable-section-mobile[data-expanded="true"]::after {
+            display: none;
         }
         
         .cta-box {
@@ -2671,23 +2679,23 @@
             </div>
             
             <!-- SECTION 3: AI INSIGHT CARDS (3 columns) - DESKTOP -->
-            <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; align-items: stretch;">
+            <div class="desktop-cards-section" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; align-items: start;">
                 <!-- Why This Is Happening -->
-                <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                <div class="insight-card-container" style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px;">
                     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <span style="font-size: 20px;">💡</span>
                         </div>
                         <h3 style="font-size: 13px; font-weight: 700; color: #b45309; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">Why This Is Happening</h3>
                     </div>
-                    <div id="whyThisIsHappening" class="expandable-section" data-expanded="false" style="flex: 1;">
+                    <div id="whyThisIsHappening" class="expandable-section" data-expanded="false">
                         <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading your personalized analysis...</p>
                     </div>
                     <button class="read-more-btn" onclick="toggleExpandSection('whyThisIsHappening')" style="background: none; border: none; color: #b45309; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
                 
                 <!-- Your Biggest Opportunity -->
-                <div style="background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%); border: 2px solid #fed7aa; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                <div class="insight-card-container" style="background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%); border: 2px solid #fed7aa; border-radius: 16px; padding: 28px;">
                     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid rgba(255, 129, 32, 0.15);">
                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #ff8120 0%, #f97316 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <span style="font-size: 20px;">🎯</span>
@@ -2695,21 +2703,21 @@
                         <h3 style="font-size: 13px; font-weight: 700; color: #c2410c; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">Your Biggest Opportunity</h3>
                     </div>
                     <p id="bottleneckTitle" style="font-size: 18px; font-weight: 700; color: #ea580c; margin-bottom: 16px; letter-spacing: -0.3px;">INCOME STRUCTURE (3/10)</p>
-                    <div id="hiddenPattern" class="expandable-section" data-expanded="false" style="flex: 1;">
+                    <div id="hiddenPattern" class="expandable-section" data-expanded="false">
                         <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading your personalized insight...</p>
                     </div>
                     <button class="read-more-btn" onclick="toggleExpandSection('hiddenPattern')" style="background: none; border: none; color: #ea580c; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
                 </div>
                 
                 <!-- If Nothing Changes -->
-                <div style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px; display: flex; flex-direction: column;">
+                <div class="insight-card-container" style="background: #ffffff; border: 1px solid #e5e5e5; border-radius: 16px; padding: 28px;">
                     <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 1px solid #f0f0f0;">
                         <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                             <span style="font-size: 20px;">⚠️</span>
                         </div>
                         <h3 style="font-size: 13px; font-weight: 700; color: #b91c1c; letter-spacing: 0.5px; text-transform: uppercase; margin: 0;">If Nothing Changes</h3>
                     </div>
-                    <div id="ifNothingChanges" class="expandable-section" data-expanded="false" style="flex: 1;">
+                    <div id="ifNothingChanges" class="expandable-section" data-expanded="false">
                         <p class="expandable-text" style="font-size: 15px; color: #374151; line-height: 1.8; margin: 0; text-align: left;">Loading consequences analysis...</p>
                     </div>
                     <button class="read-more-btn" onclick="toggleExpandSection('ifNothingChanges')" style="background: none; border: none; color: #b91c1c; font-size: 13px; font-weight: 600; cursor: pointer; padding: 12px 0 0; display: none; text-align: left;">Read More ▼</button>
@@ -2744,10 +2752,9 @@
                         <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                     <div class="accordion-content">
-                        <div id="whyThisIsHappeningMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
-                            <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized analysis...</p>
+                        <div id="whyThisIsHappeningMobile" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.75; margin: 0;">Loading your personalized analysis...</p>
                         </div>
-                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('whyThisIsHappeningMobile', event)" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
                     </div>
                 </div>
                 
@@ -2762,11 +2769,10 @@
                     </div>
                     <div class="accordion-content">
                         <div style="padding: 0 16px 16px;">
-                            <p id="bottleneckTitleMobile" style="font-size: 15px; font-weight: 700; color: #ff8120; margin-bottom: 10px;">INCOME STRUCTURE (2 / 10)</p>
-                            <div id="hiddenPatternMobile" class="expandable-section-mobile" data-expanded="false">
-                                <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading your personalized insight...</p>
+                            <p id="bottleneckTitleMobile" style="font-size: 16px; font-weight: 700; color: #ff8120; margin-bottom: 12px;">INCOME STRUCTURE (3/10)</p>
+                            <div id="hiddenPatternMobile">
+                                <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.75; margin: 0;">Loading your personalized insight...</p>
                             </div>
-                            <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('hiddenPatternMobile', event)" style="background: none; border: none; color: #ff8120; font-size: 12px; font-weight: 600; cursor: pointer; padding: 8px 0 0; display: none;">Read More ▼</button>
                         </div>
                     </div>
                 </div>
@@ -2781,10 +2787,9 @@
                         <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                     <div class="accordion-content">
-                        <div id="ifNothingChangesMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
-                            <p class="expandable-text" style="font-size: 13px; color: #555; line-height: 1.7; margin: 0;">Loading consequences analysis...</p>
+                        <div id="ifNothingChangesMobile" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.75; margin: 0;">Loading consequences analysis...</p>
                         </div>
-                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('ifNothingChangesMobile', event)" style="background: none; border: none; color: #dc2626; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
                     </div>
                 </div>
                 
@@ -2798,10 +2803,9 @@
                         <svg class="accordion-arrow" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
                     </div>
                     <div class="accordion-content">
-                        <div id="transitionToSolutionMobile" class="expandable-section-mobile" data-expanded="false" style="padding: 0 16px 16px;">
-                            <p class="expandable-text" style="font-size: 13px; color: #444; line-height: 1.7; margin: 0;">Loading your personalized path forward...</p>
+                        <div id="transitionToSolutionMobile" style="padding: 0 16px 16px;">
+                            <p class="expandable-text" style="font-size: 14px; color: #444; line-height: 1.75; margin: 0;">Loading your personalized path forward...</p>
                         </div>
-                        <button class="read-more-btn-mobile" onclick="toggleExpandSectionMobile('transitionToSolutionMobile', event)" style="background: none; border: none; color: #22c55e; font-size: 12px; font-weight: 600; cursor: pointer; padding: 0 16px 16px; display: none;">Read More ▼</button>
                     </div>
                 </div>
                 
@@ -4775,27 +4779,27 @@
         function getStageNarratives(stage, firstName, bottleneck, timeframe) {
             const narratives = {
                 'Survival Mode': {
-                    whyThisIsHappening: `${firstName}, here's something I want you to really get: the lack of money is NEVER the problem. It's a symptom. Your financial blueprint - the subconscious programming you picked up around money - is set for survival, not success. This isn't your fault. Somewhere along the way, you heard things like "money doesn't grow on trees" or "we can't afford it." You saw people stressed about bills. And that got installed. Rich people believe "I create my life." People stuck in survival mode believe "life happens to me." That belief is running you right now. The good news? Beliefs can be changed.`,
+                    whyThisIsHappening: `${firstName}, here's something I want you to really understand: the lack of money is NEVER the problem - it's a symptom. Your financial blueprint, the subconscious programming you picked up around money, is currently set for survival, not success. This isn't your fault. Somewhere along the way, you absorbed beliefs like "money doesn't grow on trees" or "we can't afford it." Those got installed deep. Here's the powerful distinction: wealthy people believe "I create my life." People stuck in survival mode believe "life happens to me." That belief is running you right now. The good news? Beliefs can absolutely be changed.`,
                     hiddenPattern: `Here's what most people don't realize about your ${bottleneck.toLowerCase()}: it's not a money problem, it's a BLUEPRINT problem. Your financial thermostat is set to this level. You could win the lottery tomorrow, and within a few years you'd be right back here. Why? Because your subconscious doesn't know how to hold more. Every time money comes in, old programming kicks in and finds ways to get rid of it. That's not weakness - that's your blueprint doing exactly what it was programmed to do. The pattern isn't the enemy. The pattern is the SYMPTOM. And now that you can see it, you can change it.`,
-                    ifNothingChanges: `I'm going to be straight with you because I care about your success. If you keep doing what you've been doing, you'll keep getting what you've been getting. Period. Five years from now, you'll have a bit more income but the same stress. Ten years from now, same story. The gap between where you are and where you want to be won't shrink on its own. Your blueprint will keep resetting you to survival mode like a thermostat. And here's the hard truth: time is the one asset you can never get back. Every year you stay stuck is a year you'll never recover.`,
-                    transitionToSolution: `But here's what I want you to hold onto, ${firstName}: you've already done something most people never do. You looked honestly at your situation. You got clear. That's the first step in the reconditioning process: AWARENESS. You can't change what you're not aware of. Now comes the real work - rewiring your blueprint for wealth instead of survival. Your ${timeframe.toLowerCase()} timeline tells me you're ready to take action. The question is: are you committed to being rich, or do you just WANT to be rich? Because wanting is weak. Commitment is powerful. And you deserve to be rich.`
+                    ifNothingChanges: `${firstName}, I want to share something important because your success matters. If you keep doing what you've been doing, you'll keep getting what you've been getting. Five years from now, you'll have a bit more income but the same stress. Ten years from now, same story. The gap between where you are and where you want to be won't shrink on its own. Your blueprint will keep resetting you to survival mode like a thermostat. And here's the reality we need to face together: time is the one asset you can never get back. Every year you stay stuck is a year of wealth-building you'll never recover.`,
+                    transitionToSolution: `But here's what I want you to hold onto, ${firstName}: you've already done something most people never do. You looked honestly at your situation. You got clear. That's the first step in the reconditioning process: AWARENESS. You can't change what you're not aware of. Now comes the real work - rewiring your blueprint for wealth instead of survival. Your ${timeframe.toLowerCase()} timeline tells me you're ready to take action. The question is: are you committed to being rich, or do you just WANT to be rich? Because wanting is passive. Commitment is powerful. And you deserve to be wealthy.`
                 },
                 'Stability Trap': {
-                    whyThisIsHappening: `${firstName}, let me tell you what I see: you're playing the money game NOT TO LOSE instead of playing to WIN. And that right there is the difference between the wealthy and the middle class. You're doing all the "responsible" things - steady job, decent savings, playing it safe. But here's the uncomfortable truth: the same cautious blueprint that got you here is now your ceiling. Rich people focus on their NET WORTH. Middle-class people focus on their WORKING INCOME. You've been trading time for money, and no matter how much time you trade, you can't get ahead. This isn't about working harder. It's about thinking BIGGER.`,
+                    whyThisIsHappening: `${firstName}, here's what I see in your results: you're playing the money game NOT TO LOSE instead of playing to WIN. And that distinction is exactly what separates the wealthy from the middle class. You're doing all the "responsible" things - steady job, decent savings, playing it safe. But here's the truth we need to acknowledge: the same cautious blueprint that got you here is now your ceiling. Rich people focus on their NET WORTH. Middle-class people focus on their WORKING INCOME. You've been trading time for money, and no matter how much time you trade, you can't break through. This isn't about working harder. It's about thinking BIGGER.`,
                     hiddenPattern: `Your ${bottleneck.toLowerCase()} is the symptom that reveals your blueprint. See, most people in your situation don't realize they have an internal "wealth thermostat" set to exactly this level. Every month you're making decisions that feel responsible but are actually keeping you comfortable - not free. It's like you've got the parking brake on. You're moving, sure, but burning fuel and going nowhere fast. The pattern? You're focused on what you might LOSE instead of what you could GAIN. Rich people see opportunities. Middle-class people see obstacles. Which one sounds like you right now?`,
-                    ifNothingChanges: `I'm not here to be your friend, ${firstName}. I'm here to be your coach. Friends tell you what you want to hear. Coaches tell you what you NEED to hear. So here it is: if nothing changes, nothing changes. You'll keep earning well, keep saving responsibly, and keep wondering why others with similar incomes are pulling ahead. The gap between comfortable and FREE will grow wider every year. And the most frustrating part? You'll KNOW something is off, but you won't be able to put your finger on it. That's your blueprint protecting itself. That's the Stability Trap doing its job.`,
+                    ifNothingChanges: `${firstName}, let me share this with you directly because I believe in your potential. If nothing changes, nothing changes. You'll keep earning well, keep saving responsibly, and keep wondering why others with similar incomes are pulling ahead. The gap between comfortable and FREE will grow wider every year. And the most frustrating part? You'll KNOW something is off, but you won't be able to put your finger on it. That's your blueprint protecting itself. That's the Stability Trap doing its job. But you have the awareness NOW to change this trajectory.`,
                     transitionToSolution: `The good news? Escaping the Stability Trap doesn't require you to take crazy risks. It requires you to upgrade your money blueprint - to think like wealthy people think. You've already proven you can be disciplined. Now it's about directing that discipline toward the RIGHT things. Given your ${timeframe.toLowerCase()} timeline, you're in the perfect position to make this shift. The strategies exist. The path is clear. The only question is: are you going to commit to PLAYING TO WIN? Place your hand on your heart and say: "I choose to think big. I choose to play to win. I have a millionaire mind."`
                 },
                 'Growth Phase': {
-                    whyThisIsHappening: `${firstName}, you're in the Growth Phase, and that's no small thing - you've moved past survival and stability into actual wealth building. But here's what I need you to understand: this is the CRITICAL junction. This is where people either accelerate into real financial freedom or plateau at "comfortable but still working." The decisions you make right now will determine which path you take. Your income can only grow to the extent that YOU do. And right now, there's a specific area of your blueprint that's holding you back from the next level.`,
+                    whyThisIsHappening: `${firstName}, you're in the Growth Phase, and that's significant - you've moved past survival and stability into actual wealth building. But here's what I need you to understand: this is the CRITICAL junction. This is where people either accelerate into real financial freedom or plateau at "comfortable but still working." The decisions you make right now will determine which path you take. Your income can only grow to the extent that YOU do. And right now, there's a specific area of your blueprint that's holding you back from the next level.`,
                     hiddenPattern: `Look at your numbers: your ${bottleneck.toLowerCase()} is where you're leaving the most money on the table. Here's what most people in your position don't see - they keep doubling down on what's already working instead of fixing what's limiting them. But wealth is like a bucket. You can pour more water in, but if there's a hole, you'll never fill it. Your ${bottleneck.toLowerCase()} is the hole. It's not that you're doing anything wrong - it's that your subconscious is avoiding this area for a reason. Something in your programming says "don't go there." And THAT'S exactly where your biggest breakthrough is waiting.`,
-                    ifNothingChanges: `Let me be real with you: if you continue on your current trajectory, you'll reach financial comfort eventually. But "eventually" might mean twice as long as necessary. The difference between optimized growth and drifting growth isn't just speed - it's OPTIONS. Five years from now, you could be choosing how to spend your time, or you could still be negotiating for it. That's the difference between having money work hard for YOU versus you still working hard for money. At your level, every year of delay is a year of compound growth you'll never get back.`,
+                    ifNothingChanges: `${firstName}, here's the honest truth: if you continue on your current trajectory, you'll reach financial comfort eventually. But "eventually" might mean twice as long as necessary. The difference between optimized growth and drifting growth isn't just speed - it's OPTIONS. Five years from now, you could be choosing how to spend your time, or you could still be negotiating for it. That's the difference between having money work hard for YOU versus you still working hard for money. At your level, every year of delay is a year of compound growth you'll never get back.`,
                     transitionToSolution: `Here's the truth, ${firstName}: you're closer to the inflection point than you realize. This is where wealth starts building momentum on its own - where your money works harder than you do. The strategies at this stage are different from what got you here. More sophisticated. More leveraged. Focused on MULTIPLICATION, not addition. Your ${timeframe.toLowerCase()} timeline is perfect for implementing these changes. But you have to decide: are you committed to reaching your full financial potential, or just committed to being comfortable? Rich people are committed to being rich. Which one are you?`
                 },
                 'Freedom Path': {
                     whyThisIsHappening: `${firstName}, being on the Freedom Path means you've accomplished what most people only dream about - you've built REAL momentum. Your financial foundation is strong and your trajectory is pointed toward freedom. But here's what separates the wealthy from the TRULY free: the wealthy accumulate. The truly free optimize. You're playing a different game now - one where strategy matters more than hustle, where small percentage improvements create massive compound results. The question isn't WHETHER you'll reach freedom. It's HOW FAST and HOW FULLY you'll get there.`,
                     hiddenPattern: `Even at your level, there are opportunities hiding in plain sight. Your ${bottleneck.toLowerCase()} might seem minor compared to your strengths, but here's the pattern I see with high performers: they keep adding fuel instead of removing friction. At this stage, optimizing your weaker areas has a MULTIPLICATIVE effect. It's not addition anymore - it's leverage. The wealthy think "both/and" while everyone else thinks "either/or." You don't have to choose between protecting what you have and accelerating what you're building. You can do BOTH. But only if you address what's been quietly limiting you.`,
-                    ifNothingChanges: `You'll reach financial freedom either way - that's the good news. But the difference between an optimized path and a default path? It could mean YEARS of additional working or millions in unrealized potential. At your level, a 10% improvement compounds into massive differences over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there. Rich people constantly learn and grow. They don't coast just because they're ahead. They ACCELERATE. That's the mindset that built what you have. Don't abandon it now.`,
+                    ifNothingChanges: `You'll reach financial freedom either way - that's the good news. But the difference between an optimized path and a default path? It could mean YEARS of additional working or millions in unrealized potential. At your level, a 10% improvement compounds into massive differences over time. The question is whether you want to arrive at freedom as quickly and powerfully as possible, or simply drift there. Wealthy people constantly learn and grow. They don't coast just because they're ahead. They ACCELERATE. That's the mindset that built what you have. Don't slow down now.`,
                     transitionToSolution: `${firstName}, you're in a position many would envy. But you and I both know the work isn't done. The strategies that matter at this stage are about optimization, protection, and ACCELERATION - fine-tuning an already strong engine to reach its full potential. Your ${timeframe.toLowerCase()} timeline gives us the window to implement sophisticated approaches that separate the wealthy from the truly financially free. The path is clear. The question is: are you going to coast, or are you going to COMMIT to your full potential? I think you already know the answer.`
                 }
             };
