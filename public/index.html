@@ -4445,6 +4445,7 @@
                 
                 // Show loading
                 showStep(4);
+                startLoadingAnimation();
                 
                 // Collect all checked status checkboxes
                 const statusCheckboxes = document.querySelectorAll('input[name="status"]:checked');
@@ -4476,38 +4477,19 @@
             });
             const concern = concernValues.join(', ') || '';
             
-            const timeline = document.querySelector('input[name="timeline"]:checked')?.value || '';
-            
-            // Store form data for later use
-            const wealthScore = calculateWealthScore(surplus, liquid, income, status, timeline, concern);
-            const scoreLabel = getScoreLabelForZapier(wealthScore);
-            const fullName = firstName + ' ' + lastName;
-            
-            // NEW FLOW: Generate PDF first, then send everything to Zapier
-            console.log('📄 Generating PDF before sending to Zapier...');
-            
-            // Generate PDF and get URL
-            const pdfUrl = await generateAndUploadPDF(fullName, surplus, liquid, income, currency, wealthScore);
-            console.log('✅ PDF URL ready:', pdfUrl);
-            
-            // Get score breakdown components
-            const breakdown = window.scoreBreakdown || {
-                incomeCapacity: 0,
-                incomeStructure: 0,
-                savingsRate: 0,
-                assetStrength: 0
-            };
-            
             // ============================================
-            // USE RULE ENGINE FOR ALL TRUTH VALUES
+            // NEW HYBRID ARCHITECTURE: Backend API Call
             // ============================================
-            const userInput = {
+            console.log('🚀 Calling hybrid backend API...');
+            
+            // Prepare input for backend
+            const apiInput = {
                 firstName: firstName,
                 lastName: lastName,
                 email: email,
                 phone: phone,
                 country: getCountryName(country),
-                currency: currency,
+                currency: getCurrencySymbol(currency),
                 incomeLevel: income,
                 monthlySurplus: surplus,
                 liquidAssets: liquid,
@@ -4516,57 +4498,96 @@
                 timeframe: selectedTimeframe || 'Within this year'
             };
             
-            // Generate truth payload from Rule Engine
-            const truthPayload = RuleEngine.generateTruthPayload(userInput, breakdown, wealthScore);
+            console.log('📤 Sending to /api/generate-result:', apiInput);
             
-            // Store for global access
-            window.truthPayload = truthPayload;
-            window.templatePayload = TemplateEngine.generateTemplatePayload(truthPayload);
+            // Call backend API (Rule Engine + Template Engine + AI Layer)
+            let apiResult;
+            try {
+                const apiResponse = await fetch('/api/generate-result', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(apiInput)
+                });
+                
+                if (apiResponse.ok) {
+                    const apiData = await apiResponse.json();
+                    if (apiData.success) {
+                        apiResult = apiData.result;
+                        console.log('✅ Backend API response:', apiResult);
+                    } else {
+                        throw new Error(apiData.error || 'API returned error');
+                    }
+                } else {
+                    throw new Error(`API returned ${apiResponse.status}`);
+                }
+            } catch (apiError) {
+                console.log('⚠️ Backend API failed, using frontend fallback:', apiError.message);
+                // Fallback to frontend-only calculation if API fails
+                apiResult = generateFrontendFallback(apiInput);
+            }
             
-            console.log('🎯 RULE ENGINE OUTPUT:', truthPayload);
-            console.log('📋 TEMPLATE ENGINE OUTPUT:', window.templatePayload);
+            // Store globally for other functions
+            window.hybridResult = apiResult;
+            window.truthPayload = apiResult.scores;
+            window.templatePayload = apiResult.template;
+            window.aiNarratives = apiResult.narratives;
             
-            // Prepare data for Airtable (via Zapier) - COMPLETE 24-FIELD PAYLOAD
+            // Extract for backward compatibility
+            const wealthScore = apiResult.scores.wealthScore;
+            const scoreLabel = getScoreLabelForZapier(wealthScore);
+            const fullName = firstName + ' ' + lastName;
+            
+            // Generate PDF with new data
+            console.log('📄 Generating PDF...');
+            const pdfUrl = await generateAndUploadPDF(fullName, surplus, liquid, income, currency, wealthScore);
+            console.log('✅ PDF URL ready:', pdfUrl);
+            
+            // Prepare data for Airtable (via Zapier) - COMPLETE 28-FIELD PAYLOAD
             const formData = {
-                'First Name': truthPayload.firstName,
-                'Last Name': truthPayload.lastName,
-                'Email': truthPayload.email,
-                'Phone': truthPayload.phone,
-                'Country': truthPayload.country,
-                'Currency': truthPayload.currency,
-                'Income Level': truthPayload.incomeLevel,
-                'Monthly Surplus': truthPayload.monthlySurplus,
-                'Liquid Assets': truthPayload.liquidAssets,
-                'Professional Status': truthPayload.professionalStatus,
-                'Primary Concern': truthPayload.primaryConcern,
-                'Timeframe': truthPayload.timeframe,
-                'Urgency Score': truthPayload.urgencyScore,
-                'Wealth Score': truthPayload.wealthScore,
+                'First Name': apiResult.user.firstName,
+                'Last Name': apiResult.user.lastName,
+                'Email': apiResult.user.email,
+                'Phone': apiResult.user.phone,
+                'Country': apiResult.user.country,
+                'Currency': apiResult.user.currency,
+                'Income Level': apiResult.inputs.incomeLevel,
+                'Monthly Surplus': apiResult.inputs.monthlySurplus,
+                'Liquid Assets': apiResult.inputs.liquidAssets,
+                'Professional Status': apiResult.inputs.professionalStatus,
+                'Primary Concern': apiResult.inputs.primaryConcern,
+                'Timeframe': apiResult.inputs.timeframe,
+                'Urgency Score': apiResult.scores.urgencyScore,
+                'Wealth Score': apiResult.scores.wealthScore,
                 'Score Label': scoreLabel,
-                'Stage': truthPayload.stage,
-                'Lead Tier': truthPayload.leadTier,
-                'Income Capacity Score': truthPayload.incomeCapacityScore,
-                'Income Structure Score': truthPayload.incomeStructureScore,
-                'Savings Rate Score': truthPayload.savingsRateScore,
-                'Asset Strength Score': truthPayload.assetStrengthScore,
-                'Primary Bottleneck': truthPayload.primaryBottleneck,
+                'Stage': apiResult.scores.stage,
+                'Lead Tier': apiResult.scores.leadTier,
+                'Income Capacity Score': apiResult.scores.breakdown.incomeCapacity,
+                'Income Structure Score': apiResult.scores.breakdown.incomeStructure,
+                'Savings Rate Score': apiResult.scores.breakdown.savingsRate,
+                'Asset Strength Score': apiResult.scores.breakdown.assetStrength,
+                'Primary Bottleneck': apiResult.scores.bottleneck.label,
+                // NEW: AI-generated narratives
+                'AI Why This Is Happening': apiResult.narratives.whyThisIsHappening,
+                'AI Hidden Pattern': apiResult.narratives.hiddenPattern,
+                'AI If Nothing Changes': apiResult.narratives.ifNothingChanges,
+                'AI Transition To Solution': apiResult.narratives.transitionToSolution,
                 'PDF Report': pdfUrl || '',
                 'Created At': new Date().toISOString()
             };
             
             // DEBUG: Log exact payload being sent
-            console.log('🚀 FINAL PAYLOAD TO ZAPIER:', JSON.stringify(formData, null, 2));
+            console.log('🚀 FINAL PAYLOAD TO ZAPIER (28 fields):', JSON.stringify(formData, null, 2));
             
             // Send to Zapier webhook
             sendToZapier(formData);
-            console.log('✅ Data sent to Zapier with all 24 fields (including Lead Tier)');
+            console.log('✅ Data sent to Zapier with all 28 fields (including AI narratives)');
             
             // Complete loading animation
             completeLoadingAnimation();
             
-            // Show report with Rule Engine + Template Engine
+            // Show report with hybrid result
             showStep(5);
-            generateAllContentV2(truthPayload, window.templatePayload);
+            renderResultPageV3(apiResult);
             
             // Start testimonial rotation
             startTestimonialRotation();
@@ -4579,6 +4600,229 @@
                 showStep(5);
                 startTestimonialRotation();
             }
+        }
+        
+        // Frontend fallback if API fails
+        function generateFrontendFallback(input) {
+            const breakdown = window.scoreBreakdown || {
+                incomeCapacity: 5,
+                incomeStructure: 4,
+                savingsRate: 7,
+                assetStrength: 5
+            };
+            const wealthScore = breakdown.incomeCapacity + breakdown.incomeStructure + breakdown.savingsRate + breakdown.assetStrength;
+            const stage = getScoreLabel(wealthScore);
+            const urgencyScore = RuleEngine.getUrgencyScore(input.timeframe);
+            const leadTier = (urgencyScore >= 4 && wealthScore >= 25) ? 'Hot' : (urgencyScore >= 3) ? 'Warm' : 'Cold';
+            
+            return {
+                user: {
+                    firstName: input.firstName,
+                    lastName: input.lastName,
+                    fullName: input.firstName + ' ' + input.lastName,
+                    email: input.email,
+                    phone: input.phone,
+                    country: input.country,
+                    currency: input.currency
+                },
+                inputs: {
+                    incomeLevel: input.incomeLevel,
+                    monthlySurplus: input.monthlySurplus,
+                    liquidAssets: input.liquidAssets,
+                    professionalStatus: input.professionalStatus,
+                    primaryConcern: input.primaryConcern,
+                    timeframe: input.timeframe
+                },
+                scores: {
+                    wealthScore: wealthScore,
+                    percentage: Math.round((wealthScore / 50) * 100),
+                    stage: stage,
+                    urgencyScore: urgencyScore,
+                    leadTier: leadTier,
+                    breakdown: breakdown,
+                    bottleneck: {
+                        key: 'savingsRate',
+                        label: 'Savings Rate',
+                        score: breakdown.savingsRate,
+                        max: 15
+                    }
+                },
+                template: TemplateEngine.generateTemplatePayload({
+                    stage: stage,
+                    timeframe: input.timeframe,
+                    leadTier: leadTier,
+                    bottleneckKey: 'savingsRate',
+                    bottleneckScore: breakdown.savingsRate,
+                    bottleneckMax: 15,
+                    incomeCapacityScore: breakdown.incomeCapacity,
+                    incomeStructureScore: breakdown.incomeStructure,
+                    savingsRateScore: breakdown.savingsRate,
+                    assetStrengthScore: breakdown.assetStrength
+                }),
+                narratives: {
+                    whyThisIsHappening: `${input.firstName}, you're in ${stage} because your financial structure hasn't caught up with your earning potential.`,
+                    hiddenPattern: `Your savings rate is creating a ceiling on your wealth growth that you may not have noticed.`,
+                    ifNothingChanges: `If you stay on this path, you'll reach retirement still trading time for money.`,
+                    transitionToSolution: `The good news? You've already taken the first step by getting clarity on where you stand.`
+                },
+                meta: {
+                    generatedAt: new Date().toISOString(),
+                    version: '2.0',
+                    architecture: 'frontend-fallback'
+                }
+            };
+        }
+        
+        // NEW: Render result page using hybrid API response
+        function renderResultPageV3(result) {
+            console.log('🎨 Rendering result page with hybrid data...');
+            
+            const truth = result.scores;
+            const template = result.template;
+            const narratives = result.narratives;
+            const user = result.user;
+            
+            // ===== SECTION 1: SCORE HERO =====
+            const scoreValueNew = document.getElementById('scoreValueNew');
+            if (scoreValueNew) scoreValueNew.textContent = truth.wealthScore;
+            
+            const percentageDisplay = document.getElementById('percentageDisplay');
+            if (percentageDisplay) percentageDisplay.textContent = truth.percentage + '% of your financial freedom potential';
+            
+            // ===== SECTION 2: STAGE CARD (Personalized with name) =====
+            const userFirstNameDisplay = document.getElementById('userFirstNameDisplay');
+            if (userFirstNameDisplay) userFirstNameDisplay.textContent = user.firstName;
+            
+            const stageNameDisplay = document.getElementById('stageNameDisplay');
+            if (stageNameDisplay) stageNameDisplay.textContent = template.stageTitle;
+            
+            const stageDescDisplay = document.getElementById('stageDescDisplay');
+            if (stageDescDisplay) stageDescDisplay.textContent = template.stageDescription;
+            
+            // ===== SECTION 3: PILLAR SCORES =====
+            const pillarIncomeScore = document.getElementById('pillarIncomeScore');
+            if (pillarIncomeScore) pillarIncomeScore.textContent = truth.breakdown.incomeCapacity;
+            
+            const pillarStructureScore = document.getElementById('pillarStructureScore');
+            if (pillarStructureScore) pillarStructureScore.textContent = truth.breakdown.incomeStructure;
+            
+            const pillarSavingsScore = document.getElementById('pillarSavingsScore');
+            if (pillarSavingsScore) pillarSavingsScore.textContent = truth.breakdown.savingsRate;
+            
+            const pillarAssetScore = document.getElementById('pillarAssetScore');
+            if (pillarAssetScore) pillarAssetScore.textContent = truth.breakdown.assetStrength;
+            
+            // Pillar progress bars
+            const pillarIncomeBar = document.getElementById('pillarIncomeBar');
+            if (pillarIncomeBar) pillarIncomeBar.style.width = (truth.breakdown.incomeCapacity / 10 * 100) + '%';
+            
+            const pillarStructureBar = document.getElementById('pillarStructureBar');
+            if (pillarStructureBar) pillarStructureBar.style.width = (truth.breakdown.incomeStructure / 10 * 100) + '%';
+            
+            const pillarSavingsBar = document.getElementById('pillarSavingsBar');
+            if (pillarSavingsBar) pillarSavingsBar.style.width = (truth.breakdown.savingsRate / 15 * 100) + '%';
+            
+            const pillarAssetBar = document.getElementById('pillarAssetBar');
+            if (pillarAssetBar) pillarAssetBar.style.width = (truth.breakdown.assetStrength / 15 * 100) + '%';
+            
+            // Pillar text (from Template Engine)
+            const pillarIncomeText = document.getElementById('pillarIncomeText');
+            if (pillarIncomeText) pillarIncomeText.textContent = template.pillarTexts.incomeCapacity;
+            
+            const pillarStructureText = document.getElementById('pillarStructureText');
+            if (pillarStructureText) pillarStructureText.textContent = template.pillarTexts.incomeStructure;
+            
+            const pillarSavingsText = document.getElementById('pillarSavingsText');
+            if (pillarSavingsText) pillarSavingsText.textContent = template.pillarTexts.savingsRate;
+            
+            const pillarAssetText = document.getElementById('pillarAssetText');
+            if (pillarAssetText) pillarAssetText.textContent = template.pillarTexts.assetStrength;
+            
+            // ===== SECTION 4: BOTTLENECK =====
+            const bottleneckTitle = document.getElementById('bottleneckTitle');
+            if (bottleneckTitle) bottleneckTitle.textContent = template.bottleneckTitle;
+            
+            const bottleneckDesc = document.getElementById('bottleneckDesc');
+            if (bottleneckDesc) bottleneckDesc.textContent = template.bottleneckFullDesc;
+            
+            const bottleneckTitleMobile = document.getElementById('bottleneckTitleMobile');
+            if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = template.bottleneckTitle;
+            
+            const bottleneckDescMobile = document.getElementById('bottleneckDescMobile');
+            if (bottleneckDescMobile) bottleneckDescMobile.textContent = template.bottleneckFullDesc;
+            
+            // ===== SECTION 5: AI NARRATIVES (NEW - from Claude API) =====
+            // Why This Is Happening
+            const whyEl = document.getElementById('whyThisIsHappening');
+            if (whyEl) {
+                whyEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.whyThisIsHappening}</p>`;
+            }
+            const whyElMobile = document.getElementById('whyThisIsHappeningMobile');
+            if (whyElMobile) {
+                whyElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.whyThisIsHappening}</p>`;
+            }
+            
+            // Hidden Pattern (NEW SECTION)
+            const hiddenPatternEl = document.getElementById('hiddenPattern');
+            if (hiddenPatternEl) {
+                hiddenPatternEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.hiddenPattern}</p>`;
+            }
+            const hiddenPatternElMobile = document.getElementById('hiddenPatternMobile');
+            if (hiddenPatternElMobile) {
+                hiddenPatternElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.hiddenPattern}</p>`;
+            }
+            
+            // If Nothing Changes
+            const ifEl = document.getElementById('ifNothingChanges');
+            if (ifEl) {
+                ifEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.ifNothingChanges}</p>`;
+            }
+            const ifElMobile = document.getElementById('ifNothingChangesMobile');
+            if (ifElMobile) {
+                ifElMobile.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.ifNothingChanges}</p>`;
+            }
+            
+            // Transition to Solution (for CTA section)
+            const transitionEl = document.getElementById('transitionToSolution');
+            if (transitionEl) {
+                transitionEl.innerHTML = `<p style="font-size: 14px; color: #444; line-height: 1.7;">${narratives.transitionToSolution}</p>`;
+            }
+            
+            // ===== SECTION 6: CTA =====
+            const ctaTitle = document.getElementById('ctaTitle');
+            if (ctaTitle) ctaTitle.textContent = template.finalCta.replace(' →', '');
+            
+            const ctaButtons = document.querySelectorAll('.results-cta-btn, .mobile-cta-btn');
+            ctaButtons.forEach(btn => {
+                btn.textContent = template.finalCta;
+            });
+            
+            // ===== SECTION 7: PROGRESS VISUALIZATION =====
+            const scoreMarker = document.getElementById('scoreMarker');
+            if (scoreMarker) {
+                const markerPos = (truth.wealthScore / 50) * 100;
+                scoreMarker.style.left = markerPos + '%';
+            }
+            
+            updateStageBoxHighlight(truth.wealthScore);
+            updateProgressSegments(truth.wealthScore);
+            
+            console.log('✅ Result page rendered with hybrid architecture:', {
+                score: truth.wealthScore,
+                stage: truth.stage,
+                leadTier: truth.leadTier,
+                architecture: result.meta.architecture
+            });
+        }
+        
+        // Helper function to get currency symbol
+        function getCurrencySymbol(currencyCode) {
+            const symbols = {
+                'USD': '$', 'EUR': '€', 'GBP': '£', 'SGD': 'S$', 'MYR': 'RM',
+                'AUD': 'A$', 'CAD': 'C$', 'JPY': '¥', 'CNY': '¥', 'HKD': 'HK$',
+                'INR': '₹', 'THB': '฿', 'IDR': 'Rp', 'PHP': '₱', 'VND': '₫'
+            };
+            return symbols[currencyCode] || currencyCode;
         }
         
         // Generate FULL 4-PAGE PREMIUM PDF and upload to Vercel Blob, return URL
