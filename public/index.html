@@ -4604,6 +4604,7 @@
         
         // Frontend fallback if API fails
         function generateFrontendFallback(input) {
+            // Calculate breakdown from window or defaults
             const breakdown = window.scoreBreakdown || {
                 incomeCapacity: 5,
                 incomeStructure: 4,
@@ -4611,9 +4612,52 @@
                 assetStrength: 5
             };
             const wealthScore = breakdown.incomeCapacity + breakdown.incomeStructure + breakdown.savingsRate + breakdown.assetStrength;
+            
+            // Get stage using frontend function
             const stage = getScoreLabel(wealthScore);
-            const urgencyScore = RuleEngine.getUrgencyScore(input.timeframe);
+            
+            // Calculate urgency from timeframe
+            const urgencyMap = {
+                '0-3 months': 4,
+                '3-6 months': 3,
+                'Within this year': 2,
+                'Just exploring': 1
+            };
+            const urgencyScore = urgencyMap[input.timeframe] || 2;
             const leadTier = (urgencyScore >= 4 && wealthScore >= 25) ? 'Hot' : (urgencyScore >= 3) ? 'Warm' : 'Cold';
+            
+            // Get stage template
+            const stageTemplates = {
+                'Survival Mode': {
+                    title: 'SURVIVAL MODE',
+                    description: "You're in survival mode, focused on covering immediate needs.",
+                    ctaText: 'ESCAPE SURVIVAL MODE →'
+                },
+                'Stability Trap': {
+                    title: 'STABILITY TRAP',
+                    description: "You're earning well, but your wealth isn't growing at the same rate.",
+                    ctaText: 'BREAK THE STABILITY TRAP →'
+                },
+                'Growth Phase': {
+                    title: 'GROWTH PHASE',
+                    description: "You've built a foundation, but you're not accelerating yet.",
+                    ctaText: 'ACCELERATE YOUR GROWTH →'
+                },
+                'Freedom Path': {
+                    title: 'FREEDOM PATH',
+                    description: "You're on track, but there's still untapped potential.",
+                    ctaText: 'UNLOCK YOUR FULL POTENTIAL →'
+                }
+            };
+            const stageTemplate = stageTemplates[stage] || stageTemplates['Stability Trap'];
+            
+            // Get pillar texts
+            const getPillarText = {
+                incomeCapacity: breakdown.incomeCapacity >= 8 ? 'You have strong earning power.' : breakdown.incomeCapacity >= 5 ? 'You have the potential to earn more.' : 'Your earning capacity needs attention.',
+                incomeStructure: breakdown.incomeStructure >= 8 ? 'You have diversified income sources.' : breakdown.incomeStructure >= 5 ? 'Your income structure is developing.' : 'Your income is still too dependent on active effort.',
+                savingsRate: breakdown.savingsRate >= 12 ? 'Excellent savings discipline.' : breakdown.savingsRate >= 7 ? "You're saving, but not enough to accelerate your freedom." : 'Your savings rate needs improvement.',
+                assetStrength: breakdown.assetStrength >= 12 ? 'Strong asset base established.' : breakdown.assetStrength >= 7 ? "You're building reserves." : "You haven't built enough financial reserves yet."
+            };
             
             return {
                 user: {
@@ -4647,18 +4691,15 @@
                         max: 15
                     }
                 },
-                template: TemplateEngine.generateTemplatePayload({
-                    stage: stage,
-                    timeframe: input.timeframe,
-                    leadTier: leadTier,
-                    bottleneckKey: 'savingsRate',
-                    bottleneckScore: breakdown.savingsRate,
-                    bottleneckMax: 15,
-                    incomeCapacityScore: breakdown.incomeCapacity,
-                    incomeStructureScore: breakdown.incomeStructure,
-                    savingsRateScore: breakdown.savingsRate,
-                    assetStrengthScore: breakdown.assetStrength
-                }),
+                template: {
+                    stageTitle: stageTemplate.title,
+                    stageDescription: stageTemplate.description,
+                    stageCta: stageTemplate.ctaText,
+                    bottleneckTitle: 'SAVINGS RATE (' + breakdown.savingsRate + '/15)',
+                    bottleneckFullDesc: "You're saving, but not enough to accelerate your financial freedom.",
+                    pillarTexts: getPillarText,
+                    finalCta: stageTemplate.ctaText
+                },
                 narratives: {
                     whyThisIsHappening: `${input.firstName}, you're in ${stage} because your financial structure hasn't caught up with your earning potential.`,
                     hiddenPattern: `Your savings rate is creating a ceiling on your wealth growth that you may not have noticed.`,
@@ -4677,76 +4718,92 @@
         function renderResultPageV3(result) {
             console.log('🎨 Rendering result page with hybrid data...');
             
-            const truth = result.scores;
-            const template = result.template;
-            const narratives = result.narratives;
-            const user = result.user;
+            const truth = result.scores || {};
+            const template = result.template || {};
+            const narratives = result.narratives || {};
+            const user = result.user || {};
+            
+            // Safely get breakdown with defaults
+            const breakdown = truth.breakdown || {
+                incomeCapacity: 5,
+                incomeStructure: 4,
+                savingsRate: 7,
+                assetStrength: 5
+            };
+            
+            // Safely get pillar texts with defaults
+            const pillarTexts = template.pillarTexts || {
+                incomeCapacity: 'Your earning capacity is developing.',
+                incomeStructure: 'Your income structure is developing.',
+                savingsRate: 'Your savings rate needs attention.',
+                assetStrength: 'Your asset base is building.'
+            };
             
             // ===== SECTION 1: SCORE HERO =====
             const scoreValueNew = document.getElementById('scoreValueNew');
-            if (scoreValueNew) scoreValueNew.textContent = truth.wealthScore;
+            if (scoreValueNew) scoreValueNew.textContent = truth.wealthScore || 21;
             
             const percentageDisplay = document.getElementById('percentageDisplay');
-            if (percentageDisplay) percentageDisplay.textContent = truth.percentage + '% of your financial freedom potential';
+            if (percentageDisplay) percentageDisplay.textContent = (truth.percentage || 42) + '% of your financial freedom potential';
             
             // ===== SECTION 2: STAGE CARD (Personalized with name) =====
             const userFirstNameDisplay = document.getElementById('userFirstNameDisplay');
-            if (userFirstNameDisplay) userFirstNameDisplay.textContent = user.firstName;
+            if (userFirstNameDisplay) userFirstNameDisplay.textContent = user.firstName || 'Friend';
             
             const stageNameDisplay = document.getElementById('stageNameDisplay');
-            if (stageNameDisplay) stageNameDisplay.textContent = template.stageTitle;
+            if (stageNameDisplay) stageNameDisplay.textContent = template.stageTitle || 'STABILITY TRAP';
             
             const stageDescDisplay = document.getElementById('stageDescDisplay');
-            if (stageDescDisplay) stageDescDisplay.textContent = template.stageDescription;
+            if (stageDescDisplay) stageDescDisplay.textContent = template.stageDescription || "You're earning well, but your wealth isn't growing at the same rate.";
             
             // ===== SECTION 3: PILLAR SCORES =====
             const pillarIncomeScore = document.getElementById('pillarIncomeScore');
-            if (pillarIncomeScore) pillarIncomeScore.textContent = truth.breakdown.incomeCapacity;
+            if (pillarIncomeScore) pillarIncomeScore.textContent = breakdown.incomeCapacity;
             
             const pillarStructureScore = document.getElementById('pillarStructureScore');
-            if (pillarStructureScore) pillarStructureScore.textContent = truth.breakdown.incomeStructure;
+            if (pillarStructureScore) pillarStructureScore.textContent = breakdown.incomeStructure;
             
             const pillarSavingsScore = document.getElementById('pillarSavingsScore');
-            if (pillarSavingsScore) pillarSavingsScore.textContent = truth.breakdown.savingsRate;
+            if (pillarSavingsScore) pillarSavingsScore.textContent = breakdown.savingsRate;
             
             const pillarAssetScore = document.getElementById('pillarAssetScore');
-            if (pillarAssetScore) pillarAssetScore.textContent = truth.breakdown.assetStrength;
+            if (pillarAssetScore) pillarAssetScore.textContent = breakdown.assetStrength;
             
             // Pillar progress bars
             const pillarIncomeBar = document.getElementById('pillarIncomeBar');
-            if (pillarIncomeBar) pillarIncomeBar.style.width = (truth.breakdown.incomeCapacity / 10 * 100) + '%';
+            if (pillarIncomeBar) pillarIncomeBar.style.width = (breakdown.incomeCapacity / 10 * 100) + '%';
             
             const pillarStructureBar = document.getElementById('pillarStructureBar');
-            if (pillarStructureBar) pillarStructureBar.style.width = (truth.breakdown.incomeStructure / 10 * 100) + '%';
+            if (pillarStructureBar) pillarStructureBar.style.width = (breakdown.incomeStructure / 10 * 100) + '%';
             
             const pillarSavingsBar = document.getElementById('pillarSavingsBar');
-            if (pillarSavingsBar) pillarSavingsBar.style.width = (truth.breakdown.savingsRate / 15 * 100) + '%';
+            if (pillarSavingsBar) pillarSavingsBar.style.width = (breakdown.savingsRate / 15 * 100) + '%';
             
             const pillarAssetBar = document.getElementById('pillarAssetBar');
-            if (pillarAssetBar) pillarAssetBar.style.width = (truth.breakdown.assetStrength / 15 * 100) + '%';
+            if (pillarAssetBar) pillarAssetBar.style.width = (breakdown.assetStrength / 15 * 100) + '%';
             
             // Pillar text (from Template Engine)
             const pillarIncomeText = document.getElementById('pillarIncomeText');
-            if (pillarIncomeText) pillarIncomeText.textContent = template.pillarTexts.incomeCapacity;
+            if (pillarIncomeText) pillarIncomeText.textContent = pillarTexts.incomeCapacity;
             
             const pillarStructureText = document.getElementById('pillarStructureText');
-            if (pillarStructureText) pillarStructureText.textContent = template.pillarTexts.incomeStructure;
+            if (pillarStructureText) pillarStructureText.textContent = pillarTexts.incomeStructure;
             
             const pillarSavingsText = document.getElementById('pillarSavingsText');
-            if (pillarSavingsText) pillarSavingsText.textContent = template.pillarTexts.savingsRate;
+            if (pillarSavingsText) pillarSavingsText.textContent = pillarTexts.savingsRate;
             
             const pillarAssetText = document.getElementById('pillarAssetText');
-            if (pillarAssetText) pillarAssetText.textContent = template.pillarTexts.assetStrength;
+            if (pillarAssetText) pillarAssetText.textContent = pillarTexts.assetStrength;
             
             // ===== SECTION 4: BOTTLENECK =====
             const bottleneckTitle = document.getElementById('bottleneckTitle');
-            if (bottleneckTitle) bottleneckTitle.textContent = template.bottleneckTitle;
+            if (bottleneckTitle) bottleneckTitle.textContent = template.bottleneckTitle || 'SAVINGS RATE (7/15)';
             
             const bottleneckDesc = document.getElementById('bottleneckDesc');
-            if (bottleneckDesc) bottleneckDesc.textContent = template.bottleneckFullDesc;
+            if (bottleneckDesc) bottleneckDesc.textContent = template.bottleneckFullDesc || "You're saving, but not enough to accelerate your financial freedom.";
             
             const bottleneckTitleMobile = document.getElementById('bottleneckTitleMobile');
-            if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = template.bottleneckTitle;
+            if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = template.bottleneckTitle || 'SAVINGS RATE (7/15)';
             
             const bottleneckDescMobile = document.getElementById('bottleneckDescMobile');
             if (bottleneckDescMobile) bottleneckDescMobile.textContent = template.bottleneckFullDesc;
@@ -7098,14 +7155,6 @@ June Yoon`;
             } catch (error) {
                 console.error('❌ Upload error:', error);
             }
-        }
-        
-        function getScoreLabel(score) {
-            if (score >= 85) return 'Elite Wealth Architect';
-            if (score >= 70) return 'Wealth Accelerator';
-            if (score >= 55) return 'Strategic Builder';
-            if (score >= 40) return 'Growth Foundation';
-            return 'Emerging Accumulator';
         }
         
         function scheduleCall() {
