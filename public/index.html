@@ -5701,29 +5701,101 @@ June Yoon | Wealth Architecture Strategist`;
         // ============================================
         
         // Currency conversion rates to USD (for internal calculation only)
+        // Rates approximate as of April 2025 - used ONLY for scoring fairness
+        // User never sees USD values - this is backend normalization only
         const FX_RATES = {
+            // Group 1: US/Standard
             USD: 1,
-            SGD: 0.74,
-            MYR: 0.21,
-            IDR: 0.000064,
-            THB: 0.027,
-            PHP: 0.018,
-            AUD: 0.66,
-            GBP: 1.27,
-            EUR: 1.09,
-            INR: 0.012,
-            HKD: 0.13,
-            CNY: 0.14,
-            JPY: 0.0067,
-            KRW: 0.00075,
-            VND: 0.00004,
-            NZD: 0.61,
-            CAD: 0.74,
-            CHF: 1.12
+            
+            // Group 2: Southeast Asia (ASEAN)
+            SGD: 0.74,      // Singapore Dollar
+            MYR: 0.21,      // Malaysian Ringgit
+            IDR: 0.000062,  // Indonesian Rupiah
+            THB: 0.028,     // Thai Baht
+            PHP: 0.017,     // Philippine Peso
+            VND: 0.000039,  // Vietnamese Dong
+            
+            // Group 3: Greater China
+            HKD: 0.128,     // Hong Kong Dollar
+            TWD: 0.031,     // Taiwan Dollar
+            CNY: 0.137,     // Chinese Yuan
+            
+            // Group 4: East Asia
+            JPY: 0.0065,    // Japanese Yen
+            KRW: 0.00072,   // Korean Won
+            
+            // Group 5: South Asia
+            INR: 0.012,     // Indian Rupee
+            PKR: 0.0035,    // Pakistani Rupee
+            BDT: 0.0083,    // Bangladeshi Taka
+            LKR: 0.003,     // Sri Lankan Rupee
+            NPR: 0.0074,    // Nepalese Rupee
+            
+            // Group 6: Oceania
+            AUD: 0.65,      // Australian Dollar
+            NZD: 0.59,      // New Zealand Dollar
+            
+            // Group 7: UK
+            GBP: 1.27,      // British Pound
+            
+            // Group 8: Eurozone
+            EUR: 1.09,      // Euro
+            
+            // Group 9: Switzerland
+            CHF: 1.14,      // Swiss Franc
+            
+            // Group 10: Gulf States (AED-pegged region)
+            AED: 0.27,      // UAE Dirham
+            SAR: 0.27,      // Saudi Riyal
+            QAR: 0.27,      // Qatari Riyal
+            
+            // Group 11: Canada
+            CAD: 0.73,      // Canadian Dollar
+            
+            // Group 12: High-value Gulf
+            KWD: 3.25,      // Kuwaiti Dinar (strongest currency)
+            BHD: 2.65,      // Bahraini Dinar
+            OMR: 2.60,      // Omani Rial
+            
+            // Group 13: South Africa
+            ZAR: 0.053,     // South African Rand
+            
+            // Group 14: Nigeria
+            NGN: 0.00063,   // Nigerian Naira
+            
+            // Group 15: Brazil
+            BRL: 0.19,      // Brazilian Real
+            
+            // Group 16: Mexico
+            MXN: 0.058,     // Mexican Peso
+            
+            // Group 17: Nordics
+            SEK: 0.093,     // Swedish Krona
+            NOK: 0.089,     // Norwegian Krone
+            DKK: 0.146,     // Danish Krone
+            
+            // Group 18: Eastern Europe
+            PLN: 0.25,      // Polish Zloty
+            CZK: 0.043,     // Czech Koruna
+            HUF: 0.0027,    // Hungarian Forint
+            RON: 0.22,      // Romanian Leu
+            RUB: 0.011,     // Russian Ruble
+            UAH: 0.024,     // Ukrainian Hryvnia
+            
+            // Group 19: Turkey
+            TRY: 0.029,     // Turkish Lira
+            
+            // Group 20: Israel
+            ILS: 0.27       // Israeli Shekel
         };
         
         function toUSD(amount, currency) {
-            return amount * (FX_RATES[currency] || 1);
+            const rate = FX_RATES[currency];
+            if (!rate) {
+                console.warn(`⚠️ Unknown currency: ${currency}, defaulting to 1:1`);
+                return amount;
+            }
+            return amount * rate;
         }
         
         // Component 1: Income Capacity (0-10 points)
@@ -5798,41 +5870,221 @@ June Yoon | Wealth Architecture Strategist`;
             return 15;
         }
         
-        // Get annual income from tier selection
+        // Get annual income from tier selection (handles ALL currency-specific tiers)
+        // Returns amount in LOCAL currency - will be converted to USD later
         function getAnnualIncomeFromTier(incomeTier, currency) {
-            // Map income tier to approximate annual income in local currency
+            // Currency-specific tier midpoints (in LOCAL currency)
             const tierMidpoints = {
-                '1': 75000,    // 50K-100K range
-                '2': 125000,   // 100K-150K range
-                '3': 200000,   // 150K-250K range
-                '4': 375000,   // 250K-500K range
-                '5': 750000,   // 500K+ range
+                // Group 1: US/Standard (USD)
                 'Under 50K': 35000,
                 '50-100K': 75000,
-                '100-150K': 125000,
-                '150-250K': 200000,
+                '100-250K': 175000,
+                '250-500K': 375000,
+                '500K+': 750000,
+                
+                // Group 2: Southeast Asia ASEAN (SGD, MYR, THB, PHP, BND)
+                'Under 100K': 70000,
+                '100-250K': 175000,
                 '250-500K': 375000,
                 '500K-1M': 750000,
-                '1M-2M': 1500000,
-                '2M-5M': 3500000,
-                '5M+': 7500000
+                '1M+': 1500000,
+                
+                // Group 3: Indonesia (IDR) - juta/million
+                'Under 100M': 70000000,
+                '100-300M': 200000000,
+                '300-750M': 525000000,
+                '750M-1.5B': 1125000000,
+                '1.5B+': 2000000000,
+                
+                // Group 4: Vietnam (VND) - triệu/billion
+                'Under 200M': 150000000,
+                '200-500M': 350000000,
+                '500M-1B': 750000000,
+                '1-3B': 2000000000,
+                '3B+': 4500000000,
+                
+                // Group 5: Japan (JPY) - 万 = 10K
+                'Under 5M': 3500000,
+                '5-10M': 7500000,
+                '10-25M': 17500000,
+                '25-50M': 37500000,
+                '50M+': 75000000,
+                
+                // Group 6: Korea (KRW) - 억 = 100M
+                'Under 50M': 35000000,
+                '50-100M': 75000000,
+                '100-250M': 175000000,
+                '250-500M': 375000000,
+                '500M+': 750000000,
+                
+                // Group 7: China (CNY) - 万 = 10K
+                'Under 300K': 200000,
+                '300-700K': 500000,
+                '700K-1.5M': 1100000,
+                '1.5-3M': 2250000,
+                '3M+': 4500000,
+                
+                // Group 8: Taiwan (TWD) - 萬 = 10K
+                'Under 400K': 300000,
+                '400-800K': 600000,
+                '800K-2M': 1400000,
+                '2-4M': 3000000,
+                '4M+': 6000000,
+                
+                // Group 9: India (INR) - Lakh/Crore
+                'Under 5L': 350000,     // 3.5 lakh
+                '5-15L': 1000000,       // 10 lakh
+                '15-50L': 3250000,      // 32.5 lakh
+                '50L-1Cr': 7500000,     // 75 lakh
+                '1Cr+': 15000000,       // 1.5 crore
+                
+                // Group 10: Bangladesh (BDT)
+                'Under 10L': 700000,    // 7 lakh
+                '10-25L': 1750000,      // 17.5 lakh
+                '25-75L': 5000000,      // 50 lakh
+                '75L-1.5Cr': 11250000,  // 1.125 crore
+                '1.5Cr+': 22500000,     // 2.25 crore
+                
+                // Group 11: Gulf AED-pegged (AED, SAR, QAR)
+                'Under 150K': 100000,
+                '150-300K': 225000,
+                '300-750K': 525000,
+                '750K-1.5M': 1125000,
+                '1.5M+': 2250000,
+                
+                // Group 12: High-value Gulf (KWD, BHD, OMR)
+                'Under 15K': 10000,
+                '15-30K': 22500,
+                '30-75K': 52500,
+                '75-150K': 112500,
+                '150K+': 225000,
+                
+                // Group 13: South Africa (ZAR)
+                'Under 500K': 350000,
+                '500K-1M': 750000,
+                '1-2.5M': 1750000,
+                '2.5-5M': 3750000,
+                '5M+': 7500000,
+                
+                // Group 14: Nigeria (NGN)
+                'Under 10M': 7000000,
+                '10-30M': 20000000,
+                '30-75M': 52500000,
+                '75-150M': 112500000,
+                '150M+': 225000000,
+                
+                // Group 15: Brazil (BRL)
+                // Uses 'Under 100K' - '1M+' (already defined above)
+                
+                // Group 16: Mexico (MXN)
+                // Uses 'Under 500K' - '5M+' (same as South Africa)
+                
+                // Group 17: Nordics (SEK, NOK, DKK)
+                // Uses 'Under 400K' - '4M+' (same as Taiwan)
+                
+                // Group 18: Eastern Europe (PLN, CZK, HUF, RON, RUB, UAH)
+                'Under 200K': 150000,
+                '200-500K': 350000,
+                '1-2M': 1500000,
+                '2M+': 3000000,
+                
+                // Group 19: Turkey (TRY)
+                // Uses 'Under 500K' - '6M+'
+                '1-3M': 2000000,
+                '3-6M': 4500000,
+                '6M+': 9000000,
+                
+                // Group 20: Israel (ILS)
+                // Uses 'Under 150K' - '1.5M+' (same as Gulf AED)
+                
+                // Legacy numeric tier support
+                '1': 75000,
+                '2': 125000,
+                '3': 200000,
+                '4': 375000,
+                '5': 750000
             };
-            return tierMidpoints[incomeTier] || 100000;
+            
+            // First try exact match
+            if (tierMidpoints[incomeTier]) {
+                return tierMidpoints[incomeTier];
+            }
+            
+            // Try to parse the tier string if not found
+            // Handle formats like "100-250K", "5-15L", "500M-1B"
+            const parsed = parseTierValue(incomeTier);
+            if (parsed) return parsed;
+            
+            // Default fallback based on currency
+            console.warn(`⚠️ Unknown income tier: ${incomeTier} for ${currency}, using default`);
+            return 100000; // Safe default
+        }
+        
+        // Parse tier value string to extract midpoint number
+        function parseTierValue(tier) {
+            if (!tier) return null;
+            
+            // Multipliers for suffixes
+            const multipliers = {
+                'K': 1000,
+                'L': 100000,      // Lakh
+                'Cr': 10000000,   // Crore
+                'M': 1000000,     // Million
+                'B': 1000000000   // Billion
+            };
+            
+            // Try to extract range like "100-250K" or "5-15L"
+            const rangeMatch = tier.match(/(\d+\.?\d*)\s*[-–]\s*(\d+\.?\d*)\s*([KLMBCr]+)?/i);
+            if (rangeMatch) {
+                const low = parseFloat(rangeMatch[1]);
+                const high = parseFloat(rangeMatch[2]);
+                const suffix = rangeMatch[3] || '';
+                const mult = multipliers[suffix.toUpperCase()] || multipliers[suffix] || 1;
+                return ((low + high) / 2) * mult;
+            }
+            
+            // Try single value like "Under 50K" or "500K+"
+            const singleMatch = tier.match(/(\d+\.?\d*)\s*([KLMBCr]+)?/i);
+            if (singleMatch) {
+                const value = parseFloat(singleMatch[1]);
+                const suffix = singleMatch[2] || '';
+                const mult = multipliers[suffix.toUpperCase()] || multipliers[suffix] || 1;
+                
+                // If "Under X", use 70% of X; if "X+", use 150% of X
+                if (tier.toLowerCase().includes('under')) {
+                    return value * mult * 0.7;
+                } else if (tier.includes('+')) {
+                    return value * mult * 1.5;
+                }
+                return value * mult;
+            }
+            
+            return null;
         }
         
         // Main wealth score calculator (NEW 50-point system)
+        // Currency-normalized, ratio-based for global fairness
         function calculateWealthScore(surplus, liquid, income, status, timeline, concerns) {
             // Get currency from page
             const currencySelect = document.getElementById('currency');
             const currency = currencySelect ? currencySelect.value : 'USD';
             
-            // Get annual income in local currency, then convert to USD
+            // Step 1: Get local currency values
             const annualIncomeLocal = getAnnualIncomeFromTier(income, currency);
-            const annualIncomeUSD = toUSD(annualIncomeLocal, currency);
-            const monthlySurplusUSD = toUSD(surplus, currency);
-            const totalAssetsUSD = toUSD(liquid, currency);
+            const monthlySurplusLocal = parseFloat(surplus) || 0;
+            const totalAssetsLocal = parseFloat(liquid) || 0;
             
-            // Calculate each component
+            // Step 2: Convert to USD for scoring
+            const annualIncomeUSD = toUSD(annualIncomeLocal, currency);
+            const monthlySurplusUSD = toUSD(monthlySurplusLocal, currency);
+            const totalAssetsUSD = toUSD(totalAssetsLocal, currency);
+            
+            // Step 3: Calculate RATIOS (currency-independent!)
+            const monthlyIncomeUSD = annualIncomeUSD / 12;
+            const savingsRateRatio = monthlyIncomeUSD > 0 ? (monthlySurplusUSD / monthlyIncomeUSD) : 0;
+            const assetRatio = annualIncomeUSD > 0 ? (totalAssetsUSD / annualIncomeUSD) : 0;
+            
+            // Step 4: Calculate each component score
             const incomeCapacity = scoreIncomeCapacity(annualIncomeUSD);
             const incomeStructure = scoreIncomeStructure(status);
             const savingsRate = scoreSavingsRate(monthlySurplusUSD, annualIncomeUSD);
@@ -5850,7 +6102,35 @@ June Yoon | Wealth Architecture Strategist`;
                 total: Math.min(total, 50)
             };
             
-            console.log('📊 Wealth Score Breakdown:', window.scoreBreakdown);
+            // Detailed debug logging
+            console.log('═══════════════════════════════════════════════');
+            console.log('💰 WEALTH SCORE CALCULATION (Currency-Normalized)');
+            console.log('═══════════════════════════════════════════════');
+            console.log('📍 Currency:', currency, '| FX Rate:', FX_RATES[currency] || 'unknown');
+            console.log('');
+            console.log('📥 RAW INPUTS (Local Currency):');
+            console.log(`   Income Tier: "${income}" → ${annualIncomeLocal.toLocaleString()} ${currency}/year`);
+            console.log(`   Monthly Surplus: ${monthlySurplusLocal.toLocaleString()} ${currency}`);
+            console.log(`   Total Assets: ${totalAssetsLocal.toLocaleString()} ${currency}`);
+            console.log('');
+            console.log('💵 USD CONVERSION (Internal Only):');
+            console.log(`   Annual Income: $${annualIncomeUSD.toLocaleString()} USD`);
+            console.log(`   Monthly Surplus: $${monthlySurplusUSD.toLocaleString()} USD`);
+            console.log(`   Total Assets: $${totalAssetsUSD.toLocaleString()} USD`);
+            console.log('');
+            console.log('📊 KEY RATIOS (Currency-Independent):');
+            console.log(`   Savings Rate: ${(savingsRateRatio * 100).toFixed(1)}% of income`);
+            console.log(`   Asset Ratio: ${assetRatio.toFixed(2)}x annual income`);
+            console.log('');
+            console.log('🎯 PILLAR SCORES:');
+            console.log(`   Income Capacity: ${incomeCapacity}/10 (based on $${annualIncomeUSD.toLocaleString()} USD)`);
+            console.log(`   Income Structure: ${incomeStructure}/10 (based on: ${status})`);
+            console.log(`   Savings Rate: ${savingsRate}/15 (${(savingsRateRatio * 100).toFixed(1)}% of income)`);
+            console.log(`   Asset Strength: ${assetStrength}/15 (${assetRatio.toFixed(2)}x annual income)`);
+            console.log('');
+            console.log('🏆 TOTAL WEALTH SCORE:', Math.round(Math.min(total, 50)), '/ 50');
+            console.log('🎭 STAGE:', getScoreLabel(Math.round(Math.min(total, 50))));
+            console.log('═══════════════════════════════════════════════');
             
             return Math.round(Math.min(total, 50));
         }
