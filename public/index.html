@@ -4498,41 +4498,58 @@
                 assetStrength: 0
             };
             
-            // Get primary bottleneck
-            const primaryBottleneck = getPrimaryBottleneck();
-            const bottleneckLabels = {
-                incomeCapacity: 'Income Capacity',
-                incomeStructure: 'Income Structure',
-                savingsRate: 'Savings Rate',
-                assetStrength: 'Asset Strength'
+            // ============================================
+            // USE RULE ENGINE FOR ALL TRUTH VALUES
+            // ============================================
+            const userInput = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                phone: phone,
+                country: getCountryName(country),
+                currency: currency,
+                incomeLevel: income,
+                monthlySurplus: surplus,
+                liquidAssets: liquid,
+                professionalStatus: status,
+                primaryConcern: concern,
+                timeframe: selectedTimeframe || 'Within this year'
             };
             
-            // Get wealth stage
-            const stage = getWealthStage(wealthScore);
+            // Generate truth payload from Rule Engine
+            const truthPayload = RuleEngine.generateTruthPayload(userInput, breakdown, wealthScore);
             
-            // Prepare data for Airtable (via Zapier) - COMPLETE 23-FIELD PAYLOAD
+            // Store for global access
+            window.truthPayload = truthPayload;
+            window.templatePayload = TemplateEngine.generateTemplatePayload(truthPayload);
+            
+            console.log('🎯 RULE ENGINE OUTPUT:', truthPayload);
+            console.log('📋 TEMPLATE ENGINE OUTPUT:', window.templatePayload);
+            
+            // Prepare data for Airtable (via Zapier) - COMPLETE 24-FIELD PAYLOAD
             const formData = {
-                'First Name': firstName,
-                'Last Name': lastName,
-                'Email': email,
-                'Phone': phone,
-                'Country': getCountryName(country),
-                'Currency': currency,
-                'Income Level': income,
-                'Monthly Surplus': surplus,
-                'Liquid Assets': liquid,
-                'Professional Status': status,
-                'Primary Concern': concern,
-                'Timeframe': selectedTimeframe || 'Within this year',
-                'Urgency Score': urgencyScore || 2,
-                'Wealth Score': wealthScore,
+                'First Name': truthPayload.firstName,
+                'Last Name': truthPayload.lastName,
+                'Email': truthPayload.email,
+                'Phone': truthPayload.phone,
+                'Country': truthPayload.country,
+                'Currency': truthPayload.currency,
+                'Income Level': truthPayload.incomeLevel,
+                'Monthly Surplus': truthPayload.monthlySurplus,
+                'Liquid Assets': truthPayload.liquidAssets,
+                'Professional Status': truthPayload.professionalStatus,
+                'Primary Concern': truthPayload.primaryConcern,
+                'Timeframe': truthPayload.timeframe,
+                'Urgency Score': truthPayload.urgencyScore,
+                'Wealth Score': truthPayload.wealthScore,
                 'Score Label': scoreLabel,
-                'Stage': stage,
-                'Income Capacity Score': breakdown.incomeCapacity,
-                'Income Structure Score': breakdown.incomeStructure,
-                'Savings Rate Score': breakdown.savingsRate,
-                'Asset Strength Score': breakdown.assetStrength,
-                'Primary Bottleneck': bottleneckLabels[primaryBottleneck] || 'Savings Rate',
+                'Stage': truthPayload.stage,
+                'Lead Tier': truthPayload.leadTier,
+                'Income Capacity Score': truthPayload.incomeCapacityScore,
+                'Income Structure Score': truthPayload.incomeStructureScore,
+                'Savings Rate Score': truthPayload.savingsRateScore,
+                'Asset Strength Score': truthPayload.assetStrengthScore,
+                'Primary Bottleneck': truthPayload.primaryBottleneck,
                 'PDF Report': pdfUrl || '',
                 'Created At': new Date().toISOString()
             };
@@ -4542,14 +4559,14 @@
             
             // Send to Zapier webhook
             sendToZapier(formData);
-            console.log('✅ Data sent to Zapier with all 23 fields');
+            console.log('✅ Data sent to Zapier with all 24 fields (including Lead Tier)');
             
             // Complete loading animation
             completeLoadingAnimation();
             
-            // Show report
+            // Show report with Rule Engine + Template Engine
             showStep(5);
-            generateAllContent(fullName, surplus, liquid, income, currency, status, concern, timeline);
+            generateAllContentV2(truthPayload, window.templatePayload);
             
             // Start testimonial rotation
             startTestimonialRotation();
@@ -5509,6 +5526,253 @@ June Yoon | Wealth Architecture Strategist`;
         // ============================================
         // STAGE-BASED PERSONALIZATION
         // ============================================
+        // ============================================
+        // MODULE 1: RULE ENGINE (SOURCE OF TRUTH)
+        // ============================================
+        
+        const RuleEngine = {
+            // 4A. Timeframe → Urgency Score Mapper
+            getUrgencyScore: function(timeframe) {
+                const map = {
+                    '0-3 months': 4,
+                    '3-6 months': 3,
+                    'Within this year': 2,
+                    'Just exploring': 1
+                };
+                return map[timeframe] || 2;
+            },
+            
+            // 4I. Lead Tier Classifier
+            getLeadTier: function(urgencyScore, wealthScore) {
+                if (urgencyScore >= 4 && wealthScore >= 25) return 'Hot';
+                if (urgencyScore >= 3) return 'Warm';
+                return 'Cold';
+            },
+            
+            // 4G. Stage Mapper (0-50 scale)
+            getStage: function(score) {
+                if (score <= 12) return 'Survival Mode';
+                if (score <= 25) return 'Stability Trap';
+                if (score <= 37) return 'Growth Phase';
+                return 'Freedom Path';
+            },
+            
+            // 4H. Bottleneck Detector
+            getBottleneck: function(breakdown) {
+                const entries = [
+                    { key: 'incomeCapacity', label: 'Income Capacity', score: breakdown.incomeCapacity, max: 10 },
+                    { key: 'incomeStructure', label: 'Income Structure', score: breakdown.incomeStructure, max: 10 },
+                    { key: 'savingsRate', label: 'Savings Rate', score: breakdown.savingsRate, max: 15 },
+                    { key: 'assetStrength', label: 'Asset Strength', score: breakdown.assetStrength, max: 15 }
+                ];
+                entries.forEach(e => e.percentage = e.score / e.max);
+                entries.sort((a, b) => a.percentage - b.percentage);
+                return entries[0];
+            },
+            
+            // Generate complete truth payload
+            generateTruthPayload: function(userInput, breakdown, wealthScore) {
+                const stage = this.getStage(wealthScore);
+                const urgencyScore = this.getUrgencyScore(userInput.timeframe);
+                const bottleneck = this.getBottleneck(breakdown);
+                const leadTier = this.getLeadTier(urgencyScore, wealthScore);
+                const percentage = Math.round((wealthScore / 50) * 100);
+                
+                return {
+                    // User info
+                    firstName: userInput.firstName,
+                    lastName: userInput.lastName,
+                    fullName: userInput.firstName + ' ' + userInput.lastName,
+                    email: userInput.email,
+                    phone: userInput.phone,
+                    country: userInput.country,
+                    currency: userInput.currency,
+                    
+                    // Financial inputs
+                    incomeLevel: userInput.incomeLevel,
+                    monthlySurplus: userInput.monthlySurplus,
+                    liquidAssets: userInput.liquidAssets,
+                    professionalStatus: userInput.professionalStatus,
+                    primaryConcern: userInput.primaryConcern,
+                    timeframe: userInput.timeframe,
+                    
+                    // Calculated scores
+                    wealthScore: wealthScore,
+                    percentage: percentage,
+                    stage: stage,
+                    urgencyScore: urgencyScore,
+                    leadTier: leadTier,
+                    
+                    // Breakdown
+                    incomeCapacityScore: breakdown.incomeCapacity,
+                    incomeStructureScore: breakdown.incomeStructure,
+                    savingsRateScore: breakdown.savingsRate,
+                    assetStrengthScore: breakdown.assetStrength,
+                    
+                    // Bottleneck
+                    primaryBottleneck: bottleneck.label,
+                    bottleneckKey: bottleneck.key,
+                    bottleneckScore: bottleneck.score,
+                    bottleneckMax: bottleneck.max
+                };
+            }
+        };
+        
+        // ============================================
+        // MODULE 2: TEMPLATE ENGINE (STRUCTURE + VARIANTS)
+        // ============================================
+        
+        const TemplateEngine = {
+            // Stage-based templates (FIXED - not AI generated)
+            stageTemplates: {
+                'Survival Mode': {
+                    title: 'SURVIVAL MODE',
+                    description: "You're in survival mode — focused on covering immediate needs.",
+                    ctaText: 'ESCAPE SURVIVAL MODE →',
+                    heroVariant: 'survival',
+                    urgencyLevel: 'critical'
+                },
+                'Stability Trap': {
+                    title: 'STABILITY TRAP',
+                    description: "You're earning well, but your wealth isn't growing at the same rate.",
+                    ctaText: 'BREAK THE STABILITY TRAP →',
+                    heroVariant: 'stability',
+                    urgencyLevel: 'high'
+                },
+                'Growth Phase': {
+                    title: 'GROWTH PHASE',
+                    description: "You've built a foundation — but you're not accelerating yet.",
+                    ctaText: 'ACCELERATE YOUR GROWTH →',
+                    heroVariant: 'growth',
+                    urgencyLevel: 'moderate'
+                },
+                'Freedom Path': {
+                    title: 'FREEDOM PATH',
+                    description: "You're on track — but there's still untapped potential.",
+                    ctaText: 'UNLOCK YOUR FULL POTENTIAL →',
+                    heroVariant: 'freedom',
+                    urgencyLevel: 'optimize'
+                }
+            },
+            
+            // Timeframe-based CTA variants
+            timeframeVariants: {
+                '0-3 months': {
+                    urgencyTitle: 'You want change NOW',
+                    ctaText: 'SECURE YOUR SPOT NOW →',
+                    ctaSubtext: 'Limited seats available this month',
+                    ctaStyle: 'aggressive'
+                },
+                '3-6 months': {
+                    urgencyTitle: 'You\'re ready to take action soon',
+                    ctaText: 'RESERVE YOUR SEAT →',
+                    ctaSubtext: 'Start your transformation',
+                    ctaStyle: 'moderate'
+                },
+                'Within this year': {
+                    urgencyTitle: 'You\'re planning ahead',
+                    ctaText: 'EXPLORE THE PROGRAM →',
+                    ctaSubtext: 'See how it fits your timeline',
+                    ctaStyle: 'soft'
+                },
+                'Just exploring': {
+                    urgencyTitle: 'You\'re doing your research',
+                    ctaText: 'LEARN MORE →',
+                    ctaSubtext: 'No commitment required',
+                    ctaStyle: 'exploratory'
+                }
+            },
+            
+            // Bottleneck-specific content
+            bottleneckContent: {
+                'incomeCapacity': {
+                    title: 'INCOME CAPACITY',
+                    shortDesc: 'Your earning potential needs attention',
+                    fullDesc: 'You have the potential to earn more, but it\'s not fully optimized yet.',
+                    opportunity: 'Increase your earning power through skills, positioning, or career moves.'
+                },
+                'incomeStructure': {
+                    title: 'INCOME STRUCTURE',
+                    shortDesc: 'Your income depends too much on your time',
+                    fullDesc: 'Your income is still dependent on active effort — you\'re trading hours for dollars.',
+                    opportunity: 'Build passive income streams and diversify your revenue sources.'
+                },
+                'savingsRate': {
+                    title: 'SAVINGS RATE',
+                    shortDesc: 'You\'re not saving enough to accelerate',
+                    fullDesc: 'You\'re saving, but not enough to accelerate your financial freedom.',
+                    opportunity: 'Optimize your expenses and increase your savings rate to 20%+ of income.'
+                },
+                'assetStrength': {
+                    title: 'ASSET STRENGTH',
+                    shortDesc: 'Your financial reserves need building',
+                    fullDesc: 'You haven\'t built strong enough financial reserves or productive assets yet.',
+                    opportunity: 'Focus on building 6-12 months of expenses in liquid reserves, then invest.'
+                }
+            },
+            
+            // Pillar score interpretations
+            pillarTexts: {
+                incomeCapacity: function(score) {
+                    if (score >= 8) return 'You have strong earning power.';
+                    if (score >= 5) return 'You have the potential to earn more.';
+                    return 'Your earning capacity needs attention.';
+                },
+                incomeStructure: function(score) {
+                    if (score >= 8) return 'You have diversified income sources.';
+                    if (score >= 5) return 'Your income structure is developing.';
+                    return 'Your income is still too dependent on active effort.';
+                },
+                savingsRate: function(score) {
+                    if (score >= 12) return 'Excellent savings discipline.';
+                    if (score >= 7) return 'You\'re saving, but not enough to accelerate your freedom.';
+                    return 'Your savings rate needs improvement.';
+                },
+                assetStrength: function(score) {
+                    if (score >= 12) return 'Strong asset base established.';
+                    if (score >= 7) return 'You\'re building reserves.';
+                    return 'You haven\'t built enough financial reserves yet.';
+                }
+            },
+            
+            // Generate template payload
+            generateTemplatePayload: function(truthPayload) {
+                const stageTemplate = this.stageTemplates[truthPayload.stage] || this.stageTemplates['Stability Trap'];
+                const timeframeVariant = this.timeframeVariants[truthPayload.timeframe] || this.timeframeVariants['Within this year'];
+                const bottleneckTemplate = this.bottleneckContent[truthPayload.bottleneckKey] || this.bottleneckContent['savingsRate'];
+                
+                return {
+                    // Stage-based
+                    stageTitle: stageTemplate.title,
+                    stageDescription: stageTemplate.description,
+                    stageCta: stageTemplate.ctaText,
+                    heroVariant: stageTemplate.heroVariant,
+                    
+                    // Timeframe-based
+                    urgencyTitle: timeframeVariant.urgencyTitle,
+                    timeframeCta: timeframeVariant.ctaText,
+                    ctaSubtext: timeframeVariant.ctaSubtext,
+                    ctaStyle: timeframeVariant.ctaStyle,
+                    
+                    // Bottleneck-based
+                    bottleneckTitle: bottleneckTemplate.title + ' (' + truthPayload.bottleneckScore + '/' + truthPayload.bottleneckMax + ')',
+                    bottleneckShortDesc: bottleneckTemplate.shortDesc,
+                    bottleneckFullDesc: bottleneckTemplate.fullDesc,
+                    bottleneckOpportunity: bottleneckTemplate.opportunity,
+                    
+                    // Pillar texts
+                    incomeCapacityText: this.pillarTexts.incomeCapacity(truthPayload.incomeCapacityScore),
+                    incomeStructureText: this.pillarTexts.incomeStructure(truthPayload.incomeStructureScore),
+                    savingsRateText: this.pillarTexts.savingsRate(truthPayload.savingsRateScore),
+                    assetStrengthText: this.pillarTexts.assetStrength(truthPayload.assetStrengthScore),
+                    
+                    // Final CTA selection (timeframe takes priority for Hot leads)
+                    finalCta: truthPayload.leadTier === 'Hot' ? timeframeVariant.ctaText : stageTemplate.ctaText
+                };
+            }
+        };
+        
+        // Stage-based AI content prompts (structure only - AI fills the personalization)
         const stageContent = {
             'Survival Mode': {
                 whyThisIsHappening: {
@@ -5634,6 +5898,131 @@ June Yoon | Wealth Architecture Strategist`;
             }
         }
         
+        // ============================================
+        // MODULE 8: UI RENDERING (generateAllContentV2)
+        // Uses Rule Engine (truth) + Template Engine (structure)
+        // ============================================
+        
+        function generateAllContentV2(truth, template) {
+            console.log('🎨 UI RENDERING with Rule Engine + Template Engine');
+            
+            const symbol = CURRENCY_SYMBOLS[truth.currency] || truth.currency;
+            
+            // Store for PDF
+            reportData = { 
+                name: truth.fullName, 
+                surplus: truth.monthlySurplus, 
+                liquid: truth.liquidAssets, 
+                income: truth.incomeLevel, 
+                currency: truth.currency, 
+                symbol: symbol, 
+                status: truth.professionalStatus, 
+                concern: truth.primaryConcern, 
+                timeline: truth.timeframe, 
+                wealthScore: truth.wealthScore, 
+                country: truth.country 
+            };
+            
+            // ===== SECTION 1: SCORE HERO =====
+            const scoreValueNew = document.getElementById('scoreValueNew');
+            if (scoreValueNew) scoreValueNew.textContent = truth.wealthScore;
+            
+            const percentageDisplay = document.getElementById('percentageDisplay');
+            if (percentageDisplay) percentageDisplay.textContent = truth.percentage + '% of your financial freedom potential';
+            
+            // ===== SECTION 2: STAGE CARD =====
+            const stageNameDisplay = document.getElementById('stageNameDisplay');
+            if (stageNameDisplay) stageNameDisplay.textContent = template.stageTitle;
+            
+            const stageDescDisplay = document.getElementById('stageDescDisplay');
+            if (stageDescDisplay) stageDescDisplay.textContent = template.stageDescription;
+            
+            // ===== SECTION 3: PILLAR SCORES =====
+            const pillarIncomeScore = document.getElementById('pillarIncomeScore');
+            if (pillarIncomeScore) pillarIncomeScore.textContent = truth.incomeCapacityScore;
+            
+            const pillarStructureScore = document.getElementById('pillarStructureScore');
+            if (pillarStructureScore) pillarStructureScore.textContent = truth.incomeStructureScore;
+            
+            const pillarSavingsScore = document.getElementById('pillarSavingsScore');
+            if (pillarSavingsScore) pillarSavingsScore.textContent = truth.savingsRateScore;
+            
+            const pillarAssetScore = document.getElementById('pillarAssetScore');
+            if (pillarAssetScore) pillarAssetScore.textContent = truth.assetStrengthScore;
+            
+            // Pillar progress bars
+            const pillarIncomeBar = document.getElementById('pillarIncomeBar');
+            if (pillarIncomeBar) pillarIncomeBar.style.width = (truth.incomeCapacityScore / 10 * 100) + '%';
+            
+            const pillarStructureBar = document.getElementById('pillarStructureBar');
+            if (pillarStructureBar) pillarStructureBar.style.width = (truth.incomeStructureScore / 10 * 100) + '%';
+            
+            const pillarSavingsBar = document.getElementById('pillarSavingsBar');
+            if (pillarSavingsBar) pillarSavingsBar.style.width = (truth.savingsRateScore / 15 * 100) + '%';
+            
+            const pillarAssetBar = document.getElementById('pillarAssetBar');
+            if (pillarAssetBar) pillarAssetBar.style.width = (truth.assetStrengthScore / 15 * 100) + '%';
+            
+            // Pillar text (from Template Engine)
+            const pillarIncomeText = document.getElementById('pillarIncomeText');
+            if (pillarIncomeText) pillarIncomeText.textContent = template.incomeCapacityText;
+            
+            const pillarStructureText = document.getElementById('pillarStructureText');
+            if (pillarStructureText) pillarStructureText.textContent = template.incomeStructureText;
+            
+            const pillarSavingsText = document.getElementById('pillarSavingsText');
+            if (pillarSavingsText) pillarSavingsText.textContent = template.savingsRateText;
+            
+            const pillarAssetText = document.getElementById('pillarAssetText');
+            if (pillarAssetText) pillarAssetText.textContent = template.assetStrengthText;
+            
+            // ===== SECTION 4: BOTTLENECK (from Template Engine) =====
+            const bottleneckTitle = document.getElementById('bottleneckTitle');
+            if (bottleneckTitle) bottleneckTitle.textContent = template.bottleneckTitle;
+            
+            const bottleneckDesc = document.getElementById('bottleneckDesc');
+            if (bottleneckDesc) bottleneckDesc.textContent = template.bottleneckFullDesc;
+            
+            const bottleneckTitleMobile = document.getElementById('bottleneckTitleMobile');
+            if (bottleneckTitleMobile) bottleneckTitleMobile.textContent = template.bottleneckTitle;
+            
+            const bottleneckDescMobile = document.getElementById('bottleneckDescMobile');
+            if (bottleneckDescMobile) bottleneckDescMobile.textContent = template.bottleneckFullDesc;
+            
+            // ===== SECTION 5: CTA (from Template Engine based on Lead Tier) =====
+            const ctaTitle = document.getElementById('ctaTitle');
+            if (ctaTitle) ctaTitle.textContent = template.finalCta.replace(' →', '');
+            
+            // Update all CTA buttons based on Lead Tier
+            const ctaButtons = document.querySelectorAll('.results-cta-btn, .mobile-cta-btn');
+            ctaButtons.forEach(btn => {
+                btn.textContent = template.finalCta;
+            });
+            
+            // ===== SECTION 6: STAGE-BASED CONTENT (Template + AI Layer) =====
+            updateStageBasedContent(truth.stage);
+            
+            // ===== SECTION 7: PROGRESS VISUALIZATION =====
+            const scoreMarker = document.getElementById('scoreMarker');
+            if (scoreMarker) {
+                const markerPos = (truth.wealthScore / 50) * 100;
+                scoreMarker.style.left = markerPos + '%';
+            }
+            
+            updateStageBoxHighlight(truth.wealthScore);
+            updateProgressSegments(truth.wealthScore);
+            
+            // ===== LOG RENDERING COMPLETE =====
+            console.log('✅ UI RENDERING COMPLETE:', {
+                score: truth.wealthScore,
+                stage: truth.stage,
+                leadTier: truth.leadTier,
+                bottleneck: truth.primaryBottleneck,
+                cta: template.finalCta
+            });
+        }
+        
+        // Keep old function for backwards compatibility
         function generateAllContent(name, surplus, liquid, income, currency, status, concern, timeline) {
             const symbol = CURRENCY_SYMBOLS[currency] || currency;
             const annualSurplus = surplus * 12;
