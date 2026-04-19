@@ -2747,6 +2747,10 @@
                     <p style="font-size: 14px; color: #666; margin-top: 16px; line-height: 1.7; max-width: 280px; margin-left: auto; margin-right: auto;">
                         This score reflects not just your finances, but <span style="color: #ff8120; font-weight: 600;">how you think about money</span>.
                     </p>
+                    <!-- MICRO-PERSONALIZATION: Top Line -->
+                    <p id="microTopLine" style="font-size: 15px; color: #333; margin-top: 20px; line-height: 1.7; max-width: 320px; margin-left: auto; margin-right: auto; font-weight: 500; padding: 16px; background: #fafafa; border-radius: 10px; border-left: 3px solid #ff8120;">
+                        <!-- Populated by JS -->
+                    </p>
                 </div>
                 
                 <!-- Right: Current Stage -->
@@ -2860,6 +2864,13 @@
                     </div>
                     <p id="pillarAssetText" style="font-size: 13px; color: #666; margin-top: 14px; line-height: 1.5;">You haven't built enough financial reserves yet.</p>
                 </div>
+            </div>
+            
+            <!-- MICRO-PERSONALIZATION: Pillar Contrast Line -->
+            <div style="margin-bottom: 30px; padding: 20px; background: linear-gradient(135deg, #fefce8 0%, #fff 100%); border: 1px solid #fef08a; border-radius: 12px;">
+                <p id="microPillarContrast" style="font-size: 15px; color: #713f12; line-height: 1.7; margin: 0; text-align: center; font-weight: 500;">
+                    <!-- Populated by JS -->
+                </p>
             </div>
             
             <!-- SECTION 3: AI INSIGHT CARDS (3 columns) - DESKTOP -->
@@ -3065,6 +3076,13 @@
             </div>
             
             <!-- SECTION 4 MOBILE: MMI Card Only (appears after accordions) -->
+            <!-- MOBILE: Timeframe Bridge -->
+            <div class="mobile-accordions-section" style="margin-bottom: 16px; padding: 12px 16px; background: #fafafa; border-radius: 10px; text-align: center;">
+                <p id="microTimeframeBridgeMobile" style="font-size: 14px; color: #555; line-height: 1.5; margin: 0; font-weight: 500;">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
+            
             <div class="mobile-accordions-section" style="margin-bottom: 20px;">
                 <div style="background: #fff; border: 1px solid #e8e8e8; border-radius: 16px; padding: 20px;">
                     <div style="display: flex; gap: 16px; align-items: center; margin-bottom: 16px;">
@@ -3082,10 +3100,21 @@
                         <span>|</span>
                         <span>Limited Seats Available</span>
                     </div>
+                    <!-- MOBILE: CTA Reassurance -->
+                    <p id="microCtaReassuranceMobile" style="font-size: 11px; color: #666; margin-top: 12px; text-align: center; font-style: italic;">
+                        <!-- Populated by JS -->
+                    </p>
                 </div>
             </div>
             
             <!-- SECTION 5: PRIMARY CTA (Desktop - hidden on mobile since mobile has MMI card above) -->
+            <!-- MICRO-PERSONALIZATION: Timeframe Bridge -->
+            <div class="desktop-cards-section" style="margin-bottom: 20px; padding: 16px 24px; background: #fafafa; border-radius: 10px; text-align: center;">
+                <p id="microTimeframeBridge" style="font-size: 15px; color: #555; line-height: 1.6; margin: 0; font-weight: 500;">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
+            
             <div class="desktop-cards-section cta-section-desktop" style="background: linear-gradient(135deg, #fff5f0 0%, #fff 100%); border: 2px solid rgba(255, 129, 32, 0.3); border-radius: 16px; padding: 30px; margin-bottom: 30px;">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: center;">
                     <!-- Left: CTA -->
@@ -3107,6 +3136,10 @@
                             <span>|</span>
                             <span>Limited Seats Available</span>
                         </div>
+                        <!-- MICRO-PERSONALIZATION: CTA Reassurance -->
+                        <p id="microCtaReassurance" style="font-size: 12px; color: #666; margin-top: 14px; text-align: center; font-style: italic;">
+                            <!-- Populated by JS -->
+                        </p>
                     </div>
                     
                     <!-- Right: Rotating Testimonial -->
@@ -4794,6 +4827,7 @@
                 savingsRateScore: apiResult.scores.breakdown.savingsRate,
                 assetStrengthScore: apiResult.scores.breakdown.assetStrength,
                 primaryBottleneck: apiResult.scores.bottleneck.label,
+                timeframe: apiResult.inputs?.timeframe || 'Within this year',
                 whyThisIsHappening: apiResult.narratives.whyThisIsHappening,
                 hiddenPattern: apiResult.narratives.hiddenPattern,
                 ifNothingChanges: apiResult.narratives.ifNothingChanges,
@@ -4972,31 +5006,277 @@
         }
         
         // Rich stage-specific narratives for fallback
+        // ============================================
+        // MICRO-PERSONALIZATION SYSTEM
+        // ============================================
+        
+        const MICRO_PERSONALIZATION = {
+            topLine: {
+                "Growth Phase|Income Structure": "{firstName}, you're making progress, but your results are still tied to effort.",
+                "Growth Phase|Asset Strength": "{firstName}, your growth is real, but your financial foundation is still too thin.",
+                "Growth Phase|Savings Rate": "{firstName}, you're earning well, but too little is turning into real momentum.",
+                "Growth Phase|Income Capacity": "{firstName}, your structure has room to grow, but your income model is still too limited.",
+                "Stability Trap|Income Structure": "{firstName}, you've built income, but not yet enough freedom.",
+                "Stability Trap|Asset Strength": "{firstName}, you've created stability, but not yet enough resilience.",
+                "Stability Trap|Savings Rate": "{firstName}, you're earning, but too little is being retained to accelerate wealth.",
+                "Stability Trap|Income Capacity": "{firstName}, your current model is supporting stability, but not long-term expansion.",
+                "Survival Mode|Income Structure": "{firstName}, right now your income depends too heavily on direct effort.",
+                "Survival Mode|Asset Strength": "{firstName}, your current position is being limited by a lack of reserves and support.",
+                "Survival Mode|Savings Rate": "{firstName}, your cash flow is working hard just to keep up.",
+                "Survival Mode|Income Capacity": "{firstName}, your current earning model is too narrow for the security you need.",
+                "Freedom Path|Income Structure": "{firstName}, you're moving well, but your structure still has room to become more scalable.",
+                "Freedom Path|Asset Strength": "{firstName}, you're building well, but your financial base can still be strengthened.",
+                "Freedom Path|Savings Rate": "{firstName}, you have momentum, but retaining more will deepen your freedom.",
+                "Freedom Path|Income Capacity": "{firstName}, your trajectory is strong, but your earning model can still expand."
+            },
+            pillarContrast: {
+                "Income Capacity|Income Structure": "You have strong earning power, but your income model has not yet caught up.",
+                "Income Capacity|Savings Rate": "Your ability to earn is stronger than your ability to convert income into momentum.",
+                "Income Capacity|Asset Strength": "You can generate income, but your financial base is not yet keeping pace.",
+                "Savings Rate|Asset Strength": "You are doing well at retaining money, but not yet turning it into a stronger financial base.",
+                "Savings Rate|Income Structure": "You have discipline in saving, but the income model itself is still limiting growth.",
+                "Savings Rate|Income Capacity": "You manage money carefully, but your income ceiling may still be too low.",
+                "Asset Strength|Income Structure": "You've built some reserves, but your income still relies too much on active effort.",
+                "Asset Strength|Savings Rate": "Your base is improving, but your current savings pace may not be enough to accelerate freedom.",
+                "Asset Strength|Income Capacity": "Your foundation is stronger than your earning model is allowing for.",
+                "Income Structure|Savings Rate": "Your income model is improving, but too little is being retained for long-term growth.",
+                "Income Structure|Asset Strength": "Your structure is developing, but your reserves are not yet strong enough to support it.",
+                "Income Structure|Income Capacity": "Your structure is evolving, but your earning power still has room to expand."
+            },
+            bottleneckLine: {
+                "Income Structure": "Right now, income still relies too heavily on your direct involvement.",
+                "Savings Rate": "Right now, too little of what you earn is being retained for long-term growth.",
+                "Asset Strength": "Right now, your reserves and assets are not yet strong enough to create real stability.",
+                "Income Capacity": "Right now, your current model may be too small for the freedom you want to build."
+            },
+            timeframeBridge: {
+                "0-3 months": "Because you want change now, this is the point where delay becomes expensive.",
+                "3-6 months": "Because you're ready to move soon, clarity matters more than waiting.",
+                "Within this year": "Because your goal is within this year, structure matters more than intention alone.",
+                "Just exploring": "Because you're still exploring, the next best step is to see what is actually possible."
+            },
+            ctaReassurance: {
+                "Growth Phase|Income Structure": "Designed for people in the Growth Phase who are ready to build leverage.",
+                "Growth Phase|Savings Rate": "A strong next step for disciplined earners who want faster momentum.",
+                "Growth Phase|Asset Strength": "Especially relevant for people building momentum without a strong enough base.",
+                "Growth Phase|Income Capacity": "Useful for people ready to expand beyond their current earning model.",
+                "Stability Trap|Income Structure": "Especially relevant for high-effort earners who want more freedom.",
+                "Stability Trap|Savings Rate": "Helpful for those who earn consistently but are not yet building momentum.",
+                "Stability Trap|Asset Strength": "A practical next step for people who want more security and less fragility.",
+                "Stability Trap|Income Capacity": "Designed for people who want to move beyond stability into real growth.",
+                "Survival Mode|Income Structure": "A strong next step for people who need a more reliable path forward.",
+                "Survival Mode|Savings Rate": "Helpful for people who need to strengthen financial breathing room first.",
+                "Survival Mode|Asset Strength": "Designed for those who need to build stronger financial support underneath them.",
+                "Survival Mode|Income Capacity": "Useful for those who need a broader earning foundation.",
+                "Freedom Path|Income Structure": "Relevant for people who want to turn momentum into true leverage.",
+                "Freedom Path|Savings Rate": "Helpful for those ready to deepen long-term wealth retention.",
+                "Freedom Path|Asset Strength": "Designed for people refining their path toward lasting independence.",
+                "Freedom Path|Income Capacity": "Useful for those expanding a strong base into a bigger wealth engine."
+            }
+        };
+        
+        const MICRO_FALLBACKS = {
+            topLine: "{firstName}, your current pattern is limiting how quickly your wealth can grow.",
+            pillarContrast: "Your strongest area is being limited by your weaker one.",
+            bottleneckLine: "This is the area most likely slowing your financial progress.",
+            timeframeBridge: "The next step is to understand what needs to change structurally.",
+            ctaReassurance: "A practical next step for people who want to change their financial pattern."
+        };
+        
+        const CTA_MAP = {
+            "0-3 months": {
+                text: "ENTER MILLIONAIRE MIND INTENSIVE →",
+                support: "Limited seats available for upcoming sessions",
+                urgency: "high"
+            },
+            "3-6 months": {
+                text: "EXPLORE THE NEXT STEP →",
+                support: "See available sessions and options",
+                urgency: "medium"
+            },
+            "Within this year": {
+                text: "SEE HOW TO MOVE FASTER →",
+                support: "Start building your financial structure now",
+                urgency: "medium"
+            },
+            "Just exploring": {
+                text: "DISCOVER WHAT'S POSSIBLE →",
+                support: "Learn how others are changing their financial direction",
+                urgency: "low"
+            }
+        };
+        
+        const TESTIMONIAL_MAP = {
+            "0-3 months": [
+                { text: "This event changed how I think about money and what I'm capable of building.", name: "Sandra Kiers" },
+                { text: "I stopped overthinking and finally took action after this experience.", name: "Michael Tan" }
+            ],
+            "3-6 months": [
+                { text: "It gave me clarity on what I needed to change and how to move forward.", name: "Rachel Lim" },
+                { text: "Practical, structured, and very relevant to where I am.", name: "Thomas Orths" }
+            ],
+            "Within this year": [
+                { text: "I now understand how wealth actually works and what I was missing.", name: "Daniel Wong" },
+                { text: "It helped me connect the dots between effort and real results.", name: "Paul Corcoran" }
+            ],
+            "Just exploring": [
+                { text: "It shifted my perspective on money in a way I didn't expect.", name: "Alicia Chen" },
+                { text: "Simple ideas, but very powerful once you see them clearly.", name: "Yusuf Kemal Çiftçi" }
+            ]
+        };
+        
+        function replaceVars(template, vars) {
+            return template.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");
+        }
+        
+        function getMappedLine(sectionMap, key, fallback, vars = {}) {
+            const template = sectionMap[key] || fallback;
+            return replaceVars(template, vars);
+        }
+        
+        function normalizeKey(value) {
+            return String(value || "").trim();
+        }
+        
+        function getStrongestPillar(breakdown) {
+            const pillars = {
+                'Income Capacity': breakdown.incomeCapacity / 10,
+                'Income Structure': breakdown.incomeStructure / 10,
+                'Savings Rate': breakdown.savingsRate / 15,
+                'Asset Strength': breakdown.assetStrength / 15
+            };
+            return Object.entries(pillars).sort((a, b) => b[1] - a[1])[0][0];
+        }
+        
+        function getWeakestPillar(breakdown) {
+            const pillars = {
+                'Income Capacity': breakdown.incomeCapacity / 10,
+                'Income Structure': breakdown.incomeStructure / 10,
+                'Savings Rate': breakdown.savingsRate / 15,
+                'Asset Strength': breakdown.assetStrength / 15
+            };
+            return Object.entries(pillars).sort((a, b) => a[1] - b[1])[0][0];
+        }
+        
+        function pickRandom(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        
+        function getCTA(timeframe) {
+            return CTA_MAP[timeframe] || CTA_MAP["Just exploring"];
+        }
+        
+        function getTestimonial(timeframe) {
+            const list = TESTIMONIAL_MAP[timeframe] || TESTIMONIAL_MAP["Just exploring"];
+            return pickRandom(list);
+        }
+        
+        function buildMicroPersonalization(data) {
+            const stage = normalizeKey(data.stage);
+            const bottleneck = normalizeKey(data.primaryBottleneck);
+            const timeframe = normalizeKey(data.timeframe);
+            const strongestPillar = data.strongestPillar || getStrongestPillar(data.breakdown || {});
+            const weakestPillar = data.weakestPillar || getWeakestPillar(data.breakdown || {});
+            
+            const stageBottleneckKey = `${stage}|${bottleneck}`;
+            const pillarKey = `${strongestPillar}|${weakestPillar}`;
+            
+            return {
+                topLine: getMappedLine(
+                    MICRO_PERSONALIZATION.topLine,
+                    stageBottleneckKey,
+                    MICRO_FALLBACKS.topLine,
+                    { firstName: data.firstName }
+                ),
+                pillarContrast: getMappedLine(
+                    MICRO_PERSONALIZATION.pillarContrast,
+                    pillarKey,
+                    MICRO_FALLBACKS.pillarContrast
+                ),
+                bottleneckLine: getMappedLine(
+                    MICRO_PERSONALIZATION.bottleneckLine,
+                    bottleneck,
+                    MICRO_FALLBACKS.bottleneckLine
+                ),
+                timeframeBridge: getMappedLine(
+                    MICRO_PERSONALIZATION.timeframeBridge,
+                    timeframe,
+                    MICRO_FALLBACKS.timeframeBridge
+                ),
+                ctaReassurance: getMappedLine(
+                    MICRO_PERSONALIZATION.ctaReassurance,
+                    stageBottleneckKey,
+                    MICRO_FALLBACKS.ctaReassurance
+                )
+            };
+        }
+        
+        function buildReportViewModel(data) {
+            const micro = buildMicroPersonalization(data);
+            const cta = getCTA(data.timeframe);
+            const testimonial = getTestimonial(data.timeframe);
+            
+            return {
+                firstName: data.firstName,
+                wealthScore: data.wealthScore,
+                stage: data.stage,
+                
+                // Pillars
+                incomeCapacityScore: data.breakdown?.incomeCapacity,
+                incomeStructureScore: data.breakdown?.incomeStructure,
+                savingsRateScore: data.breakdown?.savingsRate,
+                assetStrengthScore: data.breakdown?.assetStrength,
+                
+                // Bottleneck
+                primaryBottleneck: data.primaryBottleneck,
+                
+                // Micro personalization
+                topLine: micro.topLine,
+                pillarContrast: micro.pillarContrast,
+                bottleneckLine: micro.bottleneckLine,
+                timeframeBridge: micro.timeframeBridge,
+                ctaReassurance: micro.ctaReassurance,
+                
+                // CTA
+                ctaText: cta.text,
+                ctaSupport: cta.support,
+                ctaUrgency: cta.urgency,
+                
+                // Testimonial
+                testimonialText: testimonial.text,
+                testimonialName: testimonial.name
+            };
+        }
+        
+        // ============================================
+        // STAGE NARRATIVES (Balanced Harv + McKinsey)
+        // ============================================
+        
         function getStageNarratives(stage, firstName, bottleneck, timeframe) {
             const narratives = {
                 'Survival Mode': {
                     whyThisIsHappening: `${firstName}, your current financial position reflects a common pattern. When income barely covers expenses, most decisions become reactive rather than strategic. This isn't about capability - it's about the structure you're operating within. The challenge at this stage is that financial stress creates a cycle: limited resources lead to short-term thinking, which limits the ability to build long-term wealth. What's important to recognize is that this pattern can be changed once you understand how your financial blueprint - the subconscious programming around money - is influencing your decisions.`,
                     hiddenPattern: `The real constraint isn't your income level. It's how decisions are being made under pressure. When survival is the priority, opportunities for growth often get filtered out automatically. Your ${bottleneck.toLowerCase()} reveals where this shows up most clearly. This isn't a character flaw - it's a blueprint operating exactly as programmed. The pattern works like a thermostat: it keeps resetting to a familiar level, regardless of temporary gains. Understanding this is the first step to changing it.`,
-                    ifNothingChanges: `If your current pattern continues, the likely outcome is more of the same - income that covers expenses but doesn't create freedom. The gap between where you are and where you want to be tends to widen over time, not shrink. This isn't meant to discourage you. It's meant to clarify what's at stake. Time compounds in both directions - working for you or against you.`,
-                    transitionToSolution: `${firstName}, the fact that you completed this assessment shows something important: you're willing to look honestly at your situation. That's the foundation for change. The next step isn't about working harder within the same structure. It's about understanding how to shift the structure itself. Your ${timeframe.toLowerCase()} timeline suggests you're ready to move forward. The question is whether you'll continue managing the symptoms, or address the underlying pattern.`
+                    ifNothingChanges: `If your current pattern continues, the likely outcome is more of the same - income that covers expenses but doesn't create freedom. The gap between where you are and where you want to be tends to widen over time, not shrink. Time compounds in both directions - working for you or against you.`,
+                    transitionToSolution: `${firstName}, the fact that you completed this assessment shows something important: you're willing to look honestly at your situation. That's the foundation for change. The next step isn't about working harder within the same structure. It's about understanding how to shift the structure itself. The question is whether you'll continue managing the symptoms, or address the underlying pattern.`
                 },
                 'Stability Trap': {
                     whyThisIsHappening: `${firstName}, you've built something real - steady income, reasonable savings, financial responsibility. But there's a pattern worth examining: your results are still tied to how much you work. At this stage, the limitation isn't effort. It's structure. When income depends heavily on time and active involvement, growth remains linear. This reflects a financial blueprint optimized for safety rather than acceleration. It's not wrong - it's just limiting.`,
                     hiddenPattern: `Most people try to improve results by increasing income or cutting expenses. However, the real constraint is often how income is structured in the first place. Your ${bottleneck.toLowerCase()} highlights where this shows up for you. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on creating leverage that allows results to grow independently of effort.`,
                     ifNothingChanges: `If your current pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. You'll likely remain comfortable but not free. The gap between where you are and true financial freedom tends to widen rather than narrow when the underlying structure stays the same.`,
-                    transitionToSolution: `${firstName}, the good news is that escaping the Stability Trap doesn't require taking excessive risks. It requires understanding how your financial blueprint is shaping your decisions, and making targeted adjustments. You've already proven you can be disciplined. The opportunity now is to direct that discipline toward creating leverage rather than just maintaining stability. Given your ${timeframe.toLowerCase()} timeline, you're positioned to make this shift.`
+                    transitionToSolution: `${firstName}, the good news is that escaping the Stability Trap doesn't require taking excessive risks. It requires understanding how your financial blueprint is shaping your decisions, and making targeted adjustments. You've already proven you can be disciplined. The opportunity now is to direct that discipline toward creating leverage rather than just maintaining stability.`
                 },
                 'Growth Phase': {
                     whyThisIsHappening: `${firstName}, you're clearly making progress, but your results are still tied to how much you work. At this stage, the limitation is not effort - it's structure. When income depends heavily on time and active involvement, growth remains linear. This makes it difficult to scale beyond a certain level. What most people don't see is that this pattern reflects a financial blueprint that shapes how income is created and managed. Recognizing this is the first step to changing it.`,
                     hiddenPattern: `Most people try to improve results by increasing income or optimizing expenses. However, the real constraint is often how income is structured in the first place. Your ${bottleneck.toLowerCase()} reveals where this limitation shows up most clearly for you. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on creating leverage that allows results to grow independently of effort.`,
                     ifNothingChanges: `If your current pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. The difference between optimized growth and default growth isn't just speed - it's options. Five years from now, you could be choosing how to spend your time, or still negotiating for it.`,
-                    transitionToSolution: `${firstName}, you're closer to an inflection point than you might realize. At this stage, the next step is not to push harder - it's to change how your financial decisions and income structure work together. When that shift happens, results tend to follow. The strategies that matter now are different from what got you here. Your ${timeframe.toLowerCase()} timeline gives you a clear window to implement these changes. The question is whether you'll continue optimizing within the current structure, or upgrade the structure itself.`
+                    transitionToSolution: `${firstName}, you're closer to an inflection point than you might realize. At this stage, the next step is not to push harder - it's to change how your financial decisions and income structure work together. When that shift happens, results tend to follow. The strategies that matter now are different from what got you here. The question is whether you'll continue optimizing within the current structure, or upgrade the structure itself.`
                 },
                 'Freedom Path': {
                     whyThisIsHappening: `${firstName}, you've built something most people only talk about - real financial momentum. Your foundation is strong and your trajectory is pointed toward freedom. At this level, the game changes. It's less about accumulation and more about optimization. Small percentage improvements create massive compound results over time. The question isn't whether you'll reach freedom - it's how quickly and completely you'll get there.`,
                     hiddenPattern: `Even at your level, there are opportunities worth examining. Your ${bottleneck.toLowerCase()} might seem minor compared to your strengths, but here's what high performers often miss: they keep adding fuel instead of removing friction. At this stage, optimizing your weaker areas has a multiplicative effect. It's not addition anymore - it's leverage. The opportunity is to accelerate what's already working while addressing what's quietly limiting your potential.`,
                     ifNothingChanges: `You'll reach financial freedom either way - that's the good news. But the difference between an optimized path and a default path could mean years of additional time or significant unrealized potential. At your level, a 10% improvement compounds into substantial differences over time. The question is whether you want to arrive at freedom as quickly as possible, or simply drift there.`,
-                    transitionToSolution: `${firstName}, you're in a position many would envy. The strategies that matter at this stage are about optimization, protection, and acceleration - fine-tuning what's already working to reach its full potential. Your ${timeframe.toLowerCase()} timeline gives you the window to implement sophisticated approaches that separate the wealthy from the truly free. The path forward is clear. The question is whether you'll coast, or commit to your full potential.`
+                    transitionToSolution: `${firstName}, you're in a position many would envy. The strategies that matter at this stage are about optimization, protection, and acceleration - fine-tuning what's already working to reach its full potential. The path forward is clear. The question is whether you'll coast, or commit to your full potential.`
                 }
             };
             
@@ -5159,6 +5439,38 @@
             ctaButtons.forEach(btn => {
                 btn.textContent = template.finalCta;
             });
+            
+            // ===== SECTION 7: MICRO-PERSONALIZATION =====
+            const microData = {
+                firstName: user.firstName || 'Friend',
+                stage: truth.stage || 'Stability Trap',
+                primaryBottleneck: truth.bottleneck?.label || template.bottleneckLabel || 'Income Structure',
+                timeframe: result.inputs?.timeframe || 'Within this year',
+                breakdown: breakdown
+            };
+            
+            const micro = buildMicroPersonalization(microData);
+            console.log('🎯 Micro-personalization:', micro);
+            
+            // Populate micro-personalization elements
+            const microTopLine = document.getElementById('microTopLine');
+            if (microTopLine) microTopLine.textContent = micro.topLine;
+            
+            const microPillarContrast = document.getElementById('microPillarContrast');
+            if (microPillarContrast) microPillarContrast.textContent = micro.pillarContrast;
+            
+            const microTimeframeBridge = document.getElementById('microTimeframeBridge');
+            if (microTimeframeBridge) microTimeframeBridge.textContent = micro.timeframeBridge;
+            
+            const microCtaReassurance = document.getElementById('microCtaReassurance');
+            if (microCtaReassurance) microCtaReassurance.textContent = micro.ctaReassurance;
+            
+            // Mobile micro-personalization
+            const microTimeframeBridgeMobile = document.getElementById('microTimeframeBridgeMobile');
+            if (microTimeframeBridgeMobile) microTimeframeBridgeMobile.textContent = micro.timeframeBridge;
+            
+            const microCtaReassuranceMobile = document.getElementById('microCtaReassuranceMobile');
+            if (microCtaReassuranceMobile) microCtaReassuranceMobile.textContent = micro.ctaReassurance;
             
             // ===== SECTION 7: PROGRESS VISUALIZATION =====
             const scoreMarker = document.getElementById('scoreMarker');
