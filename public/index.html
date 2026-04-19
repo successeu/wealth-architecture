@@ -4789,7 +4789,26 @@
             const pdfUrl = await generateAndUploadPDF(fullName, surplus, liquid, income, currency, wealthScore);
             console.log('✅ PDF URL ready:', pdfUrl);
             
-            // Prepare data for Airtable (via Zapier) - COMPLETE 28-FIELD PAYLOAD
+            // Generate Dynamic Report Page URL (for email/sharing)
+            const reportData = {
+                firstName: apiResult.user.firstName,
+                wealthScore: apiResult.scores.wealthScore,
+                stage: apiResult.scores.stage,
+                incomeCapacityScore: apiResult.scores.breakdown.incomeCapacity,
+                incomeStructureScore: apiResult.scores.breakdown.incomeStructure,
+                savingsRateScore: apiResult.scores.breakdown.savingsRate,
+                assetStrengthScore: apiResult.scores.breakdown.assetStrength,
+                primaryBottleneck: apiResult.scores.bottleneck.label,
+                whyThisIsHappening: apiResult.narratives.whyThisIsHappening,
+                hiddenPattern: apiResult.narratives.hiddenPattern,
+                ifNothingChanges: apiResult.narratives.ifNothingChanges,
+                transitionToSolution: apiResult.narratives.transitionToSolution
+            };
+            const encodedReportData = btoa(unescape(encodeURIComponent(JSON.stringify(reportData))));
+            const reportPageUrl = `https://wealth-architecture.vercel.app/report.html?data=${encodedReportData}`;
+            console.log('🔗 Report Page URL ready:', reportPageUrl);
+            
+            // Prepare data for Airtable (via Zapier) - COMPLETE 29-FIELD PAYLOAD
             const formData = {
                 'First Name': apiResult.user.firstName,
                 'Last Name': apiResult.user.lastName,
@@ -4819,6 +4838,7 @@
                 'AI If Nothing Changes': apiResult.narratives.ifNothingChanges,
                 'AI Transition To Solution': apiResult.narratives.transitionToSolution,
                 'PDF Report': pdfUrl || '',
+                'Report Page URL': reportPageUrl,  // NEW: Dynamic report page link
                 'Created At': new Date().toISOString()
             };
             
