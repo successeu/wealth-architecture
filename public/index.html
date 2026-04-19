@@ -4784,12 +4784,7 @@
             const scoreLabel = getScoreLabelForZapier(wealthScore);
             const fullName = firstName + ' ' + lastName;
             
-            // Generate PDF with new data
-            console.log('📄 Generating PDF...');
-            const pdfUrl = await generateAndUploadPDF(fullName, surplus, liquid, income, currency, wealthScore);
-            console.log('✅ PDF URL ready:', pdfUrl);
-            
-            // Generate Dynamic Report Page URL (for email/sharing)
+            // Generate Dynamic Report Page URL (the PDF report link)
             const reportData = {
                 firstName: apiResult.user.firstName,
                 wealthScore: apiResult.scores.wealthScore,
@@ -4806,7 +4801,7 @@
             };
             const encodedReportData = btoa(unescape(encodeURIComponent(JSON.stringify(reportData))));
             const reportPageUrl = `https://wealth-architecture.vercel.app/report.html?data=${encodedReportData}`;
-            console.log('🔗 Report Page URL ready:', reportPageUrl);
+            console.log('🔗 PDF Report URL ready (report.html):', reportPageUrl);
             
             // Prepare data for Airtable (via Zapier) - COMPLETE 29-FIELD PAYLOAD
             const formData = {
@@ -4832,13 +4827,13 @@
                 'Savings Rate Score': apiResult.scores.breakdown.savingsRate,
                 'Asset Strength Score': apiResult.scores.breakdown.assetStrength,
                 'Primary Bottleneck': apiResult.scores.bottleneck.label,
-                // NEW: AI-generated narratives
+                // AI-generated narratives
                 'AI Why This Is Happening': apiResult.narratives.whyThisIsHappening,
                 'AI Hidden Pattern': apiResult.narratives.hiddenPattern,
                 'AI If Nothing Changes': apiResult.narratives.ifNothingChanges,
                 'AI Transition To Solution': apiResult.narratives.transitionToSolution,
-                'PDF Report': pdfUrl || '',
-                'Report Page URL': reportPageUrl,  // NEW: Dynamic report page link
+                // PDF Report is now the report.html link with all data encoded
+                'PDF Report': reportPageUrl,
                 'Created At': new Date().toISOString()
             };
             
