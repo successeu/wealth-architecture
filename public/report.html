@@ -628,6 +628,10 @@
                     </div>
                     <div class="score-percentage"><span id="percentage">54</span>% of your financial freedom potential</div>
                     <div class="score-tagline">This score reflects not just your finances - <span>but how you THINK about money.</span></div>
+                    <!-- MICRO-PERSONALIZATION: Top Line -->
+                    <div id="microTopLine" style="font-size: 12px; color: #333; margin-top: 12px; line-height: 1.5; padding: 10px; background: #fafafa; border-radius: 8px; border-left: 3px solid #ff8120; font-weight: 500;">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
                 <div class="stage-card">
                     <div class="stage-icon">📊</div>
@@ -706,6 +710,13 @@
                     <div class="pillar-desc" id="assetStrengthText">You haven't built enough financial reserves yet.</div>
                 </div>
             </div>
+            
+            <!-- MICRO-PERSONALIZATION: Pillar Contrast Line -->
+            <div style="margin-top: 20px; padding: 12px 16px; background: linear-gradient(135deg, #fefce8 0%, #fff 100%); border: 1px solid #fef08a; border-radius: 10px;">
+                <p id="microPillarContrast" style="font-size: 11px; color: #713f12; line-height: 1.6; margin: 0; text-align: center; font-weight: 500;">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
         </div>
         
         <!-- PAGE 2 - Analysis Section -->
@@ -766,6 +777,13 @@
                     Loading your personalized path forward...
                 </div>
             </div>
+            
+            <!-- MICRO-PERSONALIZATION: Timeframe Bridge -->
+            <div style="margin-top: 20px; padding: 12px 16px; background: #fafafa; border-radius: 8px; text-align: center;">
+                <p id="microTimeframeBridge" style="font-size: 11px; color: #555; line-height: 1.5; margin: 0; font-weight: 500;">
+                    <!-- Populated by JS -->
+                </p>
+            </div>
         </div>
         
         <!-- PAGE 3 - CTA Section -->
@@ -780,7 +798,11 @@
                         <div class="cta-subtitle">Start building a new financial blueprint today.</div>
                     </div>
                 </div>
-                <a href="https://www.millionairemind.online" class="cta-button">JOIN MILLIONAIRE MIND INTENSIVE →</a>
+                <a href="https://www.millionairemind.online" class="cta-button">ENTER MILLIONAIRE MIND INTENSIVE →</a>
+                <!-- MICRO-PERSONALIZATION: CTA Reassurance -->
+                <p id="microCtaReassurance" style="font-size: 9px; color: #666; margin-top: 10px; text-align: center; font-style: italic;">
+                    <!-- Populated by JS -->
+                </p>
                 <div class="cta-testimonial">
                     <div class="cta-quote">"An excellent course that revived my journey towards adopting a millionaire's mindset."</div>
                     <div class="cta-author">★★★★★ — Christian Koepchen</div>
@@ -905,6 +927,155 @@
             document.getElementById('hiddenPattern').textContent = data.hiddenPattern || defaultNarratives.hiddenPattern;
             document.getElementById('ifNothingChanges').textContent = data.ifNothingChanges || defaultNarratives.ifNothingChanges;
             document.getElementById('transitionToSolution').textContent = data.transitionToSolution || defaultNarratives.transitionToSolution;
+            
+            // ===== MICRO-PERSONALIZATION =====
+            const micro = buildMicroPersonalization(data);
+            
+            const microTopLine = document.getElementById('microTopLine');
+            if (microTopLine) microTopLine.textContent = micro.topLine;
+            
+            const microPillarContrast = document.getElementById('microPillarContrast');
+            if (microPillarContrast) microPillarContrast.textContent = micro.pillarContrast;
+            
+            const microTimeframeBridge = document.getElementById('microTimeframeBridge');
+            if (microTimeframeBridge) microTimeframeBridge.textContent = micro.timeframeBridge;
+            
+            const microCtaReassurance = document.getElementById('microCtaReassurance');
+            if (microCtaReassurance) microCtaReassurance.textContent = micro.ctaReassurance;
+        }
+        
+        // ============================================
+        // MICRO-PERSONALIZATION SYSTEM
+        // ============================================
+        
+        const MICRO_PERSONALIZATION = {
+            topLine: {
+                "Growth Phase|Income Structure": "{firstName}, you're making progress, but your results are still tied to effort.",
+                "Growth Phase|Asset Strength": "{firstName}, your growth is real, but your financial foundation is still too thin.",
+                "Growth Phase|Savings Rate": "{firstName}, you're earning well, but too little is turning into real momentum.",
+                "Growth Phase|Income Capacity": "{firstName}, your structure has room to grow, but your income model is still too limited.",
+                "Stability Trap|Income Structure": "{firstName}, you've built income, but not yet enough freedom.",
+                "Stability Trap|Asset Strength": "{firstName}, you've created stability, but not yet enough resilience.",
+                "Stability Trap|Savings Rate": "{firstName}, you're earning, but too little is being retained to accelerate wealth.",
+                "Stability Trap|Income Capacity": "{firstName}, your current model is supporting stability, but not long-term expansion.",
+                "Survival Mode|Income Structure": "{firstName}, right now your income depends too heavily on direct effort.",
+                "Survival Mode|Asset Strength": "{firstName}, your current position is being limited by a lack of reserves and support.",
+                "Survival Mode|Savings Rate": "{firstName}, your cash flow is working hard just to keep up.",
+                "Survival Mode|Income Capacity": "{firstName}, your current earning model is too narrow for the security you need.",
+                "Freedom Path|Income Structure": "{firstName}, you're moving well, but your structure still has room to become more scalable.",
+                "Freedom Path|Asset Strength": "{firstName}, you're building well, but your financial base can still be strengthened.",
+                "Freedom Path|Savings Rate": "{firstName}, you have momentum, but retaining more will deepen your freedom.",
+                "Freedom Path|Income Capacity": "{firstName}, your trajectory is strong, but your earning model can still expand."
+            },
+            pillarContrast: {
+                "Income Capacity|Income Structure": "You have strong earning power, but your income model has not yet caught up.",
+                "Income Capacity|Savings Rate": "Your ability to earn is stronger than your ability to convert income into momentum.",
+                "Income Capacity|Asset Strength": "You can generate income, but your financial base is not yet keeping pace.",
+                "Savings Rate|Asset Strength": "You are doing well at retaining money, but not yet turning it into a stronger financial base.",
+                "Savings Rate|Income Structure": "You have discipline in saving, but the income model itself is still limiting growth.",
+                "Savings Rate|Income Capacity": "You manage money carefully, but your income ceiling may still be too low.",
+                "Asset Strength|Income Structure": "You've built some reserves, but your income still relies too much on active effort.",
+                "Asset Strength|Savings Rate": "Your base is improving, but your current savings pace may not be enough to accelerate freedom.",
+                "Asset Strength|Income Capacity": "Your foundation is stronger than your earning model is allowing for.",
+                "Income Structure|Savings Rate": "Your income model is improving, but too little is being retained for long-term growth.",
+                "Income Structure|Asset Strength": "Your structure is developing, but your reserves are not yet strong enough to support it.",
+                "Income Structure|Income Capacity": "Your structure is evolving, but your earning power still has room to expand."
+            },
+            timeframeBridge: {
+                "0-3 months": "Because you want change now, this is the point where delay becomes expensive.",
+                "3-6 months": "Because you're ready to move soon, clarity matters more than waiting.",
+                "Within this year": "Because your goal is within this year, structure matters more than intention alone.",
+                "Just exploring": "Because you're still exploring, the next best step is to see what is actually possible."
+            },
+            ctaReassurance: {
+                "Growth Phase|Income Structure": "Designed for people in the Growth Phase who are ready to build leverage.",
+                "Growth Phase|Savings Rate": "A strong next step for disciplined earners who want faster momentum.",
+                "Growth Phase|Asset Strength": "Especially relevant for people building momentum without a strong enough base.",
+                "Growth Phase|Income Capacity": "Useful for people ready to expand beyond their current earning model.",
+                "Stability Trap|Income Structure": "Especially relevant for high-effort earners who want more freedom.",
+                "Stability Trap|Savings Rate": "Helpful for those who earn consistently but are not yet building momentum.",
+                "Stability Trap|Asset Strength": "A practical next step for people who want more security and less fragility.",
+                "Stability Trap|Income Capacity": "Designed for people who want to move beyond stability into real growth.",
+                "Survival Mode|Income Structure": "A strong next step for people who need a more reliable path forward.",
+                "Survival Mode|Savings Rate": "Helpful for people who need to strengthen financial breathing room first.",
+                "Survival Mode|Asset Strength": "Designed for those who need to build stronger financial support underneath them.",
+                "Survival Mode|Income Capacity": "Useful for those who need a broader earning foundation.",
+                "Freedom Path|Income Structure": "Relevant for people who want to turn momentum into true leverage.",
+                "Freedom Path|Savings Rate": "Helpful for those ready to deepen long-term wealth retention.",
+                "Freedom Path|Asset Strength": "Designed for people refining their path toward lasting independence.",
+                "Freedom Path|Income Capacity": "Useful for those expanding a strong base into a bigger wealth engine."
+            }
+        };
+        
+        const MICRO_FALLBACKS = {
+            topLine: "{firstName}, your current pattern is limiting how quickly your wealth can grow.",
+            pillarContrast: "Your strongest area is being limited by your weaker one.",
+            timeframeBridge: "The next step is to understand what needs to change structurally.",
+            ctaReassurance: "A practical next step for people who want to change their financial pattern."
+        };
+        
+        function replaceVars(template, vars) {
+            return template.replace(/\{(\w+)\}/g, (_, key) => vars[key] ?? "");
+        }
+        
+        function getMappedLine(sectionMap, key, fallback, vars = {}) {
+            const template = sectionMap[key] || fallback;
+            return replaceVars(template, vars);
+        }
+        
+        function getStrongestPillar(data) {
+            const pillars = {
+                'Income Capacity': (data.incomeCapacityScore || 5) / 10,
+                'Income Structure': (data.incomeStructureScore || 5) / 10,
+                'Savings Rate': (data.savingsRateScore || 7) / 15,
+                'Asset Strength': (data.assetStrengthScore || 5) / 15
+            };
+            return Object.entries(pillars).sort((a, b) => b[1] - a[1])[0][0];
+        }
+        
+        function getWeakestPillar(data) {
+            const pillars = {
+                'Income Capacity': (data.incomeCapacityScore || 5) / 10,
+                'Income Structure': (data.incomeStructureScore || 5) / 10,
+                'Savings Rate': (data.savingsRateScore || 7) / 15,
+                'Asset Strength': (data.assetStrengthScore || 5) / 15
+            };
+            return Object.entries(pillars).sort((a, b) => a[1] - b[1])[0][0];
+        }
+        
+        function buildMicroPersonalization(data) {
+            const stage = (data.stage || 'Growth Phase').trim();
+            const bottleneck = (data.primaryBottleneck || 'Income Structure').trim();
+            const timeframe = (data.timeframe || 'Within this year').trim();
+            const strongestPillar = getStrongestPillar(data);
+            const weakestPillar = getWeakestPillar(data);
+            
+            const stageBottleneckKey = `${stage}|${bottleneck}`;
+            const pillarKey = `${strongestPillar}|${weakestPillar}`;
+            
+            return {
+                topLine: getMappedLine(
+                    MICRO_PERSONALIZATION.topLine,
+                    stageBottleneckKey,
+                    MICRO_FALLBACKS.topLine,
+                    { firstName: data.firstName || 'Friend' }
+                ),
+                pillarContrast: getMappedLine(
+                    MICRO_PERSONALIZATION.pillarContrast,
+                    pillarKey,
+                    MICRO_FALLBACKS.pillarContrast
+                ),
+                timeframeBridge: getMappedLine(
+                    MICRO_PERSONALIZATION.timeframeBridge,
+                    timeframe,
+                    MICRO_FALLBACKS.timeframeBridge
+                ),
+                ctaReassurance: getMappedLine(
+                    MICRO_PERSONALIZATION.ctaReassurance,
+                    stageBottleneckKey,
+                    MICRO_FALLBACKS.ctaReassurance
+                )
+            };
         }
         
         // Initialize
