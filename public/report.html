@@ -39,7 +39,26 @@
             }
             @page {
                 size: A4;
-                margin: 15mm 15mm 20mm 15mm;
+                margin: 12mm 12mm 15mm 12mm;
+            }
+            /* Ensure all text is visible - no overflow hidden */
+            .insight-card,
+            .insight-content,
+            .pillar-card,
+            .stage-box,
+            .cta-section {
+                overflow: visible !important;
+                max-height: none !important;
+                height: auto !important;
+            }
+            /* Smaller fonts for print to fit more content */
+            .insight-content {
+                font-size: 11px !important;
+                line-height: 1.6 !important;
+            }
+            /* Allow page breaks inside long cards if needed */
+            .insight-card {
+                page-break-inside: auto;
             }
         }
         
@@ -309,32 +328,36 @@
             line-height: 1.4;
         }
         
-        /* Insight Cards */
+        /* Insight Cards - Matching Website Exactly */
         .insight-card {
             background: #fff;
             border: 1px solid #e8e8e8;
-            border-radius: 12px;
-            padding: 20px;
+            border-radius: 14px;
+            padding: 24px;
             margin-bottom: 20px;
+            /* Auto-expand to fit all content */
+            overflow: visible;
+            height: auto;
+            min-height: fit-content;
         }
         
         .insight-card.amber {
-            background: linear-gradient(135deg, #fffbeb 0%, #fff 100%);
-            border-color: #fde68a;
+            background: #ffffff;
+            border-color: #e8e8e8;
         }
         
         .insight-card.orange {
-            background: linear-gradient(135deg, #fff7ed 0%, #fff 100%);
+            background: linear-gradient(135deg, #fff7ed 0%, #ffffff 100%);
             border-color: #fed7aa;
         }
         
         .insight-card.red {
-            background: linear-gradient(135deg, #fef2f2 0%, #fff 100%);
-            border-color: #fecaca;
+            background: #ffffff;
+            border-color: #e8e8e8;
         }
         
         .insight-card.green {
-            background: linear-gradient(135deg, #f0fdf4 0%, #fff 100%);
+            background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 100%);
             border-color: #86efac;
         }
         
@@ -342,20 +365,55 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            margin-bottom: 15px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid rgba(0,0,0,0.06);
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .insight-card.orange .insight-header {
+            border-bottom-color: rgba(255, 129, 32, 0.15);
+        }
+        
+        .insight-card.green .insight-header {
+            border-bottom-color: rgba(34, 197, 94, 0.15);
+        }
+        
+        .insight-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        
+        .insight-icon-box.amber-bg {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+        }
+        
+        .insight-icon-box.orange-bg {
+            background: linear-gradient(135deg, #ff8120 0%, #f97316 100%);
+        }
+        
+        .insight-icon-box.red-bg {
+            background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+        }
+        
+        .insight-icon-box.green-bg {
+            background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
         }
         
         .insight-icon {
-            font-size: 20px;
+            font-size: 18px;
         }
         
         .insight-title {
             font-size: 11px;
             font-weight: 700;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             text-transform: uppercase;
+            margin: 0;
         }
         
         .insight-title.amber { color: #b45309; }
@@ -363,17 +421,16 @@
         .insight-title.red { color: #b91c1c; }
         .insight-title.green { color: #15803d; }
         
-        .insight-subtitle {
-            font-size: 14px;
-            font-weight: 700;
-            color: #ea580c;
-            margin-bottom: 12px;
-        }
-        
         .insight-content {
-            font-size: 12px;
-            color: #444;
+            font-size: 14px;
+            color: #555;
             line-height: 1.7;
+            text-align: left;
+            /* Ensure all text is visible */
+            overflow: visible;
+            max-height: none;
+            word-wrap: break-word;
+            white-space: normal;
         }
         
         /* CTA Section */
@@ -645,81 +702,71 @@
             </div>
         </div>
         
-        <!-- PAGE 2 -->
-        <div class="page-break page-2">
-            <!-- Header (repeated for page 2) -->
-            <div class="report-header">
-                <div class="brand">
-                    <span class="brand-name">SUCCESS RESOURCES</span>
-                    <span class="brand-tagline">| YOUR LEARNING PARTNER</span>
-                </div>
-                <div class="presenter">Presented by <span>June Yoon</span></div>
-            </div>
-            
+        <!-- PAGE 2 - Analysis Section -->
+        <div class="page-2" style="margin-top: 30px;">
             <div class="page-header">
                 <div class="page-title">Your Personalized Wealth Analysis</div>
                 <div class="page-subtitle">Based on your assessment results, <span id="firstName2">June</span></div>
             </div>
             
-            <!-- Why This Is Happening -->
-            <div class="insight-card amber avoid-break">
+            <!-- Why This Is Happening - Full Width -->
+            <div class="insight-card amber">
                 <div class="insight-header">
-                    <span class="insight-icon">💡</span>
-                    <span class="insight-title amber">WHY THIS IS HAPPENING</span>
+                    <div class="insight-icon-box amber-bg">
+                        <span class="insight-icon">💡</span>
+                    </div>
+                    <span class="insight-title amber">Why This Is Happening</span>
                 </div>
                 <div class="insight-content" id="whyThisIsHappening">
                     Loading your personalized analysis...
                 </div>
             </div>
             
-            <!-- Your Biggest Opportunity -->
-            <div class="insight-card orange avoid-break">
+            <!-- Your Biggest Opportunity - Full Width (NO bottleneck title) -->
+            <div class="insight-card orange">
                 <div class="insight-header">
-                    <span class="insight-icon">🎯</span>
-                    <span class="insight-title orange">YOUR BIGGEST OPPORTUNITY</span>
+                    <div class="insight-icon-box orange-bg">
+                        <span class="insight-icon">🎯</span>
+                    </div>
+                    <span class="insight-title orange">Your Biggest Opportunity</span>
                 </div>
-                <div class="insight-subtitle" id="bottleneckTitle">INCOME STRUCTURE (3/10)</div>
                 <div class="insight-content" id="hiddenPattern">
                     Loading your personalized insight...
                 </div>
             </div>
-        </div>
-        
-        <!-- PAGE 3 -->
-        <div class="page-break page-3">
-            <!-- Header (repeated for page 3) -->
-            <div class="report-header">
-                <div class="brand">
-                    <span class="brand-name">SUCCESS RESOURCES</span>
-                    <span class="brand-tagline">| YOUR LEARNING PARTNER</span>
-                </div>
-                <div class="presenter">Presented by <span>June Yoon</span></div>
-            </div>
             
-            <!-- If Nothing Changes -->
-            <div class="insight-card red avoid-break">
+            <!-- If Nothing Changes - Full Width -->
+            <div class="insight-card red">
                 <div class="insight-header">
-                    <span class="insight-icon">⚠️</span>
-                    <span class="insight-title red">IF NOTHING CHANGES</span>
+                    <div class="insight-icon-box red-bg">
+                        <span class="insight-icon">⚠️</span>
+                    </div>
+                    <span class="insight-title red">If Nothing Changes</span>
                 </div>
                 <div class="insight-content" id="ifNothingChanges">
                     Loading consequences analysis...
                 </div>
             </div>
             
-            <!-- Your Path Forward -->
-            <div class="insight-card green avoid-break">
+            <!-- Your Path Forward - Full Width -->
+            <div class="insight-card green">
                 <div class="insight-header">
-                    <span class="insight-icon">✨</span>
-                    <span class="insight-title green">YOUR PATH FORWARD</span>
+                    <div class="insight-icon-box green-bg">
+                        <span class="insight-icon">✨</span>
+                    </div>
+                    <span class="insight-title green">Your Path Forward</span>
                 </div>
                 <div class="insight-content" id="transitionToSolution">
                     Loading your personalized path forward...
                 </div>
             </div>
+        </div>
+        
+        <!-- PAGE 3 - CTA Section -->
+        <div class="page-3">
             
             <!-- CTA Section -->
-            <div class="cta-section avoid-break">
+            <div class="cta-section">
                 <div class="cta-header">
                     <span class="cta-icon">🚀</span>
                     <div>
@@ -840,25 +887,18 @@
             const firstName = data.firstName || 'Friend';
             document.getElementById('firstName2').textContent = firstName;
             
-            // Bottleneck
-            const bottleneck = data.primaryBottleneck || 'Income Structure';
-            const bottleneckScore = data.bottleneckScore || 3;
-            const bottleneckMax = data.bottleneckMax || 10;
-            document.getElementById('bottleneckTitle').textContent = `${bottleneck.toUpperCase()} (${bottleneckScore}/${bottleneckMax})`;
+            // AI Narratives - with fallback sample content
+            const defaultNarratives = {
+                whyThisIsHappening: "Being in the Growth Phase isn't a failure - it's actually where most financially conscious people find themselves, and here's why. Your money blueprint, that subconscious programming running in the background, has you believing that saving well and having solid assets is 'doing well.' Rich people understand that wealth isn't about being comfortable in the middle, it's about BREAKTHROUGH. People stuck in Growth Phase think incremental progress is enough, but wealthy people know that quantum leaps require completely resetting their financial thermostat. The beautiful thing is, once you recognize this pattern, you have the POWER to reprogram it.",
+                hiddenPattern: "Here's the pattern I see in your financial blueprint that's been quietly sabotaging your wealth potential. Your subconscious mind has been programmed to believe that income comes from trading time for money, from working harder rather than working smarter. Your subconscious mind is literally rejecting opportunities for multiple income streams because it doesn't fit your current money story. Rich people create assets that generate income whether they're working or sleeping, but your blueprint keeps pulling you back to a structure where YOU are the main asset. This is why you feel like you're working hard but not seeing the wealth accumulation you KNOW you're capable of.",
+                ifNothingChanges: "Let me share this with you directly because I believe in your potential. If nothing changes, nothing changes. You'll keep earning well, keep saving responsibly, and keep wondering why others with similar incomes are pulling ahead. In five years, you'll still be trading hours for dollars, maybe making 20% more but working 40% harder because that's what people with your current blueprint do. In ten years, you'll be exhausted, you'll have more money but you'll STILL be trading time for dollars, still stressed about cash flow. The cost of inaction isn't just the money you won't make - it's the FREEDOM you'll never have, the legacy you'll never build, and the regret of knowing you could have been so much more.",
+                transitionToSolution: "There's a massive difference between WANTING to build wealth and being COMMITTED to building wealth, and your timeframe tells me you're ready to make that shift. Rich people commit to changing their blueprint FIRST, then the money follows, while poor people wait for the money to change their circumstances. You've already proven you can manage money better than 90% of people, but managing money and creating wealth are two completely different games. Your financial thermostat is ready to be reset, your income structure is ready to be revolutionized, and the opportunity to transform your entire financial future is sitting right in front of you. The question is: are you ready to COMMIT to becoming the version of yourself that naturally attracts and creates wealth?"
+            };
             
-            // AI Narratives
-            if (data.whyThisIsHappening) {
-                document.getElementById('whyThisIsHappening').textContent = data.whyThisIsHappening;
-            }
-            if (data.hiddenPattern) {
-                document.getElementById('hiddenPattern').textContent = data.hiddenPattern;
-            }
-            if (data.ifNothingChanges) {
-                document.getElementById('ifNothingChanges').textContent = data.ifNothingChanges;
-            }
-            if (data.transitionToSolution) {
-                document.getElementById('transitionToSolution').textContent = data.transitionToSolution;
-            }
+            document.getElementById('whyThisIsHappening').textContent = data.whyThisIsHappening || defaultNarratives.whyThisIsHappening;
+            document.getElementById('hiddenPattern').textContent = data.hiddenPattern || defaultNarratives.hiddenPattern;
+            document.getElementById('ifNothingChanges').textContent = data.ifNothingChanges || defaultNarratives.ifNothingChanges;
+            document.getElementById('transitionToSolution').textContent = data.transitionToSolution || defaultNarratives.transitionToSolution;
         }
         
         // Initialize
