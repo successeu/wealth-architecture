@@ -632,12 +632,24 @@
                     <div id="microTopLine" style="font-size: 12px; color: #333; margin-top: 12px; line-height: 1.5; padding: 10px; background: #fafafa; border-radius: 8px; border-left: 3px solid #ff8120; font-weight: 500;">
                         <!-- Populated by JS -->
                     </div>
+                    <!-- IDENTITY TENSION LINE -->
+                    <div id="identityTensionLine" style="font-size: 10px; color: #666; margin-top: 8px; line-height: 1.4; font-style: italic;">
+                        Until that changes, your growth will remain limited.
+                    </div>
+                    <!-- BEHAVIORAL TRIGGER: After Score -->
+                    <div id="triggerAfterScore" style="display: none; margin-top: 10px; padding: 8px 10px; border-left: 2px solid #FF6A00; background: #FFF7F2; color: #444; font-size: 10px; line-height: 1.4; border-radius: 4px;">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
                 <div class="stage-card">
                     <div class="stage-icon">📊</div>
                     <div class="stage-label">YOU ARE CURRENTLY IN</div>
                     <div class="stage-name" id="stageName">GROWTH PHASE</div>
                     <div class="stage-tagline">This isn't a strategy problem. <span>It's a pattern.</span></div>
+                    <!-- BEHAVIORAL TRIGGER: After Stage -->
+                    <div id="triggerAfterStage" style="display: none; margin-top: 10px; padding: 8px 10px; border-left: 2px solid #FF6A00; background: #FFF7F2; color: #444; font-size: 10px; line-height: 1.4; border-radius: 4px; text-align: left;">
+                        <!-- Populated by JS -->
+                    </div>
                 </div>
             </div>
             
@@ -917,10 +929,10 @@
             
             // AI Narratives - with fallback sample content (Balanced Harv + McKinsey tone)
             const defaultNarratives = {
-                whyThisIsHappening: "You're clearly making progress, but your results are still tied to how much you work. At this stage, the limitation is not effort - it's structure. When income depends heavily on time and active involvement, growth remains linear. This makes it difficult to scale beyond a certain level. What most people don't see is that this pattern reflects a financial blueprint that shapes how income is created and managed. Recognizing this is the first step to changing it.",
-                hiddenPattern: "Most people try to improve results by increasing income or optimizing expenses. However, the real constraint is often how income is structured in the first place. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on creating leverage that allows results to grow independently of effort.",
-                ifNothingChanges: "If your current pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. The difference between optimized growth and default growth isn't just speed - it's options. Five years from now, you could be choosing how to spend your time, or still negotiating for it.",
-                transitionToSolution: "At this stage, the next step is not to push harder - it's to change how your financial decisions and income structure work together. When that shift happens, results tend to follow. The strategies that matter now are different from what got you here. The question is whether you'll continue optimizing within the current structure, or upgrade the structure itself."
+                whyThisIsHappening: "You're clearly making progress, but your results are still tied to how much you work. You're doing the right things, but in a way that builds slowly instead of accelerating growth. At this stage, the limitation is not effort - it's structure. When income depends heavily on your time and active involvement, growth remains linear. This makes it difficult to scale beyond a certain level. Recognizing this is the first step to changing it.",
+                hiddenPattern: "At this stage, most people focus on improving what they're already doing - earning more, saving more, optimizing better. But the deeper constraint often goes untouched. Right now, your income depends on how much you work. So even when you improve, it improves slowly. That's the hidden constraint. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on changing how income is generated in the first place.",
+                ifNothingChanges: "If this pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. The difference between optimized growth and default growth isn't just speed - it's options. Five years from now, you could be choosing how to spend your time, or still negotiating for it.",
+                transitionToSolution: "At this stage, the next step is not to push harder - it's to change how your financial decisions and income structure work together. When that shift happens, results tend to follow. Most people in your position continue improving what they're already doing. The difference comes when the structure behind those results begins to change."
             };
             
             document.getElementById('whyThisIsHappening').textContent = data.whyThisIsHappening || defaultNarratives.whyThisIsHappening;
@@ -1078,10 +1090,94 @@
             };
         }
         
+        // ============================================
+        // BEHAVIORAL TRIGGERS SYSTEM
+        // ============================================
+        
+        const BEHAVIORAL_TRIGGERS = [
+            {
+                id: "high_income_low_assets",
+                when: (d) => d.incomeCapacityScore >= 8 && d.assetStrengthScore <= 6,
+                severity: "high",
+                placement: "afterScore",
+                text: "Your earning power is strong, but it hasn't yet translated into a strong financial base."
+            },
+            {
+                id: "strong_saver_weak_structure",
+                when: (d) => d.savingsRateScore >= 8 && d.incomeStructureScore <= 4,
+                severity: "high",
+                placement: "afterScore",
+                text: "You're doing well at keeping money, but the income model itself is still limiting your growth."
+            },
+            {
+                id: "stable_not_free",
+                when: (d) => (d.stage === "Growth Phase" || d.stage === "Stability Trap") && d.wealthScore >= 20 && d.wealthScore <= 35,
+                severity: "medium",
+                placement: "afterStage",
+                text: "You're not off track. But you're also not yet in a position where money works independently of you."
+            },
+            {
+                id: "good_progress_hidden_limit",
+                when: (d) => d.stage === "Growth Phase" && d.wealthScore >= 26 && d.wealthScore <= 37,
+                severity: "medium",
+                placement: "afterStage",
+                text: "This is the stage where many people look successful on paper, but still feel far from freedom."
+            }
+        ];
+        
+        function getBehavioralTriggers(data, maxItems = 2) {
+            const triggerData = {
+                incomeCapacityScore: data.incomeCapacityScore || 5,
+                incomeStructureScore: data.incomeStructureScore || 5,
+                savingsRateScore: data.savingsRateScore || 7,
+                assetStrengthScore: data.assetStrengthScore || 5,
+                wealthScore: data.wealthScore || 27,
+                stage: data.stage || 'Growth Phase',
+                primaryBottleneck: data.primaryBottleneck || 'Income Structure',
+                timeframe: data.timeframe || 'Within this year'
+            };
+            
+            const matched = BEHAVIORAL_TRIGGERS
+                .filter(trigger => {
+                    try { return trigger.when(triggerData); } catch (e) { return false; }
+                })
+                .sort((a, b) => {
+                    const sev = { high: 2, medium: 1, low: 0 };
+                    return sev[b.severity] - sev[a.severity];
+                });
+            
+            return matched.slice(0, maxItems);
+        }
+        
+        function groupTriggersByPlacement(triggers) {
+            return triggers.reduce((acc, trigger) => {
+                if (!acc[trigger.placement]) acc[trigger.placement] = [];
+                acc[trigger.placement].push(trigger);
+                return acc;
+            }, {});
+        }
+        
+        function renderBehavioralTriggers(data) {
+            const triggers = getBehavioralTriggers(data, 2);
+            const triggerMap = groupTriggersByPlacement(triggers);
+            
+            function renderTrigger(elementId, triggersArray) {
+                const el = document.getElementById(elementId);
+                if (el && triggersArray && triggersArray.length > 0) {
+                    el.textContent = triggersArray[0].text;
+                    el.style.display = 'block';
+                }
+            }
+            
+            renderTrigger('triggerAfterScore', triggerMap.afterScore);
+            renderTrigger('triggerAfterStage', triggerMap.afterStage);
+        }
+        
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             const data = getUrlParams();
             populateReport(data);
+            renderBehavioralTriggers(data);
             
             // Auto-print if requested
             const params = new URLSearchParams(window.location.search);
