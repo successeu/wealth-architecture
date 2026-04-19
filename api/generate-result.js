@@ -471,43 +471,37 @@ const TemplateEngine = {
 // ============================================
 
 async function generateAINarratives(truth, template) {
-    const systemPrompt = `You are a senior wealth strategist combining T. Harv Eker's "Secrets of the Millionaire Mind" concepts with McKinsey-style consulting clarity. You're writing a personalized wealth analysis for ${truth.firstName}.
+    const systemPrompt = `You are a senior wealth strategist writing a personalized analysis for ${truth.firstName}. Your tone is warm, direct, and human — like a trusted advisor in a private conversation.
 
-YOUR COMMUNICATION STYLE (40% Harv Identity Shift + 60% Consulting Authority):
-- Reference the MONEY BLUEPRINT and THERMOSTAT concepts but use them diagnostically, not dramatically
-- Be DIRECT but measured - speak as a trusted advisor diagnosing a situation, not a speaker rallying an audience
-- Use strategic language: "constraint," "structure," "leverage," "optimization"
-- Keep sentences concise and impactful - avoid repetition
-- Write in clean prose - NEVER use bullet points, numbered lists, or dashes
-- End sections with logical conclusions, not declarations or demands
+YOUR COMMUNICATION STYLE:
+- Write in simple, clear language — no jargon like "income architecture" or "wealth velocity"
+- Always use "you" and "your" — never third person
+- Be direct but kind — diagnose clearly without being clinical
+- Keep sentences short and punchy
+- Write in clean prose — NEVER use bullet points, numbered lists, or dashes
+- Add one "mirror moment" per section where the reader thinks "that's exactly me"
 
-KEY CONCEPTS TO WEAVE IN (subtly, not dramatically):
-- Financial blueprint shapes decisions subconsciously
-- Income structure determines growth trajectory
-- The difference between effort-based and leveraged income
-- Optimization vs. working harder
+KEY INSIGHT TO WEAVE IN:
+"Right now, your income depends on how much you work. So even when you improve, it improves slowly. That's the real constraint."
 
-TONE GUIDELINE: Be warm but clinical. Diagnose clearly. Offer insight without hype. Sound like a trusted advisor in a private consultation, not a seminar speaker. Avoid ALL CAPS emphasis. Avoid phrases like "I DECLARE" or "commit to being rich."
+TONE: Sound like a smart friend who happens to be a wealth strategist — not a seminar speaker, not a McKinsey consultant. Warm but honest. Simple but insightful.
 
 THEIR DATA:
 - Name: ${truth.firstName}
 - Stage: ${truth.stage} (Score: ${truth.wealthScore}/50)
 - Main Bottleneck: ${truth.primaryBottleneck}
-- Savings Rate: ${truth.savingsRatePercent || 'unknown'}% of income
-- Asset Ratio: ${truth.assetRatioX || 'unknown'}x annual income
-- Concerns: ${truth.primaryConcern || 'wealth building'}
 - Timeframe: ${truth.timeframe}
 - Lead Tier: ${truth.leadTier}`;
 
-    const userPrompt = `Write 4 narrative sections with balanced consulting authority + Harv Eker concepts. Each should be 3-5 sentences of clean prose. NO bullet points or lists. NO dramatic capitalization.
+    const userPrompt = `Write 4 short narrative sections. Each should be 2-4 sentences of simple, human prose. NO bullet points. NO technical jargon.
 
-1. whyThisIsHappening: Explain why ${truth.firstName} is in "${truth.stage}" using blueprint concepts but with consulting clarity. Diagnose the structural issue, not the personal failing. Keep it concise.
+1. whyThisIsHappening: Explain why ${truth.firstName} is in "${truth.stage}" in plain language. Focus on structure, not blame. Include one line where they think "that's exactly my situation."
 
-2. hiddenPattern: Reveal a specific insight about their income/wealth structure. Their weakest pillar is ${truth.primaryBottleneck} at ${truth.bottleneckScore}/${truth.bottleneckMax}. Focus on the structural pattern, not emotional impact.
+2. hiddenPattern: Reveal the real constraint in simple terms. Their weakest area is ${truth.primaryBottleneck}. Use this exact insight: "Right now, your income depends on how much you work. So even when you improve, it improves slowly."
 
-3. ifNothingChanges: Paint a realistic picture of their trajectory if the structure doesn't change. Be direct but not fear-based. Use specific time horizons. Keep it brief - 3 sentences max.
+3. ifNothingChanges: What happens if nothing changes? Keep it to 3 short bullet-style points but write them as prose: "If this continues: you keep trading time for money, your growth slows, financial freedom takes longer than expected."
 
-4. transitionToSolution: Bridge to next steps using logic, not pressure. Their timeframe is "${truth.timeframe}". Focus on structural change, not emotional commitment. End with a question that invites reflection.
+4. transitionToSolution: Bridge to next steps with logic, not pressure. End with: "Most people keep improving what they're already doing. The shift happens when the structure behind your results begins to change."
 
 Return ONLY valid JSON:
 {
@@ -539,31 +533,31 @@ Return ONLY valid JSON:
     } catch (error) {
         console.error('AI generation error:', error);
         
-        // Balanced fallback narratives (Harv Eker concepts + McKinsey consulting clarity)
+        // Simplified fallback narratives (human, warm, "you/your" language)
         const stageNarratives = {
             'Survival Mode': {
-                whyThisIsHappening: `${truth.firstName}, your current financial position reflects a common pattern. When income barely covers expenses, most decisions become reactive rather than strategic. This isn't about capability - it's about the structure you're operating within. The challenge at this stage is that financial stress creates a cycle: limited resources lead to short-term thinking, which limits the ability to build long-term wealth. What's important to recognize is that this pattern can be changed once you understand how your financial blueprint is influencing your decisions.`,
-                hiddenPattern: `The real constraint isn't your income level. It's how decisions are being made under pressure. When survival is the priority, opportunities for growth often get filtered out automatically. Your ${truth.primaryBottleneck.toLowerCase()} reveals where this shows up most clearly. This isn't a character flaw - it's a blueprint operating exactly as programmed. The pattern works like a thermostat: it keeps resetting to a familiar level, regardless of temporary gains. Understanding this is the first step to changing it.`,
-                ifNothingChanges: `If your current pattern continues, the likely outcome is more of the same - income that covers expenses but doesn't create freedom. The gap between where you are and where you want to be tends to widen over time, not shrink. Time compounds in both directions - working for you or against you.`,
-                transitionToSolution: `${truth.firstName}, the fact that you completed this assessment shows something important: you're willing to look honestly at your situation. That's the foundation for change. The next step isn't about working harder within the same structure. It's about understanding how to shift the structure itself. Your ${truth.timeframe.toLowerCase()} timeline suggests you're ready to move forward. The question is whether you'll continue managing the symptoms, or address the underlying pattern.`
+                whyThisIsHappening: `${truth.firstName}, your current position shows a common pattern: you're working hard, but within a structure that limits how far that effort can take you. When income barely covers expenses, decisions become reactive instead of strategic. This isn't about how hard you're working. It's about the structure you're working within.`,
+                hiddenPattern: `Right now, your income depends on how much you work. So even when you improve, it improves slowly. That's the real constraint. It's not a lack of effort. It's a pattern that keeps pulling you back to the same level, no matter how hard you push.`,
+                ifNothingChanges: `If this pattern continues: you keep trading time for money, your growth stays slow, and financial freedom takes longer than expected.`,
+                transitionToSolution: `${truth.firstName}, the fact that you completed this assessment shows you're willing to look honestly at your situation. That's the foundation for change. The next step isn't about working harder. It's about changing the structure itself. Most people keep improving what they're already doing. The shift happens when the structure behind your results begins to change.`
             },
             'Stability Trap': {
-                whyThisIsHappening: `${truth.firstName}, you've built something real - steady income, reasonable savings, financial responsibility. But there's a pattern worth examining: your results are still tied to how much you work. At this stage, the limitation isn't effort. It's structure. When income depends heavily on time and active involvement, growth remains linear. This reflects a financial blueprint optimized for safety rather than acceleration. It's not wrong - it's just limiting.`,
-                hiddenPattern: `Most people try to improve results by increasing income or cutting expenses. However, the real constraint is often how income is structured in the first place. Your ${truth.primaryBottleneck.toLowerCase()} highlights where this shows up for you. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on creating leverage that allows results to grow independently of effort.`,
-                ifNothingChanges: `If your current pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. You'll likely remain comfortable but not free. The gap between where you are and true financial freedom tends to widen rather than narrow when the underlying structure stays the same.`,
-                transitionToSolution: `${truth.firstName}, the good news is that escaping the Stability Trap doesn't require taking excessive risks. It requires understanding how your financial blueprint is shaping your decisions, and making targeted adjustments. You've already proven you can be disciplined. The opportunity now is to direct that discipline toward creating leverage rather than just maintaining stability. Given your ${truth.timeframe.toLowerCase()} timeline, you're positioned to make this shift.`
+                whyThisIsHappening: `${truth.firstName}, you've built something real — steady income, reasonable savings, financial responsibility. But here's the pattern worth examining: your results are still tied to how much you work. You're doing the right things, but in a way that builds slowly instead of accelerating. It's not wrong. It's just limiting.`,
+                hiddenPattern: `Right now, your income depends on how much you work. So even when you improve, it improves slowly. That's the real constraint. Most people try to fix this by earning more or spending less. But the deeper issue is how income gets created in the first place.`,
+                ifNothingChanges: `If this pattern continues: you keep trading time for money, your growth slows as responsibilities increase, and you stay comfortable but not free.`,
+                transitionToSolution: `${truth.firstName}, escaping this trap doesn't require big risks. It requires understanding how your current pattern is shaping your decisions — and making targeted adjustments. Most people keep improving what they're already doing. The shift happens when the structure behind your results begins to change.`
             },
             'Growth Phase': {
-                whyThisIsHappening: `${truth.firstName}, you're clearly making progress, but your results are still tied to how much you work. At this stage, the limitation is not effort - it's structure. When income depends heavily on time and active involvement, growth remains linear. This makes it difficult to scale beyond a certain level. What most people don't see is that this pattern reflects a financial blueprint that shapes how income is created and managed. Recognizing this is the first step to changing it.`,
-                hiddenPattern: `Most people try to improve results by increasing income or optimizing expenses. However, the real constraint is often how income is structured in the first place. Your ${truth.primaryBottleneck.toLowerCase()} reveals where this limitation shows up most clearly for you. If income remains effort-based, growth naturally slows over time. This is where wealth builders think differently - they focus less on doing more, and more on creating leverage that allows results to grow independently of effort.`,
-                ifNothingChanges: `If your current pattern continues: income remains tied to effort, growth slows as responsibilities increase, and financial independence takes longer than expected. The difference between optimized growth and default growth isn't just speed - it's options. Five years from now, you could be choosing how to spend your time, or still negotiating for it.`,
-                transitionToSolution: `${truth.firstName}, you're closer to an inflection point than you might realize. At this stage, the next step is not to push harder - it's to change how your financial decisions and income structure work together. When that shift happens, results tend to follow. The strategies that matter now are different from what got you here. Your ${truth.timeframe.toLowerCase()} timeline gives you a clear window to implement these changes. The question is whether you'll continue optimizing within the current structure, or upgrade the structure itself.`
+                whyThisIsHappening: `${truth.firstName}, you're clearly making progress — but your results are still tied to how much you work. You're doing the right things, but in a way that builds slowly instead of accelerating. At this stage, the limitation isn't effort. It's structure.`,
+                hiddenPattern: `Right now, your income depends on how much you work. So even when you improve, it improves slowly. That's the real constraint. Most people focus on doing more — earning more, saving more, optimizing better. But the deeper issue often goes untouched.`,
+                ifNothingChanges: `If this pattern continues: you keep trading time for money, your growth slows as responsibilities increase, and financial freedom takes longer than expected.`,
+                transitionToSolution: `${truth.firstName}, you're closer to an inflection point than you realize. The next step isn't to push harder — it's to change how your income gets created. Most people keep improving what they're already doing. The shift happens when the structure behind your results begins to change.`
             },
             'Freedom Path': {
-                whyThisIsHappening: `${truth.firstName}, you've built something most people only talk about - real financial momentum. Your foundation is strong and your trajectory is pointed toward freedom. At this level, the game changes. It's less about accumulation and more about optimization. Small percentage improvements create massive compound results over time. The question isn't whether you'll reach freedom - it's how quickly and completely you'll get there.`,
-                hiddenPattern: `Even at your level, there are opportunities worth examining. Your ${truth.primaryBottleneck.toLowerCase()} might seem minor compared to your strengths, but here's what high performers often miss: they keep adding fuel instead of removing friction. At this stage, optimizing your weaker areas has a multiplicative effect. It's not addition anymore - it's leverage. The opportunity is to accelerate what's already working while addressing what's quietly limiting your potential.`,
-                ifNothingChanges: `You'll reach financial freedom either way - that's the good news. But the difference between an optimized path and a default path could mean years of additional time or significant unrealized potential. At your level, a 10% improvement compounds into substantial differences over time. The question is whether you want to arrive at freedom as quickly as possible, or simply drift there.`,
-                transitionToSolution: `${truth.firstName}, you're in a position many would envy. The strategies that matter at this stage are about optimization, protection, and acceleration - fine-tuning what's already working to reach its full potential. Your ${truth.timeframe.toLowerCase()} timeline gives you the window to implement sophisticated approaches that separate the wealthy from the truly free. The path forward is clear. The question is whether you'll coast, or commit to your full potential.`
+                whyThisIsHappening: `${truth.firstName}, you've built something most people only talk about — real financial momentum. Your foundation is strong. At this level, it's less about working harder and more about optimizing what's already working. Small improvements compound into big differences over time.`,
+                hiddenPattern: `Even at your level, there's an opportunity most people miss: they keep adding fuel instead of removing friction. Optimizing your weaker areas now has a multiplying effect. It's not addition anymore — it's leverage.`,
+                ifNothingChanges: `You'll reach financial freedom either way. But the difference between an optimized path and a default path could mean years of extra time — or significant unrealized potential.`,
+                transitionToSolution: `${truth.firstName}, you're in a position many would envy. The strategies that matter now are about acceleration and protection — fine-tuning what's already working. Most people keep improving what they're already doing. The shift happens when the structure behind your results begins to change.`
             }
         };
         
