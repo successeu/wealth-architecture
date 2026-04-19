@@ -1284,8 +1284,21 @@
             text-align: center;
         }
     </style>
+    <!-- Google Tag Manager -->
+    <script>
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-W58DKGD');
+    </script>
+    <!-- End Google Tag Manager -->
 </head>
 <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-W58DKGD"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
     <div class="container">
         <div class="sr-header">
             <div class="sr-header-left">
@@ -3625,6 +3638,7 @@
         
         function showStep(step) {
             if (step < 0 || step >= totalSteps) return;
+            dataLayer.push({event: 'assessment_step', step_number: step});
             
             // Hide all step contents including step-2b and step-2c
             document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
@@ -4322,6 +4336,7 @@
         
         function handleExitEmailCapture(event) {
             event.preventDefault();
+            dataLayer.push({event: 'email_capture', source: 'exit_intent'});
             const email = document.getElementById('exitEmail').value;
             
             if (email && email.includes('@')) {
@@ -4359,6 +4374,7 @@
         
         // Apply for Intensive
         function applyForIntensive() {
+            dataLayer.push({event: 'cta_click', type: 'book_call'});
             const email = document.getElementById('email')?.value || '';
             const firstName = document.getElementById('firstName')?.value || '';
             const lastName = document.getElementById('lastName')?.value || '';
@@ -4441,6 +4457,7 @@
         
         // Start assessment - scroll to step 1 form section
         function startAssessment() {
+            dataLayer.push({event: 'assessment_start'});
             // Show step 0 (first question step)
             const step0 = document.getElementById('step-0');
             if (step0) {
