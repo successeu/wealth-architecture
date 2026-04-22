@@ -2,6 +2,7 @@
 // Hybrid Architecture: Backend calculates truth, Claude generates narratives only
 
 import Anthropic from '@anthropic-ai/sdk';
+import { tagContactWithWealthSegment } from './activecampaign.js';
 
 const anthropic = new Anthropic({
     apiKey: process.env.ANTHROPIC_API_KEY
@@ -710,6 +711,22 @@ export default async function handler(req, res) {
         const result = composeResultPayload(truth, template, aiNarratives);
 
         console.log('✅ Result composed successfully');
+        
+        // Step 5: Tag contact in ActiveCampaign (fire-and-forget)
+if (process.env.ACTIVECAMPAIGN_API_URL && process.env.ACTIVECAMPAIGN_API_KEY) {
+    tagContactWithWealthSegment(
+        {
+            email: input.email,
+            firstName: input.firstName,
+            lastName: input.lastName || '',
+            phone: input.phone || ''
+        },
+        truth.stage
+    )
+        .then(({ tagName }) => console.log(`✅ AC tag applied: "${tagName}"`))
+        .catch(err => console.error('⚠️ AC tagging failed (non-fatal):', err.message));
+}
+
 
         return res.status(200).json({
             success: true,
