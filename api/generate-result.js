@@ -712,21 +712,23 @@ export default async function handler(req, res) {
 
         console.log('✅ Result composed successfully');
         
-        // Step 5: Tag contact in ActiveCampaign (fire-and-forget)
-if (process.env.ACTIVECAMPAIGN_API_URL && process.env.ACTIVECAMPAIGN_API_KEY) {
-    tagContactWithWealthSegment(
-        {
-            email: input.email,
-            firstName: input.firstName,
-            lastName: input.lastName || '',
-            phone: input.phone || ''
-        },
-        truth.stage
-    )
-        .then(({ tagName }) => console.log(`✅ AC tag applied: "${tagName}"`))
-        .catch(err => console.error('⚠️ AC tagging failed (non-fatal):', err.message));
-}
-
+        // Step 5: Tag contact in ActiveCampaign
+        if (process.env.ACTIVECAMPAIGN_API_URL && process.env.ACTIVECAMPAIGN_API_KEY) {
+            try {
+                const { tagName } = await tagContactWithWealthSegment(
+                    {
+                        email: input.email,
+                        firstName: input.firstName,
+                        lastName: input.lastName || '',
+                        phone: input.phone || ''
+                    },
+                    truth.stage
+                );
+                console.log(`✅ AC tag applied: "${tagName}"`);
+            } catch (err) {
+                console.error('⚠️ AC tagging failed (non-fatal):', err.message);
+            }
+        }
 
         return res.status(200).json({
             success: true,
