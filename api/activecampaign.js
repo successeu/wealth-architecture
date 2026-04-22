@@ -74,7 +74,8 @@ async function addTag(contactId, tagId) {
 }
 
 /**
- * Tag a contact with their wealth segment and fire the automation trigger.
+ * Tag a contact with their wealth segment. ActiveCampaign automations fire automatically
+ * via tag-based triggers configured directly in the AC account.
  *
  * @param {{ email, firstName, lastName, phone }} contactData
  * @param {string} stage - One of the four wealth stages from RuleEngine.getStage()
@@ -90,7 +91,7 @@ export async function tagContactWithWealthSegment(contactData, stage) {
     if (!tagId) throw new Error(`Tag "${tagName}" not found in ActiveCampaign — create it first`);
 
     await addTag(contactId, tagId);
-
     console.log(`✅ AC: contact ${contactId} tagged "${tagName}"`);
+
     return { contactId, tagName, tagId };
 }
