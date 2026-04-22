@@ -1,10 +1,18 @@
-// ActiveCampaign integration — contact sync and wealth segment tagging
+// ActiveCampaign integration — contact sync, wealth segment tagging, and automation enrollment
 
 const STAGE_TO_TAG = {
     'Survival Mode': 'Wealth: Survival',
     'Stability Trap': 'Wealth: Stability',
     'Growth Phase': 'Wealth: Growth',
     'Freedom Path': 'Wealth: Freedom'
+};
+
+// Automation names must exist in ActiveCampaign before they can be used
+const STAGE_TO_AUTOMATION = {
+    'Survival Mode': 'Wealth: Survival Automation',
+    'Stability Trap': 'Wealth: Stability Automation',
+    'Growth Phase': 'Wealth: Growth Automation',
+    'Freedom Path': 'Wealth: Freedom Automation'
 };
 
 function getConfig() {
@@ -73,12 +81,27 @@ async function addTag(contactId, tagId) {
     });
 }
 
+// Find an automation by exact name. Returns the automation id or null.
+async function findAutomationId(name) {
+    const data = await acFetch(`/automations?search=${encodeURIComponent(name)}&limit=20`);
+    const match = (data.automations || []).find(a => a.name === name);
+    return match ? match.id : null;
+}
+
+// Enroll a contact in an automation. AC deduplicates active enrollments automatically.
+async function enrollInAutomation(contactId, automationId) {
+    await acFetch('/contactAutomations', {
+        method: 'POST',
+        body: JSON.stringify({ contactAutomation: { contact: String(contactId), automation: String(automationId) } })
+    });
+}
+
 /**
- * Tag a contact with their wealth segment and fire the automation trigger.
+ * Tag a contact with their wealth segment and enroll them in the corresponding automation.
  *
  * @param {{ email, firstName, lastName, phone }} contactData
  * @param {string} stage - One of the four wealth stages from RuleEngine.getStage()
- * @returns {{ contactId, tagName, tagId }}
+ * @returns {{ contactId, tagName, tagId, automationId }}
  */
 export async function tagContactWithWealthSegment(contactData, stage) {
     const tagName = STAGE_TO_TAG[stage];
@@ -90,7 +113,16 @@ export async function tagContactWithWealthSegment(contactData, stage) {
     if (!tagId) throw new Error(`Tag "${tagName}" not found in ActiveCampaign — create it first`);
 
     await addTag(contactId, tagId);
-
     console.log(`✅ AC: contact ${contactId} tagged "${tagName}"`);
-    return { contactId, tagName, tagId };
+
+    const automationName = STAGE_TO_AUTOMATION[stage];
+    const automationId = await findAutomationId(automationName);
+    if (automationId) {
+        await enrollInAutomation(contactId, automationId);
+        console.log(`✅ AC: contact ${contactId} enrolled in automation "${automationName}"`);
+    } else {
+        console.warn(`⚠️ AC: automation "${automationName}" not found — skipping enrollment`);
+    }
+
+    return { contactId, tagName, tagId, automationId };
 }

@@ -723,7 +723,7 @@ if (process.env.ACTIVECAMPAIGN_API_URL && process.env.ACTIVECAMPAIGN_API_KEY) {
         },
         truth.stage
     )
-        .then(({ tagName }) => console.log(`✅ AC tag applied: "${tagName}"`))
+        .then(({ tagName, automationId }) => console.log(`✅ AC tag applied: "${tagName}"${automationId ? ` | automation enrolled: ${automationId}` : ''}`))
         .catch(err => console.error('⚠️ AC tagging failed (non-fatal):', err.message));
 }
 
